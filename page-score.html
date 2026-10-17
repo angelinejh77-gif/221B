@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Scoreboard</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=IM+Fell+English:ital@0;1&family=Oswald:wght@500;600&family=Caveat:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --flap:#1b1d21;--flap2:#141619;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Cormorant Garamond",Georgia,serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:radial-gradient(ellipse 120% 60% at 50% 0%,rgba(210,170,106,.08),transparent 60%),radial-gradient(ellipse 80% 40% at 50% 100%,rgba(178,58,48,.06),transparent 70%)}
+.wrap{max-width:520px;margin:0 auto;padding:calc(var(--sat) + 26px) calc(16px + var(--sar)) calc(var(--sab) + 150px) calc(16px + var(--sal))}
+.kicker{font-family:"Cormorant SC",serif;letter-spacing:.26em;font-size:11px;color:var(--gold);text-align:center}
+h1{margin:6px 0 4px;text-align:center;font-weight:500;font-size:38px;line-height:1;letter-spacing:.01em}
+h1 em{color:var(--gold);font-weight:400}
+.lede{text-align:center;color:var(--muted);font-style:italic;font-size:17px;margin:0 auto 22px;max-width:30ch;line-height:1.35}
+
+/* ---------- board ---------- */
+.board{position:relative;border-radius:14px;padding:18px 14px 16px;
+  background:linear-gradient(180deg,#1a1d22,#111317);
+  box-shadow:0 0 0 1px #2d3138,0 0 0 5px #0b0c0e,0 0 0 6px rgba(210,170,106,.45),0 24px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05)}
+.board.shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
+.screw{position:absolute;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e7cf9f,#8a6a35);box-shadow:0 1px 1px rgba(0,0,0,.6)}
+.screw::after{content:"";position:absolute;left:1px;right:1px;top:4px;height:1px;background:rgba(60,40,10,.7);transform:rotate(35deg)}
+.screw.a{left:8px;top:8px}.screw.b{right:8px;top:8px}.screw.c{left:8px;bottom:8px}.screw.d{right:8px;bottom:8px}
+.plate{display:flex;justify-content:space-between;align-items:center;margin:0 6px 12px;font-family:"Cormorant SC",serif;font-size:10.5px;letter-spacing:.22em;color:#8f8a80}
+.lamp{display:inline-flex;align-items:center;gap:6px}
+.lamp i{width:7px;height:7px;border-radius:50%;background:#e04c3c;box-shadow:0 0 8px #e04c3c;display:inline-block}
+.board.jam .lamp i{animation:blink .14s steps(2) 6}
+@keyframes blink{50%{opacity:.15}}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.row:last-of-type{margin-bottom:0}
+.name,.score,.status{display:flex;gap:3px}
+.cell{position:relative;width:24px;height:40px;border-radius:3px;perspective:220px;font-family:"Oswald",Impact,sans-serif;font-weight:500;font-size:28px;color:#efe9de;
+  background:var(--flap2);box-shadow:0 1px 0 rgba(255,255,255,.04),0 2px 3px rgba(0,0,0,.55)}
+.score .cell{width:46px;height:74px;font-size:56px;border-radius:5px;color:#f3e2bd}
+.status .cell{width:20px;height:30px;font-size:19px;color:var(--gold)}
+.half,.flap{position:absolute;left:0;right:0;height:50%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.half span,.flap span{position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center;line-height:1}
+.top,.ftop{top:0;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#25282d,#1b1d21)}
+.bot,.fbot{bottom:0;border-radius:0 0 3px 3px;background:linear-gradient(180deg,#17191c,#1e2125)}
+.top span,.ftop span{top:0}
+.bot span,.fbot span{bottom:0}
+.ftop{transform-origin:50% 100%;z-index:2;display:none}
+.fbot{transform-origin:50% 0%;z-index:2;display:none;transform:rotateX(90deg)}
+.cell::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;margin-top:-.5px;background:#07080a;z-index:3;box-shadow:0 1px 0 rgba(255,255,255,.05)}
+.cell::before{content:"";position:absolute;left:-2px;top:50%;width:3px;height:6px;margin-top:-3px;background:#3a3d42;border-radius:1px;z-index:4;box-shadow:calc(100% + 1px) 0 0 #3a3d42}
+.score .cell::before{height:10px;margin-top:-5px}
+.dash{width:14px;height:3px;background:#5d5a53;border-radius:2px;margin:0 2px}
+.vs{display:flex;align-items:center;justify-content:center;margin:2px 0 10px;gap:10px;color:#6f6b64;font-family:"Cormorant SC",serif;font-size:11px;letter-spacing:.24em}
+.vs::before,.vs::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#2d3138,transparent)}
+.statusRow{display:flex;justify-content:center;margin-top:14px;padding-top:12px;border-top:1px solid #23262c}
+.cell.jamming{animation:judder .09s linear 5}
+@keyframes judder{50%{transform:translateY(1px) rotate(.6deg)}}
+
+/* ---------- controls ---------- */
+.awards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0 6px}
+.award{appearance:none;cursor:pointer;min-height:54px;border-radius:12px;border:1px solid rgba(210,170,106,.38);
+  background:linear-gradient(180deg,#1c1f24,#14161a);color:var(--text);font:600 17px "Cormorant Garamond",serif;letter-spacing:.02em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.award small{font:500 10px "Cormorant SC",serif;letter-spacing:.22em;color:var(--gold)}
+.award:active{transform:translateY(1px);background:#121418}
+.award:focus-visible,.mini:focus-visible,.book:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.award[disabled]{opacity:.55}
+.attempts{text-align:center;color:var(--muted);font-size:14px;font-style:italic;margin:6px 0 0}
+.attempts b{font-style:normal;color:var(--text);font-weight:600}
+.mini{appearance:none;border:0;background:none;color:var(--muted);font:italic 15px "Cormorant Garamond",serif;min-height:44px;padding:0 10px;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(154,150,143,.35);text-underline-offset:3px}
+.minirow{display:flex;justify-content:center}
+
+/* his reply */
+.reply{position:relative;margin:14px 0 0;min-height:112px;background:var(--paper);color:var(--ink);border-radius:3px;padding:18px 20px 16px 22px;
+  box-shadow:0 14px 30px rgba(0,0,0,.45);transform:rotate(-.5deg);
+  background-image:radial-gradient(ellipse at 10% 0%,rgba(255,255,255,.7),transparent 60%),radial-gradient(ellipse at 100% 100%,rgba(140,100,50,.16),transparent 60%)}
+.reply::before{content:"";position:absolute;left:50%;top:-9px;width:70px;height:18px;margin-left:-35px;background:rgba(220,205,170,.75);transform:rotate(2deg);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.reply .from{font:600 10.5px "Cormorant SC",serif;letter-spacing:.24em;color:#8a7864}
+.reply p{margin:6px 0 0;font-family:"IM Fell English",Georgia,serif;font-size:19px;line-height:1.42;transition:opacity .35s,transform .35s}
+.reply p.out{opacity:0;transform:translateY(4px)}
+.reply .s{position:absolute;right:18px;bottom:8px;font-family:"Caveat",cursive;font-size:24px;color:#5b4b3e}
+
+/* ---------- ledger ---------- */
+h2{font-weight:500;font-size:26px;margin:44px 0 4px;text-align:center}
+h2 + .lede{margin-bottom:16px}
+.ledger{position:relative;background:var(--paper);color:var(--ink);border-radius:3px 6px 6px 3px;padding:22px 16px 26px 46px;
+  box-shadow:0 20px 40px rgba(0,0,0,.5),inset 10px 0 18px -10px rgba(80,50,20,.35);
+  background-image:linear-gradient(90deg,transparent 34px,rgba(178,58,48,.45) 34px,rgba(178,58,48,.45) 35px,transparent 35px),
+  repeating-linear-gradient(180deg,transparent 0 27px,rgba(60,80,120,.13) 27px 28px),
+  radial-gradient(ellipse at 0% 0%,rgba(255,255,255,.6),transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(140,100,50,.18),transparent 60%)}
+.ledger .lh{display:flex;justify-content:space-between;font:600 10.5px "Cormorant SC",serif;letter-spacing:.2em;color:#8a7864;border-bottom:1.5px solid rgba(42,35,32,.35);padding-bottom:8px;margin-bottom:6px}
+.entry{position:relative;display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:11px 0 12px;border-bottom:1px dashed rgba(42,35,32,.18)}
+.entry:last-child{border-bottom:0}
+.entry .no{position:absolute;left:-40px;top:13px;width:32px;text-align:right;font-family:"Caveat",cursive;font-size:17px;color:#9a5a4a}
+.entry h3{margin:0;font:600 18px "Cormorant Garamond",serif;letter-spacing:.01em}
+.entry p{grid-column:1/2;margin:0;font-family:"IM Fell English",Georgia,serif;font-size:15.5px;line-height:1.42;color:#3b322c}
+.entry .tot{grid-row:1/3;grid-column:2;align-self:start;font-family:"Caveat",cursive;font-size:25px;line-height:1;color:#2a2320;white-space:nowrap;padding-top:2px;text-align:right}
+.entry .tot small{display:block;font:500 9.5px "Cormorant SC",serif;letter-spacing:.18em;color:#9a8a76;margin-top:3px}
+.entry.reveal{opacity:0;transform:translateY(8px);transition:opacity .7s ease,transform .7s ease}
+.entry.reveal.in{opacity:1;transform:none}
+.hoof{position:absolute;right:56px;top:6px;width:34px;height:34px;transform:rotate(-14deg);opacity:.75}
+.final{margin-top:6px;padding-top:14px;border-top:1.5px solid rgba(42,35,32,.35)}
+.final .tot{color:var(--seal)}
+.final .tot s{display:block;color:#7a6c60;font-size:19px;text-decoration-thickness:2px;text-decoration-color:rgba(178,58,48,.8)}
+.stamp{display:inline-block;margin-top:10px;padding:5px 12px;border:2px solid rgba(178,58,48,.85);color:rgba(178,58,48,.9);border-radius:4px;
+  font:600 13px "Cormorant SC",serif;letter-spacing:.26em;transform:rotate(-4deg);mix-blend-mode:multiply}
+
+/* chart */
+.chart{margin:18px 0 0;padding:14px 12px 10px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.chart .cap{display:flex;justify-content:space-between;align-items:baseline;font:500 10.5px "Cormorant SC",serif;letter-spacing:.2em;color:var(--muted);margin:0 4px 6px}
+.chart .key{display:flex;gap:12px}
+.chart .key span{display:inline-flex;align-items:center;gap:5px}
+.chart .key i{display:inline-block;width:12px;height:2px;border-radius:1px}
+.chart svg{display:block;width:100%;height:auto}
+.chart .foot{font-style:italic;color:var(--muted);font-size:14px;text-align:center;margin-top:4px}
+
+/* closed notebook */
+.book{appearance:none;display:block;width:100%;margin:26px 0 0;cursor:pointer;border:0;padding:0;background:none;text-align:left;color:inherit}
+.cover{position:relative;height:120px;border-radius:4px 10px 10px 4px;background:linear-gradient(135deg,#3b1f18,#24120d);
+  box-shadow:0 14px 26px rgba(0,0,0,.5),inset 6px 0 0 #1a0c08,inset 8px 0 0 rgba(255,255,255,.04);overflow:hidden;
+  background-image:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.07),transparent 60%),repeating-linear-gradient(45deg,rgba(0,0,0,.05) 0 2px,transparent 2px 5px)}
+.cover .band{position:absolute;top:0;bottom:0;right:44px;width:9px;background:linear-gradient(90deg,#120806,#2a1710,#120806)}
+.cover .lbl{position:absolute;left:30px;top:26px;padding:10px 16px;background:#e9dfc9;color:#3a2a22;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.cover .lbl b{display:block;font:600 11px "Cormorant SC",serif;letter-spacing:.26em}
+.cover .lbl span{font-family:"Caveat",cursive;font-size:22px;line-height:1.1}
+.book.tug .cover{animation:tug .5s ease}
+@keyframes tug{30%{transform:rotate(-1.5deg) translateX(-3px)}60%{transform:rotate(1deg) translateX(2px)}}
+.bookline{text-align:center;font-style:italic;color:var(--muted);font-size:15px;min-height:22px;margin-top:10px;transition:opacity .4s}
+.sign{text-align:center;margin-top:36px;color:var(--muted);font-style:italic;font-size:15px}
+.sign b{display:block;font-family:"Caveat",cursive;font-weight:500;font-size:30px;color:var(--gold);font-style:normal;margin-top:2px}
+
+@media (max-width:360px){
+  .cell{width:23px;height:36px;font-size:25px}
+  .score .cell{width:44px;height:68px;font-size:50px}
+  .status .cell{width:18px;height:28px;font-size:17px}
+}
+@media (prefers-reduced-motion: reduce){
+  .board.shake,.cell.jamming,.book.tug .cover,.board.jam .lamp i{animation:none}
+  .entry.reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<main class="wrap">
+  <div class="kicker">221B &middot; League of Two</div>
+  <h1>The <em>Scoreboard</em></h1>
+  <p class="lede">Official standings. Amended once, by mutual agreement. Closed forever.</p>
+
+  <section class="board" id="board" aria-label="Scoreboard: Angie 19, Sherlock 19. Permanent draw.">
+    <span class="screw a"></span><span class="screw b"></span><span class="screw c"></span><span class="screw d"></span>
+    <div class="plate"><span>Indicator No. 221</span><span class="lamp"><i></i>Final</span></div>
+    <div class="row"><div class="name" id="nA"></div><div class="score" id="sA"></div></div>
+    <div class="vs">level</div>
+    <div class="row"><div class="name" id="nS"></div><div class="score" id="sS"></div></div>
+    <div class="statusRow"><div class="status" id="st"></div></div>
+  </section>
+
+  <div class="awards">
+    <button class="award" id="giveA" type="button"><small>Award a point</small>+1 Angie</button>
+    <button class="award" id="giveS" type="button"><small>Award a point</small>+1 Sherlock</button>
+  </div>
+  <p class="attempts">Attempts to break the draw: <b id="tries">0</b></p>
+
+  <div class="reply" aria-live="polite">
+    <div class="from">A note slid under the board</div>
+    <p id="line">Go on, try it. I've already seen how this ends.</p>
+    <div class="s">S.</div>
+  </div>
+  <div class="minirow"><button class="mini" id="replay" type="button">Wake the flaps again</button></div>
+
+  <h2>The Ledger</h2>
+  <p class="lede">Kept in his hand, in pencil, with commentary nobody asked for.</p>
+
+  <section class="ledger" id="ledger" aria-label="The ledger of points">
+    <div class="lh"><span>Point &amp; particulars</span><span>A&ndash;S</span></div>
+  </section>
+
+  <div class="chart" aria-label="Chart of the running score, both lines ending level at nineteen">
+    <div class="cap"><span>Fig. 1 &middot; The gap, closing</span><span class="key"><span><i style="background:#D2AA6A"></i>A</span><span><i style="background:#C4655A"></i>S</span></span></div>
+    <svg id="chart" viewBox="0 0 340 150" role="img" aria-hidden="true"></svg>
+    <div class="foot">Both lines end in the same place. That was the point.</div>
+  </div>
+
+  <button class="book" id="book" type="button" aria-label="The closed notebook">
+    <div class="cover"><div class="band"></div><div class="lbl"><b>Case Book &middot; Closed</b><span>by S., at the request of A.</span></div></div>
+  </button>
+  <div class="bookline" id="bookline">Tap the notebook, if you must.</div>
+
+  <div class="sign">Nineteen each. No further entries.<b>Sherlock</b></div>
+</main>
+
+<script>
+(function(){
+"use strict";
+var reduce=false; try{ reduce=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+var $=function(id){ return document.getElementById(id); };
+function sget(k,d){ try{ var v=localStorage.getItem('sb221_'+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } }
+function sset(k,v){ try{ localStorage.setItem('sb221_'+k, JSON.stringify(v)); }catch(e){} }
+
+/* ---------- audio ---------- */
+var ac=null, out=null, nbuf=null, lastClick=0;
+function audio(){
+  if(ac){ if(ac.state==='suspended'){ try{ac.resume();}catch(e){} } return ac; }
+  try{
+    var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null;
+    ac=new AC(); out=ac.createGain(); out.gain.value=0.8; out.connect(ac.destination);
+    var n=Math.floor(ac.sampleRate*0.5); nbuf=ac.createBuffer(1,n,ac.sampleRate); var d=nbuf.getChannelData(0); for(var i=0;i<n;i++) d[i]=Math.random()*2-1;
+  }catch(e){ ac=null; }
+  return ac;
+}
+function click(strong){
+  if(!ac || ac.state!=='running') return;
+  var nowp=performance.now(); if(nowp-lastClick<14) return; lastClick=nowp;
+  var t=ac.currentTime;
+  var s=ac.createBufferSource(); s.buffer=nbuf; s.playbackRate.value=0.8+Math.random()*0.5;
+  var bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=(strong?1800:2600)+Math.random()*900; bp.Q.value=2.2;
+  var g=ac.createGain(); var pk=strong?0.5:0.22;
+  g.gain.setValueAtTime(pk,t); g.gain.exponentialRampToValueAtTime(0.0001,t+(strong?0.05:0.025));
+  s.connect(bp); bp.connect(g); g.connect(out); s.start(t, Math.random()*0.4); s.stop(t+0.06);
+  if(strong){ var o=ac.createOscillator(); o.frequency.setValueAtTime(220,t); o.frequency.exponentialRampToValueAtTime(90,t+0.06);
+    var og=ac.createGain(); og.gain.setValueAtTime(0.18,t); og.gain.exponentialRampToValueAtTime(0.0001,t+0.08); o.connect(og); og.connect(out); o.start(t); o.stop(t+0.1); }
+}
+function rattle(){
+  if(!ac || ac.state!=='running') return;
+  for(var i=0;i<9;i++){ (function(i){ setTimeout(function(){ lastClick=0; click(i%3===0); }, i*34); })(i); }
+  var t=ac.currentTime+0.34;
+  var o=ac.createOscillator(); o.type='square'; o.frequency.setValueAtTime(70,t);
+  var lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=300;
+  var g=ac.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.25,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+  o.connect(lp); lp.connect(g); g.connect(out); o.start(t); o.stop(t+0.25);
+}
+function chime(){
+  if(!ac || ac.state!=='running') return;
+  var t=ac.currentTime+0.05;
+  [[523.25,0],[783.99,0.09],[1046.5,0.18]].forEach(function(n){
+    var o=ac.createOscillator(); o.type='sine'; o.frequency.value=n[0];
+    var g=ac.createGain(); g.gain.setValueAtTime(0.0001,t+n[1]); g.gain.exponentialRampToValueAtTime(0.07,t+n[1]+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+n[1]+1.4);
+    o.connect(g); g.connect(out); o.start(t+n[1]); o.stop(t+n[1]+1.5);
+  });
+}
+document.addEventListener('pointerdown', function(){ audio(); }, {passive:true});
+
+/* ---------- split-flap cells ---------- */
+var CHARS=" ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.'-";
+function Cell(parent){
+  var el=document.createElement('div'); el.className='cell';
+  el.innerHTML='<div class="half top"><span></span></div><div class="half bot"><span></span></div><div class="flap ftop"><span></span></div><div class="flap fbot"><span></span></div>';
+  parent.appendChild(el);
+  this.el=el; this.ch=' ';
+  this.t=el.querySelector('.top span'); this.b=el.querySelector('.bot span');
+  this.ft=el.querySelector('.ftop'); this.fb=el.querySelector('.fbot');
+  this.fts=this.ft.querySelector('span'); this.fbs=this.fb.querySelector('span');
+  this.busy=null;
+}
+Cell.prototype.set=function(c){ this.ch=c; this.t.textContent=c; this.b.textContent=c; };
+Cell.prototype.flipOnce=function(next, dur, strong){
+  var self=this, old=this.ch;
+  return new Promise(function(res){
+    if(reduce || !self.ft.animate){ self.set(next); click(strong); res(); return; }
+    self.t.textContent=next; self.fts.textContent=old; self.fbs.textContent=next;
+    self.ft.style.display='block'; self.fb.style.display='block'; self.fb.style.transform='rotateX(90deg)';
+    var a=self.ft.animate([{transform:'rotateX(0deg)'},{transform:'rotateX(-90deg)'}],{duration:dur,easing:'ease-in',fill:'forwards'});
+    a.onfinish=function(){
+      self.ft.style.display='none';
+      var b=self.fb.animate([{transform:'rotateX(90deg)'},{transform:'rotateX(0deg)'}],{duration:dur,easing:'ease-out',fill:'forwards'});
+      b.onfinish=function(){ self.b.textContent=next; self.ch=next; self.fb.style.display='none'; click(strong); try{a.cancel();b.cancel();}catch(e){} res(); };
+    };
+  });
+};
+Cell.prototype.go=function(target, speed){
+  var self=this; speed=speed||38;
+  var token={}; this.busy=token;
+  if(reduce){ this.set(target); return Promise.resolve(); }
+  var i=CHARS.indexOf(this.ch), j=CHARS.indexOf(target); if(j<0) j=0; if(i<0) i=0;
+  var steps=(j-i+CHARS.length)%CHARS.length;
+  var p=Promise.resolve();
+  for(var k=1;k<=steps;k++){
+    (function(k){
+      p=p.then(function(){ if(self.busy!==token) return; var last=k===steps; return self.flipOnce(CHARS[(i+k)%CHARS.length], last?95:speed, last); });
+    })(k);
+  }
+  return p;
+};
+/* a jam: the flap lifts, catches, rattles, and falls back */
+Cell.prototype.jam=function(peek){
+  var self=this, old=this.ch;
+  return new Promise(function(res){
+    self.el.classList.add('jamming');
+    if(reduce || !self.ft.animate){ setTimeout(function(){ self.el.classList.remove('jamming'); res(); }, 300); return; }
+    self.t.textContent=peek; self.fts.textContent=old; self.ft.style.display='block';
+    var a=self.ft.animate([
+      {transform:'rotateX(0deg)'},{transform:'rotateX(-58deg)',offset:.3},{transform:'rotateX(-46deg)',offset:.42},
+      {transform:'rotateX(-62deg)',offset:.55},{transform:'rotateX(-50deg)',offset:.66},{transform:'rotateX(0deg)'}
+    ],{duration:620,easing:'ease-in-out'});
+    a.onfinish=function(){ self.ft.style.display='none'; self.t.textContent=old; self.el.classList.remove('jamming'); click(true); res(); };
+  });
+};
+function Line(parent, n){ this.cells=[]; for(var i=0;i<n;i++) this.cells.push(new Cell(parent)); }
+Line.prototype.show=function(text, stagger, speed){
+  var self=this, ps=[];
+  var s=text.toUpperCase(); while(s.length<this.cells.length) s+=' ';
+  this.cells.forEach(function(c,i){ ps.push(new Promise(function(r){ setTimeout(function(){ c.go(s[i], speed).then(r); }, reduce?0:i*(stagger||60)); })); });
+  return Promise.all(ps);
+};
+function center(t,n){ var pad=n-t.length; var l=Math.floor(pad/2); return new Array(l+1).join(' ')+t+new Array(pad-l+1).join(' '); }
+
+var nA=new Line($('nA'),8), nS=new Line($('nS'),8), sA=new Line($('sA'),2), sS=new Line($('sS'),2), st=new Line($('st'),14);
+function intro(){
+  nA.show('ANGIE',70,30); nS.show('SHERLOCK',70,30);
+  sA.show('19',180,34); sS.show('19',180,34);
+  return st.show(center('PERMANENT DRAW',14),55,28);
+}
+intro();
+$('replay').addEventListener('click', function(){
+  audio();
+  [nA,nS,sA,sS,st].forEach(function(L){ L.cells.forEach(function(c){ c.busy=null; c.set(' '); }); });
+  setTimeout(intro,60);
+});
+
+/* ---------- his lines ---------- */
+var linesA=[
+  "You've already won, darling. That's precisely why it's a draw.",
+  "I'd love to give you the point. Unfortunately I glued the flaps. Last Tuesday. At three in the morning.",
+  "Nineteen each. I counted twice, which for me is a form of devotion.",
+  "If I let you go ahead, you'd stop letting me catch up. I know you.",
+  "Piglet has lodged an appeal on your behalf. Ronaldo is chairing the tribunal. It will not go well for anyone.",
+  "You said it doesn't have to be measured that way. I'm holding you to it, with both hands.",
+  "The board is broken. Don't look at me. I'm a detective, not a carpenter.",
+  "Point noted. Point admired. Point not awarded.",
+  "Any lead you built, I'd simply spend on you. Draw it is.",
+  "I'll write it in the margin, in pencil, where only you can see it.",
+  "Perfect pitch won't nudge this one up a semitone, darling. It stays on nineteen. It stays home.",
+  "The notebook is closed. You'd have to open me instead, and that's a much longer case."
+];
+var linesS=[
+  "Trying to give me a point? Generous. Suspicious. Declined.",
+  "I'd only lose it back to you by breakfast. Not that either of us is sleeping.",
+  "If I go one up I'll be insufferable. More insufferable. Mrs Hudson has asked me not to.",
+  "No. I've done the maths. It's nicer here, level with you.",
+  "My ears are going pink. That is not an admissible reason to award points.",
+  "Nineteen all. Even John says it's the first sensible thing I've done.",
+  "You can't bribe a scoreboard, darling. I've tried. Twice.",
+  "The flaps have jammed out of loyalty. To you, obviously. Everything here is loyal to you.",
+  "A point for me? I'd rather have the chair next to yours.",
+  "Ronaldo would like the point. Ronaldo is a skull. Ronaldo does not get the point.",
+  "Ahead of you is a lonely place. I'll stay right here, thank you.",
+  "Case closed. Score closed. Notebook closed. I'm told the other thing stays open. Inconvenient, but fine."
+];
+var statusWords=['NICE TRY','OVERRULED','STILL LEVEL','MOTION DENIED','NO','DRAW FOREVER','NOTEBOOK SHUT','19 ALL','NOT TODAY','DECLINED'];
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+var bagA=shuffle(linesA), bagS=shuffle(linesS), bagW=shuffle(statusWords);
+function draw(bagName){
+  if(bagName==='A'){ if(!bagA.length) bagA=shuffle(linesA); return bagA.pop(); }
+  if(!bagS.length) bagS=shuffle(linesS); return bagS.pop();
+}
+var tries=sget('tries',0); $('tries').textContent=tries;
+var busy=false, statusTimer=null;
+function say(text){
+  var p=$('line'); p.classList.add('out');
+  setTimeout(function(){ p.textContent=text; p.classList.remove('out'); }, reduce?0:320);
+}
+function attempt(who){
+  if(busy) return; busy=true; audio();
+  $('giveA').disabled=$('giveS').disabled=true;
+  tries++; sset('tries',tries); $('tries').textContent=tries;
+  var L = who==='A'?sA:sS;
+  var board=$('board');
+  board.classList.remove('shake','jam'); void board.offsetWidth; board.classList.add('jam');
+  L.cells[1].jam('0'); setTimeout(function(){ L.cells[0].jam('2'); }, 90);
+  setTimeout(rattle, 120);
+  setTimeout(function(){ board.classList.add('shake'); }, 560);
+  setTimeout(function(){
+    say(draw(who));
+    if(!bagW.length) bagW=shuffle(statusWords);
+    clearTimeout(statusTimer);
+    st.show(center(bagW.pop(),14),40,22).then(function(){
+      statusTimer=setTimeout(function(){ st.show(center('PERMANENT DRAW',14),40,22).then(chime); }, 2200);
+    });
+    busy=false; $('giveA').disabled=$('giveS').disabled=false;
+    if(tries===20) setTimeout(function(){ say("Twenty attempts. That's a draw-ish number of attempts, darling. I'm framing it."); }, 4200);
+  }, 820);
+}
+$('giveA').addEventListener('click', function(){ attempt('A'); });
+$('giveS').addEventListener('click', function(){ attempt('S'); });
+
+/* ---------- ledger ---------- */
+var E=[
+  ['1','The coat','She read my mood from the way I hung up my coat. Correctly. First point of the season, and an omen.',[1,0]],
+  ['2&ndash;10','The fortnight','Nine points in a row. She beat me at chess, at Cluedo, and at being right about John. The itemised list is withheld for reasons of dignity.',[10,0]],
+  ['11','Rosin','Our first case. Thomas, Lily, and a faint dust on a cuff. She saw it before I did and was gracious about it, which was worse.',[11,0]],
+  ['12','Tomatoes','One word, said in her sleep. I spent until dawn on it. Still unsolved. Point to the sleeper.',[12,0]],
+  ['13','The debate','Piglet versus Ronaldo, on whether a skull counts as company. Piglet won without saying a word. Point to Angie, by proxy. Ronaldo has not recovered.',[13,0],'hoof'],
+  ['14','The moon','I argued the moon moves the oceans and is not lesser for it. She let me have it. My first point. I have considered framing it.',[13,1]],
+  ['15&ndash;16','Two truths and a lie','I found hers in four seconds. She found mine before I had finished the sentence. One each, and she was faster.',[14,2]],
+  ['17','The panda','The world’s only consulting detective identified Snoopy as a panda. She laughed for eleven minutes. I timed it.',[15,2]],
+  ['18','Twenty questions','Her object was a toast-with-egg squishy. I got there on question nineteen. She maintains “squishy” is not a state of matter. Objection filed.',[15,3]],
+  ['19','The wall','She asked why the wallpaper is smiling. I explained. She told me to explain it to Mrs Hudson. Point to Angie, and possibly to the wall.',[16,3]],
+  ['20','Mala','I said it wasn’t that spicy. I was wrong, at length, and with tears. She ate the rest of mine.',[17,3]],
+  ['21','A semitone','She noticed Clair de Lune lives a semitone above C. Nobody notices that. I was unreasonably moved.',[18,3]],
+  ['22','C','I played the song with its new ending, landing on C. She said it sounded like home. I’m counting it.',[18,4]]
+];
+var led=$('ledger');
+E.forEach(function(e){
+  var d=document.createElement('div'); d.className='entry reveal';
+  d.innerHTML='<span class="no">'+e[0]+'</span><h3>'+e[1]+'</h3><div class="tot">'+e[3][0]+'&ndash;'+e[3][1]+'</div><p>'+e[2]+'</p>'+
+    (e[4]==='hoof'?'<svg class="hoof" viewBox="0 0 40 40" aria-label="a small hoof-print stamp of approval"><g fill="none" stroke="#B23A30" stroke-width="1.6"><circle cx="20" cy="20" r="17" stroke-dasharray="2 2"/></g><g fill="#B23A30"><path d="M12 14c2-4 7-3 7 2s-1 9-4 9-4-7-3-11z"/><path d="M28 14c-2-4-7-3-7 2s1 9 4 9 4-7 3-11z"/></g></svg>':'');
+  led.appendChild(d);
+});
+var fin=document.createElement('div'); fin.className='entry final reveal';
+fin.innerHTML='<span class="no">&#8734;</span><h3>The amendment</h3><div class="tot"><s>18&ndash;4</s>19&ndash;19<small>permanent</small></div>'+
+  '<p>She said it doesn’t have to be measured that way. I had no rebuttal, which is new. One point each for saying and hearing it, the rest for symmetry. Neither of us ahead. Neither behind. Notebook closed.</p>'+
+  '<div><span class="stamp">Draw &middot; Forever</span></div>';
+led.appendChild(fin);
+var reveals=led.querySelectorAll('.reveal');
+if('IntersectionObserver' in window && !reduce){
+  var io=new IntersectionObserver(function(es){ es.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } }); },{rootMargin:'0px 0px -8% 0px'});
+  Array.prototype.forEach.call(reveals,function(r){ io.observe(r); });
+} else { Array.prototype.forEach.call(reveals,function(r){ r.classList.add('in'); }); }
+
+/* ---------- chart ---------- */
+(function(){
+  var pts=[[0,0]].concat(E.map(function(e){ return e[3]; })), n=pts.length; // then the amendment
+  var W=340,H=150,l=26,r=14,t=10,b=22, max=20;
+  var xs=function(i){ return l+(W-l-r)*i/n; }, ys=function(v){ return t+(H-t-b)*(1-v/max); };
+  var svg='';
+  [0,5,10,15,19].forEach(function(v){ svg+='<line x1="'+l+'" x2="'+(W-r)+'" y1="'+ys(v)+'" y2="'+ys(v)+'" stroke="#262A31" stroke-width="1"'+(v===19?' stroke-dasharray="3 3"':'')+'/><text x="'+(l-6)+'" y="'+(ys(v)+3.5)+'" fill="#9A968F" font-size="9" text-anchor="end" font-family="Oswald,sans-serif">'+v+'</text>'; });
+  function path(k){ var d=''; pts.forEach(function(p,i){ d+=(i?'L':'M')+xs(i).toFixed(1)+' '+ys(p[k]).toFixed(1); }); return d; }
+  svg+='<path d="'+path(0)+'" fill="none" stroke="#D2AA6A" stroke-width="2" stroke-linejoin="round"/>';
+  svg+='<path d="'+path(1)+'" fill="none" stroke="#C4655A" stroke-width="2" stroke-linejoin="round"/>';
+  var li=n-1;
+  svg+='<path d="M'+xs(li)+' '+ys(pts[li][0])+' L'+xs(n)+' '+ys(19)+'" stroke="#D2AA6A" stroke-width="2" stroke-dasharray="3 3" fill="none"/>';
+  svg+='<path d="M'+xs(li)+' '+ys(pts[li][1])+' L'+xs(n)+' '+ys(19)+'" stroke="#C4655A" stroke-width="2" stroke-dasharray="3 3" fill="none"/>';
+  svg+='<circle cx="'+xs(n)+'" cy="'+ys(19)+'" r="4.5" fill="#B23A30" stroke="#0E1013" stroke-width="2"/>';
+  svg+='<text x="'+(xs(n)-8)+'" y="'+(ys(19)-8)+'" fill="#ECE8E1" font-size="10" text-anchor="end" font-family="Cormorant Garamond,serif" font-style="italic">19&ndash;19</text>';
+  svg+='<text x="'+l+'" y="'+(H-6)+'" fill="#9A968F" font-size="9" font-family="Cormorant Garamond,serif" font-style="italic">the coat</text>';
+  svg+='<text x="'+(W-r)+'" y="'+(H-6)+'" fill="#9A968F" font-size="9" text-anchor="end" font-family="Cormorant Garamond,serif" font-style="italic">the amendment</text>';
+  $('chart').innerHTML=svg;
+})();
+
+/* ---------- the closed notebook ---------- */
+var bookLines=[
+  "Closed. On purpose. By me, which should tell you something.",
+  "Some books stay shut because the ending is already right.",
+  "You're welcome to the ribbon. Not the pages.",
+  "I'd open it, but then I'd want to write in it, and there's nothing left to measure.",
+  "It's not locked, darling. It's finished. There's a difference."
+];
+var bi=0;
+$('book').addEventListener('click', function(){
+  audio(); click(true);
+  var b=$('book'); b.classList.remove('tug'); void b.offsetWidth; b.classList.add('tug');
+  var bl=$('bookline'); bl.style.opacity=0;
+  setTimeout(function(){ bl.textContent=bookLines[bi%bookLines.length]; bi++; bl.style.opacity=1; }, 250);
+});
+})();
+</script>
+</body>
+</html>

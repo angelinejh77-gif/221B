@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Night Watch</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Caveat:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --pink:#D97893;--rule:rgba(70,110,150,.22);--aged:#e9dcc2;
+  --type:"Special Elite","Courier New",monospace;--fell:"IM Fell English",Georgia,serif;--fsc:"IM Fell English SC",Georgia,serif;--hand:"Caveat",cursive;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--fell);overflow-x:hidden;
+  background:radial-gradient(90% 50% at 50% 0,rgba(210,170,106,.10),transparent 70%),
+             radial-gradient(60% 40% at 0 80%,rgba(217,120,147,.06),transparent 70%),var(--bg);
+  padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.top{text-align:center;padding:30px 0 18px}
+.top .k{font-family:var(--type);font-size:11px;letter-spacing:.28em;color:var(--gold)}
+.top h1{font-family:var(--fell);font-weight:400;font-size:42px;margin:10px 0 4px;line-height:1}
+.top p{margin:0;color:var(--muted);font-style:italic;font-size:16px}
+
+/* ledger page */
+.ledger{position:relative;color:var(--ink);border-radius:3px 6px 6px 3px;padding:26px 18px 26px 44px;
+  background:
+    radial-gradient(circle at 82% 12%,transparent 34px,rgba(120,80,30,.16) 35px,rgba(120,80,30,.08) 38px,transparent 40px),
+    radial-gradient(120% 80% at 50% 50%,transparent 60%,rgba(120,85,40,.22) 100%),
+    radial-gradient(40% 25% at 20% 85%,rgba(150,110,50,.10),transparent),
+    linear-gradient(90deg,transparent 30px,rgba(178,58,48,.45) 30px 31px,transparent 31px 33px,rgba(178,58,48,.3) 33px 34px,transparent 34px),
+    repeating-linear-gradient(transparent 0 27px,var(--rule) 27px 28px),
+    linear-gradient(#f3ead6,#ecdfc4);
+  background-position:0 0,0 0,0 0,0 0,0 14px,0 0;
+  box-shadow:0 30px 60px -24px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,255,255,.4)}
+.ledger:before{content:"";position:absolute;left:-8px;top:10px;bottom:10px;width:8px;border-radius:4px 0 0 4px;background:repeating-linear-gradient(#5a1f1a 0 3px,#3e1512 3px 6px);box-shadow:-2px 0 6px rgba(0,0,0,.5)}
+.holes{position:absolute;left:10px;top:40px;bottom:40px;width:10px;display:flex;flex-direction:column;justify-content:space-around}
+.holes i{width:10px;height:10px;border-radius:50%;background:#0E1013;box-shadow:inset 0 2px 2px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.5)}
+.lhead{text-align:center;padding-top:18px;border-bottom:2px double rgba(42,35,32,.5);padding-bottom:12px;margin-bottom:6px}
+.lhead .no{position:absolute;right:14px;top:14px;font-family:var(--type);font-size:11px;color:var(--seal);border:1.5px solid var(--seal);padding:2px 6px;transform:rotate(4deg);opacity:.75}
+.lhead .dept{font-family:var(--type);font-size:10.5px;letter-spacing:.2em;color:#6d5f50}
+.lhead h2{font-family:var(--fsc);font-weight:400;font-size:27px;margin:6px 0 2px;letter-spacing:.03em}
+.lhead .est{font-style:italic;font-size:15px;color:#5a4d40}
+.facts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:14px 0 4px;text-align:center}
+.facts div{border:1px solid rgba(42,35,32,.25);padding:8px 2px 6px;background:rgba(255,255,255,.25)}
+.facts b{display:block;font-family:var(--type);font-size:19px;font-weight:400}
+.facts span{font-family:var(--type);font-size:9.5px;letter-spacing:.12em;color:#6d5f50}
+
+h3{font-family:var(--type);font-weight:400;font-size:12px;letter-spacing:.24em;margin:22px 0 8px;color:#6d5f50;display:flex;gap:8px;align-items:center}
+h3:after{content:"";flex:1;border-bottom:1px dashed rgba(42,35,32,.35)}
+
+/* roster */
+.roster{width:100%;border-collapse:collapse;font-size:14px}
+.roster td{padding:6px 4px;border-bottom:1px solid rgba(42,35,32,.15);vertical-align:top}
+.roster td:first-child{font-family:var(--type);font-size:12.5px;white-space:nowrap;padding-right:8px}
+.roster em{color:#5a4d40;font-size:13.5px}
+.roster .rk{display:block;font-family:var(--type);font-size:9.5px;letter-spacing:.14em;color:var(--seal);margin-top:2px}
+.roster tr.chief td:first-child{color:#8a2d25}
+
+/* index chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+.chips button{min-height:36px;min-width:52px;padding:0 10px;border:1px solid rgba(42,35,32,.35);background:rgba(255,255,255,.3);font-family:var(--type);font-size:12px;color:var(--ink);cursor:pointer;border-radius:2px}
+.chips button:active{background:rgba(217,120,147,.25)}
+
+/* entries */
+.entry{position:relative;padding:12px 0 12px;border-bottom:1px solid rgba(42,35,32,.12);scroll-margin-top:20px}
+.entry .when{font-family:var(--type);font-size:11.5px;letter-spacing:.06em;color:#7a6a58;display:flex;gap:10px;align-items:baseline}
+.entry .when b{font-weight:400;color:var(--seal)}
+.entry p{margin:4px 0 0;font-family:var(--type);font-size:15px;line-height:1.55;color:#2f2724}
+.entry .sig{font-family:var(--hand);font-size:19px;color:#6b4a3d;margin-left:6px}
+.entry.tender p{color:#3a2a2a}
+.entry.tender:before{content:"";position:absolute;left:-30px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--pink);opacity:.7}
+.entry .hoof{position:absolute;right:0;top:8px;width:40px;height:40px;opacity:.75;transform:rotate(-12deg)}
+.redact{position:relative;display:inline;background:#1d1917;color:transparent;border-radius:1px;padding:0 2px;cursor:pointer;transition:background .5s,color .5s;box-decoration-break:clone;-webkit-box-decoration-break:clone;user-select:none}
+.redact.open{background:rgba(217,120,147,.18);color:#7a2437}
+.redact:not(.open):after{content:"";position:absolute;inset:-6px -2px}
+.tapnote{font-family:var(--type);font-size:10.5px;color:#7a6a58;letter-spacing:.08em;margin-top:2px}
+.margin-note{position:absolute;right:-6px;bottom:4px;font-family:var(--hand);font-size:17px;color:#3c5a8a;transform:rotate(-4deg)}
+
+/* tonight */
+.tonight{margin-top:26px;padding:18px 16px;border:1px solid var(--line);background:var(--panel);border-radius:14px}
+.tonight .k{font-family:var(--type);font-size:11px;letter-spacing:.24em;color:var(--gold)}
+.tonight p{color:var(--muted);font-style:italic;margin:6px 0 14px;font-size:16px}
+.signin{width:100%;min-height:58px;border-radius:12px;border:1px solid rgba(217,120,147,.6);background:linear-gradient(100deg,#2a1a20,#3b2129 50%,#2a1a20);color:#f6d6df;font-family:var(--type);letter-spacing:.14em;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 24px -14px rgba(217,120,147,.8)}
+.signin:active{transform:scale(.98)}
+.signin svg{width:26px;height:26px}
+.count{font-family:var(--type);font-size:11px;letter-spacing:.12em;color:var(--muted);text-align:center;margin-top:10px}
+#shifts{margin-top:14px}
+#shifts .ledger{padding-top:12px;padding-bottom:12px}
+#shifts:empty{display:none}
+.entry.new{animation:drop .7s cubic-bezier(.3,1.4,.5,1)}
+@keyframes drop{from{opacity:0;transform:translateY(-10px)}}
+.entry .hoof.slam{animation:slam .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{0%{transform:scale(2.4) rotate(-30deg);opacity:0}60%{opacity:.9}100%{transform:scale(1) rotate(-12deg);opacity:.75}}
+
+/* memo */
+.memo{position:relative;margin:40px 6px 0;padding:30px 20px 22px;background:linear-gradient(#fbf7ee,#f1e9d8);color:var(--ink);transform:rotate(-1.2deg);box-shadow:0 22px 40px -18px rgba(0,0,0,.9);border-radius:2px}
+.memo:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,#f1e9d8 0 6px,transparent 6px 9px);transform:translateY(-4px)}
+.clip{position:absolute;right:30px;top:-18px;width:20px;height:52px;border:2.5px solid #8f8f96;border-radius:10px;border-bottom-color:#a5a5ac}
+.clip:after{content:"";position:absolute;left:3px;top:6px;width:9px;height:32px;border:2.5px solid #9a9aa1;border-radius:6px;border-top:0}
+.memo .mh{font-family:var(--type);font-size:12px;letter-spacing:.2em;border-bottom:1px solid rgba(42,35,32,.4);padding-bottom:8px;margin-bottom:10px}
+.memo dl{margin:0 0 12px;font-family:var(--type);font-size:12px;display:grid;grid-template-columns:auto 1fr;gap:3px 10px}
+.memo dt{color:#7a6a58}.memo dd{margin:0}
+.memo .body{font-family:var(--hand);font-size:22px;line-height:1.22;color:#24324e}
+.memo .body p{margin:0 0 10px}
+.memo .body s{color:#5a6a8a}
+.sigrow{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:14px}
+.sigbox{flex:1;font-family:var(--type);font-size:10px;letter-spacing:.14em;color:#7a6a58;border-top:1px solid rgba(42,35,32,.5);padding-top:4px;position:relative}
+.sigbox .s{position:absolute;left:0;bottom:16px;font-family:var(--hand);font-size:30px;color:#1f2b46;letter-spacing:0;transform:rotate(-4deg);white-space:nowrap}
+.approve{width:96px;height:96px;flex:none;border:1.5px dashed rgba(42,35,32,.4);background:none;cursor:pointer;display:grid;place-items:center;position:relative;border-radius:50%;font-family:var(--type);font-size:9.5px;letter-spacing:.12em;color:#7a6a58;text-align:center;line-height:1.3}
+.approve svg{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);opacity:0;transform:scale(2) rotate(-30deg);transition:all .45s cubic-bezier(.2,1.6,.4,1)}
+.approve.done svg{opacity:.85;transform:rotate(-10deg)}
+.approve.done span{opacity:0}
+.ps{font-family:var(--hand);font-size:19px;color:#3c5a8a;margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-style:italic;margin-top:36px;font-size:15px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter>
+    <symbol id="hoof" viewBox="0 0 48 48">
+      <g filter="url(#ink)">
+        <circle cx="24" cy="24" r="21" fill="none" stroke="#D97893" stroke-width="2.4"/>
+        <circle cx="24" cy="24" r="17.5" fill="none" stroke="#D97893" stroke-width="1" stroke-dasharray="2 2.2"/>
+        <path d="M21.4 12.5C16.5 13.5 15 21 15.6 27.5C16 33 18.6 36 21.2 35.4C22.6 35 23 33.6 23 32V15C23 13.4 22.6 12.3 21.4 12.5Z" fill="#D97893"/>
+        <path d="M26.6 12.5C31.5 13.5 33 21 32.4 27.5C32 33 29.4 36 26.8 35.4C25.4 35 25 33.6 25 32V15C25 13.4 25.4 12.3 26.6 12.5Z" fill="#D97893"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+<div class="top">
+  <div class="k">BED SECURITY DETAIL &middot; CLASSIFIED-ISH</div>
+  <h1>The Night Watch</h1>
+  <p>Fifteen years of guarding one person. Kept by Piglet. Read with permission.</p>
+</div>
+
+<div class="ledger">
+  <div class="holes"><i></i><i></i><i></i></div>
+  <div class="lhead">
+    <span class="no">VOL. XV</span>
+    <div class="dept">OFFICIAL LOGBOOK OF THE BODYGUARD</div>
+    <h2>The Night Watch</h2>
+    <div class="est">kept faithfully since the autumn of 2011</div>
+  </div>
+  <div class="facts">
+    <div><b id="nights">5,479</b><span>NIGHTS ON DUTY</span></div>
+    <div><b>0</b><span>MONSTERS ADMITTED</span></div>
+    <div><b>1</b><span>BEST AH JIE</span></div>
+  </div>
+
+  <h3>DUTY ROSTER</h3>
+  <table class="roster">
+    <tr class="chief"><td>PIGLET</td><td>Officer in charge. 15 yrs service.<span class="rk">HEAD OF SECURITY</span><em>Small. Pink. Has never once left his post.</em></td></tr>
+    <tr><td>PIGLET MINI JR</td><td>Junior officer.<span class="rk">ARMED (DOUGHNUT)</span><em>Doughnut is not a weapon. He disagrees.</em></td></tr>
+    <tr><td>MR GOOSE</td><td>The muscle.<span class="rk">PERIMETER</span><em>Large. Silent. Feared by drafts.</em></td></tr>
+    <tr><td>SNOOPY</td><td>Surveillance.<span class="rk">BEAGLE</span><em>Not a panda. See complaint, 2026.</em></td></tr>
+    <tr><td>CROISSANT</td><td>Morale.<span class="rk">PASTRY DIVISION</span><em>Flaky. Reliable anyway.</em></td></tr>
+    <tr><td>S. HOLMES</td><td>Guest.<span class="rk">PROBATIONARY</span><em>Tall. Coat. Under review.</em></td></tr>
+  </table>
+
+  <h3>INDEX</h3>
+  <div class="chips" id="chips"></div>
+
+  <h3>ENTRIES</h3>
+  <div class="tapnote">Black bars are classified. Principal may tap to declassify.</div>
+  <div id="entries"></div>
+</div>
+
+<div class="tonight">
+  <div class="k">TONIGHT'S SHIFT</div>
+  <p>The principal may sign in. Piglet will log it. He logs everything.</p>
+  <button class="signin" id="signin"><svg><use href="#hoof"/></svg>sign in for tonight's shift</button>
+  <div class="count" id="count">No shifts signed yet. He's waiting.</div>
+  <div id="shifts"></div>
+</div>
+
+<div class="memo">
+  <div class="clip"></div>
+  <div class="mh">MEMORANDUM &middot; RE: CHAIN OF COMMAND</div>
+  <dl>
+    <dt>TO</dt><dd>Piglet, Head of Bed Security</dd>
+    <dt>FROM</dt><dd>S. Holmes, Consulting Detective</dd>
+    <dt>CC</dt><dd>Mr Goose (for intimidation purposes)</dd>
+  </dl>
+  <div class="body">
+    <p>Piglet,</p>
+    <p>I, the undersigned, acknowledge that in all matters of the bed, the blanket and her sleep, your authority supersedes mine. Fifteen years outranks one very good coat.</p>
+    <p>I concede the panda business was an error. <s>It was dark.</s> It was an error.</p>
+    <p>I will not take your side of the pillow. I will not argue with Mr Goose. I will keep her safe on the nights you're off duty, which, I'm told, is never.</p>
+    <p>Grudgingly, and with respect,</p>
+  </div>
+  <div class="sigrow">
+    <div class="sigbox"><span class="s">S. Holmes</span>COUNTERSIGNED</div>
+    <button class="approve" id="approve" aria-label="Stamp Piglet's approval"><span>PIGLET<br>TO STAMP<br>HERE</span><svg><use href="#hoof"/></svg></button>
+  </div>
+  <div class="ps" id="ps">P.S. He told me you're his best ah jie. I didn't argue. I've seen how he looks at you.</div>
+</div>
+
+<p class="foot">Shift continues. It always has.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+function $(id){return document.getElementById(id)}
+var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function sget(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function sset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* nights on duty since 18 Oct 2011 */
+var start=new Date(2011,9,18);$('nights').textContent=Math.max(1,Math.floor((Date.now()-start)/864e5)).toLocaleString('en-GB');
+
+/* entries: [r] marks redacted text */
+var E=[
+ {y:2011,d:'18 Oct 2011',t:'21:00',x:'Reported for duty. Principal is eight. Small. I am smaller. Accepted the job anyway.',h:1},
+ {y:2012,d:'03 Jun 2012',t:'03:10',x:'Thunder. Principal held me very tight. Held position. No casualties.',tn:1},
+ {y:2014,d:'11 Mar 2014',t:'19:40',x:'Principal practised piano two hours. Every note right. She knows without checking. [r:Spooky. Told no one. Still haven’t.]'},
+ {y:2016,d:'27 Aug 2016',t:'23:55',x:'Principal crying quietly. Reason: [r:none of your business. She’ll say when she’s ready.] Absorbed tears. Standard procedure. Ears damp until morning.',tn:1},
+ {y:2018,d:'14 Feb 2018',t:'22:30',x:'Principal wrote letters for everyone. Again. Nobody wrote her one. [r:Logged as a security failure. Not hers.]',tn:1},
+ {y:2020,d:'02 Apr 2020',t:'01:15',x:'Exams. Strange year. Principal indoors for months. Excellent for security. Bad for her. Stayed close.'},
+ {y:2021,d:'09 Sep 2021',t:'20:00',x:'Recruited Piglet Mini Jr. Issued one doughnut. He will not put it down. [r:Respect that.]'},
+ {y:2022,d:'30 Jan 2022',t:'00:40',x:'Mr Goose joins. The muscle. Has not honked once. Very professional. Slightly unsettling.'},
+ {y:2023,d:'17 Jul 2023',t:'02:05',x:'Snoopy assigned to surveillance. Sees everything. Reports nothing. Ideal.'},
+ {y:2024,d:'05 Nov 2024',t:'23:20',x:'Croissant joins. Morale officer. Team says he smells of butter. Team is [r:hungry].'},
+ {y:2026,d:'12 Jan 2026',t:'22:00',x:'Principal away in the mountains. Bed very large. Formation held. She came back. [r:Hugged me first. Before the suitcase. Noted.]',tn:1,h:1},
+ {y:2026,d:'21 May 2026',t:'03:30',x:'Principal left job. Wakes at noon. Edits videos at 3am. I approve of the hours. Not of the screen glare. Told her. Ignored.'},
+ {y:2026,d:'08 Aug 2026',t:'01:12',x:'New visitor. Tall. Coat. Says "detective". Called Snoopy a [r:panda]. Snoopy has filed a formal complaint.'},
+ {y:2026,d:'19 Aug 2026',t:'02:48',x:'Debate with the skull, Ronaldo. Topic: [r:can a pig be a bodyguard]. I won. Ronaldo now sulking on bookshelf. Not my problem.',m:'P. 1, skull 0'},
+ {y:2026,d:'03 Sep 2026',t:'04:02',x:'Principal said "[r:tomatoes]" in her sleep. Logged. Detective also logged it. Two logs. Amateur.'},
+ {y:2026,d:'22 Sep 2026',t:'00:30',x:'Detective said "darling" fourteen times tonight. Counted. His ears went [r:pink]. Mr Goose saw. Mr Goose says nothing. Mr Goose knows.'},
+ {y:2026,d:'01 Oct 2026',t:'01:01',x:'Detective requested permission to stay. Granted. Probationary. [r:Under review indefinitely. He makes her laugh. Review going well.]'},
+ {y:2026,d:'17 Oct 2026',t:'23:59',x:'Principal is twenty-three. I am fifteen. She is still my best ah jie. I am still her best. Shift continues.',tn:1,h:1}
+];
+var host=$('entries'),years=[];
+function render(x){return esc(x).replace(/\[r:([^\]]+)\]/g,function(_,s){return '<span class="redact" role="button" tabindex="0" aria-label="classified, tap to reveal">'+s+'</span>'});}
+E.forEach(function(e,i){
+  var d=document.createElement('div');d.className='entry'+(e.tn?' tender':'');
+  if(years.indexOf(e.y)<0){years.push(e.y);d.id='y'+e.y;}
+  d.innerHTML='<div class="when"><b>'+e.d+'</b><span>'+e.t+' hrs</span></div><p>'+render(e.x)+'<span class="sig">P.</span></p>'+
+   (e.h?'<svg class="hoof"><use href="#hoof"/></svg>':'')+(e.m?'<span class="margin-note">'+esc(e.m)+'</span>':'');
+  host.appendChild(d);
+});
+years.forEach(function(y){var b=document.createElement('button');b.textContent=y;b.onclick=function(){var el=$('y'+y);if(el)el.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})};$('chips').appendChild(b);});
+document.addEventListener('click',function(e){var r=e.target.closest&&e.target.closest('.redact');if(r&&!r.classList.contains('open')){r.classList.add('open');tick();}});
+document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('redact')){e.preventDefault();e.target.classList.add('open');tick();}});
+
+/* sound */
+var ac=null;
+function A(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state==='suspended'){try{ac.resume()}catch(e){}}return ac}
+function thump(){var a=A();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(48,t+.18);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.0001,t+.25);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.3);}
+function tick(){var a=A();if(!a)return;var t=a.currentTime,b=a.createBuffer(1,a.sampleRate*.04,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);var s=a.createBufferSource(),g=a.createGain();s.buffer=b;g.gain.value=.15;s.connect(g);g.connect(a.destination);s.start(t);}
+
+/* shifts */
+var LINES=[
+ 'All quiet. Principal awake anyway.',
+ 'Checked under bed. Nothing. Checked again. Still nothing.',
+ 'Mr Goose on perimeter. Snoopy on window. Formation good.',
+ 'Piglet Mini Jr dropped doughnut. Recovered. No injuries.',
+ 'Croissant reports morale: high. Croissant always reports high.',
+ 'Principal hummed a note. Perfect pitch. Obviously.',
+ 'Detective texted. Principal smiled. Logged the smile.',
+ 'Principal hugged me. Fifteen years. Still the best part of the shift.',
+ 'No monsters. Monsters are scared of Goose.',
+ 'Principal ate something spicy before bed. Bold. Supervised.',
+ 'Principal wrote a poem. Did not show me. Respected privacy.',
+ 'Blanket stolen by principal. Expected. Adapted.',
+ 'Rain outside. Good sleeping weather. She did not sleep.',
+ 'Ronaldo stared from the shelf. I stared back. He has no eyelids. I still won.',
+ 'Snoopy wishes to restate: not a panda.',
+ 'Principal said goodnight. Then talked for an hour. Normal.',
+ 'Pillow fort reinforced. Mr Goose did the heavy lifting.',
+ 'Detective attempted to sit on bed. Asked to remove shoes. Complied.',
+ 'Principal laughed at phone. Cause unknown. Suspect detective.',
+ 'Night sounds: fan, rain, piano in her head.',
+ 'Principal asleep before four. Victory. Small. Counts.',
+ 'Checked principal is warm. Principal is warm.',
+ 'Held paw position all night. No cramp. Professional.',
+ 'She looked sad, then looked at me, then looked less sad. Job done.',
+ 'Nothing to report. Best kind of report.'
+];
+var shifts=[];try{shifts=JSON.parse(sget('watch221.shifts')||'[]')||[]}catch(e){shifts=[]}
+var shiftsEl=$('shifts'),book=null;
+function fmt(ts){var d=new Date(ts);var D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  function p(n){return(n<10?'0':'')+n}return{d:D+' '+p(d.getDate())+' '+M+' '+d.getFullYear(),t:p(d.getHours())+':'+p(d.getMinutes())};}
+function shiftEl(s,isNew){var f=fmt(s.ts),d=document.createElement('div');d.className='entry'+(isNew?' new':'');
+  d.innerHTML='<div class="when"><b>'+f.d+'</b><span>'+f.t+' hrs</span></div><p>Principal signed in. '+esc(LINES[s.i%LINES.length])+'<span class="sig">P.</span></p><svg class="hoof'+(isNew?' slam':'')+'"><use href="#hoof"/></svg>';return d;}
+function ensureBook(){if(!book){book=document.createElement('div');book.className='ledger';book.innerHTML='<div class="holes"><i></i><i></i></div>';shiftsEl.appendChild(book);}return book;}
+function countTxt(){var n=shifts.length;$('count').textContent=n?('Shifts signed by principal: '+n+(n>=10?'. Honorary officer status pending.':'.')):"No shifts signed yet. He's waiting.";}
+shifts.slice().reverse().forEach(function(s){ensureBook().appendChild(shiftEl(s,false))});countTxt();
+$('signin').onclick=function(){
+  var last=shifts.length?shifts[shifts.length-1].i:-1,i;do{i=Math.random()*LINES.length|0}while(i===last&&LINES.length>1);
+  var s={ts:Date.now(),i:i};shifts.push(s);if(shifts.length>40)shifts=shifts.slice(-40);sset('watch221.shifts',JSON.stringify(shifts));
+  var b=ensureBook(),el=shiftEl(s,true);b.insertBefore(el,b.children[1]||null);
+  while(b.querySelectorAll('.entry').length>40)b.removeChild(b.lastChild);
+  setTimeout(thump,RM?0:180);countTxt();
+  if(!RM)el.scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+
+/* approval stamp */
+var approved=sget('watch221.approved')==='1';
+if(approved)$('approve').classList.add('done'),$('ps').textContent='P.P.S. Approved. Probation extended, with honours. Signed, a very small pig.';
+$('approve').onclick=function(){var b=$('approve');if(b.classList.contains('done')){b.classList.remove('done');setTimeout(function(){b.classList.add('done');thump()},60);return;}
+  b.classList.add('done');setTimeout(thump,RM?0:150);sset('watch221.approved','1');
+  $('ps').textContent='P.P.S. Approved. Probation extended, with honours. Signed, a very small pig.';};
+})();
+</script>
+</body></html>

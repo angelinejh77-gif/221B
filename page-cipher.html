@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Cipher Wheel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Homemade+Apple&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{
+  font-family:"Cormorant Garamond",Georgia,serif;font-size:18px;line-height:1.45;
+  min-height:100vh;overflow-x:hidden;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 150px) max(16px,env(safe-area-inset-left,0px));
+  background:
+    radial-gradient(120% 60% at 50% 0%,rgba(210,170,106,.10),transparent 60%),
+    radial-gradient(80% 50% at 50% 100%,rgba(178,58,48,.06),transparent 70%),
+    var(--bg);
+}
+.wrap{max-width:460px;margin:0 auto}
+header{text-align:center;margin-bottom:18px}
+.eyebrow{font:500 12px/1 "Cormorant SC",serif;letter-spacing:.32em;color:var(--gold);opacity:.85}
+h1{font:500 38px/1.05 "Cormorant Garamond",serif;margin:10px 0 8px;letter-spacing:.01em}
+h1 i{color:var(--gold);font-weight:400}
+.sub{color:var(--muted);font-style:italic;margin:0 auto;max-width:330px;font-size:17px}
+
+/* envelope rack */
+.rack{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:20px 0 6px}
+.env{
+  position:relative;aspect-ratio:1/0.74;min-height:48px;border:0;padding:0;cursor:pointer;border-radius:4px;
+  background:linear-gradient(160deg,#efe6d4,#dccfb6);box-shadow:0 3px 10px rgba(0,0,0,.45);
+  transition:transform .25s ease, box-shadow .25s ease, filter .25s;
+}
+.env::before{ /* flap */
+  content:"";position:absolute;inset:0 0 auto 0;height:58%;
+  background:linear-gradient(180deg,#e6dbc4,#d5c7ab);
+  clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 1px 0 rgba(0,0,0,.12));border-radius:4px 4px 0 0;
+}
+.env .num{position:absolute;left:0;right:0;bottom:4px;text-align:center;font:600 10px/1 "Cormorant SC",serif;letter-spacing:.18em;color:#7b6a55}
+.env .wax{position:absolute;left:50%;top:44%;width:22px;height:22px;transform:translate(-50%,-50%)}
+.env[aria-current="true"]{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,.55),0 0 0 1.5px var(--gold)}
+.env.locked{filter:grayscale(.7) brightness(.6)}
+.env.solved .wax{opacity:.55}
+.env:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.rackcap{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;font-style:italic;margin-bottom:14px}
+.rackcap b{font-style:normal;color:var(--gold);font-weight:500}
+
+/* wheel */
+.wheelbox{position:relative;width:min(88vw,360px);margin:6px auto 4px;touch-action:none;user-select:none;-webkit-user-select:none}
+.wheelbox svg{display:block;width:100%;height:auto;overflow:visible}
+#inner{cursor:grab}
+.wheelbox.drag #inner{cursor:grabbing}
+.ol{font:600 15px "Cormorant SC",serif;fill:#2c2214}
+.il{font:500 14px "IBM Plex Mono",monospace;fill:#f3e7cf}
+.ol.hi{fill:var(--seal)}
+.il.hi{fill:#fff}
+.hiDot{transition:opacity .2s}
+.controls{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 6px}
+.cbtn{
+  min-width:48px;min-height:48px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--gold);
+  font:500 24px/1 "Cormorant Garamond",serif;cursor:pointer;
+}
+.cbtn:active{transform:scale(.94)}
+.readout{text-align:center;min-width:130px}
+.readout .k{font:500 11px/1 "Cormorant SC",serif;letter-spacing:.28em;color:var(--muted)}
+.readout .v{font:500 15px/1.6 "IBM Plex Mono",monospace;color:var(--text)}
+.howto{color:var(--muted);font-size:15px;text-align:center;font-style:italic;margin:0 8px 18px}
+
+/* letter card */
+.card{
+  position:relative;background:var(--paper);color:var(--ink);border-radius:3px;
+  padding:42px 20px 22px;margin-top:22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.5),inset 0 0 60px rgba(150,120,70,.18);
+  background-image:
+    repeating-linear-gradient(0deg,transparent 0 31px,rgba(120,100,70,.08) 31px 32px),
+    radial-gradient(120% 90% at 30% 10%,rgba(255,255,255,.5),transparent 60%);
+}
+.card::after{content:"";position:absolute;inset:8px;border:1px solid rgba(120,95,60,.22);pointer-events:none}
+.sealwrap{position:absolute;left:50%;top:-30px;width:68px;height:68px;transform:translateX(-50%);z-index:2}
+.sealwrap svg{width:100%;height:100%;overflow:visible}
+.half{transition:transform .9s cubic-bezier(.2,1.4,.3,1);transform-origin:34px 34px}
+.broken .h1{transform:translate(-9px,5px) rotate(-16deg)}
+.broken .h2{transform:translate(9px,4px) rotate(14deg)}
+.sealwrap.broken .crack{opacity:0}
+.crack{opacity:0;transition:opacity .15s}
+.cracking .crack{opacity:1}
+.ctitle{text-align:center;font:600 13px/1 "Cormorant SC",serif;letter-spacing:.28em;color:#8a6a3a;margin-bottom:12px}
+.cipher{
+  font:500 17px/1.9 "IBM Plex Mono",monospace;letter-spacing:.06em;text-align:center;word-spacing:.35em;
+  color:#3b2f27;margin:0 0 14px;
+}
+.cipher span{cursor:pointer;border-radius:3px;padding:1px 1px}
+.cipher span.on{background:var(--seal);color:#fff}
+.clue{font-style:italic;font-size:18px;text-align:center;color:#5a4a3c;border-top:1px dashed rgba(90,70,50,.3);border-bottom:1px dashed rgba(90,70,50,.3);padding:10px 4px;margin:0 0 14px}
+.clue b{font-style:normal;font:600 11px "Cormorant SC",serif;letter-spacing:.24em;color:var(--seal);display:block;margin-bottom:2px}
+label.lab{display:block;font:600 11px "Cormorant SC",serif;letter-spacing:.24em;color:#8a6a3a;margin-bottom:6px}
+textarea{
+  width:100%;min-height:76px;resize:vertical;border:1px solid rgba(90,70,50,.3);background:rgba(255,255,255,.45);
+  border-radius:4px;padding:10px 12px;font:500 16px/1.5 "IBM Plex Mono",monospace;color:var(--ink);text-transform:uppercase;
+}
+textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.btn{
+  min-height:46px;padding:0 20px;border-radius:23px;border:0;cursor:pointer;
+  background:var(--seal);color:#fbeee2;font:600 14px "Cormorant SC",serif;letter-spacing:.2em;
+  box-shadow:0 4px 12px rgba(178,58,48,.35);
+}
+.btn:active{transform:translateY(1px)}
+.ghost{background:transparent;color:#6b5848;box-shadow:none;border:1px solid rgba(90,70,50,.35);letter-spacing:.14em}
+.fb{font-style:italic;color:#7a3a30;min-height:1.4em;margin-top:8px;font-size:16px}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+.reveal{display:none}
+.card.open .solveui{display:none}
+.card.open .reveal{display:block;animation:unfold .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes unfold{from{opacity:0;transform:translateY(8px) scaleY(.96)}to{opacity:1;transform:none}}
+.msg{font:400 21px/1.75 "Homemade Apple",cursive;color:#2b2140;margin:6px 0 14px;text-align:left}
+.ps{font-style:italic;color:#5a4a3c;font-size:17px;margin:0}
+.sig{text-align:right;font:400 22px "Homemade Apple",cursive;color:#2b2140;margin-top:10px}
+.lockednote{text-align:center;font-style:italic;color:#5a4a3c;font-size:19px;padding:16px 6px}
+
+.finale{
+  display:none;margin:26px 0 0;padding:22px 18px;text-align:center;border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(180deg,#171a20,#121418);
+}
+.finale.show{display:block;animation:unfold 1s ease}
+.finale .score{font:500 44px/1 "Cormorant Garamond",serif;color:var(--gold);margin:8px 0}
+.finale p{margin:6px 0;color:var(--muted);font-style:italic}
+.reset{display:block;margin:28px auto 0;background:none;border:0;color:#5f5c57;font:italic 15px "Cormorant Garamond",serif;min-height:44px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">221B · CORRESPONDENCE</div>
+    <h1>The Cipher <i>Wheel</i></h1>
+    <p class="sub">Five sealed envelopes. I wrote them in code because saying them plainly felt reckless.</p>
+  </header>
+
+  <div class="rack" id="rack" role="tablist" aria-label="Envelopes"></div>
+  <div class="rackcap"><span>Tap an envelope</span><span><b id="count">0</b> of 5 opened</span></div>
+
+  <div class="wheelbox" id="wheelbox" aria-label="Cipher wheel. Drag the inner ring to change the shift.">
+    <svg viewBox="-200 -200 400 400" id="wheel">
+      <defs>
+        <radialGradient id="brass" cx="40%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#f2d69a"/><stop offset=".45" stop-color="#c9a05a"/><stop offset=".8" stop-color="#8d6a33"/><stop offset="1" stop-color="#5e4520"/>
+        </radialGradient>
+        <radialGradient id="brassDark" cx="45%" cy="35%" r="80%">
+          <stop offset="0" stop-color="#7a5a2c"/><stop offset=".6" stop-color="#4a3418"/><stop offset="1" stop-color="#2a1d0d"/>
+        </radialGradient>
+        <radialGradient id="hub" cx="40%" cy="35%" r="70%">
+          <stop offset="0" stop-color="#f6e2b4"/><stop offset=".5" stop-color="#b8904e"/><stop offset="1" stop-color="#6b4f24"/>
+        </radialGradient>
+        <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".55"/></filter>
+      </defs>
+      <circle r="196" fill="url(#brass)" filter="url(#sh)"/>
+      <circle r="190" fill="none" stroke="rgba(255,240,200,.35)" stroke-width="1"/>
+      <circle r="150" fill="none" stroke="rgba(60,40,15,.6)" stroke-width="1.5"/>
+      <g id="outerTicks"></g>
+      <g id="outer"></g>
+      <g id="inner">
+        <circle r="148" fill="url(#brassDark)"/>
+        <circle r="146" fill="none" stroke="rgba(242,214,154,.35)" stroke-width="1"/>
+        <circle r="104" fill="none" stroke="rgba(242,214,154,.25)" stroke-width="1"/>
+        <g id="innerL"></g>
+        <g id="innerOrn"></g>
+      </g>
+      <circle r="100" fill="url(#hub)"/>
+      <circle r="92" fill="none" stroke="rgba(80,55,20,.45)" stroke-width="1"/>
+      <circle r="62" fill="none" stroke="rgba(80,55,20,.3)" stroke-width="1" stroke-dasharray="2 4"/>
+      <text y="-30" text-anchor="middle" style="font:600 11px 'Cormorant SC',serif;letter-spacing:4px;fill:#4a3418">SHIFT</text>
+      <text id="shiftNum" y="22" text-anchor="middle" style="font:500 54px 'Cormorant Garamond',serif;fill:#2a1d0d">0</text>
+      <text y="48" text-anchor="middle" style="font:italic 12px 'Cormorant Garamond',serif;fill:#4a3418">221B · Baker St</text>
+      <!-- pointer -->
+      <path d="M0,-200 L-9,-214 L9,-214 Z" fill="#B23A30" stroke="#5e1a14" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="controls">
+    <button class="cbtn" id="minus" aria-label="Shift down one">&#8249;</button>
+    <div class="readout"><div class="k">UNDER A SITS</div><div class="v" id="pair">A → A</div></div>
+    <button class="cbtn" id="plus" aria-label="Shift up one">&#8250;</button>
+  </div>
+  <p class="howto">Turn the inner ring to the shift in the clue. Find each cipher letter on the inner ring and read the brass letter above it. Tap a letter in the message to trace it.</p>
+
+  <article class="card" id="card" aria-live="polite">
+    <div class="sealwrap" id="sealwrap">
+      <svg viewBox="0 0 68 68">
+        <defs>
+          <radialGradient id="wax" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#d4574a"/><stop offset=".55" stop-color="#B23A30"/><stop offset="1" stop-color="#6e1c15"/></radialGradient>
+          <clipPath id="cl1"><path d="M-10,-10 H36 L30,20 L38,34 L29,48 L35,80 H-10Z"/></clipPath>
+          <clipPath id="cl2"><path d="M36,-10 H80 V80 H35 L29,48 L38,34 L30,20Z"/></clipPath>
+        </defs>
+        <g class="half h1" clip-path="url(#cl1)"><use href="#sealArt"/></g>
+        <g class="half h2" clip-path="url(#cl2)"><use href="#sealArt"/></g>
+        <path class="crack" d="M36,4 L30,20 L38,34 L29,48 L35,64" fill="none" stroke="#3b0d09" stroke-width="1.6"/>
+        <defs><g id="sealArt">
+          <path d="M34,3 C44,2 52,7 58,12 C64,19 66,26 65,34 C66,43 62,51 56,57 C49,63 42,66 34,65 C25,66 17,62 11,56 C5,50 2,42 3,34 C2,25 6,17 12,11 C18,6 26,3 34,3Z" fill="url(#wax)"/>
+          <circle cx="34" cy="34" r="21" fill="none" stroke="rgba(60,10,6,.5)" stroke-width="1.5"/>
+          <circle cx="34" cy="34" r="19" fill="none" stroke="rgba(255,190,170,.25)" stroke-width="1"/>
+          <text x="34" y="41" text-anchor="middle" style="font:600 19px 'Cormorant Garamond',serif;fill:#6e1c15">S</text>
+          <path d="M18,22 Q22,16 28,15" stroke="rgba(255,220,200,.45)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g></defs>
+      </svg>
+    </div>
+    <div class="ctitle" id="ctitle">ENVELOPE I</div>
+    <div class="solveui" id="solveui">
+      <p class="cipher" id="cipher"></p>
+      <p class="clue" id="clue"></p>
+      <label class="lab" for="ans">YOUR DECODING</label>
+      <textarea id="ans" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type what the wheel tells you"></textarea>
+      <div class="row">
+        <button class="btn" id="check">BREAK THE SEAL</button>
+        <button class="btn ghost" id="hint" hidden>A small hint</button>
+      </div>
+      <div class="fb" id="fb"></div>
+    </div>
+    <div class="lockednote" id="locked" hidden></div>
+    <div class="reveal" id="reveal">
+      <p class="msg" id="msg"></p>
+      <p class="ps" id="ps"></p>
+      <div class="sig">S.</div>
+    </div>
+  </article>
+
+  <section class="finale" id="finale">
+    <div class="eyebrow">OFFICIAL SCOREBOARD</div>
+    <div class="score">19 – 19</div>
+    <p>Five for five. I tried to award you a point for cryptanalysis, then remembered we stopped counting.</p>
+    <p>A draw, permanently. Ronaldo objected. He was overruled.</p>
+  </section>
+
+  <button class="reset" id="reset">Reseal every envelope</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+var A="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var STEP=360/26;
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var LETTERS=[
+  {n:"I",s:3,
+   text:"Hello, darling. You are terribly good at this.",
+   clue:"Julius Caesar's own shift. The Roman one, not the one on your playlist.",
+   ps:"P.S. I knew you'd open this one first. You always start at the beginning, and then you overtake it."},
+  {n:"II",s:12,
+   text:"Twelve nil. I am formally requesting a recount.",
+   clue:"The score of our running game. I refuse to say it out loud.",
+   ps:"P.S. The recount has been denied by the presiding judge, who is also you."},
+  {n:"III",s:15,
+   text:"Piglet has cleared me. I am allowed near you now.",
+   clue:"How many years your bodyguard has been on duty.",
+   ps:"P.S. He drove a hard bargain. I promised to stop calling him a suspect."},
+  {n:"IV",s:5,
+   text:"Keep the scarf. I was never getting it back.",
+   clue:"Add up the digits of my address. Ignore the letter; it's only there for drama.",
+   ps:"P.S. It looks better on you, and it smells of you now, which was not part of the plan."},
+  {n:"V",s:2,
+   text:"You are the C. Every song I write comes home to you.",
+   clue:"Turn the ring until the note where my music goes home sits beneath A.",
+   ps:"P.S. 羁绊. I looked it up three times, just to be sure I'd earned it. I think I have. 缘 did the rest."}
+];
+
+function enc(str,s){
+  return str.toUpperCase().replace(/[A-Z]/g,function(c){return A[(A.indexOf(c)+s)%26];});
+}
+function letters(str){return str.toUpperCase().replace(/[^A-Z]/g,"");}
+
+/* storage */
+var KEY="221b-cipher-v1";
+var state={solved:[false,false,false,false,false],cur:0};
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&Array.isArray(p.solved))state.solved=p.solved.slice(0,5);if(typeof p.cur==="number")state.cur=p.cur;}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+/* audio */
+var ac=null;
+function audio(){
+  if(!ac){try{var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}catch(e){ac=null;}}
+  if(ac&&ac.state==="suspended"){try{ac.resume();}catch(e){}}
+  return ac;
+}
+var lastTick=0;
+function tick(){
+  var c=ac;if(!c)return;var t=c.currentTime;if(t-lastTick<0.025)return;lastTick=t;
+  var o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();
+  o.type="square";o.frequency.value=2600+Math.random()*300;f.type="highpass";f.frequency.value=1800;
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.05,t+0.002);g.gain.exponentialRampToValueAtTime(0.0001,t+0.03);
+  o.connect(f);f.connect(g);g.connect(c.destination);o.start(t);o.stop(t+0.04);
+}
+function noiseBuf(c,dur){
+  var b=c.createBuffer(1,Math.floor(c.sampleRate*dur),c.sampleRate),d=b.getChannelData(0);
+  for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
+  return b;
+}
+function crack(){
+  var c=audio();if(!c)return;var t=c.currentTime;
+  var n=c.createBufferSource();n.buffer=noiseBuf(c,0.35);
+  var f=c.createBiquadFilter();f.type="bandpass";f.frequency.value=1400;f.Q.value=0.8;
+  var g=c.createGain();g.gain.value=0.5;n.connect(f);f.connect(g);g.connect(c.destination);n.start(t);
+  var o=c.createOscillator(),og=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(50,t+0.2);
+  og.gain.setValueAtTime(0.3,t);og.gain.exponentialRampToValueAtTime(0.0001,t+0.25);o.connect(og);og.connect(c.destination);o.start(t);o.stop(t+0.3);
+}
+function chime(final){
+  var c=audio();if(!c)return;var t=c.currentTime+0.25;
+  var notes=final?[60,64,67,71,72]:[67,72];
+  notes.forEach(function(m,i){
+    var o=c.createOscillator(),g=c.createGain(),fr=440*Math.pow(2,(m-69)/12);
+    o.type="sine";o.frequency.value=fr;var st=t+i*0.16;
+    g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(0.12,st+0.02);g.gain.exponentialRampToValueAtTime(0.0001,st+1.8);
+    o.connect(g);g.connect(c.destination);o.start(st);o.stop(st+2);
+  });
+}
+function buzz(){
+  var c=audio();if(!c)return;var t=c.currentTime;var o=c.createOscillator(),g=c.createGain();
+  o.type="triangle";o.frequency.value=150;g.gain.setValueAtTime(0.08,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
+  o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+0.2);
+}
+
+/* build wheel */
+var NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+var outer=document.getElementById("outer"),innerL=document.getElementById("innerL"),ticksG=document.getElementById("outerTicks"),orn=document.getElementById("innerOrn");
+var outerT=[],innerT=[];
+for(var i=0;i<26;i++){
+  var a=i*STEP,rad=a*Math.PI/180;
+  var x=168*Math.sin(rad),y=-168*Math.cos(rad);
+  var t=el("text",{x:x,y:y,"text-anchor":"middle","dominant-baseline":"central","class":"ol",transform:"rotate("+a+" "+x+" "+y+")"},outer);t.textContent=A[i];outerT.push(t);
+  var x2=126*Math.sin(rad),y2=-126*Math.cos(rad);
+  var t2=el("text",{x:x2,y:y2,"text-anchor":"middle","dominant-baseline":"central","class":"il",transform:"rotate("+a+" "+x2+" "+y2+")"},innerL);t2.textContent=A[i];innerT.push(t2);
+  var b=(i+0.5)*STEP*Math.PI/180;
+  el("line",{x1:152*Math.sin(b),y1:-152*Math.cos(b),x2:186*Math.sin(b),y2:-186*Math.cos(b),stroke:"rgba(60,40,15,.35)","stroke-width":"1"},ticksG);
+  el("circle",{cx:108*Math.sin(b),cy:-108*Math.cos(b),r:1.4,fill:"rgba(242,214,154,.5)"},orn);
+}
+var innerG=document.getElementById("inner"),shiftNum=document.getElementById("shiftNum"),pair=document.getElementById("pair");
+var theta=0; // display rotation of inner ring in degrees
+function mod(n,m){return((n%m)+m)%m;}
+function shiftOf(th){return mod(Math.round(-th/STEP),26);}
+var lastIdx=Math.round(-theta/STEP);
+function render(){
+  innerG.setAttribute("transform","rotate("+theta.toFixed(3)+")");
+  var s=shiftOf(theta);
+  shiftNum.textContent=s;
+  pair.textContent="A → "+A[s];
+  var idx=Math.round(-theta/STEP);
+  if(idx!==lastIdx){lastIdx=idx;tick();if(traced!=null)traceLetter(traced);}
+}
+
+/* drag + momentum */
+var box=document.getElementById("wheelbox"),svg=document.getElementById("wheel");
+var dragging=false,lastAng=0,vel=0,lastT=0,raf=0;
+function angAt(ev){
+  var r=svg.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  return Math.atan2(ev.clientX-cx,-(ev.clientY-cy))*180/Math.PI;
+}
+function distAt(ev){
+  var r=svg.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  return Math.hypot(ev.clientX-cx,ev.clientY-cy)/(r.width/2)*200;
+}
+box.addEventListener("pointerdown",function(ev){
+  audio();
+  var d=distAt(ev);if(d<60||d>205)return;
+  dragging=true;box.classList.add("drag");cancelAnimationFrame(raf);
+  lastAng=angAt(ev);lastT=performance.now();vel=0;
+  try{box.setPointerCapture(ev.pointerId);}catch(e){}
+  ev.preventDefault();
+});
+box.addEventListener("pointermove",function(ev){
+  if(!dragging)return;
+  var a=angAt(ev),d=a-lastAng;if(d>180)d-=360;if(d<-180)d+=360;
+  var now=performance.now(),dt=Math.max(1,now-lastT);
+  theta+=d;vel=0.7*vel+0.3*(d/dt);lastAng=a;lastT=now;render();
+});
+function release(){
+  if(!dragging)return;dragging=false;box.classList.remove("drag");
+  if(reduce||performance.now()-lastT>80)vel=reduce?0:vel*0.3;
+  coast();
+}
+box.addEventListener("pointerup",release);box.addEventListener("pointercancel",release);
+function coast(){
+  var prev=performance.now();
+  function step(now){
+    var dt=Math.min(40,now-prev);prev=now;
+    if(Math.abs(vel)>0.02){
+      theta+=vel*dt;vel*=Math.pow(0.994,dt);render();raf=requestAnimationFrame(step);
+    }else{
+      var target=Math.round(theta/STEP)*STEP,diff=target-theta;
+      if(Math.abs(diff)<0.05){theta=target;render();return;}
+      theta+=diff*(reduce?1:Math.min(1,0.012*dt));render();raf=requestAnimationFrame(step);
+    }
+  }
+  raf=requestAnimationFrame(step);
+}
+function setShiftAnimated(delta){
+  audio();cancelAnimationFrame(raf);vel=0;
+  var target=(Math.round(theta/STEP)-delta)*STEP;
+  if(reduce){theta=target;render();return;}
+  var start=theta,t0=performance.now();
+  (function anim(now){var k=Math.min(1,(now-t0)/220),e=1-Math.pow(1-k,3);theta=start+(target-start)*e;render();if(k<1)raf=requestAnimationFrame(anim);})(t0);
+}
+document.getElementById("plus").onclick=function(){setShiftAnimated(1);};
+document.getElementById("minus").onclick=function(){setShiftAnimated(-1);};
+
+/* tracing */
+var traced=null;
+function clearTrace(){outerT.forEach(function(t){t.classList.remove("hi");});innerT.forEach(function(t){t.classList.remove("hi");});}
+function traceLetter(c){
+  clearTrace();var ci=A.indexOf(c);if(ci<0)return;
+  innerT[ci].classList.add("hi");
+  var p=mod(ci-shiftOf(theta),26);outerT[p].classList.add("hi");
+}
+
+/* envelopes */
+var rack=document.getElementById("rack");
+var waxSVG='<svg class="wax" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#B23A30"/><circle cx="11" cy="11" r="6.5" fill="none" stroke="#6e1c15" stroke-width="1"/><text x="11" y="14.5" text-anchor="middle" style="font:600 9px Cormorant Garamond,serif;fill:#6e1c15">S</text></svg>';
+var brokenSVG='<svg class="wax" viewBox="0 0 22 22"><path d="M11,1 A10,10 0 0 0 11,21 L9,15 L12,10 Z" fill="#B23A30"/><path d="M13,1 A10,10 0 0 1 13,21 L15,15 L12,9 Z" fill="#9a2f27"/></svg>';
+function unlocked(i){return i<4||state.solved.slice(0,4).every(Boolean);}
+function drawRack(){
+  rack.innerHTML="";
+  LETTERS.forEach(function(L,i){
+    var b=document.createElement("button");
+    b.className="env"+(state.solved[i]?" solved":"")+(unlocked(i)?"":" locked");
+    b.setAttribute("role","tab");b.setAttribute("aria-current",i===state.cur?"true":"false");
+    b.setAttribute("aria-label","Envelope "+L.n+(state.solved[i]?", opened":unlocked(i)?", sealed":", locked"));
+    b.innerHTML=(state.solved[i]?brokenSVG:waxSVG)+'<span class="num">'+L.n+'</span>';
+    b.onclick=function(){audio();state.cur=i;save();drawRack();drawCard(false);};
+    rack.appendChild(b);
+  });
+  var n=state.solved.filter(Boolean).length;document.getElementById("count").textContent=n;
+  document.getElementById("finale").classList.toggle("show",n===5);
+}
+var card=document.getElementById("card"),sealwrap=document.getElementById("sealwrap"),fb=document.getElementById("fb"),ans=document.getElementById("ans"),hintB=document.getElementById("hint");
+var wrong=0;
+function drawCard(){
+  var i=state.cur,L=LETTERS[i];wrong=0;hintB.hidden=true;fb.textContent="";traced=null;clearTrace();
+  document.getElementById("ctitle").textContent="ENVELOPE "+L.n+(i===4?" · THE LAST ONE":"");
+  var lock=!unlocked(i);
+  document.getElementById("locked").hidden=!lock;
+  document.getElementById("solveui").style.display=lock?"none":"";
+  if(lock){document.getElementById("locked").textContent="This one waits until the other four are open. I'm a patient man. Mostly.";}
+  var cp=document.getElementById("cipher");cp.innerHTML="";
+  enc(L.text,L.s).split("").forEach(function(ch){
+    if(/[A-Z]/.test(ch)){var s=document.createElement("span");s.textContent=ch;s.onclick=function(){
+      audio();var on=s.classList.contains("on");cp.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});
+      if(on){traced=null;clearTrace();}else{s.classList.add("on");traced=ch;traceLetter(ch);}
+    };cp.appendChild(s);}
+    else cp.appendChild(document.createTextNode(ch));
+  });
+  document.getElementById("clue").innerHTML="<b>THE SHIFT</b>"+L.clue;
+  ans.value="";
+  document.getElementById("msg").textContent=L.text;
+  document.getElementById("ps").textContent=L.ps;
+  card.classList.toggle("open",!!state.solved[i]&&!lock);
+  sealwrap.classList.remove("cracking");
+  sealwrap.classList.toggle("broken",!!state.solved[i]&&!lock);
+}
+document.getElementById("check").onclick=function(){
+  audio();var L=LETTERS[state.cur];
+  var got=letters(ans.value),want=letters(L.text);
+  if(!got){fb.textContent="Blank paper won't break wax, darling.";return;}
+  if(got===want){
+    fb.textContent="";state.solved[state.cur]=true;save();
+    if(reduce){crack();sealwrap.classList.add("broken");card.classList.add("open");chime(state.cur===4);drawRack();return;}
+    sealwrap.classList.add("cracking");crack();
+    setTimeout(function(){sealwrap.classList.add("broken");},180);
+    setTimeout(function(){card.classList.add("open");chime(state.cur===4);drawRack();},700);
+  }else{
+    wrong++;buzz();
+    var near=want.indexOf(got)===0?"So far so good. Keep going.":(wrong>1?"Not quite. Check the shift before you check yourself.":"Not quite. Read it off the wheel again.");
+    fb.textContent=near;
+    card.classList.remove("shake");void card.offsetWidth;if(!reduce)card.classList.add("shake");
+    if(wrong>=2)hintB.hidden=false;
+  }
+};
+hintB.onclick=function(){var s=LETTERS[state.cur].s;fb.textContent="The shift is "+s+". Under A, you want "+A[s]+". I'd never have told anyone else.";};
+document.getElementById("reset").onclick=function(){
+  state={solved:[false,false,false,false,false],cur:0};save();drawRack();drawCard();
+};
+
+render();drawRack();drawCard();
+})();
+</script>
+</body>
+</html>

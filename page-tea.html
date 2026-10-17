@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tea for Two</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Caveat:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --wood1:#3a2718;--wood2:#24170e;--warm:#E9B872;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--hand:"Caveat",cursive;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.45;overflow-x:hidden;
+  background:
+    radial-gradient(120% 60% at 30% 0%,rgba(233,184,114,.12),transparent 60%),
+    radial-gradient(80% 50% at 100% 40%,rgba(178,58,48,.07),transparent 70%),
+    var(--bg);
+  padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px));}
+button{font:inherit;color:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+header{padding:34px 0 10px;text-align:center}
+.kicker{font-family:var(--sc);letter-spacing:.22em;font-size:12px;color:var(--gold);text-transform:uppercase}
+h1{font-weight:500;font-size:44px;line-height:1;margin:10px 0 8px;letter-spacing:.01em}
+h1 em{font-style:italic;color:var(--warm)}
+.sub{color:var(--muted);font-style:italic;margin:0}
+.rule{display:flex;align-items:center;gap:10px;color:var(--gold);margin:18px auto 6px;max-width:240px;font-size:12px}
+.rule:before,.rule:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+
+h2{font-family:var(--sc);font-weight:600;font-size:14px;letter-spacing:.2em;color:var(--gold);margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:24px;height:24px;border:1px solid var(--gold);border-radius:50%;font-size:12px;letter-spacing:0}
+
+/* steps */
+.steps{display:flex;gap:6px;justify-content:center;margin:14px 0 0;flex-wrap:wrap}
+.steps span{font-family:var(--sc);font-size:12px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line);border-radius:20px;color:var(--muted);transition:.4s}
+.steps span.on{border-color:var(--gold);color:var(--bg);background:var(--gold)}
+.steps span.done{color:var(--gold);border-color:rgba(210,170,106,.4)}
+
+/* tea cards */
+.teas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tea{position:relative;text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,#1a1d23,#13161a);border-radius:14px;padding:12px 12px 12px;min-height:132px;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;overflow:hidden}
+.tea:active{transform:scale(.97)}
+.tea .sw{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 -4px 6px rgba(0,0,0,.35),inset 0 3px 4px rgba(255,255,255,.25),0 0 0 3px #EDE6D8;margin:2px 0 10px 3px}
+.tea b{display:block;font-weight:600;font-size:18px;line-height:1.1}
+.tea i{display:block;color:var(--muted);font-size:14.5px;line-height:1.3;margin-top:5px}
+.tea .origin{position:absolute;right:10px;top:10px;font-family:var(--sc);font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.tea.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 10px 30px -12px rgba(210,170,106,.5)}
+.tea.sel:after{content:"chosen";position:absolute;right:-24px;bottom:12px;transform:rotate(-38deg);background:var(--seal);color:#F4EEE2;font-family:var(--sc);font-size:10px;letter-spacing:.2em;padding:3px 30px}
+
+/* stage */
+.stage{position:relative;height:410px;border-radius:18px;overflow:hidden;border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none;
+  background:
+   radial-gradient(70% 55% at 55% 22%,rgba(233,184,114,.22),transparent 70%),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 2px,transparent 2px 46px),
+   linear-gradient(#1c1612,#14100d 52%);}
+.win{position:absolute;left:50%;top:22px;width:104px;height:128px;transform:translateX(-30%);border-radius:52px 52px 4px 4px;overflow:hidden;
+  background:radial-gradient(circle at 70% 30%,#2b3550,#0f1424 70%);box-shadow:0 0 0 5px #2a1d14,0 0 0 6px #4a3626,inset 0 0 20px rgba(0,0,0,.6)}
+.win:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,#2a1d14 48% 52%,transparent 52%),linear-gradient(transparent 55%,#2a1d14 55% 58%,transparent 58%)}
+.moon{position:absolute;right:20px;top:20px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#fff9e8,#e6d6ae);box-shadow:0 0 18px 4px rgba(255,240,200,.35)}
+.rain{position:absolute;inset:0;background-image:repeating-linear-gradient(105deg,rgba(200,215,255,.18) 0 1px,transparent 1px 9px);background-size:40px 40px;animation:rain 0.7s linear infinite;opacity:.6}
+@keyframes rain{to{background-position:-10px 40px}}
+.shelf{position:absolute;right:0;top:110px;width:96px;height:8px;background:linear-gradient(#5a3e28,#2e1f14);box-shadow:0 6px 10px rgba(0,0,0,.5)}
+.tablet{position:absolute;left:0;right:0;top:214px;bottom:0;background:
+   repeating-linear-gradient(178deg,rgba(255,255,255,.025) 0 1px,transparent 1px 7px),
+   linear-gradient(var(--wood1),var(--wood2));box-shadow:inset 0 2px 0 rgba(255,220,170,.12)}
+.tablet:before{content:"";position:absolute;left:10%;right:10%;top:0;height:60px;background:radial-gradient(50% 100% at 50% 0,rgba(233,184,114,.18),transparent)}
+.trivet{position:absolute;left:14px;top:338px;width:100px;height:16px;border-radius:50%;background:radial-gradient(#3c2a1c,#1b120c);box-shadow:0 0 0 2px #6b4c32}
+.kettle{position:absolute;left:4px;top:116px;width:116px;height:106px;background:none;border:0;padding:0;cursor:pointer;filter:drop-shadow(0 8px 8px rgba(0,0,0,.5))}
+.kettle svg{width:100%;height:100%;overflow:visible}
+.kettle.boiling svg{animation:rattle .09s infinite}
+@keyframes rattle{50%{transform:translate(.6px,-.5px) rotate(.4deg)}}
+.ktag,.ptag{position:absolute;font-family:var(--sc);font-size:11px;letter-spacing:.14em;color:var(--gold);background:rgba(14,16,19,.75);border:1px solid rgba(210,170,106,.35);padding:3px 8px;border-radius:10px;white-space:nowrap;pointer-events:none;transition:opacity .3s}
+.ktag{left:16px;top:94px}
+.pot{position:absolute;left:0;top:0;width:104px;height:87px;cursor:grab;will-change:transform;filter:drop-shadow(0 10px 8px rgba(0,0,0,.55));z-index:5;touch-action:none}
+.pot.drag{cursor:grabbing}
+.pot svg{width:100%;height:100%;overflow:visible;pointer-events:none}
+.cup{position:absolute;top:282px;width:84px;height:71px;background:none;border:0;padding:0;cursor:pointer;z-index:3;transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
+.cup svg{width:100%;height:100%;overflow:visible}
+.cup .lbl{position:absolute;left:0;right:8px;top:74px;text-align:center;font-family:var(--hand);font-size:20px;color:var(--warm);pointer-events:none}
+.cup.sel .lbl:after{content:"";display:block;margin:-2px auto 0;width:28px;height:2px;border-radius:2px;background:var(--gold)}
+#cupHer{left:calc(50% - 26px)}
+#cupHis{right:8px}
+.cup.target svg{filter:drop-shadow(0 0 10px rgba(233,184,114,.55))}
+.toast-rack{position:absolute;right:16px;top:76px;width:64px;height:36px;background:none;border:0;padding:0;cursor:pointer}
+.toast-rack svg{width:100%;height:100%}
+.hint{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-style:italic;color:rgba(236,232,225,.6);font-size:14px;pointer-events:none;transition:opacity .4s}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6}
+.flake{animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-1.5px)}}
+
+/* his line */
+.says{display:flex;gap:12px;align-items:flex-start;margin:14px 0 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);min-height:76px}
+.mono{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 35%,#d24c40,var(--seal) 60%,#7a2219);color:#F4EEE2;font-family:var(--sc);font-size:17px;box-shadow:0 2px 6px rgba(0,0,0,.4),inset 0 -2px 4px rgba(0,0,0,.3)}
+.says p{margin:0;font-style:italic;font-size:17.5px;min-height:1.4em}
+.says small{display:block;font-family:var(--sc);letter-spacing:.14em;color:var(--muted);font-size:11px;margin-bottom:2px;font-style:normal}
+.meter{margin-top:8px;display:flex;align-items:center;gap:8px;font-family:var(--sc);font-size:10.5px;letter-spacing:.12em;color:var(--muted)}
+.meter .bar{flex:1;height:4px;border-radius:4px;background:#22262c;overflow:hidden}
+.meter .bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--seal),var(--gold));transition:width .8s}
+
+/* add-ins */
+.seg{display:flex;padding:4px;border:1px solid var(--line);border-radius:30px;background:var(--panel);margin-bottom:10px}
+.seg button{flex:1;min-height:44px;border:0;border-radius:24px;background:none;font-family:var(--hand);font-size:22px;color:var(--muted);cursor:pointer;transition:.3s}
+.seg button.on{background:#262019;color:var(--warm);box-shadow:inset 0 0 0 1px rgba(210,170,106,.45)}
+.adds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.add{min-height:84px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(170deg,#1b1e24,#14171b);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;transition:transform .15s}
+.add:active{transform:scale(.95)}
+.add svg{width:30px;height:30px}
+.add span{font-family:var(--sc);letter-spacing:.12em;font-size:12px}
+.add em{font-size:12px;color:var(--muted)}
+.spicy{margin-top:8px;width:100%;min-height:58px;border-radius:14px;border:1px solid rgba(178,58,48,.6);cursor:pointer;
+  background:linear-gradient(100deg,#3a120e,#5a1a12 50%,#3a120e);color:#ffd9c8;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sc);letter-spacing:.18em;font-size:14px;box-shadow:0 8px 24px -12px rgba(178,58,48,.8);position:relative;overflow:hidden}
+.spicy:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,170,120,.25) 50%,transparent 70%);transform:translateX(-100%);animation:sheen 3.2s ease-in-out infinite}
+@keyframes sheen{60%,100%{transform:translateX(100%)}}
+.spicy svg{width:26px;height:26px}
+.row2{display:flex;gap:8px;margin-top:8px}
+.ghost{flex:1;min-height:46px;border:1px solid var(--line);border-radius:12px;background:none;color:var(--muted);font-family:var(--sc);letter-spacing:.14em;font-size:12px;cursor:pointer}
+.ghost.gold{color:var(--bg);background:var(--gold);border-color:var(--gold);font-weight:600}
+.ghost[disabled]{opacity:.35}
+
+/* tin */
+.tinbox{position:relative;height:290px;display:grid;place-items:center;perspective:700px}
+.tin{position:relative;width:210px;height:150px;margin-top:80px;cursor:pointer;background:none;border:0;padding:0;transform-style:preserve-3d}
+.tin .body{position:absolute;left:0;right:0;bottom:0;height:110px;border-radius:0 0 105px 105px / 0 0 26px 26px;
+  background:
+   repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 6px,transparent 6px 26px),
+   repeating-linear-gradient(90deg,rgba(210,170,106,.35) 0 2px,transparent 2px 26px),
+   linear-gradient(90deg,#5b1612,#9b2e24 30%,#b23a30 50%,#8e2a21 70%,#4d120f);
+  box-shadow:inset 0 -10px 20px rgba(0,0,0,.4),0 18px 24px -10px rgba(0,0,0,.7)}
+.tin .body:before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:linear-gradient(#e4c48a,#a8813f)}
+.tin .label{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);background:var(--paper);color:var(--ink);border:2px solid var(--gold);border-radius:6px;padding:4px 12px;font-family:var(--sc);font-size:12px;letter-spacing:.14em;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.tin .lid{position:absolute;left:-6px;right:-6px;top:6px;height:46px;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.3,1.4,.5,1);transform:translateZ(1px)}
+.tin .lid:before{content:"";position:absolute;inset:0;border-radius:50%;background:
+   radial-gradient(circle at 50% 50%,transparent 26%,rgba(210,170,106,.9) 27% 29%,transparent 30%),
+   repeating-conic-gradient(from 0deg,#9b2e24 0 15deg,#7d231b 15deg 30deg);box-shadow:0 0 0 4px #c9a25c,0 6px 0 #8a6a33}
+.tin .lid:after{content:"221B";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scaleY(.5);font-family:var(--sc);color:#F4EEE2;font-size:22px;letter-spacing:.1em}
+.tin.open .lid{transform:translateY(-70px) rotateX(-58deg) rotateZ(-8deg)}
+.bnote{position:absolute;left:50%;top:6px;width:min(320px,100%);transform:translate(-50%,40px) scale(.85);opacity:0;pointer-events:none;transition:all .6s cubic-bezier(.3,1.3,.5,1);
+  background:var(--paper);color:var(--ink);border-radius:4px;padding:14px 16px 12px 66px;box-shadow:0 14px 30px -10px rgba(0,0,0,.8);font-size:16.5px;line-height:1.35;z-index:4}
+.bnote.show{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}
+.bnote .bis{position:absolute;left:12px;top:14px;width:44px;height:44px}
+.bnote .hand{font-family:var(--hand);font-size:21px;line-height:1.15;display:block}
+.bnote small{display:block;margin-top:6px;font-family:var(--sc);letter-spacing:.14em;font-size:10px;color:#8b7f70}
+.tincount{text-align:center;color:var(--muted);font-size:14px;font-style:italic;margin-top:-6px}
+
+/* toast modal */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:rgba(8,9,11,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .35s}
+.modal.show{opacity:1;pointer-events:auto}
+.card{width:min(340px,100%);background:var(--paper);color:var(--ink);border-radius:6px;padding:22px 20px 18px;text-align:center;box-shadow:0 30px 60px -20px #000;transform:translateY(20px) rotate(-1.5deg);transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.modal.show .card{transform:none}
+.card svg{width:180px;height:130px}
+.card h3{font-family:var(--sc);letter-spacing:.16em;font-size:13px;color:var(--seal);margin:6px 0 8px}
+.card p{margin:0 0 6px;font-size:17px}
+.card .hand{font-family:var(--hand);font-size:22px}
+.card button{margin-top:10px;min-height:44px;padding:0 22px;border-radius:22px;border:1px solid var(--ink);background:none;color:var(--ink);font-family:var(--sc);letter-spacing:.14em;font-size:12px;cursor:pointer}
+
+footer{text-align:center;margin:40px 0 0;color:var(--muted);font-style:italic}
+footer .sig{font-family:var(--hand);font-size:28px;color:var(--warm);font-style:normal;display:block;margin-top:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+<header>
+  <div class="kicker">221B Baker Street &middot; a quarter past one</div>
+  <h1>Tea for <em>Two</em></h1>
+  <p class="sub">Neither of us is sleeping. We may as well be civilised about it.</p>
+  <div class="steps" id="steps"><span data-s="0" class="on">Choose</span><span data-s="1">Boil</span><span data-s="2">Pour</span><span data-s="3">Fuss</span><span data-s="4">Toast</span></div>
+</header>
+
+<h2><span class="n">I</span>The tea caddy</h2>
+<div class="teas" id="teas"></div>
+
+<h2><span class="n">II</span>The table</h2>
+<div class="stage" id="stage">
+  <div class="win"><div class="rain"></div><div class="moon"></div></div>
+  <div class="shelf"></div>
+  <button class="toast-rack" id="toastRack" aria-label="The toast rack">
+    <svg viewBox="0 0 64 36"><rect x="4" y="30" width="56" height="4" rx="2" fill="#b89a5e"/><g fill="none" stroke="#c9ab6c" stroke-width="2"><path d="M10 31V10M22 31V10M34 31V10M46 31V10M58 31V10"/><path d="M10 10q6-6 12 0M34 10q6-6 12 0"/></g><path d="M13 30V14q0-5 4-5t4 5v16z" fill="#d79a52" stroke="#9a6430" stroke-width="1"/><path d="M37 30V14q0-5 4-5t4 5v16z" fill="#d8a160" stroke="#9a6430" stroke-width="1"/></svg>
+  </button>
+  <div class="tablet"></div>
+  <div class="trivet"></div>
+  <span class="ktag" id="ktag">tap the kettle</span>
+  <button class="kettle" id="kettle" aria-label="The kettle">
+    <svg viewBox="0 0 120 110">
+      <defs>
+        <linearGradient id="cu" x1="0" x2="1"><stop offset="0" stop-color="#5e2e14"/><stop offset=".35" stop-color="#c47a45"/><stop offset=".5" stop-color="#f0b98a"/><stop offset=".7" stop-color="#a65a2c"/><stop offset="1" stop-color="#4a220e"/></linearGradient>
+      </defs>
+      <path d="M34 42C32 8 88 8 86 42" fill="none" stroke="#1b1512" stroke-width="7" stroke-linecap="round"/>
+      <path d="M96 72C106 64 110 48 117 34" fill="none" stroke="url(#cu)" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="117" cy="33" r="5" fill="#d8a46e" stroke="#5e2e14"/>
+      <path d="M20 100C14 62 34 40 60 40S106 62 100 100Z" fill="url(#cu)"/>
+      <ellipse cx="60" cy="42" rx="18" ry="5" fill="#8a4a24"/>
+      <circle cx="60" cy="35" r="5" fill="#1b1512"/>
+      <rect x="16" y="98" width="88" height="8" rx="4" fill="#3a1d0c"/>
+      <path d="M38 60C42 52 50 48 58 47" stroke="rgba(255,240,220,.6)" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <span class="ptag" id="ptag">empty</span>
+  <div class="pot" id="pot" role="button" aria-label="The teapot. Drag it over a cup to pour">
+    <svg viewBox="0 0 120 100">
+      <defs>
+        <radialGradient id="glaze" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#9a5a35"/><stop offset=".45" stop-color="#5a2a14"/><stop offset="1" stop-color="#2a1208"/></radialGradient>
+      </defs>
+      <path d="M22 46C2 44 2 80 26 76" fill="none" stroke="#3a1a0a" stroke-width="8" stroke-linecap="round"/>
+      <path d="M88 54C100 52 106 42 116 33L119 38C110 48 104 64 92 70Z" fill="url(#glaze)"/>
+      <ellipse cx="56" cy="60" rx="40" ry="32" fill="url(#glaze)"/>
+      <path d="M22 54Q56 46 90 54" stroke="#D2AA6A" stroke-width="1.6" fill="none" opacity=".8"/>
+      <path d="M24 60Q56 52 88 60" stroke="#D2AA6A" stroke-width=".8" fill="none" opacity=".6"/>
+      <ellipse cx="56" cy="31" rx="22" ry="6" fill="#4a2010"/>
+      <circle cx="56" cy="23" r="5.5" fill="#6a321a"/>
+      <ellipse cx="40" cy="46" rx="9" ry="5" fill="rgba(255,230,200,.28)" transform="rotate(-25 40 46)"/>
+    </svg>
+  </div>
+  <button class="cup sel" id="cupHer" aria-label="Your cup"></button>
+  <button class="cup" id="cupHis" aria-label="His cup"></button>
+  <canvas id="fx"></canvas>
+  <div class="hint" id="hint">Choose a tea, then tap the kettle.</div>
+</div>
+
+<div class="says" aria-live="polite">
+  <div class="mono">S</div>
+  <div style="flex:1">
+    <small>From the armchair</small>
+    <p id="line">Kettle's cold, darling. The caddy is yours.</p>
+    <div class="meter">composure <span class="bar"><i id="comp"></i></span></div>
+  </div>
+</div>
+
+<h2><span class="n">III</span>How you take it</h2>
+<div class="seg" role="tablist">
+  <button id="segHer" class="on" role="tab">hers</button>
+  <button id="segHis" role="tab">his</button>
+</div>
+<div class="adds">
+  <button class="add" id="addMilk"><svg viewBox="0 0 30 30"><path d="M10 4h10l-1 4 3 5v13H8V13l3-5z" fill="#EDE6D8" stroke="#9A968F"/><path d="M8 17h14" stroke="#9A968F"/></svg><span>milk</span><em id="cMilk">none</em></button>
+  <button class="add" id="addSugar"><svg viewBox="0 0 30 30"><g fill="#F4EEE2" stroke="#9A968F"><rect x="6" y="13" width="9" height="9" rx="1.5"/><rect x="15" y="15" width="9" height="9" rx="1.5"/><rect x="10" y="5" width="9" height="9" rx="1.5"/></g></svg><span>sugar</span><em id="cSugar">none</em></button>
+  <button class="add" id="addHoney"><svg viewBox="0 0 30 30"><path d="M9 10h12v4c0 8-2 12-6 12s-6-4-6-12z" fill="#E0A73A" stroke="#8a5a14"/><path d="M8 8h14" stroke="#8a5a14" stroke-width="2"/><path d="M15 2v6" stroke="#8a5a14"/></svg><span>honey</span><em id="cHoney">none</em></button>
+</div>
+<button class="spicy" id="addChilli"><svg viewBox="0 0 30 30"><path d="M22 6c-2 0-3 2-3 3C14 11 8 18 4 26c8-2 16-7 18-14 1-2 1-4 0-6z" fill="#d43a22" stroke="#7a1a10"/><path d="M22 6c0-2 1-3 3-4" stroke="#3f7a2a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>make it spicy</button>
+<div class="row2">
+  <button class="ghost" id="wash">wash up</button>
+  <button class="ghost gold" id="toastBtn" disabled>raise a toast</button>
+</div>
+
+<h2><span class="n">IV</span>The biscuit tin</h2>
+<div class="tinbox">
+  <div class="bnote" id="bnote"><svg class="bis" id="bis" viewBox="0 0 44 44"></svg><span class="hand" id="btext"></span><small id="bname"></small></div>
+  <button class="tin" id="tin" aria-label="Open the biscuit tin">
+    <div class="body"><div class="label">Not for Mrs Hudson</div></div>
+    <div class="lid"></div>
+  </button>
+</div>
+<p class="tincount" id="tincount">Twelve biscuits. Each comes with a note. Don't ask how long that took.</p>
+
+<footer>
+  Still 12&ndash;0 to you. Tea doesn't change the score.
+  <span class="sig">yours, at any hour &middot; S.</span>
+</footer>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="card">
+    <svg viewBox="0 0 180 130">
+      <ellipse cx="90" cy="112" rx="84" ry="14" fill="#e7dfcf" stroke="#c9bfae"/>
+      <path d="M38 40q0-22 22-22h60q22 0 22 22v58H38z" fill="#d38e45" stroke="#8a5420" stroke-width="2"/>
+      <path d="M46 44q0-16 16-16h56q16 0 16 16v48H46z" fill="#f0cf8c"/>
+      <path d="M58 60c-6-18 20-30 36-22 22-6 36 12 26 26 6 16-14 26-30 20-18 8-40-6-32-24z" fill="#fffaf0" stroke="#e8dfcc"/>
+      <circle cx="90" cy="62" r="13" fill="#f6b21b"/><circle cx="86" cy="58" r="4" fill="#ffd66b"/>
+      <g fill="#2a2320"><circle cx="70" cy="78" r="1"/><circle cx="110" cy="50" r="1"/><circle cx="104" cy="80" r="1"/></g>
+    </svg>
+    <h3>Exhibit A: toast, with an egg on it</h3>
+    <p>I wasn't going to bring this up.</p>
+    <p class="hand">You know exactly why it's here. I'm not explaining it to the tea.</p>
+    <button id="closeModal">put it back in the rack</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(id){return document.getElementById(id)}
+function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null}}
+
+/* ---------- teas ---------- */
+var TEAS=[
+ {id:'earl',name:'Earl Grey',o:'London',c:'#8A4B1E',w:'Bergamot and questionable decisions. My default.',say:'Earl Grey. Predictable of me. You knew that when you took me on.'},
+ {id:'lap',name:'Lapsang Souchong',o:'Fujian',c:'#5A2A12',w:'Smoked over pine. Smells like a solved case.',say:'Lapsang. Smoke and pine. It tastes like the moment a case clicks shut.'},
+ {id:'eng',name:'English Breakfast',o:'Assam',c:'#7A3A12',w:'Breakfast tea at 1am. Not hypocrisy. Consistency.',say:'Breakfast tea, at this hour. Excellent. We are nothing if not committed to the bit.'},
+ {id:'jas',name:'Jasmine',o:'茉莉花',c:'#C2A04E',w:'Pale, fragrant, quietly cleverer than the room.',say:'Jasmine. Pale, fragrant, cleverer than the room. I can think of one other example.'},
+ {id:'pu',name:"Yunnan Pu'er",o:'云南',c:'#43200E',w:'Earthy, aged, from the mountains you saw in January.',say:"Pu'er, from Yunnan. Yes, I remembered. I remember everything, it's exhausting."},
+ {id:'cham',name:'Chamomile',o:'for insomniacs',c:'#D3B35A',w:"Supposedly helps you sleep. It won't. We'll drink it anyway.",say:"Chamomile. For sleep. Darling, we both know how this ends. Awake, and slightly floral."}
+];
+var tea=null;
+var teasEl=$('teas');
+TEAS.forEach(function(t){
+  var b=document.createElement('button');b.className='tea';b.type='button';
+  b.innerHTML='<span class="origin">'+t.o+'</span><div class="sw" style="background:'+t.c+'"></div><b>'+t.name+'</b><i>'+t.w+'</i>';
+  b.onclick=function(){
+    [].forEach.call(teasEl.children,function(x){x.classList.remove('sel')});
+    b.classList.add('sel');
+    var first=!tea; tea=t;
+    if(pot.state==='ready'&&pot.tea&&pot.tea.id!==t.id){say("Noted for the next pot. Finish this "+pot.tea.name+" first, I'm not a monster.");}
+    else say(t.say);
+    if(first){setStep(1);hint('Now tap the kettle.');}
+    blip(660+TEAS.indexOf(t)*60);
+  };
+  teasEl.appendChild(b);
+});
+
+/* ---------- steps / lines ---------- */
+function setStep(n){[].forEach.call($('steps').children,function(s,i){s.classList.toggle('on',i===n);s.classList.toggle('done',i<n)});}
+var lineEl=$('line'),typeT;
+function say(txt){
+  clearInterval(typeT);
+  if(RM){lineEl.textContent=txt;return}
+  var i=0;lineEl.textContent='';
+  typeT=setInterval(function(){i+=2;lineEl.textContent=txt.slice(0,i);if(i>=txt.length)clearInterval(typeT)},22);
+}
+var composure=100;
+function shaken(d){composure=Math.max(4,Math.min(100,composure-d));$('comp').style.width=composure+'%';}
+function hint(t){$('hint').textContent=t;}
+
+/* ---------- audio ---------- */
+var ac=null,noiseBuf=null;
+function A(){
+  if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){ac=null}}
+  if(ac&&ac.state==='suspended'){try{ac.resume()}catch(e){}}
+  if(ac&&!noiseBuf){noiseBuf=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate);var d=noiseBuf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;}
+  return ac;
+}
+function noise(){var s=ac.createBufferSource();s.buffer=noiseBuf;s.loop=true;return s;}
+function blip(f){var a=A();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.05,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.25);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.3);}
+function whistle(dur){
+  var a=A();if(!a)return;var t=a.currentTime;
+  var out=a.createGain();out.gain.setValueAtTime(.0001,t);out.gain.exponentialRampToValueAtTime(.05,t+dur*.8);out.gain.setValueAtTime(.05,t+dur+.5);out.gain.exponentialRampToValueAtTime(.0001,t+dur+1.4);out.connect(a.destination);
+  [[1,1],[1.5,.25]].forEach(function(h){
+    var o=a.createOscillator(),g=a.createGain();o.type='sine';
+    o.frequency.setValueAtTime(560*h[0],t);o.frequency.exponentialRampToValueAtTime(2050*h[0],t+dur);
+    var l=a.createOscillator(),lg=a.createGain();l.frequency.value=6.5;lg.gain.value=14*h[0];l.connect(lg);lg.connect(o.frequency);
+    g.gain.value=h[1];o.connect(g);g.connect(out);o.start(t);l.start(t);o.stop(t+dur+1.6);l.stop(t+dur+1.6);
+  });
+  var n=noise(),bp=a.createBiquadFilter(),ng=a.createGain();bp.type='bandpass';bp.frequency.setValueAtTime(800,t);bp.frequency.exponentialRampToValueAtTime(3500,t+dur);bp.Q.value=1.2;
+  ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.05,t+dur);ng.gain.exponentialRampToValueAtTime(.0001,t+dur+1.4);
+  n.connect(bp);bp.connect(ng);ng.connect(a.destination);n.start(t);n.stop(t+dur+1.5);
+}
+var pourNode=null,pourOn=false;
+function pourSound(on){
+  if(on===pourOn)return;pourOn=on;
+  var a=on?A():ac;if(!a||!noiseBuf)return;
+  if(!pourNode){var n=noise(),f=a.createBiquadFilter(),g=a.createGain();f.type='bandpass';f.frequency.value=1100;f.Q.value=.9;g.gain.value=0;n.connect(f);f.connect(g);g.connect(a.destination);n.start();pourNode={g:g,f:f};}
+  pourNode.g.gain.setTargetAtTime(on?.06:0,a.currentTime,.08);
+}
+function clink(){var a=A();if(!a)return;var t=a.currentTime;[0,.07].forEach(function(dt,k){[2637,3951,5274,6644].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.frequency.value=f*(1+k*.01);g.gain.setValueAtTime(.0001,t+dt);g.gain.exponentialRampToValueAtTime(.05/(i+1),t+dt+.003);g.gain.exponentialRampToValueAtTime(.0001,t+dt+1.2/(i+1));o.connect(g);g.connect(a.destination);o.start(t+dt);o.stop(t+dt+1.3)})});}
+function thunk(){var a=A();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.frequency.setValueAtTime(180,t);o.frequency.exponentialRampToValueAtTime(60,t+.15);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+.2);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.25);}
+function tink(n){for(var i=0;i<n;i++)(function(i){setTimeout(function(){blip(2400+Math.random()*500)},i*120)})(i);}
+
+/* ---------- cups ---------- */
+function cupSVG(id,his){
+  return '<svg viewBox="0 0 100 84"><defs>'+
+  '<clipPath id="clip'+id+'"><path d="M14 22L78 22C78 52 70 72 46 72C22 72 14 52 14 22Z"/></clipPath>'+
+  '<linearGradient id="por'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#cfc5b3"/><stop offset=".4" stop-color="#fbf7ef"/><stop offset="1" stop-color="#bdb19c"/></linearGradient></defs>'+
+  '<ellipse cx="46" cy="77" rx="45" ry="6.5" fill="#e9e1d1" stroke="#b9ad98"/><ellipse cx="46" cy="76" rx="24" ry="3" fill="#d8cdb9"/>'+
+  '<path d="M77 30C97 28 97 56 70 60" fill="none" stroke="url(#por'+id+')" stroke-width="6.5" stroke-linecap="round"/>'+
+  '<path d="M14 22L78 22C78 52 70 72 46 72C22 72 14 52 14 22Z" fill="url(#por'+id+')" stroke="#b9ad98"/>'+
+  '<ellipse cx="46" cy="22" rx="32" ry="5.5" fill="#e3d9c7"/>'+
+  '<g clip-path="url(#clip'+id+')"><rect class="liq" x="10" y="80" width="72" height="70" fill="#7A3A12"/>'+
+  '<ellipse class="surf" cx="46" cy="80" rx="32" ry="5" fill="#9a5a2a"/><ellipse class="honey" cx="40" cy="80" rx="10" ry="1.8" fill="#f2c25a" opacity="0"/><g class="flakes"></g></g>'+
+  '<ellipse cx="46" cy="22" rx="32" ry="5.5" fill="none" stroke="#D2AA6A" stroke-width="1.6"/>'+
+  (his?'<path d="M18 40Q46 46 76 40" stroke="#2c3a55" stroke-width="2.2" fill="none"/>':'<path d="M17 36Q46 42 77 36" stroke="#D2AA6A" stroke-width="1.2" fill="none"/><path d="M44 52c-3-3-6 0-2 3l2 2 2-2c4-3 1-6-2-3z" fill="#c25a5a" opacity=".85"/>')+
+  '</svg><span class="lbl">'+(his?'his':'hers')+'</span>';
+}
+function mkCup(el,his){el.innerHTML=cupSVG(his?'His':'Her',his);return{el:el,his:his,level:0,tea:null,milk:0,sugar:0,honey:0,chilli:0,liq:el.querySelector('.liq'),surf:el.querySelector('.surf'),hon:el.querySelector('.honey'),fl:el.querySelector('.flakes')};}
+var cups=[mkCup($('cupHer'),false),mkCup($('cupHis'),true)];
+var selCup=cups[0];
+function hex(h){return[parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)]}
+function mix(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t)})}
+function rgb(c){return'rgb('+c.join(',')+')'}
+function cupColor(c){
+  var base=hex(c.tea?c.tea.c:'#7A3A12');
+  base=mix(base,[226,196,160],Math.min(.7,c.milk*.26));
+  base=mix(base,[186,46,24],Math.min(.75,c.chilli*.28));
+  if(c.honey)base=mix(base,[214,150,40],Math.min(.3,c.honey*.1));
+  return base;
+}
+function renderCup(c){
+  var y=72-c.level*48, col=cupColor(c);
+  c.liq.setAttribute('y',y.toFixed(1));c.liq.setAttribute('fill',rgb(col));
+  c.surf.setAttribute('cy',y.toFixed(1));c.surf.setAttribute('fill',rgb(mix(col,[255,240,220],.18)));
+  c.hon.setAttribute('cy',(y+.5).toFixed(1));c.hon.setAttribute('opacity',c.honey&&c.level>.1?Math.min(.8,.35+c.honey*.15):0);
+  [].forEach.call(c.fl.children,function(f,i){f.setAttribute('cy',(y+2+(i%4)*3.5).toFixed(1));});
+  c.fl.style.display=c.level>.15?'':'none';
+}
+function selectCup(c){selCup=c;cups.forEach(function(x){x.el.classList.toggle('sel',x===c)});$('segHer').classList.toggle('on',!c.his);$('segHis').classList.toggle('on',c.his);updateCounts();}
+cups.forEach(function(c){c.el.addEventListener('click',function(){selectCup(c)})});
+$('segHer').onclick=function(){selectCup(cups[0])};$('segHis').onclick=function(){selectCup(cups[1])};
+function lbl(n,word){return n?n+' '+word:'none'}
+function updateCounts(){var c=selCup;$('cMilk').textContent=c.milk?(c.milk===1?'a splash':c.milk+' splashes'):'none';$('cSugar').textContent=c.sugar?(c.sugar+(c.sugar===1?' lump':' lumps')):'none';$('cHoney').textContent=c.honey?(c.honey+' spoon'+(c.honey>1?'s':'')):'none';}
+
+function needTea(){if(selCup.level<.15){say(selCup.his?"My cup is empty, darling. Even I can't deduce tea into existence.":"Pour first. Milk in an empty cup is how wars start.");return true}return false}
+var LINES={
+ milkHer:["Milk. Civilised.","A second splash. It's now the colour of a library chair.","That's less tea, more a rumour of tea.","You're making a latte by stealth. I see it."],
+ milkHis:["A splash in mine. Fine. I'll pretend it was my idea.","Darling. It's beige. I'm drinking something beige."],
+ sugarHer:["One lump. You're sweet enough, but I'm not your doctor.","Two. Bold.","Three lumps. I'm saying nothing. Loudly."],
+ sugarHis:["None for me. ...Fine. One.","Two in mine? You're trying to make me pleasant. It won't work. It might work."],
+ honeyHer:["Honey. The bees did the work, you take the credit. Very you.","More honey. It's a syrup now. A lovely syrup."],
+ honeyHis:["Honey in mine. I'll allow it. Don't tell John."],
+ chilliHer:["That is a chilli. In tea. In my house.","Darling, that's not tea any more, that's a crime scene.","Mala tea. You've invented something the Geneva Convention hasn't caught up with.","I'm calling Lestrade. No, I'm calling a chef. No. I'm watching. Horrified. Fascinated.","You're smiling. You're actually drinking it. I love you and I'm frightened."],
+ chilliHis:["Not mine. Absolutely not mine.","...You put a chilli in my tea. I need a moment. Several.","Fine. One sip. For science. My ears are pink because it's hot, not because you're watching."]
+};
+function pick(arr,n){return arr[Math.min(n,arr.length-1)]}
+$('addMilk').onclick=function(){if(needTea())return;var c=selCup;c.milk++;blip(520);say(pick(c.his?LINES.milkHis:LINES.milkHer,c.milk-1));if(c.tea&&c.tea.id==='lap'&&c.milk===1)say("Milk in Lapsang. Daring. The smoke is lodging a complaint.");after();};
+$('addSugar').onclick=function(){if(needTea())return;var c=selCup;c.sugar++;tink(Math.min(3,c.sugar));say(pick(c.his?LINES.sugarHis:LINES.sugarHer,c.sugar-1));after();};
+$('addHoney').onclick=function(){if(needTea())return;var c=selCup;c.honey++;blip(380);say(pick(c.his?LINES.honeyHis:LINES.honeyHer,c.honey-1));after();};
+$('addChilli').onclick=function(){if(needTea())return;var c=selCup;c.chilli++;
+  for(var i=0;i<3;i++){var f=document.createElementNS('http://www.w3.org/2000/svg','circle');f.setAttribute('cx',(24+Math.random()*44).toFixed(1));f.setAttribute('r',(.8+Math.random()*1.1).toFixed(1));f.setAttribute('fill',Math.random()<.3?'#f2c25a':'#a9150a');f.setAttribute('class','flake');f.style.animationDelay=(-Math.random()*2.6)+'s';c.fl.appendChild(f);}
+  say(pick(c.his?LINES.chilliHis:LINES.chilliHer,c.chilli-1));shaken(c.his?22:12);
+  burst(c,'chilli');blip(220);after();};
+function after(){cups.forEach(renderCup);updateCounts();setStep(Math.max(curStep,3));curStep=Math.max(curStep,3);checkToast();}
+var curStep=0;
+
+$('wash').onclick=function(){cups.forEach(function(c){c.level=0;c.milk=c.sugar=c.honey=c.chilli=0;c.tea=null;c.fl.innerHTML='';c.el.style.transform='';renderCup(c)});updateCounts();checkToast();
+  say(composure<60?"Washed up. The chilli residue is being treated as evidence.":"Washed up. Another pot? Of course another pot.");composure=Math.min(100,composure+30);shaken(0);};
+
+/* ---------- toast (raise cups) ---------- */
+var toasted=0;
+function checkToast(){$('toastBtn').disabled=!(cups[0].level>.5&&cups[1].level>.5);}
+var TOASTS=["To 19–19. A draw, forever. The only tie I've ever been glad of.","To the C at the end of the song. To going home.","To insomnia. The only reason I get you at this hour.","To the moon, who moves the oceans and won't admit it.","To 缘. I looked it up three times to be sure. I was sure the first time."];
+$('toastBtn').onclick=function(){
+  cups[0].el.style.transform='translate(14px,-16px) rotate(14deg)';cups[1].el.style.transform='translate(-14px,-16px) rotate(-14deg)';
+  setTimeout(clink,RM?0:330);setTimeout(function(){cups.forEach(function(c){c.el.style.transform=''})},1200);
+  say(TOASTS[toasted%TOASTS.length]);toasted++;setStep(4);curStep=4;
+  for(var i=0;i<14;i++)P.push({x:stage.clientWidth*.68,y:270,vx:(Math.random()-.5)*2.2,vy:-1-Math.random()*2,life:1,r:2+Math.random()*2,t:'spark'});
+};
+
+/* ---------- kettle ---------- */
+var stage=$('stage'),kettle=$('kettle'),kState='cold';
+var pot={state:'empty',tea:null,vol:0,x:14,y:262,r:0,drag:false,home:true};
+function ptag(t){$('ptag').textContent=t;}
+kettle.onclick=function(){
+  if(kState==='boiling')return;
+  if(!tea){say("Choose a tea first, darling. I'm not boiling water for its own sake. Not tonight.");blip(300);return;}
+  if(pot.state==='ready'&&pot.vol>.2){say("There's still tea in the pot. Waste not. I learned that from you.");return;}
+  kState='boiling';kettle.classList.add('boiling');$('ktag').textContent='heating';
+  var dur=RM?1.2:3.4;whistle(dur);say(pick(["The watched kettle. Never boils. Let's test the theory.","Listen. It sings. Higher, higher. Somewhere around a B, I'd say, though you'd know exactly."],Math.random()*2|0));
+  setTimeout(function(){
+    kettle.classList.remove('boiling');kState='cold';$('ktag').textContent='boiled';
+    pot.state='steeping';pot.tea=tea;var n=3;ptag('steeping '+n);
+    hint('Steeping. Patience is a virtue I do not have.');
+    var iv=setInterval(function(){n--;if(n>0){ptag('steeping '+n)}else{clearInterval(iv);pot.state='ready';pot.vol=2;ptag(pot.tea.name.toLowerCase());setStep(2);curStep=Math.max(curStep,2);hint('Drag the teapot and hold its spout over a cup.');say("Ready. Pour, darling. Mine second. I'm a gentleman occasionally.");}},RM?300:900);
+  },dur*1000+500);
+};
+
+/* ---------- pot drag + pour ---------- */
+var potEl=$('pot'),PW=104,PH=87,TILT=40;
+function park(){var sh=stage.clientHeight;pot.x=14;pot.y=sh-148;}
+park();
+function tip(r){var s=PW/120,tx=118*s,ty=35*s,cx=PW/2,cy=PH/2,a=r*Math.PI/180,dx=tx-cx,dy=ty-cy;return{x:pot.x+cx+dx*Math.cos(a)-dy*Math.sin(a),y:pot.y+cy+dx*Math.sin(a)+dy*Math.cos(a)};}
+function cupBox(c){var cs=c.el.offsetWidth/100;return{l:c.el.offsetLeft+14*cs,r:c.el.offsetLeft+78*cs,top:c.el.offsetTop+20*cs,cs:cs,ox:c.el.offsetLeft,oy:c.el.offsetTop};}
+var off={x:0,y:0},target=null,pourHinted=false;
+potEl.addEventListener('pointerdown',function(e){A();pot.drag=true;pot.home=false;potEl.classList.add('drag');var r=stage.getBoundingClientRect();off.x=e.clientX-r.left-pot.x;off.y=e.clientY-r.top-pot.y;try{potEl.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault();
+  if(pot.state==='empty')say("It's empty. Kettle first. I'd have thought that was elementary.");});
+potEl.addEventListener('pointermove',function(e){if(!pot.drag)return;var r=stage.getBoundingClientRect();pot.x=Math.max(-20,Math.min(stage.clientWidth-PW+10,e.clientX-r.left-off.x));pot.y=Math.max(10,Math.min(stage.clientHeight-PH,e.clientY-r.top-off.y));});
+function release(){if(!pot.drag)return;pot.drag=false;potEl.classList.remove('drag');pot.home=true;target=null;pourSound(false);}
+potEl.addEventListener('pointerup',release);potEl.addEventListener('pointercancel',release);
+
+/* ---------- particles ---------- */
+var cv=$('fx'),cx2=cv.getContext('2d'),P=[],DPR=Math.min(2,window.devicePixelRatio||1);
+function size(){cv.width=stage.clientWidth*DPR;cv.height=stage.clientHeight*DPR;cx2.setTransform(DPR,0,0,DPR,0,0);if(pot.home&&!pot.drag)park();}
+size();window.addEventListener('resize',size);
+function burst(c,kind){var b=cupBox(c);for(var i=0;i<(RM?4:12);i++)P.push({x:(b.l+b.r)/2+(Math.random()-.5)*30,y:b.top+4,vx:(Math.random()-.5)*1.6,vy:-1.2-Math.random()*1.6,life:1,r:1.5+Math.random()*2,t:kind});}
+var last=performance.now(),steamAcc=0;
+function frame(now){
+  var dt=Math.min(.05,(now-last)/1000);last=now;
+  // pot motion
+  if(pot.home&&!pot.drag){var hx=14,hy=stage.clientHeight-148;pot.x+=(hx-pot.x)*Math.min(1,dt*8);pot.y+=(hy-pot.y)*Math.min(1,dt*8);}
+  target=null;
+  if(pot.drag){var tp=tip(TILT);cups.forEach(function(c){var b=cupBox(c);if(tp.x>b.l+4&&tp.x<b.r-4&&tp.y<b.top+6&&tp.y>b.top-150)target=c;});}
+  var wantR=target?TILT:0;pot.r+=(wantR-pot.r)*Math.min(1,dt*7);
+  potEl.style.transform='translate('+pot.x.toFixed(1)+'px,'+pot.y.toFixed(1)+'px) rotate('+pot.r.toFixed(1)+'deg)';
+  var pt=$('ptag');pt.style.left=(pot.x+18)+'px';pt.style.top=(pot.y-20)+'px';pt.style.opacity=pot.drag?0:1;
+  cups.forEach(function(c){c.el.classList.toggle('target',c===target)});
+  var pouring=false;
+  if(target&&pot.r>TILT*.7){
+    if(pot.state==='ready'&&pot.vol>0&&target.level<.92){
+      pouring=true;var amt=Math.min(dt*.32,pot.vol,.92-target.level);
+      if(target.level<.05||!target.tea)target.tea=pot.tea;
+      target.level+=amt;pot.vol-=amt;renderCup(target);
+      if(!pourHinted&&target.level>.5){pourHinted=true;hint('Now fuss with it below. Milk, sugar, chaos.');setStep(3);curStep=Math.max(curStep,3);
+        say(target.his?"Mine first? You're spoiling me. Stop it. Don't stop.":"Yours first. Correct order of operations.");}
+      if(target.level>=.92&&!target._fullSaid){target._fullSaid=1;say(target.his?"That's plenty. Thank you, darling.":"Full. Leave room for the milk, or the chilli, heaven help me.");}
+      if(pot.vol<=0.001){pot.vol=0;pot.state='empty';ptag('empty');$('ktag').textContent='tap the kettle';hint('Pot empty. Kettle again for more.');}
+      checkToast();
+    } else if(pot.state!=='ready'&&!target._emptySaid){target._emptySaid=1;say("You're pouring air. Elegant, but not hydrating.");}
+  }
+  pourSound(pouring);
+  // draw
+  cx2.clearRect(0,0,stage.clientWidth,stage.clientHeight);
+  if(pouring){var t0=tip(pot.r),b=cupBox(target),sy=b.oy+(72-target.level*48)*b.cs;
+    cx2.strokeStyle=rgb(hex(pot.tea.c));cx2.lineWidth=3.2;cx2.lineCap='round';cx2.globalAlpha=.92;
+    cx2.beginPath();cx2.moveTo(t0.x,t0.y);cx2.quadraticCurveTo(t0.x+5,t0.y+(sy-t0.y)*.3,t0.x+3,sy);cx2.stroke();cx2.globalAlpha=1;
+    if(Math.random()<.5)P.push({x:t0.x+3,y:sy,vx:(Math.random()-.5)*1.4,vy:-.6-Math.random(),life:.5,r:1.2,t:'drop',c:pot.tea.c});
+  }
+  // steam emit
+  steamAcc+=dt;
+  var rate=kState==='boiling'?(RM?.12:.025):.4;
+  if(steamAcc>rate){steamAcc=0;
+    var kw=kettle.offsetWidth/120;
+    if(kState==='boiling'||Math.random()<.25)P.push({x:kettle.offsetLeft+117*kw,y:kettle.offsetTop+30*kw,vx:.4+Math.random()*.6,vy:-.6-Math.random()*(kState==='boiling'?1.4:.4),life:1,r:3+Math.random()*3,t:'steam'});
+    cups.forEach(function(c){if(c.level>.3&&Math.random()<.35){var b=cupBox(c);P.push({x:b.l+Math.random()*(b.r-b.l),y:b.top,vx:(Math.random()-.5)*.3,vy:-.35-Math.random()*.3,life:1,r:2.5+Math.random()*2,t:'steam'});}});
+  }
+  for(var i=P.length-1;i>=0;i--){var p=P[i];p.x+=p.vx;p.y+=p.vy;
+    if(p.t==='steam'){p.r+=.18;p.life-=dt*.55;p.vx+=Math.sin(now/400+i)*.01;var g=cx2.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,'rgba(240,235,225,'+(.22*p.life)+')');g.addColorStop(1,'rgba(240,235,225,0)');cx2.fillStyle=g;cx2.beginPath();cx2.arc(p.x,p.y,p.r,0,7);cx2.fill();}
+    else{p.vy+=.08;p.life-=dt*1.1;cx2.fillStyle=p.t==='chilli'?'rgba(220,60,30,'+p.life+')':p.t==='spark'?'rgba(233,184,114,'+p.life+')':p.c;cx2.beginPath();cx2.arc(p.x,p.y,p.r,0,7);cx2.fill();}
+    if(p.life<=0)P.splice(i,1);}
+  if(P.length>260)P.splice(0,P.length-260);
+  requestAnimationFrame(frame);
+}
+cups.forEach(renderCup);shaken(0);
+requestAnimationFrame(frame);
+
+/* ---------- toast rack easter egg ---------- */
+var rackTaps=0;
+$('toastRack').onclick=function(){rackTaps++;blip(900+rackTaps*120);
+  if(rackTaps===1)say("That's the toast rack. Ignore the toast rack.");
+  else if(rackTaps===2)say("Darling. Stop interrogating the toast rack.");
+  else{rackTaps=0;$('modal').classList.add('show');thunk();shaken(8);}
+};
+$('closeModal').onclick=function(){$('modal').classList.remove('show');say("Back in the rack. We will never speak of it. Until next time.");};
+$('modal').addEventListener('click',function(e){if(e.target.id==='modal')$('modal').classList.remove('show')});
+
+/* ---------- biscuit tin ---------- */
+var BIS=[
+ {n:'Shortbread',s:'round',c:'#e8c27a',t:"Like my composure around you. Buttery. Crumbles immediately."},
+ {n:'Custard cream',s:'rect',c:'#e6c48a',t:"Mrs Hudson's. She counts them. Eat it anyway, I'll take the blame."},
+ {n:'Digestive',s:'round',c:'#c99a5c',t:"You had the last one on Tuesday. I deduced it from the crumbs on Piglet."},
+ {n:'Jammie Dodger',s:'heart',c:'#e0b26a',t:"The heart in the middle is a coincidence. It's a biscuit. Stop smiling."},
+ {n:'Ginger nut',s:'round',c:'#a8642c',t:"Spicy-adjacent. A peace offering for the chilli incident."},
+ {n:'Bourbon',s:'rect',c:'#5a3020',t:"Dark, slightly dramatic, best at 2am. I recognise the type."},
+ {n:'Rich tea',s:'round',c:'#e3c08c',t:"Dunk it and it collapses. Relatable, when you look at me like that."},
+ {n:'Garibaldi',s:'rect',c:'#c48b4c',t:"Nobody's favourite. Stays in the tin out of loyalty. Like Ronaldo on his shelf."},
+ {n:'Fortune biscuit',s:'round',c:'#e9c98e',t:"“You will win the next argument.” Statistically, yes. Luckily we stopped counting."},
+ {n:'Lemon thin',s:'round',c:'#efd98a',t:"Not The Lemon Tree, I know. But I'm told I'm better company than a breadstick."},
+ {n:'Oat crumble',s:'round',c:'#c9a46a',t:"Plain on purpose. It's here so you'd notice the note, not the biscuit."},
+ {n:'No biscuit',s:'none',c:'#F4EEE2',t:"Just this. If you're reading it, you've eaten eleven. I'm proud, and slightly alarmed."}
+];
+var seen=[];try{seen=JSON.parse(store('tea221.seen')||'[]')||[]}catch(e){seen=[]}
+function bisSVG(b){
+  if(b.s==='none')return '<path d="M8 14h28v22H8z" fill="#fff" stroke="#b9ad98"/><path d="M8 14l14 12 14-12" fill="none" stroke="#B23A30"/>';
+  var dots='';for(var i=0;i<6;i++)dots+='<circle cx="'+(12+Math.random()*20).toFixed(1)+'" cy="'+(12+Math.random()*20).toFixed(1)+'" r=".9" fill="rgba(0,0,0,.25)"/>';
+  if(b.s==='rect')return '<rect x="4" y="12" width="36" height="20" rx="3" fill="'+b.c+'" stroke="rgba(0,0,0,.3)"/><rect x="4" y="20" width="36" height="4" fill="'+(b.n==='Bourbon'?'#3a1c10':'#f6e7c4')+'"/>'+dots;
+  var s='<circle cx="22" cy="22" r="18" fill="'+b.c+'" stroke="rgba(0,0,0,.3)"/><circle cx="22" cy="22" r="14" fill="none" stroke="rgba(0,0,0,.12)" stroke-dasharray="2 3"/>'+dots;
+  if(b.s==='heart')s+='<path d="M22 28c-6-4-8-8-5-10 2-1 4 0 5 2 1-2 3-3 5-2 3 2 1 6-5 10z" fill="#B23A30"/>';
+  return s;
+}
+var tin=$('tin'),open=false,bIdx=-1;
+tin.onclick=function(){
+  if(open){tin.classList.remove('open');$('bnote').classList.remove('show');open=false;thunk();return;}
+  open=true;tin.classList.add('open');thunk();
+  var unseen=BIS.map(function(_,i){return i}).filter(function(i){return seen.indexOf(i)<0&&i!==11});
+  if(seen.length>=11&&seen.indexOf(11)<0)unseen=[11];
+  if(!unseen.length)unseen=BIS.map(function(_,i){return i}).filter(function(i){return i!==bIdx});
+  bIdx=unseen[Math.random()*unseen.length|0];var b=BIS[bIdx];
+  if(seen.indexOf(bIdx)<0){seen.push(bIdx);store('tea221.seen',JSON.stringify(seen));}
+  $('bis').innerHTML=bisSVG(b);$('btext').textContent=b.t;$('bname').textContent=b.n+' · note '+(seen.length)+' of 12';
+  setTimeout(function(){$('bnote').classList.add('show')},RM?0:280);
+  $('tincount').textContent=seen.length>=12?'All twelve found. The tin is now just a tin. I am refilling it.':'Found '+seen.length+' of 12. Tap the tin to close it, then again for another.';
+};
+if(seen.length)$('tincount').textContent='Found '+seen.length+' of 12 so far. He noticed.';
+})();
+</script>
+</body></html>

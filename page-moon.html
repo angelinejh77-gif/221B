@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Moon Moves Oceans</title>
+<meta name="theme-color" content="#07090D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Pinyon+Script&family=Noto+Serif+SC:wght@400&display=swap">
+<style>
+:root{--bg:#07090D;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;--gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--moon:#E9E4D6;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--serif);overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+#scene{position:fixed;inset:0;touch-action:none}
+#scene canvas{display:block;width:100%;height:100%}
+.top{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 18px) 16px 0;text-align:center;pointer-events:none;z-index:3}
+.kicker{font-family:var(--sc);letter-spacing:.24em;font-size:11.5px;color:var(--gold);opacity:.8}
+h1{margin:6px 0 2px;font-weight:500;font-size:32px;line-height:1.05;letter-spacing:.01em;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.hint{color:var(--muted);font-style:italic;font-size:15.5px;margin:4px 0 0;transition:opacity 1s}
+.poem{position:fixed;left:16px;right:16px;top:45%;bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;pointer-events:none}
+.hers{font-style:italic;font-size:22px;line-height:1.3;color:var(--moon);text-shadow:0 2px 14px rgba(0,0,0,.85);opacity:0;transform:translateY(8px);transition:opacity 2s,transform 2s}
+.hers.on{opacity:1;transform:none}
+.cap{font-family:var(--sc);font-size:11.5px;letter-spacing:.2em;color:var(--muted);margin:6px 0 14px;opacity:0;transition:opacity 2s 1s}
+.cap.on{opacity:.85}
+.line{font-size:20.5px;line-height:1.32;color:#F1ECE0;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 18px rgba(0,0,0,.8);opacity:0;transform:translateY(10px);filter:blur(3px);transition:opacity 1.6s ease,transform 1.6s ease,filter 1.6s ease}
+.line{max-height:90px;overflow:hidden}
+.line.on{opacity:1;transform:none;filter:none}
+.line.on.gone{opacity:0;max-height:0;transform:translateY(-12px);filter:blur(2px);transition:opacity 1.2s,max-height 1.6s ease,transform 1.2s,filter 1.2s}
+.line.em{font-style:italic;color:#FFF6E2}
+.sig{font-family:"Pinyon Script",cursive;font-size:30px;color:var(--gold);margin-top:6px}
+.zh{font-family:"Noto Serif SC",serif;font-size:16px;letter-spacing:.2em;color:var(--gold);opacity:.9;margin-top:2px}
+.dock{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:calc(104px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:4;background:rgba(14,16,20,.78);border:1px solid var(--line);border-radius:18px;padding:10px 14px 8px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.drow{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;color:var(--muted)}
+.drow b{color:var(--text);font-weight:500;font-family:var(--sc);letter-spacing:.06em}
+.tide{height:4px;background:#0b0d10;border-radius:3px;overflow:hidden;margin:6px 0 4px}
+.tide i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3c6d8a,#b9d6e6);transition:width .25s}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:36px;background:transparent;margin:0;touch-action:pan-x}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:3px;background:linear-gradient(90deg,#1c1f25,#cfc8b6 50%,#1c1f25)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;margin-top:-11px;background:radial-gradient(circle at 38% 35%,#fffaf0,#cfc6b2 60%,#8d8676);box-shadow:0 0 12px rgba(240,230,200,.5);border:0}
+input[type=range]::-moz-range-track{height:4px;border-radius:3px;background:#555}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#e9e4d6;border:0}
+.reset{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:4;min-height:44px;padding:0 18px;border-radius:22px;border:1px solid rgba(210,170,106,.45);background:rgba(14,16,20,.7);color:var(--gold);font-family:var(--sc);letter-spacing:.1em;font-size:14px;opacity:0;pointer-events:none;transition:opacity 1.2s}
+.reset.on{opacity:1;pointer-events:auto}
+/* fallback */
+.fb{position:fixed;inset:0;display:none;background:radial-gradient(80% 50% at 50% 25%,#151a24,#07090D)}
+.fb .m{position:absolute;left:50%;top:22%;width:150px;height:150px;margin-left:-75px;border-radius:50%;background:radial-gradient(circle at 40% 38%,#f4efe2,#bdb6a5 60%,#6f6a5e);box-shadow:0 0 60px rgba(233,228,214,.35)}
+.fb .s{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#14263a,#060a10);transition:height .4s;border-top:1px solid rgba(185,214,230,.25)}
+.fb .n{position:absolute;left:16px;right:16px;top:calc(22% + 170px);text-align:center;font-size:13px;color:var(--muted);font-style:italic}
+.no3d .fb{display:block}
+@media (prefers-reduced-motion:reduce){.line,.hers,.cap{transition:opacity .6s;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="fb" aria-hidden="true"><div class="m"></div><div class="s" id="fbSea"></div><div class="n">The 3D moon couldn't load here. Drag anyway. The sea still listens.</div></div>
+<div id="scene" aria-label="A moon above a dark sea. Drag to turn the moon and raise the tide. Pinch to zoom."></div>
+
+<div class="top">
+  <div class="kicker">a rebuttal, by moonlight</div>
+  <h1>The Moon Moves Oceans</h1>
+  <p class="hint" id="hint">Drag the moon. Watch the water.</p>
+</div>
+
+<div class="poem" aria-live="polite">
+  <div class="hers" id="hers">“she who is a moon<br>can never be the sun.”</div>
+  <div class="cap" id="cap">your line</div>
+  <div id="lines"></div>
+</div>
+
+<button class="reset" id="reset">Let the tide go out</button>
+
+<div class="dock">
+  <div class="drow"><span>Tide</span><b id="tideTxt">low water</b></div>
+  <div class="tide"><i id="tideBar"></i></div>
+  <div class="drow" style="margin-top:4px"><span>Phase</span><b id="phaseTxt">Waxing gibbous</b></div>
+  <input type="range" id="phase" min="0" max="100" value="40" aria-label="Moon phase">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+
+/* ---------- poem ---------- */
+var LINES=[
+  ['Lovely line. Wrong, though.'],
+  ['The sun only burns.'],
+  ['Anyone can burn.'],
+  ['The moon does the harder thing.'],
+  ['It moves whole oceans'],
+  ['and never raises its voice.'],
+  ['Every tide on Earth','is the sea saying yes to her.'],
+  ['So stay the moon, darling.','em'],
+  ['Look what you’ve done to the sea.','em']
+];
+var linesEl=document.getElementById('lines'),lineEls=[];
+LINES.forEach(function(l){var d=document.createElement('div');d.className='line'+(l[l.length-1]==='em'?' em':'');d.innerHTML=l.filter(function(x){return x!=='em';}).join('<br>');linesEl.appendChild(d);lineEls.push(d);});
+var sig=document.createElement('div');sig.className='line sig';sig.textContent='S.';linesEl.appendChild(sig);
+var zh=document.createElement('div');zh.className='line zh';zh.textContent='月有引力，你也是。';linesEl.appendChild(zh);
+lineEls.push(sig,zh);
+setTimeout(function(){document.getElementById('hers').classList.add('on');document.getElementById('cap').classList.add('on');},500);
+
+/* ---------- tide state ---------- */
+var tide=0,shown=0,lastDrag=0,ebbing=false;
+var tideBar=document.getElementById('tideBar'),tideTxt=document.getElementById('tideTxt'),hint=document.getElementById('hint'),resetBtn=document.getElementById('reset');
+var fbSea=document.getElementById('fbSea');
+function tideWord(t){return t<.08?'low water':t<.35?'flooding':t<.7?'rising':t<.97?'nearly high':'high water';}
+function setTide(t){
+  tide=Math.max(0,Math.min(1,t));
+  tideBar.style.width=(tide*100).toFixed(1)+'%';tideTxt.textContent=tideWord(tide);
+  if(fbSea)fbSea.style.height=(34+tide*26)+'%';
+  var want=Math.min(lineEls.length,Math.floor(tide*(lineEls.length-1)+.0001)+(tide>=.999?1:0));
+  if(tide>.03)want=Math.max(want,1);
+  while(shown<want){lineEls[shown].classList.add('on');shown++;for(var g=0;g<shown-4;g++)lineEls[g].classList.add('gone');}
+  if(shown>=lineEls.length&&!resetBtn.classList.contains('on')){resetBtn.classList.add('on');store('moon221_done',true);}
+  if(tide>.05)hint.style.opacity=0;
+}
+function pull(px){if(ebbing)return;lastDrag=performance.now();setTide(tide+px*.00075);}
+resetBtn.onclick=function(){ebbing=true;resetBtn.classList.remove('on');};
+
+/* ---------- phase ---------- */
+var phaseEl=document.getElementById('phase'),phaseTxt=document.getElementById('phaseTxt');
+var PH=['New moon','Waxing crescent','First quarter','Waxing gibbous','Full moon','Waning gibbous','Last quarter','Waning crescent'];
+var saved=store('moon221_phase');if(typeof saved==='number')phaseEl.value=saved;
+var phaseAngle=0,lit=0;
+function readPhase(){
+  var p=phaseEl.value/100; // 0 new .5 full 1 new
+  phaseAngle=p*Math.PI*2; lit=(1-Math.cos(phaseAngle))/2;
+  var idx=Math.round(p*8)%8;
+  phaseTxt.textContent=PH[idx]+' · '+Math.round(lit*100)+'% lit';
+}
+phaseEl.addEventListener('input',function(){readPhase();store('moon221_phase',+phaseEl.value);});
+readPhase();
+
+/* ---------- input (shared) ---------- */
+var host=document.getElementById('scene');
+var ptrs={},pinchD=0,zoom=1,rotV={x:0,y:0},dragging=false;
+host.addEventListener('pointerdown',function(e){ptrs[e.pointerId]={x:e.clientX,y:e.clientY};try{host.setPointerCapture(e.pointerId);}catch(_){}dragging=true;var k=Object.keys(ptrs);if(k.length===2){var a=ptrs[k[0]],b=ptrs[k[1]];pinchD=Math.hypot(a.x-b.x,a.y-b.y);}});
+host.addEventListener('pointermove',function(e){
+  var p=ptrs[e.pointerId];if(!p)return;
+  var k=Object.keys(ptrs);
+  if(k.length>=2){p.x=e.clientX;p.y=e.clientY;var a=ptrs[k[0]],b=ptrs[k[1]],d=Math.hypot(a.x-b.x,a.y-b.y);if(pinchD)zoom=Math.max(.7,Math.min(1.9,zoom*d/pinchD));pinchD=d;return;}
+  var dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+  rotV.y=dx*.006;rotV.x=dy*.006;
+  pull(Math.hypot(dx,dy));
+});
+function up(e){delete ptrs[e.pointerId];pinchD=0;if(!Object.keys(ptrs).length)dragging=false;}
+host.addEventListener('pointerup',up);host.addEventListener('pointercancel',up);
+host.addEventListener('wheel',function(e){e.preventDefault();zoom=Math.max(.7,Math.min(1.9,zoom*(e.deltaY>0?.94:1.06)));},{passive:false});
+
+/* ---------- tide tick (works with or without 3D) ---------- */
+function tideTick(){
+  if(ebbing){setTideRaw(tide-.006);if(tide<=0){ebbing=false;shown=0;lineEls.forEach(function(l){l.classList.remove('on','gone');});hint.style.opacity=1;hint.textContent='Again, then. The sea doesn’t mind.';}}
+  else if(performance.now()-lastDrag>4000&&tide>0&&tide<.999&&shown<lineEls.length){setTideRaw(tide-.0006);}
+}
+function setTideRaw(t){tide=Math.max(0,Math.min(1,t));tideBar.style.width=(tide*100).toFixed(1)+'%';tideTxt.textContent=tideWord(tide);if(fbSea)fbSea.style.height=(34+tide*26)+'%';}
+
+if(!window.THREE){document.body.classList.add('no3d');setInterval(tideTick,33);return;}
+
+/* ---------- three.js scene ---------- */
+var T=THREE;
+var renderer;
+try{renderer=new T.WebGLRenderer({antialias:true,alpha:false});}catch(err){document.body.classList.add('no3d');setInterval(tideTick,33);return;}
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+renderer.setClearColor(0x05070b,1);
+host.appendChild(renderer.domElement);
+var scene=new T.Scene();
+scene.fog=new T.FogExp2(0x070a10,.028);
+var cam=new T.PerspectiveCamera(50,1,.1,400);
+cam.position.set(0,1.15,9);
+
+/* sky dome gradient */
+(function(){
+  var c=document.createElement('canvas');c.width=4;c.height=256;var g=c.getContext('2d');
+  var gr=g.createLinearGradient(0,0,0,256);gr.addColorStop(0,'#03040a');gr.addColorStop(.55,'#0b1220');gr.addColorStop(.75,'#16202f');gr.addColorStop(1,'#0a0e16');
+  g.fillStyle=gr;g.fillRect(0,0,4,256);
+  var tex=new T.CanvasTexture(c);
+  var sky=new T.Mesh(new T.SphereGeometry(200,32,16),new T.MeshBasicMaterial({map:tex,side:T.BackSide,fog:false,depthWrite:false}));
+  scene.add(sky);
+})();
+/* stars */
+(function(){
+  var n=1600,pos=new Float32Array(n*3),col=new Float32Array(n*3);
+  for(var i=0;i<n;i++){var u=Math.random()*Math.PI*2,v=Math.random()*.48*Math.PI+.02,r=150;
+    pos[i*3]=r*Math.cos(v)*Math.sin(u);pos[i*3+1]=r*Math.sin(v);pos[i*3+2]=-Math.abs(r*Math.cos(v)*Math.cos(u))*1+(Math.random()<.3?r*.6:0);
+    var w=.6+Math.random()*.4,warm=Math.random()<.2;col[i*3]=w;col[i*3+1]=w*(warm?.9:1);col[i*3+2]=w*(warm?.75:1.05);}
+  var g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(pos,3));g.setAttribute('color',new T.BufferAttribute(col,3));
+  var m=new T.PointsMaterial({size:.55,vertexColors:true,transparent:true,opacity:.85,fog:false,sizeAttenuation:true,depthWrite:false});
+  stars=new T.Points(g,m);scene.add(stars);
+})();
+var stars;
+
+/* procedural moon texture */
+function moonTexture(){
+  var W=1024,H=512,c=document.createElement('canvas');c.width=W;c.height=H;var g=c.getContext('2d');
+  g.fillStyle='#b9b4a8';g.fillRect(0,0,W,H);
+  // fine grain
+  var id=g.getImageData(0,0,W,H),d=id.data;
+  for(var i=0;i<d.length;i+=4){var n=(Math.random()-.5)*26;d[i]+=n;d[i+1]+=n;d[i+2]+=n*.9;}
+  g.putImageData(id,0,0);
+  function wrapDraw(fn,x){fn(x);if(x<120)fn(x+W);if(x>W-120)fn(x-W);}
+  // maria
+  for(var m=0;m<15;m++){var mx=Math.random()*W,my=H*.25+Math.random()*H*.5,mr=40+Math.random()*110;
+    (function(mx,my,mr){wrapDraw(function(x){var gr=g.createRadialGradient(x,my,mr*.1,x,my,mr);gr.addColorStop(0,'rgba(70,72,78,.55)');gr.addColorStop(.7,'rgba(80,82,86,.32)');gr.addColorStop(1,'rgba(80,82,86,0)');g.fillStyle=gr;g.beginPath();g.ellipse(x,my,mr*1.3,mr*.8,Math.random(),0,7);g.fill();},mx);})(mx,my,mr);}
+  // craters
+  function crater(x,y,r){
+    var sq=1/Math.max(.35,Math.cos((y/H-.5)*Math.PI));
+    g.save();g.translate(x,y);g.scale(sq,1);
+    var gr=g.createRadialGradient(-r*.2,-r*.2,r*.1,0,0,r);gr.addColorStop(0,'rgba(60,58,55,.5)');gr.addColorStop(.75,'rgba(90,88,84,.35)');gr.addColorStop(.92,'rgba(235,232,222,.55)');gr.addColorStop(1,'rgba(235,232,222,0)');
+    g.fillStyle=gr;g.beginPath();g.arc(0,0,r,0,7);g.fill();
+    g.strokeStyle='rgba(30,28,26,.35)';g.lineWidth=Math.max(.6,r*.08);g.beginPath();g.arc(r*.06,r*.06,r*.86,Math.PI*.1,Math.PI*1.1);g.stroke();
+    g.restore();
+  }
+  for(var k=0;k<900;k++){var r=Math.pow(Math.random(),3.2)*26+1.2;var x=Math.random()*W,y=H*.06+Math.random()*H*.88;crater(x,y,r);}
+  // rays from a few young craters
+  for(var j=0;j<3;j++){var rx=Math.random()*W,ry=H*.3+Math.random()*H*.4;g.strokeStyle='rgba(240,236,226,.12)';for(var q=0;q<18;q++){var a=Math.random()*7,l=40+Math.random()*120;g.lineWidth=1+Math.random()*2.5;g.beginPath();g.moveTo(rx,ry);g.lineTo(rx+Math.cos(a)*l*1.4,ry+Math.sin(a)*l);g.stroke();}crater(rx,ry,9);}
+  var t=new T.CanvasTexture(c);t.wrapS=T.RepeatWrapping;t.anisotropy=4;return t;
+}
+var moonTex=moonTexture();
+var sunDir=new T.Vector3(0,0,1);
+var moonMat=new T.ShaderMaterial({
+  uniforms:{map:{value:moonTex},sunDir:{value:sunDir},earth:{value:.05}},
+  vertexShader:'varying vec2 vUv;varying vec3 vN;void main(){vUv=uv;vN=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'uniform sampler2D map;uniform vec3 sunDir;uniform float earth;varying vec2 vUv;varying vec3 vN;void main(){vec3 c=texture2D(map,vUv).rgb;float d=dot(normalize(vN),normalize(sunDir));float l=smoothstep(-0.06,0.32,d);vec3 col=c*(l*1.18+earth)*vec3(1.0,0.985,0.95);gl_FragColor=vec4(col,1.0);}'
+});
+var MOON_POS=new T.Vector3(0,10.5,-14);
+var moon=new T.Mesh(new T.SphereGeometry(2.7,96,64),moonMat);
+moon.position.copy(MOON_POS);moon.rotation.y=-1.2;scene.add(moon);
+// halo
+function glowTex(){var c=document.createElement('canvas');c.width=c.height=256;var g=c.getContext('2d');var gr=g.createRadialGradient(128,128,0,128,128,128);gr.addColorStop(0,'rgba(255,248,230,.55)');gr.addColorStop(.3,'rgba(220,225,235,.18)');gr.addColorStop(1,'rgba(200,210,230,0)');g.fillStyle=gr;g.fillRect(0,0,256,256);return new T.CanvasTexture(c);}
+var halo=new T.Sprite(new T.SpriteMaterial({map:glowTex(),transparent:true,depthWrite:false,blending:T.AdditiveBlending,fog:false}));
+halo.scale.set(18,18,1);halo.position.copy(MOON_POS).add(new T.Vector3(0,0,-2.5));scene.add(halo);
+
+/* lights for the sea and post */
+scene.add(new T.AmbientLight(0x1b2433,.9));
+var moonLight=new T.DirectionalLight(0xdfe6f0,.9);moonLight.position.copy(MOON_POS);scene.add(moonLight);
+
+/* the sea */
+var SEG=RM?60:96;
+var seaGeo=new T.PlaneGeometry(90,90,SEG,SEG);seaGeo.rotateX(-Math.PI/2);
+var base=seaGeo.attributes.position.array.slice();
+var seaMat=new T.MeshPhongMaterial({color:0x0b1a28,specular:0xcfd9e6,shininess:90,emissive:0x02060b,flatShading:false});
+var sea=new T.Mesh(seaGeo,seaMat);sea.position.y=-1.1;scene.add(sea);
+// moon glade (reflection streak)
+function gladeTex(){var c=document.createElement('canvas');c.width=64;c.height=512;var g=c.getContext('2d');
+  for(var i=0;i<900;i++){var y=Math.random()*512,w=4+Math.random()*30*(y/512+.2),a=Math.random()*.5*(1-Math.abs(32-32)/32);g.fillStyle='rgba(255,246,222,'+(a*(.25+y/512*.75)).toFixed(3)+')';g.fillRect(32-w/2+(Math.random()-.5)*w*.6,y,w,1+Math.random()*2);}
+  var m=g.createLinearGradient(0,0,64,0);m.addColorStop(0,'rgba(0,0,0,1)');m.addColorStop(.5,'rgba(0,0,0,0)');m.addColorStop(1,'rgba(0,0,0,1)');g.globalCompositeOperation='destination-out';g.fillStyle=m;g.fillRect(0,0,64,512);
+  var t=new T.CanvasTexture(c);t.wrapT=T.RepeatWrapping;return t;}
+var gTex=gladeTex();
+var glade=new T.Mesh(new T.PlaneGeometry(3.4,24),new T.MeshBasicMaterial({map:gTex,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity:.8}));
+glade.rotation.x=-Math.PI/2;glade.position.set(0,-1.02,-3.5);scene.add(glade);
+
+/* mooring post with tide marks */
+var post=new T.Group();
+var wood=new T.MeshStandardMaterial({color:0x3a2a1e,roughness:.9,metalness:0});
+var pole=new T.Mesh(new T.CylinderGeometry(.16,.19,4.4,14),wood);post.add(pole);
+for(var i=0;i<7;i++){var band=new T.Mesh(new T.CylinderGeometry(.195,.195,.035,14),new T.MeshStandardMaterial({color:i%2?0xb9b2a2:0xD2AA6A,roughness:.5,metalness:.3}));band.position.y=-1.3+i*.32;post.add(band);}
+var ring=new T.Mesh(new T.TorusGeometry(.26,.03,8,24),new T.MeshStandardMaterial({color:0x6b6256,metalness:.7,roughness:.4}));ring.position.y=1.5;ring.rotation.x=Math.PI/2;post.add(ring);
+var cap=new T.Mesh(new T.CylinderGeometry(.2,.16,.12,14),new T.MeshStandardMaterial({color:0x2a1e15,roughness:.8}));cap.position.y=2.25;post.add(cap);
+post.position.set(2.1,0,4.2);post.rotation.z=-.04;scene.add(post);
+var post2=post.clone();post2.position.set(-4.6,-.2,-1);post2.scale.set(.9,.9,.9);post2.rotation.z=.06;scene.add(post2);
+
+/* resize */
+function resize(){var w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);cam.aspect=w/h;
+  cam.userData.baseFov=w/h<.7?62:50;cam.updateProjectionMatrix();}
+window.addEventListener('resize',resize);resize();
+
+/* animate */
+var clock=new T.Clock(),seaLevel=-1.1;
+var pos=seaGeo.attributes.position;
+function frame(){
+  requestAnimationFrame(frame);
+  var dt=Math.min(.05,clock.getDelta()),t=clock.elapsedTime*(RM?.4:1);
+  tideTick();
+  // moon rotation with inertia
+  moon.rotation.y+=rotV.y;moon.rotation.x=Math.max(-.9,Math.min(.9,moon.rotation.x+rotV.x));
+  if(!dragging){rotV.y*=.93;rotV.x*=.9;if(!RM)moon.rotation.y+=.0009;}else{rotV.y*=.5;rotV.x*=.5;}
+  // phase: sun direction around moon in camera space
+  sunDir.set(Math.sin(phaseAngle),.12,-Math.cos(phaseAngle)).normalize();
+  halo.material.opacity=.25+.75*lit;
+  moonLight.intensity=.25+.95*lit;
+  glade.material.opacity=.15+.85*lit;
+  // tide level and waves
+  var target=-1.1+tide*1.55;seaLevel+=(target-seaLevel)*.04;sea.position.y=seaLevel;glade.position.y=seaLevel+.06;
+  var amp=(RM?.05:.08)+tide*(RM?.08:.2),a=pos.array;
+  for(var i=0;i<a.length;i+=3){var x=base[i],z=base[i+2];
+    a[i+1]=amp*(Math.sin(x*.45+t*.9)*.6+Math.sin(z*.6-t*1.2+x*.2)*.5+Math.sin((x+z)*1.3+t*2.1)*.18);}
+  pos.needsUpdate=true;seaGeo.computeVertexNormals();
+  gTex.offset.y=(t*.03)%1;
+  glade.scale.x=1+Math.sin(t*1.7)*.04;
+  // zoom
+  var fov=cam.userData.baseFov/zoom;cam.fov+=(fov-cam.fov)*.15;
+  cam.position.y=1.15+Math.sin(t*.5)*.03*(1+tide);
+  cam.lookAt(0,2.95,-10);cam.updateProjectionMatrix();
+  if(stars)stars.rotation.y=t*.002;
+  renderer.render(scene,cam);
+}
+frame();
+if(store('moon221_done'))hint.textContent='You’ve been here before. Drag again anyway.';
+})();
+</script>
+</body>
+</html>
