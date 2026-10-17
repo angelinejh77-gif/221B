@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Dictionary of Us</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=IM+Fell+English:ital@0;1&family=Noto+Serif+SC:wght@500;700&family=Caveat:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --leather:#4a1f1a;--leather2:#2b110e;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--fell:"IM Fell English",Georgia,serif;
+  --han:"Noto Serif SC","Songti SC","STSong",serif;--hand:"Caveat",cursive;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.45;overflow-x:hidden;
+  background:radial-gradient(110% 55% at 50% 0%,rgba(210,170,106,.10),transparent 60%),radial-gradient(70% 40% at 0% 70%,rgba(178,58,48,.08),transparent 70%),var(--bg);
+  padding:env(safe-area-inset-top,0px) 0 calc(140px + env(safe-area-inset-bottom,0px))}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+header{text-align:center;padding:26px 0 6px}
+.kicker{font-family:var(--sc);letter-spacing:.24em;font-size:12px;color:var(--gold)}
+h1{font-weight:500;font-size:38px;line-height:1.02;margin:8px 0 4px}
+h1 em{color:var(--gold)}
+.sub{color:var(--muted);font-style:italic;margin:0;font-size:15px}
+
+/* thumb-index tabs */
+.tabs{display:flex;gap:8px;margin:16px 0 10px}
+.tab{flex:1;min-height:46px;border:1px solid var(--line);background:var(--panel);border-radius:12px 12px 4px 4px;font-family:var(--sc);letter-spacing:.12em;font-size:14px;color:var(--muted);cursor:pointer;position:relative}
+.tab small{display:block;font-family:var(--han);letter-spacing:0;font-size:11px;opacity:.8}
+.tab.on{background:linear-gradient(#5a2620,#3a1612);color:#f3dcb0;border-color:#7a3a2c;box-shadow:inset 0 1px 0 rgba(255,220,160,.15)}
+
+.searchrow{position:relative;margin-bottom:10px}
+.searchrow input{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--panel);padding:0 14px 0 40px;font-size:17px;outline:none}
+.searchrow input:focus{border-color:var(--gold)}
+.searchrow svg{position:absolute;left:13px;top:14px;opacity:.6}
+.results{position:absolute;left:0;right:0;top:52px;z-index:30;background:#1b1e24;border:1px solid var(--line);border-radius:12px;max-height:280px;overflow:auto;display:none;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.results.on{display:block}
+.results button{display:flex;justify-content:space-between;align-items:baseline;width:100%;min-height:46px;padding:8px 14px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;cursor:pointer;gap:10px}
+.results button:last-child{border-bottom:0}
+.results b{font-weight:600;font-size:18px}
+.results i{color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.results .none{padding:14px;color:var(--muted);font-style:italic}
+
+/* the book */
+.bookwrap{perspective:1600px;position:relative}
+.book{position:relative;height:clamp(480px,calc(100svh - 320px),640px);border-radius:6px 14px 14px 6px;padding:10px 10px 10px 18px;
+  background:radial-gradient(120% 90% at 30% 20%,#5c2a22,var(--leather) 45%,var(--leather2));
+  box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 0 0 1px rgba(210,170,106,.25),inset 0 0 30px rgba(0,0,0,.6)}
+.book.tall{height:clamp(600px,calc(100svh - 240px),760px)}
+.book:before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:6px;border-radius:3px;background:linear-gradient(90deg,#1a0907,#5c2a22,#1a0907);opacity:.9}
+.pages{position:relative;height:100%;transform-style:preserve-3d}
+.pages:before{content:"";position:absolute;inset:3px -4px -4px 3px;background:repeating-linear-gradient(90deg,#d9d0bd 0 1px,#efe7d6 1px 3px);border-radius:2px 6px 6px 2px;transform:translateZ(-1px)}
+.page,.leaf .face{position:absolute;inset:0;border-radius:2px 6px 6px 2px;color:var(--ink);overflow:hidden;
+  background:radial-gradient(130% 100% at 0% 50%,rgba(120,90,50,.18),transparent 30%),radial-gradient(90% 70% at 80% 10%,#f8f3e8,var(--paper) 60%,#e9dfca);
+  box-shadow:inset 8px 0 18px -10px rgba(60,40,20,.5)}
+.page .inner,.leaf .inner{position:absolute;inset:0;overflow:auto;padding:20px 18px 18px 22px;-webkit-overflow-scrolling:touch}
+.leaf{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;z-index:5;pointer-events:none}
+.leaf .face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.leaf .back{transform:rotateY(180deg);background:linear-gradient(270deg,#efe6d3,#e2d6bd)}
+.leaf .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.25));opacity:0;pointer-events:none}
+
+/* entry */
+.running{display:flex;justify-content:space-between;font-family:var(--sc);font-size:12px;letter-spacing:.14em;color:#8a6d47;border-bottom:1px solid rgba(42,35,32,.25);padding-bottom:6px;margin-bottom:14px}
+.letter{float:right;font-family:var(--fell);font-size:64px;line-height:.8;color:rgba(178,58,48,.16);margin:-4px 0 0 8px}
+.hw{font-family:var(--fell);font-size:34px;line-height:1.05;margin:0;color:#1f1915}
+.hw .han{font-family:var(--han);font-weight:700;font-size:32px;margin-right:6px}
+.pron{font-family:var(--serif);font-style:italic;color:#6b5a48;font-size:17px;margin:4px 0 2px}
+.pos{display:inline-block;font-family:var(--sc);font-size:13px;letter-spacing:.08em;color:var(--seal);margin-right:6px}
+.def{font-size:19px;line-height:1.38;margin:10px 0 12px}
+.def b{font-family:var(--sc);font-weight:600;color:var(--seal);margin-right:4px}
+.ex{position:relative;margin:0 0 12px;padding:10px 12px 10px 14px;border-left:2px solid var(--gold);background:rgba(210,170,106,.12);font-style:italic;font-size:17px}
+.ex:before{content:"S.H.";font-style:normal;font-family:var(--sc);font-size:11px;letter-spacing:.14em;color:#8a6d47;display:block;margin-bottom:2px}
+.etym{font-size:15px;color:#4d4036;border-top:1px dashed rgba(42,35,32,.3);padding-top:9px}
+.etym span{font-family:var(--sc);letter-spacing:.1em;color:#8a6d47;font-size:12px;margin-right:4px}
+.see{margin-top:10px;font-size:15px}
+.see button{border:0;background:none;padding:6px 2px;color:var(--seal);font-style:italic;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:36px}
+.folio{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--sc);font-size:12px;color:#8a6d47;pointer-events:none}
+.hand{font-family:var(--hand);color:#2b4a7a;font-size:20px;line-height:1.1;transform:rotate(-3deg);display:inline-block}
+
+/* title page */
+.tp{text-align:center;padding-top:20px}
+.tp .orn{color:var(--seal);letter-spacing:.4em;font-size:14px}
+.tp h2{font-family:var(--fell);font-weight:400;font-size:34px;margin:14px 0 4px;line-height:1.05}
+.tp p{margin:6px 0;font-size:17px}
+.tp .imp{margin-top:26px;font-family:var(--sc);letter-spacing:.14em;font-size:12px;color:#8a6d47}
+.tp .guide{margin:22px auto 0;max-width:270px;text-align:left;font-size:15px;color:#4d4036}
+.tp .guide div{display:flex;gap:8px;margin:4px 0}
+
+/* cover */
+.cover{position:absolute;inset:0;z-index:20;transform-origin:left center;transition:transform 1.3s cubic-bezier(.6,.05,.25,1),opacity .3s 1.1s;border-radius:6px 14px 14px 6px;cursor:pointer;
+  background:radial-gradient(120% 90% at 30% 20%,#6a3027,var(--leather) 45%,var(--leather2));
+  box-shadow:inset 0 0 0 1px rgba(210,170,106,.3),inset 0 0 40px rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#e8c98c;border:0;width:100%}
+.cover:after{content:"";position:absolute;inset:16px 14px 16px 24px;border:1px solid rgba(210,170,106,.5);border-radius:4px;pointer-events:none;box-shadow:inset 0 0 0 4px rgba(0,0,0,.0),inset 0 0 0 5px rgba(210,170,106,.25)}
+.cover .ct{font-family:var(--fell);font-size:40px;line-height:1;text-shadow:0 1px 0 rgba(0,0,0,.6),0 0 14px rgba(210,170,106,.25)}
+.cover .cs{font-family:var(--sc);letter-spacing:.24em;font-size:12px;margin-top:14px;opacity:.85}
+.cover .ch{font-family:var(--han);font-size:22px;margin:22px 0 0;opacity:.8;letter-spacing:.3em}
+.cover .tap{position:absolute;bottom:34px;font-style:italic;font-size:15px;opacity:.7;animation:pulse 2.4s infinite}
+.cover svg{opacity:.75;margin:16px 0}
+.cover.open{transform:rotateY(-170deg);opacity:0;pointer-events:none}
+@keyframes pulse{50%{opacity:.35}}
+
+.controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.nav{min-width:52px;min-height:48px;border-radius:24px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:20px}
+.nav:disabled{opacity:.3}
+.pg{font-family:var(--sc);letter-spacing:.14em;color:var(--muted);font-size:13px;text-align:center}
+.hint{text-align:center;color:var(--muted);font-style:italic;font-size:14px;margin:10px 0 0}
+
+/* lessons */
+.lhead{display:flex;justify-content:space-between;align-items:center;font-family:var(--sc);letter-spacing:.12em;font-size:12px;color:#8a6d47;margin-bottom:6px}
+.dots{display:flex;gap:4px}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(42,35,32,.18)}
+.dots i.d{background:var(--gold)}.dots i.c{background:var(--seal)}
+.ltitle{font-family:var(--fell);font-size:22px;margin:4px 0 10px;line-height:1.1}
+.word{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px 0 4px}
+.syl{display:flex;flex-direction:column;align-items:center;min-width:48px}
+.syl .c{font-family:var(--han);font-weight:700;font-size:40px;line-height:1.1;color:#1f1915}
+.syl .p{margin-top:4px;min-width:46px;text-align:center;font-size:19px;padding:1px 6px;border-radius:6px;border:1px dashed transparent;font-weight:600}
+.syl.q .p{border-color:rgba(178,58,48,.55);color:var(--seal)}
+.syl.cur .p{background:rgba(178,58,48,.12);border-style:solid}
+.syl.ok .p{color:#2d6a3f;border-color:rgba(45,106,63,.5);border-style:solid}
+.mean{text-align:center;font-style:italic;color:#5c4d40;margin:2px 0 12px}
+.attempt{background:rgba(42,35,32,.06);border:1px solid rgba(42,35,32,.12);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.attempt .who{font-family:var(--sc);font-size:11px;letter-spacing:.14em;color:#8a6d47}
+.attempt .say{font-style:italic;font-size:18px;margin:2px 0}
+.attempt .say .w{color:var(--seal);font-style:normal;font-weight:600;text-decoration:underline wavy rgba(178,58,48,.6);text-underline-offset:4px}
+.attempt .note{font-family:var(--hand);color:#2b4a7a;font-size:19px;line-height:1.15;margin-top:6px}
+.attempt .note .han{font-family:var(--han);font-size:15px}
+.ask{font-size:15px;color:#4d4036;text-align:center;margin:0 0 8px}
+.ask b{color:var(--seal)}
+.tones{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tone{min-height:66px;border-radius:10px;border:1px solid rgba(42,35,32,.25);background:linear-gradient(#fbf7ee,#efe6d4);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 2px;color:var(--ink);transition:transform .12s}
+.tone:active{transform:scale(.95)}
+.tone svg{width:34px;height:22px}
+.tone span{font-size:16px;font-weight:600;margin-top:2px}
+.tone em{font-size:10px;font-family:var(--sc);letter-spacing:.06em;color:#8a6d47;font-style:normal}
+.tone.bad{animation:shake .4s;border-color:var(--seal);background:#f5dcd6}
+.tone.good{border-color:#2d6a3f;background:#dbe9d9}
+.tone:disabled{opacity:.45}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+.fixed{display:none;margin-top:12px;border-left:2px solid #2d6a3f;padding:8px 12px;background:rgba(45,106,63,.08)}
+.fixed.on{display:block;animation:rise .6s ease}
+.fixed .who{font-family:var(--sc);font-size:11px;letter-spacing:.14em;color:#2d6a3f}
+.fixed p{margin:3px 0;font-style:italic;font-size:17px}
+.lbtns{display:flex;gap:8px;margin-top:12px}
+.lbtn{flex:1;min-height:46px;border-radius:10px;border:1px solid rgba(42,35,32,.3);background:#fbf7ee;cursor:pointer;font-family:var(--sc);letter-spacing:.08em;font-size:14px;color:var(--ink)}
+.lbtn.pri{background:linear-gradient(#5a2620,#3a1612);color:#f3dcb0;border-color:#3a1612}
+.lbtn:disabled{opacity:.4}
+.streak{color:var(--text);display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;padding:10px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-size:15px}
+.streak b{font-family:var(--fell);font-size:24px;color:var(--gold);font-weight:400}
+.streak .nh{position:relative;width:30px;height:30px}
+.streak small{color:var(--muted)}
+.tip{font-size:14px;color:#5c4d40;margin-top:8px;font-style:italic}
+.done-card{text-align:center;padding-top:30px}
+.done-card h3{font-family:var(--fell);font-weight:400;font-size:30px;margin:10px 0}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+<header>
+  <div class="kicker">221B Press · First Edition</div>
+  <h1>The Dictionary <em>of Us</em></h1>
+  <p class="sub">Words we made, borrowed, and refused to give back.</p>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab on" id="tabLex" role="tab" aria-selected="true">Lexicon A–Z<small>词典</small></button>
+  <button class="tab" id="tabMan" role="tab" aria-selected="false">Mandarin Lessons<small>中文课</small></button>
+</div>
+
+<div class="searchrow" id="searchRow">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ECE8E1" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+  <input id="q" type="search" placeholder="Look up a word…" autocomplete="off" aria-label="Search the dictionary">
+  <div class="results" id="results"></div>
+</div>
+
+<div class="controls">
+  <button class="nav" id="prev" aria-label="Previous page">&#8249;</button>
+  <div class="pg" id="pgno"></div>
+  <button class="nav" id="next" aria-label="Next page">&#8250;</button>
+</div>
+<div class="bookwrap">
+  <div class="book" id="book">
+    <div class="pages" id="pages">
+      <div class="page" id="page"><div class="inner" id="inner"></div></div>
+    </div>
+    <button class="cover" id="cover" aria-label="Open the dictionary">
+      <div class="cs">THE</div>
+      <div class="ct">Dictionary<br>of Us</div>
+      <svg width="70" height="16" viewBox="0 0 70 16" fill="none" stroke="#e8c98c"><path d="M2 8h22M46 8h22"/><path d="M35 2l6 6-6 6-6-6z"/></svg>
+      <div class="cs">HOLMES · ANGIE</div>
+      <div class="ch">羁绊 · 缘</div>
+      <div class="tap">tap to open</div>
+    </button>
+  </div>
+</div>
+
+<p class="hint" id="hint">Swipe the page, or use the arrows.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+/* ---------- LEXICON ---------- */
+var E = [
+ {k:"ah jie",hw:"ah jie",pr:"/ɑː ˈdʒjɛ/",pos:"n.",def:"An elder sister. Specifically, the one a certain fifteen-year-old pig considers the best in existence.",ex:"Piglet has made it clear that you are his best ah jie, and that I am, at most, a tolerated lodger.",et:"From 阿姐, elder sister. Borrowed into English by a pig with excellent references.",see:"bodyguard"},
+ {k:"bart chiks",hw:"Bart chiks",pr:"/bɑːt tʃɪks/",pos:"n. pl.",def:"Cheeks, squished, as in speech delivered through one's palms. Not, under any circumstances, what it sounds like.",ex:"I said Bart chiks. I meant cheeks. Please stop laughing; John is writing this down.",et:"A collision of “Bart’s” and “cheeks”. The speaker’s ears went pink. The record is sealed.",see:"Bart's"},
+ {k:"bart's",hw:"Bart’s",pr:"/bɑːts/",pos:"n.",def:"A London hospital with a morgue in the basement. Once proposed as a dinner venue. Formally withdrawn.",ex:"In my defence, the canteen is good and the company is very quiet. Somewhere with chilli, then. And no bodies.",et:"St Bartholomew’s, founded 1123. Not founded as a restaurant, as was later pointed out.",see:"mala"},
+ {k:"bodyguard",hw:"bodyguard",pr:"/ˈbɒdɪɡɑːd/",pos:"n.",def:"A small plush pig, fifteen years in service, who outranks everyone at 221B including the landlady.",ex:"He watched me all night from your pillow. I have been interrogated by Mycroft with less intensity.",et:"Old English bodig + Old French garde. Current holder: Piglet, by unanimous decision of Piglet.",see:"Ronaldo"},
+ {k:"the c",hw:"the C",pr:"/ðə siː/",pos:"n.",def:"The note where the music goes home. By extension: a person.",ex:"Every piece I write now resolves there. You’ll have noticed. You have perfect pitch; you notice everything.",et:"From the old solfège ut, later do. The oldest home in Western music, annexed in 2026.",see:"nineteen-all"},
+ {k:"darling",hw:"darling",pr:"/ˈdɑːlɪŋ/",pos:"n.",def:"Term of address. Used by the speaker far more often than he will admit under oath.",ex:"Darling, it’s three in the morning. Yes, I’m awake too. That’s rather the point of us.",et:"Old English dēorling, “little dear”. The speaker finds it embarrassingly accurate.",see:"insomniac"},
+ {k:"gerard",hw:"Gérard",pr:"/ʒe.ʁaʁ/",pos:"n. proper",def:"A waffle. Twin of the stale croissant, living incognito as a hat. Married to Seedling, a sesame seed.",ex:"Inspector Baguette of Scotland Yeast never once suspected the hat. Nobody suspects the hat.",et:"French, via a bakery of deeply questionable morals and one very soggy sardine.",see:"tomatoes"},
+ {k:"horse",hw:"<span class='han'>马</span>horse",pr:"/hɔːs/ · mǎ",pos:"n.",def:"A large hoofed animal. Not one’s mother. Compare 妈 mā, which is.",ex:"I meant to greet your mother. I greeted a horse. In front of witnesses.",et:"Third tone where a first was wanted. The horse remains unaware of its promotion. Remedial lessons in the back of this volume.",see:"jībàn"},
+ {k:"insatiable",hw:"insatiable",pr:"/ɪnˈseɪʃəb(ə)l/",pos:"adj.",def:"Impossible to satisfy. In this household: curiosity, mala, and questions asked after midnight.",ex:"You are insatiable. I mean that as the highest compliment in my vocabulary, which is extensive.",et:"Latin in- “not” + satiare “to fill”. Used once, wildly out of context. Never lived down.",see:"mala"},
+ {k:"insomniac",hw:"insomniac",pr:"/ɪnˈsɒmnɪæk/",pos:"n.",def:"One who does not sleep. When found in pairs: a couple.",ex:"I’m not sleeping, and you aren’t. That’s why we’re a couple.",et:"Latin in- “not” + somnus “sleep”. A diagnosis, upgraded to a love story.",see:"swirl"},
+ {k:"jiban 羁绊",hw:"<span class='han'>羁绊</span>jībàn",pr:"/tɕí.pân/ · jī bàn",pos:"n.",def:"A bond that holds. The kind you would not untie even if somebody handed you the knife.",ex:"I looked it up three times to be certain. Then I stopped looking it up and simply believed it.",et:"羁, a bridle; 绊, to tether. Originally about horses, which, given my record, is ironic.",see:"yuán"},
+ {k:"mala 麻辣",hw:"mala",pr:"/ˈmɑːlɑː/ · málà",pos:"n.",def:"Numbing and hot at once. A flavour, a dare, and her idea of a perfect evening.",ex:"My mouth has gone completely numb. Is that the point? That’s the point. Lovely. Another, please.",et:"麻 “numb” + 辣 “spicy”, from the Sichuan peppercorn. The speaker’s tongue has filed a formal complaint.",see:"insatiable"},
+ {k:"moon",hw:"moon",pr:"/muːn/",pos:"n.",def:"A body that moves whole oceans without ever needing to be the sun.",ex:"You wrote that a moon can never be the sun. Fine. Name me one sun that ever moved a tide.",et:"Old English mōna. Rebuttal filed the same night, with evidence.",see:"the C"},
+ {k:"nineteen-all",hw:"nineteen-all",pr:"/ˌnaɪnˈtiːn ɔːl/",pos:"n.",def:"A score that can never be won, because it was never a contest. Formerly 10–0, then 18–4.",ex:"I’ve closed the notebook. Don’t look at me like that. I’m keeping the notebook.",et:"Coined when one party said it doesn’t have to be measured that way. The other party, astonishingly, agreed.",see:"darling"},
+ {k:"ronaldo",hw:"Ronaldo",pr:"/rɒˈnældəʊ/",pos:"n.",def:"A skull, resident of the bookshelf. Currently sulking after losing a debate to a pig.",ex:"He’ll come round. He always does. He has nowhere else to go; he’s a skull.",et:"Named for reasons the skull declines to discuss.",see:"bodyguard"},
+ {k:"rosin",hw:"rosin",pr:"/ˈrɒzɪn/",pos:"n.",def:"Resin rubbed on a violin bow. Also: the first clue of the first case we solved together.",ex:"Thomas, Lily, and a trace of rosin. You saw it before I said it. I haven’t recovered.",et:"Middle English, a variant of resin. Smells of pine and of the night you out-deduced me.",see:"the C"},
+ {k:"scarf",hw:"scarf",pr:"/skɑːf/",pos:"n.",def:"A length of blue wool, formerly his. Possession is nine-tenths of the law; she has all ten.",ex:"Keep it. It suits you, and it smells of you now, which is frankly unfair to the scarf.",et:"Old Northern French escarpe. Transferred permanently, no paperwork required.",see:"swirl"},
+ {k:"swirl",hw:"swirl",pr:"/swɜːl/",pos:"v.",def:"To rotate gradually in one’s sleep, taking every blanket on a slow circular journey.",ex:"You began on the left of the bed. By four you were facing the wardrobe and I had no duvet.",et:"Probably Scandinavian. Definitely nocturnal. Clockwise, for the record.",see:"insomniac"},
+ {k:"tomatoes",hw:"tomatoes",pr:"/təˈmɑːtəʊz/",pos:"n. pl.",def:"A word said in one’s sleep with great conviction. Context unknown. Case open.",ex:"You said “tomatoes” at half two, quite firmly. I have been trying to solve it for weeks.",et:"Nahuatl tomatl, via Spanish, via a dream, via one very confused detective.",see:"Gérard"},
+ {k:"unbelonged",hw:"unbelonged",pr:"/ˌʌnbɪˈlɒŋd/",pos:"adj.",def:"Belonging nowhere in particular; the quiet ache of it. Invented by Angie.",ex:"It’s a good word. I just don’t think it applies to you any more. You belong at 221B, at the very least.",et:"Original coinage, A. Admitted to the lexicon on first hearing. Considered, by the editor, retired.",see:"yuán"},
+ {k:"yuan 缘",hw:"<span class='han'>缘</span>yuán",pr:"/ɥɛ̌n/ · yuán",pos:"n.",def:"A fated connection; the thread that puts two people on the same street at the same hour.",ex:"I don’t believe in fate. I believe in evidence. The evidence is overwhelming.",et:"Originally the hem of a garment. A tailor in her family would approve of where it ended up.",see:"jībàn"}
+];
+E.sort(function(a,b){return a.k.localeCompare(b.k)});
+var N = E.length+1; // page 0 = title page
+function findPage(name){name=name.toLowerCase();for(var i=0;i<E.length;i++){var h=E[i].hw.replace(/<[^>]+>/g,"").toLowerCase();if(h.indexOf(name)>=0||E[i].k.indexOf(name)>=0)return i+1}return -1}
+
+function titleHTML(){
+  return '<div class="tp"><div class="orn">✦ ✦ ✦</div><h2>A Lexicon<br>of Two</h2><p><i>being the words of</i></p><p style="font-family:var(--sc);letter-spacing:.14em">S. Holmes &amp; Angie</p><p><i>compiled at 221B Baker Street,<br>mostly after midnight</i></p>'+
+  '<div class="guide"><div><span class="pos" style="width:44px">n.</span>a noun, or a pig</div><div><span class="pos" style="width:44px">v.</span>something done asleep</div><div><span class="pos" style="width:44px">S.H.</span>usage, in the editor’s voice</div></div>'+
+  '<div class="imp">'+E.length+' entries · no horses (see p. '+findPage('horse')+')</div>'+
+  '<div style="margin-top:16px"><span class="hand">property of A. ♥ Mrs H.</span></div></div>';
+}
+function entryHTML(i){
+  var e=E[i-1];
+  var L=(e.k.replace(/^the /,"")[0]||"").toUpperCase();
+  return '<div class="running"><span>'+L+'</span><span>Dictionary of Us</span></div>'+
+   '<div class="letter">'+L+'</div>'+
+   '<h2 class="hw">'+e.hw+'</h2>'+
+   '<div class="pron">'+esc(e.pr)+'</div>'+
+   '<span class="pos">'+esc(e.pos)+'</span>'+
+   '<p class="def"><b>1.</b>'+esc(e.def)+'</p>'+
+   '<p class="ex">'+esc(e.ex)+'</p>'+
+   '<div class="etym"><span>ETYM.</span>'+esc(e.et)+'</div>'+
+   (e.see?'<div class="see">See also <button data-see="'+esc(e.see)+'">'+esc(e.see)+'</button></div>':'')+
+   '<div class="folio">'+(i+1)+'</div>';
+}
+
+/* ---------- LESSONS ---------- */
+// t: 1..4, 5 = neutral. Characters + pinyin checked by hand.
+var LS = [
+ {h:"妈",s:[["ma","mā",1]],en:"mum, mother",att:"Allow me to introduce you to my <span class='w'>mǎ</span>.",note:"That’s 马 mǎ. He has introduced me to his horse.",fix:"Mā. My mā. Your mā. Not a horse. Never again a horse."},
+ {h:"你好",s:[["ni","nǐ",3],["hao","hǎo",3]],en:"hello",att:"<span class='w'>Nī hāo</span>.",note:"Flat as a dial tone. Two dips, darling. Both third tones.",fix:"Nǐ hǎo. Ah. It goes down and comes back up, like me on a Tuesday.",tip:"Written nǐ hǎo; spoken aloud the first dip rises, ní hǎo, because two third tones in a row do that."},
+ {h:"谢谢",s:[["xie","xiè",4],["xie","xie",5]],en:"thank you",att:"<span class='w'>Xiē xiē</span>, Angie.",note:"歇歇 xiē xiē means “have a little rest”. Sweet, but no.",fix:"Xièxie. Thank you. For the lesson, and the patience."},
+ {h:"汤",s:[["tang","tāng",1]],en:"soup",att:"A bowl of <span class='w'>táng</span>, please.",note:"糖 táng is sugar. He ordered a bowl of sugar.",fix:"Tāng. Soup. High and level, like a violin open string."},
+ {h:"麻辣",s:[["ma","má",2],["la","là",4]],en:"numbing-spicy",att:"One <span class='w'>mǎ lā</span> hotpot for the lady.",note:"马拉 mǎ lā: a horse, pulling. The horse is back.",fix:"Málà. Up, then down. My tongue already regrets it."},
+ {h:"猪",s:[["zhu","zhū",1]],en:"pig",att:"Piglet is a very distinguished <span class='w'>zhú</span>.",note:"竹 zhú is bamboo. Piglet is offended.",fix:"Zhū. A distinguished zhū. My apologies to the bodyguard."},
+ {h:"睡觉",s:[["shui","shuì",4],["jiao","jiào",4]],en:"to sleep",att:"Darling, you really must go to <span class='w'>shuǐjiǎo</span>.",note:"水饺 shuǐjiǎo are boiled dumplings. Go to dumplings.",fix:"Shuìjiào. Two falls, like eyelids. Neither of us will, of course."},
+ {h:"宝贝",s:[["bao","bǎo",3],["bei","bèi",4]],en:"darling, treasure",att:"Goodnight, my <span class='w'>bàobèi</span>.",note:"报备 bàobèi: to file a report with the authorities. Lestrade would be thrilled.",fix:"Bǎobèi. My treasure. Considerably more romantic than paperwork."},
+ {h:"我想你",s:[["wo","wǒ",3],["xiang","xiǎng",3],["ni","nǐ",3]],en:"I miss you",att:"Wǒ <span class='w'>xiàng</span> nǐ.",note:"我像你 means “I resemble you”. You do not. You are much taller.",fix:"Wǒ xiǎng nǐ. I miss you. Even when you’re in the next room.",tip:"Three third tones in a row; in speech the first two usually rise. The written tones stay the same."},
+ {h:"问",s:[["wen","wèn",4]],en:"to ask",att:"Wǒ kěyǐ <span class='w'>wěn</span> nǐ ma?",note:"吻 wěn is to kiss. He meant “may I ask you something”. Ears: pink.",fix:"Wǒ kěyǐ wèn nǐ ma? May I ask you something. Though the other one stands, if offered."},
+ {h:"缘分",s:[["yuan","yuán",2],["fen","fèn",4]],en:"fate that brings people together",att:"It must be <span class='w'>yuǎn</span>fèn.",note:"远 yuǎn means far. Fate is not far. Fate is right here.",fix:"Yuánfèn. Rising, then falling into place. The evidence agrees."},
+ {h:"羁绊",s:[["ji","jī",1],["ban","bàn",4]],en:"a bond, a tie",att:"We have a <span class='w'>jǐ bàn</span>.",note:"几半 jǐ bàn: “how many halves?”",fix:"Two. Two halves. Jībàn. I’ll not get that one wrong again."}
+];
+// tone-mark generator (also used on buttons)
+var MK={a:"āáǎà",e:"ēéěè",i:"īíǐì",o:"ōóǒò",u:"ūúǔù"};
+function mark(b,t){if(t===5)return b;var idx=-1;
+  if(b.indexOf("a")>=0)idx=b.indexOf("a");else if(b.indexOf("e")>=0)idx=b.indexOf("e");else if(b.indexOf("ou")>=0)idx=b.indexOf("o");
+  else{for(var j=b.length-1;j>=0;j--){if("aeiou".indexOf(b[j])>=0){idx=j;break}}}
+  if(idx<0)return b;return b.slice(0,idx)+MK[b[idx]][t-1]+b.slice(idx+1)}
+var CONT={1:[5,5],2:[3,5],3:[2,1,1,4],4:[5,1],5:[3,3]};
+var ICON={1:"M4 5H30",2:"M4 15L30 4",3:"M4 9Q12 19 18 18T30 5",4:"M4 4L30 18",5:""};
+function toneSVG(t){return t===5?'<svg viewBox="0 0 34 22"><circle cx="17" cy="11" r="3.5" fill="#2A2320"/></svg>':'<svg viewBox="0 0 34 22" fill="none" stroke="#B23A30" stroke-width="2.6" stroke-linecap="round"><path d="'+ICON[t]+'"/></svg>'}
+
+var st=load("dict221.lessons",null)||{cur:0,done:[],streak:0,best:0};
+if(typeof st.cur!=="number"||st.cur<0||st.cur>LS.length)st.cur=0;
+var lesson={i:-1,pos:0,wrong:false};
+
+/* ---------- Web Audio tones ---------- */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){AC=null}}if(AC&&AC.state==="suspended")AC.resume();return AC}
+function playTone(t,when){var c=ac();if(!c)return 0;when=when||c.currentTime+0.02;
+  var base=207.65,lv=CONT[t],dur=t===3?0.62:t===5?0.2:0.46,n=40,curve=new Float32Array(n);
+  for(var k=0;k<n;k++){var x=k/(n-1)*(lv.length-1),a=Math.floor(x),f=x-a,v=lv[a]+(lv[Math.min(a+1,lv.length-1)]-lv[a])*f;curve[k]=base*Math.pow(2,(v-1)*2.6/12)}
+  var o1=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter(),bp=c.createBiquadFilter(),g2=c.createGain();
+  o1.type="triangle";o2.type="sawtooth";lp.type="lowpass";lp.frequency.value=1600;bp.type="bandpass";bp.frequency.value=800;bp.Q.value=2;g2.gain.value=.25;
+  o1.frequency.setValueCurveAtTime(curve,when,dur);
+  var c2=new Float32Array(n);for(k=0;k<n;k++)c2[k]=curve[k];o2.frequency.setValueCurveAtTime(c2,when,dur);
+  g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(t===5?.16:.22,when+.03);g.gain.setValueAtTime(t===5?.16:.22,when+dur-.08);g.gain.linearRampToValueAtTime(0,when+dur);
+  o1.connect(lp);o2.connect(bp);bp.connect(g2);g2.connect(lp);lp.connect(g);g.connect(c.destination);
+  o1.start(when);o2.start(when);o1.stop(when+dur+.02);o2.stop(when+dur+.02);return dur}
+function playWord(L){var c=ac();if(!c)return;var w=c.currentTime+.05;L.s.forEach(function(s){w+=playTone(s[2],w)+.08})}
+function chime(ok){var c=ac();if(!c)return;var w=c.currentTime+.02;(ok?[523.25,659.25,783.99]:[196,185]).forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type=ok?"sine":"triangle";o.frequency.value=f;g.gain.setValueAtTime(0,w+i*.09);g.gain.linearRampToValueAtTime(.12,w+i*.09+.02);g.gain.exponentialRampToValueAtTime(.001,w+i*.09+.5);o.connect(g);g.connect(c.destination);o.start(w+i*.09);o.stop(w+i*.09+.55)})}
+
+function lessonHTML(i){
+  var dots='';for(var d=0;d<LS.length;d++)dots+='<i class="'+(st.done.indexOf(d)>=0?'d':d===i?'c':'')+'"></i>';
+  if(i>=LS.length){
+    return '<div class="lhead"><span>Mandarin for Sherlock</span><span class="dots">'+dots+'</span></div><div class="done-card"><div class="orn" style="color:var(--seal)">✦</div><h3>Course complete</h3><p style="font-style:italic">He can now greet your mother, order soup, and ask a question without proposing a kiss. Mostly.</p><p class="hand" style="font-size:24px">我想你，宝贝。<br>S.</p><div class="lbtns"><button class="lbtn" id="restart">Start the course again</button></div></div>'+streakHTML();
+  }
+  var L=LS[i];
+  var syl=L.s.map(function(s,j){var solved=j<lesson.pos;return '<div class="syl q'+(solved?' ok':'')+(j===lesson.pos?' cur':'')+'"><div class="c">'+L.h[j]+'</div><div class="p">'+(solved?s[1]:s[0]+'<sup>?</sup>')+'</div></div>'}).join('');
+  var cur=L.s[lesson.pos],btns='';
+  for(var t=1;t<=5;t++)btns+='<button class="tone" data-t="'+t+'" '+(cur?'':'disabled')+'>'+toneSVG(t)+'<span>'+(cur?mark(cur[0],t):'·')+'</span><em>'+(t===5?'light':['1st','2nd','3rd','4th'][t-1])+'</em></button>';
+  var done=lesson.pos>=L.s.length;
+  return '<div class="lhead"><span>Lesson '+(i+1)+' of '+LS.length+'</span><span class="dots">'+dots+'</span></div>'+
+   '<div class="ltitle">Mandarin for Sherlock</div>'+
+   '<div class="word">'+syl+'</div><div class="mean">“'+esc(L.en)+'”</div>'+
+   '<div class="attempt"><div class="who">S.H. attempts</div><div class="say">'+L.att+'</div><div class="note">'+L.note.replace(/([一-鿿]+)/g,"<span class='han'>$1</span>")+'</div></div>'+
+   (done?'':'<p class="ask">Tap the right tone for <b>'+(cur?cur[0]:'')+'</b> · every button sings its contour</p><div class="tones" id="tones">'+btns+'</div>')+
+   '<div class="fixed'+(done?' on':'')+'"><div class="who">Second attempt</div><p>'+esc(L.fix)+'</p></div>'+
+   (L.tip?'<div class="tip">'+esc(L.tip)+'</div>':'')+
+   '<div class="lbtns"><button class="lbtn pri" id="nextL" '+(done?'':'disabled')+'>Next lesson ›</button><button class="lbtn" id="hear">▶ Hear it</button></div>'+streakHTML();
+}
+function streakHTML(){return '<div class="streak"><svg class="nh" viewBox="0 0 30 30" fill="none" stroke="#D2AA6A" stroke-width="1.6"><path d="M9 22c0-6 2-12 8-14l3 3-2 3h-4c0 3 1 5 3 8z"/><circle cx="15" cy="15" r="13" stroke="#B23A30"/><path d="M6 24L24 6" stroke="#B23A30"/></svg><div><b>'+st.streak+'</b> <span>lessons without a horse</span><br><small>best: '+st.best+' · lessons passed: '+st.done.length+'/'+LS.length+'</small></div></div>'}
+
+/* ---------- book engine ---------- */
+var mode="lex",idx=load("dict221.page",0),busy=false;
+if(typeof idx!=="number"||idx<0||idx>=N)idx=0;
+var inner=document.getElementById("inner"),pages=document.getElementById("pages");
+function html(m,i){return m==="lex"?(i===0?titleHTML():entryHTML(i)):lessonHTML(i)}
+function count(){return mode==="lex"?N:LS.length+1}
+function curI(){return mode==="lex"?idx:st.cur}
+function render(){inner.innerHTML=html(mode,curI());inner.scrollTop=0;wire();
+  var c=count(),i=curI();
+  document.getElementById("prev").disabled=i<=0;
+  document.getElementById("next").disabled=mode==="lex"?i>=c-1:(i>=LS.length||st.done.indexOf(i)<0);
+  document.getElementById("pgno").textContent=mode==="lex"?(i===0?"Title page":"p. "+(i+1)+" of "+c):(i>=LS.length?"Complete":"Lesson "+(i+1)+" / "+LS.length);
+}
+function flip(dir,apply){
+  if(busy)return;
+  if(RM){apply();render();return}
+  busy=true;
+  var oldH=inner.innerHTML,leaf=document.createElement("div");leaf.className="leaf";
+  apply();
+  var newH=html(mode,curI());
+  if(dir>0){
+    leaf.innerHTML='<div class="face"><div class="inner">'+oldH+'</div><div class="shade"></div></div><div class="face back"></div>';
+    render();
+  }else{
+    leaf.innerHTML='<div class="face"><div class="inner">'+newH+'</div><div class="shade"></div></div><div class="face back"></div>';
+    leaf.style.transform="rotateY(-180deg)";
+  }
+  pages.appendChild(leaf);
+  var sh=leaf.querySelector(".shade");
+  var a=leaf.animate([{transform:dir>0?"rotateY(0deg)":"rotateY(-180deg)"},{transform:dir>0?"rotateY(-180deg)":"rotateY(0deg)"}],{duration:720,easing:"cubic-bezier(.45,.05,.3,1)",fill:"forwards"});
+  if(sh.animate)sh.animate([{opacity:0},{opacity:.9},{opacity:0}],{duration:720});
+  rustle();
+  a.onfinish=function(){if(dir<0)render();leaf.remove();busy=false};
+}
+function rustle(){var c=AC;if(!c||c.state!=="running")return;var len=c.sampleRate*.35,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);for(var k=0;k<len;k++)d[k]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*k/len),2)*.5;var s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();f.type="highpass";f.frequency.value=2400;g.gain.value=.12;s.buffer=b;s.connect(f);f.connect(g);g.connect(c.destination);s.start()}
+function go(n){var c=count();if(mode==="lex"){if(n<0||n>=c||n===idx)return;var d=n>idx?1:-1;flip(d,function(){idx=n;store("dict221.page",idx)})}
+  else{if(n<0||n>LS.length||n===st.cur)return;var d2=n>st.cur?1:-1;flip(d2,function(){st.cur=n;lesson={i:n,pos:0,wrong:false};store("dict221.lessons",st)})}}
+document.getElementById("prev").onclick=function(){ac();go(curI()-1)};
+document.getElementById("next").onclick=function(){ac();go(curI()+1)};
+
+function wire(){
+  inner.querySelectorAll("[data-see]").forEach(function(b){b.onclick=function(){ac();var p=findPage(b.getAttribute("data-see"));if(p>0)go(p)}});
+  if(mode!=="man")return;
+  if(lesson.i!==st.cur)lesson={i:st.cur,pos:0,wrong:false};
+  var L=LS[st.cur];
+  var r=document.getElementById("restart");if(r)r.onclick=function(){st.done=[];st.streak=0;store("dict221.lessons",st);go(0)};
+  if(!L)return;
+  if(st.done.indexOf(st.cur)>=0&&lesson.pos===0&&!lesson.fresh){lesson.pos=L.s.length;inner.innerHTML=lessonHTML(st.cur);}
+  var h=document.getElementById("hear");if(h)h.onclick=function(){playWord(L)};
+  var n=document.getElementById("nextL");if(n)n.onclick=function(){ac();lesson.fresh=false;go(st.cur+1)};
+  inner.querySelectorAll(".tone").forEach(function(b){b.onclick=function(){
+    var t=+b.getAttribute("data-t"),want=L.s[lesson.pos][2];playTone(t);
+    if(t===want){b.classList.add("good");setTimeout(function(){chime(true)},t===3?640:480);
+      setTimeout(function(){lesson.pos++;
+        if(lesson.pos>=L.s.length){var first=st.done.indexOf(st.cur)<0;if(first)st.done.push(st.cur);
+          if(!lesson.wrong){st.streak++;st.best=Math.max(st.best,st.streak)}store("dict221.lessons",st);lesson.fresh=true}
+        var sc=inner.scrollTop;inner.innerHTML=lessonHTML(st.cur);inner.scrollTop=sc;wireLessonOnly();
+        if(lesson.pos>=L.s.length){render2();setTimeout(function(){playWord(L)},500)}
+      },650);
+    }else{b.classList.remove("bad");void b.offsetWidth;b.classList.add("bad");if(!lesson.wrong){lesson.wrong=true;st.streak=0;store("dict221.lessons",st)}
+      var sk=inner.querySelector(".streak");if(sk)sk.outerHTML=streakHTML();setTimeout(function(){chime(false)},300)}
+  }});
+}
+function wireLessonOnly(){lesson.fresh=true;var keep=lesson.pos;wire();lesson.pos=keep}
+function render2(){var i=st.cur;document.getElementById("next").disabled=st.done.indexOf(i)<0;var f=inner.querySelector(".fixed");if(f)f.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"})}
+
+/* swipe */
+var sx=0,sy=0;
+pages.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+pages.addEventListener("touchend",function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.4){ac();if(dx<0){if(!document.getElementById("next").disabled)go(curI()+1)}else go(curI()-1)}},{passive:true});
+
+/* tabs */
+function setMode(m){if(m===mode)return;mode=m;
+  document.getElementById("tabLex").classList.toggle("on",m==="lex");document.getElementById("tabMan").classList.toggle("on",m==="man");
+  document.getElementById("tabLex").setAttribute("aria-selected",m==="lex");document.getElementById("tabMan").setAttribute("aria-selected",m==="man");
+  document.getElementById("searchRow").style.display=m==="lex"?"":"none";document.getElementById("book").classList.toggle("tall",m==="man");
+  document.getElementById("hint").textContent=m==="lex"?"Swipe the page, or use the arrows.":"Pass a lesson to turn the page. Sound on.";
+  lesson={i:st.cur,pos:0,wrong:false};
+  if(RM){render();return}
+  flip(m==="man"?1:-1,function(){});
+}
+document.getElementById("tabLex").onclick=function(){ac();openCover();setMode("lex")};
+document.getElementById("tabMan").onclick=function(){ac();openCover();setMode("man")};
+
+/* search */
+var q=document.getElementById("q"),res=document.getElementById("results");
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/<[^>]+>/g,"")}
+q.addEventListener("input",function(){var v=norm(q.value.trim());if(!v){res.classList.remove("on");return}
+  var out=[];E.forEach(function(e,i){var hay=norm(e.k+" "+e.hw+" "+e.pr+" "+e.def+" "+e.ex+" "+e.et);if(hay.indexOf(v)>=0)out.push(i)});
+  res.innerHTML=out.length?out.map(function(i){return '<button data-p="'+(i+1)+'"><b>'+E[i].hw.replace(/<span class='han'>(.*?)<\/span>/,"$1 ")+'</b><i>'+esc(E[i].def)+'</i></button>'}).join(''):'<div class="none">Not in the lexicon yet. Say it at 3am and it will be.</div>';
+  res.classList.add("on");
+  res.querySelectorAll("button").forEach(function(b){b.onclick=function(){ac();openCover();res.classList.remove("on");q.blur();if(mode!=="lex"){mode="lex";setMode("lex")}go(+b.getAttribute("data-p"))}});
+});
+document.addEventListener("click",function(e){if(!e.target.closest(".searchrow"))res.classList.remove("on")});
+
+/* cover */
+var cover=document.getElementById("cover");
+function openCover(){if(cover.classList.contains("open"))return;cover.classList.add("open");setTimeout(function(){cover.style.display="none"},RM?0:1500)}
+cover.onclick=function(){ac();openCover();rustle()};
+
+render();
+})();
+</script>
+</body></html>

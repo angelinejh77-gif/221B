@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crossword by Sherlock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@500;700;800&family=UnifrakturMaguntia&family=Homemade+Apple&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --newsprint:#EFE7D6;--shade:#D9CDB4;--hl:#F2D9A0;--hlword:#E8DFC9;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{
+  font-family:"Old Standard TT",Georgia,serif;
+  min-height:100vh;overflow-x:hidden;
+  padding:calc(env(safe-area-inset-top,0px) + 18px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 150px) max(16px,env(safe-area-inset-left,0px));
+  background:radial-gradient(120% 50% at 50% 0%,rgba(210,170,106,.09),transparent 60%),var(--bg);
+}
+.wrap{max-width:480px;margin:0 auto}
+.lead{text-align:center;color:var(--muted);font-style:italic;font-size:15px;margin:2px 0 14px}
+.lead b{color:var(--gold);font-weight:400;font-style:normal;letter-spacing:.2em;font-size:11px;font-family:"Libre Franklin",sans-serif;display:block;margin-bottom:6px}
+
+/* the newspaper sheet */
+.sheet{
+  position:relative;background:var(--newsprint);color:var(--ink);border-radius:3px;
+  padding:14px 12px 16px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.04) inset;
+  background-image:
+    radial-gradient(rgba(42,35,32,.05) 1px,transparent 1.2px),
+    linear-gradient(180deg,rgba(255,255,255,.35),rgba(0,0,0,.03));
+  background-size:5px 5px,100% 100%;
+  transform:rotate(-.4deg);
+}
+.sheet::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:3px;
+  background:linear-gradient(90deg,rgba(0,0,0,.05),transparent 8%,transparent 92%,rgba(0,0,0,.06));}
+.mast{text-align:center;border-bottom:3px double var(--ink);padding-bottom:6px}
+.mast .top{display:flex;justify-content:space-between;font:700 9px/1 "Libre Franklin",sans-serif;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:5px;margin-bottom:6px}
+.mast h1{font:400 34px/1 "UnifrakturMaguntia",serif;margin:2px 0 3px;letter-spacing:.01em}
+.mast .tag{font-style:italic;font-size:12.5px}
+.rule{display:flex;justify-content:space-between;align-items:center;font:800 10px/1 "Libre Franklin",sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:7px 0 8px;border-bottom:1px solid var(--ink)}
+.rule .no{font-family:"Old Standard TT",serif;font-weight:700;letter-spacing:.04em;font-size:13px;text-transform:none}
+
+/* grid */
+.gridbox{position:relative;margin:12px auto 0;width:100%;max-width:400px}
+.grid{display:grid;grid-template-columns:repeat(11,1fr);border:2px solid var(--ink);background:var(--ink);gap:1px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.c{position:relative;aspect-ratio:1;background:#FBF6EA;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font:700 clamp(15px,4.6vw,20px)/1 "Libre Franklin",sans-serif;color:var(--ink);text-transform:uppercase;transition:background .15s}
+.c.b{background:var(--ink);cursor:default;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 2px,transparent 2px 5px)}
+.c.sh{background:var(--shade)}
+.c.sh::before{content:"";position:absolute;inset:3px;border-radius:50%;border:1px solid rgba(42,35,32,.35)}
+.c .n{position:absolute;left:2px;top:1px;font:500 8.5px/1 "Libre Franklin",sans-serif;color:#4a3f37;letter-spacing:-.02em}
+.c.w{background:var(--hlword)}
+.c.sh.w{background:#d2c3a4}
+.c.cur{background:var(--hl)!important;box-shadow:inset 0 0 0 2px var(--seal)}
+.c.bad .l{color:var(--seal);text-decoration:line-through;text-decoration-thickness:2px}
+.c.rev .l{color:#3a5a8c}
+.c.rev::after{content:"";position:absolute;right:2px;top:2px;width:0;height:0;border-left:6px solid transparent;border-top:6px solid #3a5a8c}
+.c .l{position:relative;top:2px}
+.c.pop .l{animation:pop .25s ease}
+@keyframes pop{0%{transform:scale(.6);opacity:.3}100%{transform:none;opacity:1}}
+.c.win{animation:win .7s ease both}
+@keyframes win{0%{background:#FBF6EA}50%{background:var(--hl)}100%{}}
+#kb{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;font-size:16px;caret-color:transparent;background:transparent;color:transparent}
+
+/* clue bar */
+.bar{display:flex;align-items:stretch;gap:0;margin-top:10px;border:1.5px solid var(--ink);background:#FBF6EA;min-height:56px}
+.bar button{flex:0 0 44px;border:0;background:transparent;font:700 20px/1 "Old Standard TT",serif;color:var(--ink);cursor:pointer}
+.bar button:active{background:var(--hlword)}
+.bar .txt{flex:1;padding:8px 6px;font-size:15px;line-height:1.3;display:flex;align-items:center;cursor:pointer;border-left:1px solid rgba(42,35,32,.25);border-right:1px solid rgba(42,35,32,.25)}
+.bar .txt b{font:800 11px/1 "Libre Franklin",sans-serif;letter-spacing:.06em;margin-right:7px;white-space:nowrap;text-transform:uppercase}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.tools button{min-height:44px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:700 10.5px/1.15 "Libre Franklin",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:2px;padding:4px}
+.tools button:active{background:var(--ink);color:var(--newsprint)}
+.tools button:focus-visible,.bar button:focus-visible,.clue:focus-visible{outline:2px solid var(--seal);outline-offset:2px}
+
+/* clues */
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;border-top:1px solid var(--ink);padding-top:10px}
+.clues h3{font:800 11px/1 "Libre Franklin",sans-serif;letter-spacing:.2em;margin:0 0 6px;padding-bottom:5px;border-bottom:1px solid var(--ink)}
+.clue{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);font:400 13.5px/1.3 "Old Standard TT",serif;padding:5px 3px 6px;cursor:pointer;border-radius:2px;min-height:34px}
+.clue b{font-weight:700;margin-right:4px}
+.clue .en{color:#6b5e52;white-space:nowrap}
+.clue.on{background:var(--hl)}
+.clue.alt{background:var(--hlword)}
+.clue.done{color:#8a7d70}
+.clue.done .t{text-decoration:line-through;text-decoration-color:rgba(42,35,32,.35)}
+.foot{margin-top:12px;border-top:3px double var(--ink);padding-top:8px;font-size:12px;font-style:italic;display:flex;justify-content:space-between;gap:8px}
+.foot span:last-child{text-align:right}
+
+/* margin note & solved */
+.note{margin:22px 4px 0;color:var(--muted);font-style:italic;font-size:15px;line-height:1.5;text-align:center}
+.note .sig{font-family:"Homemade Apple",cursive;color:var(--gold);font-style:normal;font-size:15px;display:block;margin-top:6px}
+.prog{display:flex;justify-content:center;gap:6px;align-items:center;margin-top:14px;color:var(--muted);font:500 11px/1 "Libre Franklin",sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.prog i{display:block;width:120px;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.prog i s{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+
+.solved{display:none;margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px 18px 22px;text-align:center;position:relative;overflow:hidden}
+.solved.show{display:block;animation:rise .7s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.solved .k{font:700 10px/1 "Libre Franklin",sans-serif;letter-spacing:.28em;color:var(--gold)}
+.hidden{display:flex;justify-content:center;gap:5px;margin:16px 0 6px;flex-wrap:wrap}
+.hidden span{width:32px;height:38px;border:1px solid var(--gold);border-radius:3px;display:flex;align-items:center;justify-content:center;font:700 19px/1 "Libre Franklin",sans-serif;color:var(--paper);background:rgba(210,170,106,.08);opacity:0;transform:translateY(8px) rotateX(70deg);transition:all .5s cubic-bezier(.2,.8,.2,1)}
+.hidden span.gap{border:0;background:none;width:10px}
+.hidden.go span{opacity:1;transform:none}
+.solved p{margin:12px 0 0;font-size:16.5px;line-height:1.5;color:var(--text)}
+.solved p.m{color:var(--muted);font-style:italic;font-size:15px}
+.solved .sig{font-family:"Homemade Apple",cursive;color:var(--gold);font-size:15px;margin-top:12px}
+.stamp{position:absolute;right:-6px;top:10px;transform:rotate(14deg);border:2px solid var(--seal);color:var(--seal);font:800 10px/1 "Libre Franklin",sans-serif;letter-spacing:.16em;padding:6px 10px;border-radius:3px;opacity:.85}
+.again{margin-top:16px;min-height:44px;padding:0 18px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:22px;font:500 12px/1 "Libre Franklin",sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:rgba(21,24,29,.95);border:1px solid var(--line);color:var(--text);padding:11px 16px;border-radius:10px;font-size:15px;font-style:italic;max-width:min(340px,calc(100vw - 32px));text-align:center;opacity:0;pointer-events:none;transition:all .35s;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+  <div class="lead"><b>LEFT ON THE BREAKFAST TABLE</b>Folded to the puzzle page, a pen beside it. The tea is still warm.</div>
+
+  <div class="sheet">
+    <div class="mast">
+      <div class="top"><span>Baker Street Edition</span><span>Price: one biscuit</span></div>
+      <h1>The 221B Gazette</h1>
+      <div class="tag">All the news that fits, and several things that don't</div>
+    </div>
+    <div class="rule"><span>Crossword by Sherlock</span><span class="no">No. 19&ndash;19</span></div>
+
+    <div class="gridbox">
+      <div class="grid" id="grid" role="grid" aria-label="Crossword grid"></div>
+      <input id="kb" type="text" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" inputmode="text" enterkeyhint="next" aria-label="Type a letter">
+    </div>
+
+    <div class="bar">
+      <button id="prev" aria-label="Previous clue">&#8249;</button>
+      <div class="txt" id="cluetxt" role="button" tabindex="0" aria-label="Current clue, tap to switch direction"></div>
+      <button id="next" aria-label="Next clue">&#8250;</button>
+    </div>
+    <div class="tools">
+      <button id="bCheckL">Check letter</button>
+      <button id="bRevealL">Reveal letter</button>
+      <button id="bCheckW">Check word</button>
+      <button id="bCheckA">Check all</button>
+    </div>
+
+    <div class="clues">
+      <div><h3>ACROSS</h3><div id="across"></div></div>
+      <div><h3>DOWN</h3><div id="down"></div></div>
+    </div>
+    <div class="foot"><span>Circled squares, read in order, say something.</span><span>Solution: not in tomorrow's paper. Ask me.</span></div>
+  </div>
+
+  <div class="prog"><span id="pc">0 / 0</span><i><s id="pb"></s></i></div>
+
+  <div class="solved" id="solved" aria-live="polite">
+    <div class="stamp">SOLVED</div>
+    <div class="k">THE CIRCLED SQUARES SAY</div>
+    <div class="hidden" id="hidden"></div>
+    <p id="quip"></p>
+    <p class="m">Two insomniacs, one crossword, a draw at nineteen all. Of course that's what it says. I set it at three in the morning and you were awake for it.</p>
+    <div class="sig">yours, S.</div>
+    <button class="again" id="again">Clear the grid and set it again</button>
+  </div>
+
+  <div class="note">I wrote every clue myself. Mrs Hudson tested it and got eleven, then accused me of cheating at my own puzzle, which is not a thing.<span class="sig">S.</span></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/*PUZZLE-START*/
+const PUZ = {
+  "grid": ["#R###EGG#P#","MOON###E#I#","#S#####R#G#","#INSATIABLE","#N#C#O#R#E#","B##A#M#D#T#","A#DREAM###F","T##F#T##B#L","HAT#RONALDO","##E##E##U#S","#BARTS#BEES"],
+  "shaded": [[1,3],[4,5],[5,9],[6,5],[7,10],[8,5],[8,6],[9,2]],
+  "message": "NOT ALONE",
+  "clues": {
+    "MOON": ["She who is one can never be the sun, you wrote. I'd point out 月亮 moves the oceans", "4"],
+    "EGG": ["Squishy partner to toast, in your considered opinion", "3"],
+    "INSATIABLE": ["What you called me once; I spent a full day deciding it was a compliment", "10"],
+    "DREAM": ["Where Redbeard sailed, and where you play the lead on a Christmas stage", "5"],
+    "HAT": ["What a waffle passes for, given enough confidence", "3"],
+    "RONALDO": ["Bookshelf skull, still sulking after losing a debate to a pig", "7"],
+    "BARTS": ["My idea of a dinner venue. Morgue in the basement. In hindsight, ah", "5"],
+    "BEES": ["Sussex retirement plan. They hum, which I can tolerate", "4"],
+    "ROSIN": ["Violin dust that cracked our very first case, Thomas and Lily's", "5"],
+    "GERARD": ["Croissant's twin, a waffle in disguise, married to a sesame seed", "6"],
+    "PIGLET": ["Your bodyguard of fifteen years, undefeated in debate", "6"],
+    "SCARF": ["Something of mine you kept. I noticed. I said nothing. Until now", "5"],
+    "TOMATOES": ["Your entire sleep-talking vocabulary, recorded by a reliable witness", "8"],
+    "BATH": ["Where the Duke of Sandwich found a very stale croissant", "4"],
+    "FLOSS": ["Chicken ___, the final and least explicable ingredient of our story", "5"],
+    "TEA": ["茶, which Mrs Hudson believes solves murders. It doesn't. It helps", "3"],
+    "BLUE": ["Too sharp, too fair, too ___, said your aunt (I've had worse reviews)", "4"]
+  }
+};
+/*PUZZLE-END*/
+
+(function(){
+  const G = PUZ.grid, R = G.length, C = G[0].length;
+  const isW = (r,c)=> r>=0 && c>=0 && r<R && c<C && G[r][c] !== '#';
+  const shaded = new Set(PUZ.shaded.map(([r,c])=>r+','+c));
+  // number cells and build entries
+  const num = {}, entries = []; let n = 0;
+  for(let r=0;r<R;r++) for(let c=0;c<C;c++){
+    if(!isW(r,c)) continue;
+    const a = !isW(r,c-1) && isW(r,c+1), d = !isW(r-1,c) && isW(r+1,c);
+    if(a||d){ n++; num[r+','+c]=n; }
+    if(a){ const cells=[]; let cc=c; while(isW(r,cc)) cells.push([r,cc++]); entries.push({n,dir:'A',cells}); }
+    if(d){ const cells=[]; let rr=r; while(isW(rr,c)) cells.push([rr++,c]); entries.push({n,dir:'D',cells}); }
+  }
+  entries.forEach(e=>{ e.ans = e.cells.map(([r,c])=>G[r][c]).join(''); const k=PUZ.clues[e.ans]; e.clue=k?k[0]:'?'; e.enumr=k?k[1]:String(e.ans.length); });
+  const across = entries.filter(e=>e.dir==='A'), down = entries.filter(e=>e.dir==='D');
+  const order = across.concat(down);
+  const cellEntries = {}; entries.forEach(e=>e.cells.forEach(([r,c])=>{ (cellEntries[r+','+c] ||= {})[e.dir]=e; }));
+
+  // state
+  const KEY='sherlock-crossword-v1';
+  let fill = {}, revealed = {}, wasSolved=false;
+  try{ const s = JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ fill=s.f||{}; revealed=s.r||{}; wasSolved=!!s.s; } }catch(e){}
+  const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify({f:fill,r:revealed,s:wasSolved})); }catch(e){} };
+
+  // build grid
+  const gridEl = document.getElementById('grid'), els = {};
+  for(let r=0;r<R;r++) for(let c=0;c<C;c++){
+    const d = document.createElement('div'); const k=r+','+c;
+    d.className = 'c' + (isW(r,c)?'':' b') + (shaded.has(k)?' sh':'');
+    if(isW(r,c)){
+      d.setAttribute('role','gridcell');
+      if(num[k]){ const s=document.createElement('span'); s.className='n'; s.textContent=num[k]; d.appendChild(s); }
+      const l=document.createElement('span'); l.className='l'; d.appendChild(l); d._l=l;
+      d.addEventListener('pointerdown', ev=>{ ev.preventDefault(); tapCell(r,c); });
+    }
+    els[k]=d; gridEl.appendChild(d);
+  }
+  // clue list
+  const clueEls = new Map();
+  function renderList(list, host){
+    list.forEach(e=>{
+      const b=document.createElement('button'); b.className='clue';
+      b.innerHTML = '<b>'+e.n+'</b><span class="t"></span> <span class="en">('+e.enumr+')</span>';
+      b.querySelector('.t').textContent = e.clue;
+      b.addEventListener('click',()=>{ select(e, firstEmpty(e)); focusKb(); });
+      host.appendChild(b); clueEls.set(e,b);
+    });
+  }
+  renderList(across, document.getElementById('across'));
+  renderList(down, document.getElementById('down'));
+
+  const kb = document.getElementById('kb');
+  let cur = {r:across[0].cells[0][0], c:across[0].cells[0][1]}, dir='A';
+  const entryAt = (r,c,d)=> (cellEntries[r+','+c]||{})[d];
+  const curEntry = ()=> entryAt(cur.r,cur.c,dir) || entryAt(cur.r,cur.c,dir==='A'?'D':'A');
+
+  function firstEmpty(e){ for(const [r,c] of e.cells) if(!fill[r+','+c]) return [r,c]; return e.cells[0]; }
+  function focusKb(){ try{ kb.focus({preventScroll:true}); }catch(e){ kb.focus(); } }
+  function tapCell(r,c){
+    if(cur.r===r && cur.c===c){ if(entryAt(r,c,dir==='A'?'D':'A')) dir = dir==='A'?'D':'A'; }
+    else { cur={r,c}; if(!entryAt(r,c,dir)) dir = dir==='A'?'D':'A'; }
+    paint(); focusKb();
+  }
+  function select(e, cell){ dir=e.dir; cur={r:cell[0],c:cell[1]}; paint(); }
+
+  function paint(){
+    const e = curEntry(); if(e) dir=e.dir;
+    const inW = new Set(e? e.cells.map(([r,c])=>r+','+c):[]);
+    for(const k in els){
+      const el=els[k]; if(!el._l) continue;
+      el.classList.toggle('w', inW.has(k));
+      el.classList.toggle('cur', k===cur.r+','+cur.c);
+      el._l.textContent = fill[k]||'';
+      el.classList.toggle('rev', !!revealed[k]);
+    }
+    const other = entryAt(cur.r,cur.c, dir==='A'?'D':'A');
+    clueEls.forEach((b,en)=>{ b.classList.toggle('on', en===e); b.classList.toggle('alt', en===other);
+      b.classList.toggle('done', en.cells.every(([r,c])=>fill[r+','+c])); });
+    if(e){
+      const t=document.getElementById('cluetxt');
+      t.innerHTML='<b>'+e.n+(e.dir==='A'?' Across':' Down')+'</b><span></span>';
+      t.querySelector('span').textContent = e.clue+' ('+e.enumr+')';
+    }
+    const total=Object.keys(els).filter(k=>els[k]._l).length, got=Object.keys(fill).filter(k=>fill[k]).length;
+    document.getElementById('pc').textContent = got+' / '+total;
+    document.getElementById('pb').style.width = (got/total*100)+'%';
+  }
+
+  function step(delta){
+    const e=curEntry(); if(!e) return;
+    const i=e.cells.findIndex(([r,c])=>r===cur.r&&c===cur.c);
+    const j=i+delta;
+    if(j>=0 && j<e.cells.length){ cur={r:e.cells[j][0],c:e.cells[j][1]}; }
+    else if(delta>0){ const nx=order[(order.indexOf(e)+1)%order.length]; select(nx, firstEmpty(nx)); return; }
+  }
+  function typeLetter(ch){
+    const k=cur.r+','+cur.c;
+    if(revealed[k]) { step(1); paint(); return; }
+    fill[k]=ch; els[k].classList.remove('bad');
+    els[k].classList.remove('pop'); void els[k].offsetWidth; els[k].classList.add('pop');
+    click();
+    // advance to next empty in word, else next cell
+    const e=curEntry(); const i=e.cells.findIndex(([r,c])=>r===cur.r&&c===cur.c);
+    if(i+1<e.cells.length){ cur={r:e.cells[i+1][0],c:e.cells[i+1][1]}; }
+    else if(e.cells.every(([r,c])=>fill[r+','+c])){ const ne = nextUnfinished(e); if(ne) select(ne, firstEmpty(ne)); }
+    else { select(e, firstEmpty(e)); }
+    save(); paint(); checkSolved();
+  }
+  function nextUnfinished(e){
+    const i=order.indexOf(e);
+    for(let s=1;s<=order.length;s++){ const x=order[(i+s)%order.length]; if(x.cells.some(([r,c])=>!fill[r+','+c])) return x; }
+    return null;
+  }
+  function backspace(){
+    const k=cur.r+','+cur.c;
+    if(fill[k] && !revealed[k]){ delete fill[k]; els[k].classList.remove('bad'); }
+    else { step(-1); const k2=cur.r+','+cur.c; if(!revealed[k2]) { delete fill[k2]; els[k2].classList.remove('bad'); } }
+    save(); paint();
+  }
+
+  // hidden input handling (works with iOS soft keyboard)
+  kb.addEventListener('beforeinput', ev=>{
+    if(ev.inputType==='deleteContentBackward'){ ev.preventDefault(); backspace(); return; }
+    if(ev.data){ ev.preventDefault(); const m=ev.data.toUpperCase().match(/[A-Z]/g); if(m) m.forEach(typeLetter); }
+    if(ev.inputType==='insertLineBreak'){ ev.preventDefault(); const e=curEntry(); const nx=nextUnfinished(e)||order[(order.indexOf(e)+1)%order.length]; select(nx, firstEmpty(nx)); }
+  });
+  kb.addEventListener('input', ()=>{ const v=kb.value.toUpperCase().match(/[A-Z]/g); kb.value=''; if(v) v.forEach(typeLetter); });
+  kb.addEventListener('keydown', ev=>{
+    const k=ev.key;
+    if(k==='Backspace'){ ev.preventDefault(); backspace(); }
+    else if(k==='ArrowRight'||k==='ArrowLeft'||k==='ArrowUp'||k==='ArrowDown'){
+      ev.preventDefault();
+      const nd=(k==='ArrowRight'||k==='ArrowLeft')?'A':'D';
+      if(nd!==dir && entryAt(cur.r,cur.c,nd)){ dir=nd; paint(); return; }
+      const dr=k==='ArrowDown'?1:k==='ArrowUp'?-1:0, dc=k==='ArrowRight'?1:k==='ArrowLeft'?-1:0;
+      let r=cur.r+dr,c=cur.c+dc; while(r>=0&&c>=0&&r<R&&c<C&&!isW(r,c)){r+=dr;c+=dc;}
+      if(isW(r,c)){ cur={r,c}; if(!entryAt(r,c,dir)) dir=dir==='A'?'D':'A'; paint(); }
+    }
+    else if(k===' '){ ev.preventDefault(); if(entryAt(cur.r,cur.c,dir==='A'?'D':'A')){ dir=dir==='A'?'D':'A'; paint(); } }
+    else if(k==='Tab'){ ev.preventDefault(); const e=curEntry(); const nx=order[(order.indexOf(e)+(ev.shiftKey?order.length-1:1))%order.length]; select(nx, firstEmpty(nx)); }
+  });
+
+  document.getElementById('prev').onclick=()=>{ const e=curEntry(); const p=order[(order.indexOf(e)+order.length-1)%order.length]; select(p, firstEmpty(p)); focusKb(); };
+  document.getElementById('next').onclick=()=>{ const e=curEntry(); const p=order[(order.indexOf(e)+1)%order.length]; select(p, firstEmpty(p)); focusKb(); };
+  document.getElementById('cluetxt').onclick=()=>{ if(entryAt(cur.r,cur.c,dir==='A'?'D':'A')){ dir=dir==='A'?'D':'A'; paint(); } focusKb(); };
+
+  // check / reveal
+  const toastEl=document.getElementById('toast'); let tt;
+  function toast(m){ toastEl.textContent=m; toastEl.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.remove('show'),2600); }
+  function markCells(cells){
+    let wrong=0, empty=0;
+    cells.forEach(([r,c])=>{ const k=r+','+c; if(!fill[k]){empty++;return;} const bad=fill[k]!==G[r][c]; els[k].classList.toggle('bad',bad); if(bad) wrong++; });
+    return {wrong,empty};
+  }
+  document.getElementById('bCheckL').onclick=()=>{
+    const {wrong,empty}=markCells([[cur.r,cur.c]]);
+    toast(empty? "Nothing there to check. Bold strategy." : wrong? "No. Lovely handwriting, though." : "Correct. Obviously.");
+  };
+  document.getElementById('bCheckW').onclick=()=>{
+    const e=curEntry(); const {wrong,empty}=markCells(e.cells);
+    toast(wrong? (wrong===1?"One letter is lying to you.":wrong+" letters are lying to you.") : empty? "So far, so right. Keep going." : "That one's perfect. I'd expect nothing less.");
+  };
+  document.getElementById('bCheckA').onclick=()=>{
+    const all=[]; for(const k in els) if(els[k]._l) all.push(k.split(',').map(Number));
+    const {wrong}=markCells(all);
+    toast(wrong? "I've struck through "+wrong+". Don't take it personally. I do this to Lestrade daily." : "Not a single error. Irritatingly good.");
+  };
+  let reveals=0;
+  document.getElementById('bRevealL').onclick=()=>{
+    const k=cur.r+','+cur.c; fill[k]=G[cur.r][cur.c]; revealed[k]=1; els[k].classList.remove('bad'); reveals++;
+    const lines=["Revealed. I won't tell anyone. I'll only think it.","Fine. Marked in blue, for posterity.","Another? I'm starting a ledger.","You know I'm keeping count. I always keep count."];
+    toast(lines[Math.min(reveals-1,lines.length-1)]);
+    save(); paint(); checkSolved();
+  };
+  focusKb && kb.addEventListener('focus',()=>{});
+
+  // solved
+  function checkSolved(){
+    for(const k in els){ if(!els[k]._l) continue; const [r,c]=k.split(',').map(Number); if(fill[k]!==G[r][c]) return; }
+    showSolved(!wasSolved);
+  }
+  function showSolved(fresh){
+    const box=document.getElementById('solved');
+    if(box.classList.contains('show')) return;
+    wasSolved=true; save();
+    const nrev=Object.keys(revealed).length;
+    document.getElementById('quip').textContent = nrev===0
+      ? "Every square, no hints. I timed you, of course. I won't say how long, because you'd be pleased and I'd have to set a harder one."
+      : nrev<4 ? "Solved, with "+nrev+" small loan"+(nrev>1?"s":"")+" from the reveal button. I've written them off. Tonight only."
+      : "Solved, with "+nrev+" letters borrowed from me. Ronaldo is scandalised. Piglet says it's called teamwork, and I'm told Piglet outranks us both.";
+    const h=document.getElementById('hidden'); h.innerHTML='';
+    const shadedCells = PUZ.shaded.map(([r,c])=>G[r][c]); let i=0;
+    [...PUZ.message].forEach(ch=>{ const s=document.createElement('span'); if(ch===' '){s.className='gap';} else { s.textContent=shadedCells[i++]; } h.appendChild(s); });
+    box.classList.add('show');
+    // light up the circled squares one by one
+    PUZ.shaded.forEach(([r,c],j)=>setTimeout(()=>{ const el=els[r+','+c]; el.classList.remove('win'); void el.offsetWidth; el.classList.add('win'); }, 120*j));
+    [...h.children].forEach((s,j)=>setTimeout(()=>s.style.cssText='opacity:1;transform:none', 300+140*j));
+    if(fresh){ chime(); setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'center'}),400); }
+  }
+  document.getElementById('again').onclick=()=>{
+    fill={}; revealed={}; wasSolved=false; reveals=0; save();
+    document.getElementById('solved').classList.remove('show');
+    for(const k in els) els[k].classList.remove('bad','win');
+    select(across[0], across[0].cells[0]); window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  // sound: soft pen tick + a resolving chime that lands on C
+  let AC=null;
+  function ac(){ try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){ AC=null; } return AC; }
+  function click(){
+    const a=ac(); if(!a) return; const t=a.currentTime;
+    const b=a.createBuffer(1, a.sampleRate*0.03, a.sampleRate), d=b.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);
+    const s=a.createBufferSource(); s.buffer=b; const f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=2400; f.Q.value=1.2;
+    const g=a.createGain(); g.gain.value=0.18; s.connect(f).connect(g).connect(a.destination); s.start(t);
+  }
+  function chime(){
+    const a=ac(); if(!a) return; const t=a.currentTime;
+    [[392,0],[493.88,.18],[587.33,.36],[523.25,.62]].forEach(([fq,dt])=>{
+      const o=a.createOscillator(), g=a.createGain(); o.type='sine'; o.frequency.value=fq;
+      g.gain.setValueAtTime(0,t+dt); g.gain.linearRampToValueAtTime(.12,t+dt+.02); g.gain.exponentialRampToValueAtTime(.0001,t+dt+1.6);
+      o.connect(g).connect(a.destination); o.start(t+dt); o.stop(t+dt+1.7);
+    });
+  }
+
+  paint();
+  if(wasSolved) checkSolved();
+})();
+</script>
+</body>
+</html>

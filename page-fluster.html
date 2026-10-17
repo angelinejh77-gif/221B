@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fluster Him</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Pinyon+Script&display=swap">
+<style>
+:root{--bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;--gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;--pink:#E07A93;
+--serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--script:"Pinyon Script",cursive}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);overflow-x:hidden;
+ background:radial-gradient(70% 38% at 50% 30%,rgba(210,170,106,.10),transparent 70%),var(--bg);
+ padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.top{text-align:center;padding:22px 0 4px;position:relative}
+.k{font-family:var(--sc);font-size:12px;letter-spacing:.3em;color:var(--gold)}
+h1{font-weight:500;font-size:44px;margin:4px 0 0;line-height:1}
+.sub{margin:4px 0 0;color:var(--muted);font-style:italic;font-size:16px}
+.snd{position:absolute;right:0;top:16px;width:44px;height:44px;border-radius:22px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.snd svg{width:20px;height:20px}
+
+/* stage */
+.stage{position:relative;margin:12px 0 0;height:min(470px,62vh);min-height:400px;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+ background:
+  radial-gradient(40% 34% at 50% 26%,rgba(255,206,130,.40),rgba(210,150,80,.12) 55%,transparent 75%),
+  linear-gradient(#1a1d24 0,#14171c 70%,#0f1115 100%)}
+.stage .win{position:absolute;left:50%;top:22px;width:150px;height:200px;transform:translateX(-50%);border-radius:75px 75px 4px 4px;opacity:.5;
+ background:linear-gradient(90deg,transparent 48%,rgba(14,16,19,.9) 48% 52%,transparent 52%),linear-gradient(transparent 46%,rgba(14,16,19,.9) 46% 49%,transparent 49%),radial-gradient(80% 70% at 50% 40%,rgba(255,215,150,.55),rgba(160,110,60,.15))}
+.stage .floor{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,rgba(0,0,0,.45)),repeating-linear-gradient(90deg,#1b1712 0 38px,#17130f 38px 40px)}
+.rain{position:absolute;inset:0;pointer-events:none;opacity:.25;background:repeating-linear-gradient(105deg,transparent 0 9px,rgba(200,210,230,.12) 9px 10px);background-size:200px 200px;animation:rain 1.4s linear infinite}
+@keyframes rain{to{background-position:-40px 200px}}
+#fig{position:absolute;left:4%;bottom:6px;height:calc(100% - 14px);width:auto;max-width:76%;overflow:visible;touch-action:manipulation}
+#body{transform-origin:150px 590px;transition:transform .9s cubic-bezier(.5,-0.3,.4,1.4)}
+#body.wob{animation:wob .55s ease}
+@keyframes wob{0%{transform:rotate(0)}25%{transform:rotate(-1.8deg)}55%{transform:rotate(1.3deg)}80%{transform:rotate(-.5deg)}100%{transform:rotate(0)}}
+#body.faint{transform:translate(-6px,26px) rotate(-7deg) scaleY(.94)}
+#head{transform-origin:150px 128px;transition:transform .5s}
+#head.turn{transform:rotate(-6deg) translateY(2px)}
+.zone{fill:transparent;cursor:pointer}
+.show .zone{fill:rgba(210,170,106,.12);stroke:rgba(210,170,106,.75);stroke-width:1.4;stroke-dasharray:4 4}
+.zlab{display:none;font-family:"Cormorant SC",Georgia,serif;font-size:12px;fill:#F4EEE2;paint-order:stroke;stroke:#0E1013;stroke-width:3px;pointer-events:none;letter-spacing:.06em}
+.show .zlab{display:block}
+#steam circle{opacity:0}
+.steamy #steam circle{animation:steam 1.6s ease-out infinite}
+.steamy #steam circle:nth-child(2){animation-delay:.5s}.steamy #steam circle:nth-child(3){animation-delay:1s}
+@keyframes steam{0%{opacity:0;transform:translate(0,0) scale(.5)}20%{opacity:.75}100%{opacity:0;transform:translate(16px,-34px) scale(1.6)}}
+#blushC{transition:opacity .5s}
+#earF{transition:fill .5s}
+.pop{position:absolute;pointer-events:none;font-family:var(--serif);font-weight:600;font-style:italic;color:var(--pink);font-size:22px;animation:pop 1.1s ease-out forwards;text-shadow:0 1px 0 #000}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,0) scale(.6)}20%{opacity:1;transform:translate(-50%,-10px) scale(1.1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-60px) scale(1)}}
+
+/* thermometer */
+.meter{position:absolute;right:12px;top:16px;bottom:18px;width:66px;display:flex;flex-direction:column;align-items:center}
+.meter .mt{font-family:var(--sc);font-size:10.5px;letter-spacing:.14em;color:var(--gold);text-align:center;line-height:1.15;margin-bottom:6px}
+.tube{position:relative;flex:1;width:18px;border-radius:9px;background:linear-gradient(90deg,#0b0c0f,#20242b 50%,#0b0c0f);border:2px solid #b98a45;box-shadow:0 0 0 1px #5b4220 inset}
+.fill{position:absolute;left:3px;right:3px;bottom:3px;height:0;border-radius:6px;background:linear-gradient(#ff9fb6,#E07A93 40%,#B23A30);transition:height .6s cubic-bezier(.3,1.4,.5,1);box-shadow:0 0 12px rgba(224,122,147,.55)}
+.bulb{width:34px;height:34px;border-radius:50%;margin-top:-6px;border:2px solid #b98a45;background:radial-gradient(circle at 38% 35%,#ff9fb6,#B23A30 70%);box-shadow:0 0 16px rgba(178,58,48,.55);position:relative;z-index:1}
+.marks{position:absolute;right:30px;top:0;bottom:0;width:0}
+.mk{position:absolute;right:0;transform:translateY(50%);font-size:11px;font-style:italic;color:var(--muted);white-space:nowrap;padding-right:4px}
+.mk:after{content:"";position:absolute;right:-6px;top:50%;width:5px;height:1px;background:#b98a45}
+.pct{font-family:var(--sc);font-size:15px;color:var(--text);margin-top:6px}
+
+/* speech */
+.say{position:relative;margin:14px 0 0;color:var(--ink);border-radius:4px;padding:18px 20px 16px;min-height:132px;
+ background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(130,90,40,.2) 100%),linear-gradient(#f6f0e4,#ece2cf);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.say:before{content:"";position:absolute;left:30%;top:-10px;border:10px solid transparent;border-bottom-color:#f6f0e4;border-top:0}
+.say .z{font-family:var(--sc);letter-spacing:.16em;font-size:12.5px;color:#7a5c33;display:flex;justify-content:space-between}
+.say .z b{color:var(--seal);font-weight:600}
+.say p{margin:8px 0 0;font-size:22px;line-height:1.3;font-style:italic;font-weight:500;transition:opacity .25s}
+.say p.f{opacity:0}
+.say.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-4px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}}
+
+.row{display:flex;gap:10px;margin:14px 0 0}
+.btn{flex:1;min-height:46px;border-radius:23px;border:1px solid var(--line);background:var(--panel);font-family:var(--sc);letter-spacing:.12em;font-size:13.5px;color:var(--text)}
+.btn.on{border-color:var(--gold);color:var(--gold)}
+h2{font-family:var(--sc);font-weight:500;letter-spacing:.24em;font-size:14px;color:var(--gold);margin:30px 0 10px;text-align:center}
+.ledger{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:6px 14px}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:17px}
+.lr:last-child{border-bottom:0}
+.lr span:last-child{font-family:var(--sc);color:var(--gold);letter-spacing:.08em}
+.lr.hot span:first-child{color:var(--pink)}
+.foot{text-align:center;color:var(--muted);font-style:italic;font-size:15px;margin:22px 8px 0;line-height:1.5}
+
+/* Mrs Hudson */
+.hud{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top,0px));width:min(380px,calc(100% - 32px));transform:translate(-50%,-140%);transition:transform .5s cubic-bezier(.3,1.3,.5,1);z-index:60;
+ background:#2b1f26;border:1px solid #6b4656;border-radius:12px;padding:12px 14px 12px 60px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.hud.on{transform:translate(-50%,0)}
+.hud .cup{position:absolute;left:12px;top:14px;width:38px;height:38px}
+.hud .who{font-family:var(--sc);letter-spacing:.16em;font-size:12px;color:#e8a9bd}
+.hud .q{font-size:17px;line-height:1.3;margin:2px 0 6px;font-style:italic}
+.hud .r{font-size:15px;color:var(--muted);line-height:1.3}
+.hud .r b{font-family:var(--sc);color:var(--gold);font-weight:500;letter-spacing:.08em}
+
+/* surrender */
+.sus{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,10,12,.78);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .5s}
+.sus.on{opacity:1;pointer-events:auto}
+.sus .c{position:relative;max-width:340px;text-align:center;color:var(--ink);padding:30px 22px 24px;border-radius:4px;background:linear-gradient(#f6f0e4,#e9dcc3);box-shadow:0 30px 70px rgba(0,0,0,.6);transform:rotate(-1.5deg)}
+.sus .c .kk{font-family:var(--sc);letter-spacing:.24em;font-size:12px;color:var(--seal)}
+.sus .c h3{font-weight:500;font-style:italic;font-size:32px;line-height:1.1;margin:10px 0 10px}
+.sus .c p{margin:0;font-size:17px;font-style:italic;color:#5b4a3c}
+.sus .c .s{font-family:var(--script);font-size:30px;margin-top:10px;color:#3b2c22}
+.sus .c .cd{font-family:var(--sc);font-size:12px;letter-spacing:.14em;color:#8a7458;margin-top:6px}
+.bee{position:absolute;width:28px;height:22px;pointer-events:none}
+.sus.on .bee{animation:buzz 3.4s ease-in-out infinite}
+@keyframes buzz{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(18px,-14px) rotate(12deg)}50%{transform:translate(-6px,-26px) rotate(-8deg)}75%{transform:translate(-20px,-8px) rotate(6deg)}100%{transform:translate(0,0) rotate(0)}}
+.bee .w{animation:flap .12s linear infinite alternate;transform-origin:14px 9px}
+@keyframes flap{to{transform:scaleY(.4)}}
+.flag{display:block;margin:0 auto 4px;width:60px;height:46px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+ <header class="top">
+  <div class="k">221B &middot; A Field Experiment</div>
+  <h1>Fluster Him</h1>
+  <p class="sub">He claims to be unflappable. Test the hypothesis.</p>
+  <button class="snd" id="snd" aria-label="Sound on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="sndW" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
+ </header>
+
+ <div class="stage" id="stage">
+  <div class="win"></div><div class="rain"></div><div class="floor"></div>
+  <svg id="fig" viewBox="0 0 300 600" aria-label="A tall man in a long coat, seen from behind, looking over his shoulder">
+   <defs>
+    <linearGradient id="coatG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#16181d"/><stop offset=".5" stop-color="#262a32"/><stop offset="1" stop-color="#121418"/></linearGradient>
+    <linearGradient id="scarfG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b5c8c"/><stop offset="1" stop-color="#26406a"/></linearGradient>
+    <radialGradient id="blushG"><stop offset="0" stop-color="#ff7d9a" stop-opacity=".95"/><stop offset="1" stop-color="#ff7d9a" stop-opacity="0"/></radialGradient>
+   </defs>
+   <ellipse cx="150" cy="592" rx="78" ry="8" fill="#000" opacity=".45"/>
+   <g id="body">
+    <!-- legs & shoes -->
+    <path d="M117 505 L121 584 L141 584 L146 505 Z" fill="#0f1114"/>
+    <path d="M154 505 L159 584 L179 584 L183 505 Z" fill="#0d0f12"/>
+    <path d="M112 586 Q114 578 124 578 L142 579 Q146 584 143 590 L114 591 Q110 590 112 586Z" fill="#080808"/>
+    <path d="M157 579 L176 578 Q186 578 188 586 Q190 590 186 591 L158 590 Q155 584 157 579Z" fill="#060606"/>
+    <!-- sleeves -->
+    <path d="M90 166 Q72 178 70 226 L64 344 L92 348 L102 232 Z" fill="#1a1d22" stroke="rgba(210,170,106,.35)" stroke-width="1"/>
+    <path d="M210 166 Q228 178 230 226 L236 344 L208 348 L198 232 Z" fill="#17191e" stroke="rgba(210,170,106,.25)" stroke-width="1"/>
+    <!-- hands -->
+    <g id="hands"><path d="M66 344 Q64 362 70 372 Q78 382 86 374 Q92 362 90 348 Z" fill="#d9bfa8"/><path d="M234 344 Q236 362 230 372 Q222 382 214 374 Q208 362 210 348 Z" fill="#cfb39b"/></g>
+    <!-- coat -->
+    <path d="M88 172 Q92 156 118 152 L182 152 Q208 156 212 172 L206 296 Q202 310 205 322 L228 518 Q150 534 72 518 L95 322 Q98 310 94 296 Z" fill="url(#coatG)" stroke="rgba(210,170,106,.4)" stroke-width="1.1"/>
+    <path d="M150 156 L150 300" stroke="#0b0c0f" stroke-width="1.2" opacity=".8"/>
+    <path d="M150 322 L150 524" stroke="#0b0c0f" stroke-width="1.4"/>
+    <path d="M150 324 Q156 420 154 524" stroke="rgba(210,170,106,.18)" stroke-width="1" fill="none"/>
+    <path d="M108 200 Q122 250 112 292 M192 200 Q180 250 188 292" stroke="#0b0c0f" stroke-width="1" fill="none" opacity=".7"/>
+    <path d="M108 380 Q114 440 100 510 M196 384 Q190 450 204 512" stroke="#0b0c0f" stroke-width="1" fill="none" opacity=".55"/>
+    <!-- half belt -->
+    <rect x="110" y="298" width="80" height="13" rx="2" fill="#1d2027" stroke="rgba(210,170,106,.35)" stroke-width=".8"/>
+    <circle cx="118" cy="304.5" r="2.6" fill="#0a0b0d" stroke="#5b4220" stroke-width=".6"/><circle cx="182" cy="304.5" r="2.6" fill="#0a0b0d" stroke="#5b4220" stroke-width=".6"/>
+    <path id="bumHint" d="M112 340 Q130 372 150 352 Q170 372 188 340" fill="none" stroke="rgba(210,170,106,.12)" stroke-width="1"/>
+    <!-- scarf tail down the back -->
+    <path d="M126 160 Q120 200 124 246 L142 248 Q140 204 144 166 Z" fill="url(#scarfG)"/>
+    <path d="M124 246 L142 248 M126 249 L125 256 M130 249 L129 257 M134 249 L134 257 M138 249 L138 256" stroke="#2c4874" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- scarf band -->
+    <path d="M116 156 Q150 168 184 156 L182 144 Q150 154 118 144 Z" fill="url(#scarfG)"/>
+    <path d="M122 150 Q150 160 178 150" stroke="#21385e" stroke-width="1" fill="none"/>
+    <!-- popped collar -->
+    <path id="collarV" d="M108 162 L124 116 Q150 126 176 116 L192 162 Q150 146 108 162 Z" fill="#1f2229" stroke="rgba(210,170,106,.45)" stroke-width="1"/>
+    <path d="M124 116 L132 150 M176 116 L168 150" stroke="#0b0c0f" stroke-width="1" opacity=".8"/>
+    <!-- head -->
+    <g id="head">
+     <path d="M150 54 C129 54 118 69 119 86 L111 100 L118 103 C117 108 120 112 119 116 C122 124 131 129 141 129 L160 129 C176 125 183 109 182 92 C182 70 171 54 150 54 Z" fill="#dcc2ab"/>
+     <path d="M117 107 L124 108" stroke="#a87e66" stroke-width="1.2" stroke-linecap="round"/>
+     <path d="M124 88 Q128 86 132 88" stroke="#3a2b25" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+     <ellipse id="blushC" cx="134" cy="106" rx="13" ry="9" fill="url(#blushG)" opacity=".1"/>
+     <ellipse id="earF" cx="162" cy="98" rx="7" ry="11" fill="#d9b49c" stroke="#a87e66" stroke-width=".8"/>
+     <path d="M163 92 Q158 98 162 105" stroke="#a87e66" stroke-width="1" fill="none"/>
+     <!-- curls -->
+     <g id="hair" fill="#17120f">
+      <path d="M120 84 Q118 58 146 50 Q176 46 184 74 Q188 96 180 114 Q172 104 172 90 Q166 76 150 74 Q134 72 128 86 Z"/>
+      <circle cx="127" cy="68" r="10"/><circle cx="139" cy="57" r="12"/><circle cx="154" cy="52" r="13"/><circle cx="169" cy="56" r="12"/><circle cx="179" cy="68" r="11"/><circle cx="184" cy="82" r="9.5"/><circle cx="182" cy="97" r="8.5"/><circle cx="176" cy="109" r="7.5"/><circle cx="132" cy="61" r="8"/><circle cx="121" cy="78" r="7"/><circle cx="170" cy="82" r="7"/>
+      <path d="M135 56 q4 -6 9 -2 M157 47 q5 -4 9 1 M176 62 q5 0 6 5 M183 80 q4 3 2 8" stroke="#3a2d25" stroke-width="1.2" fill="none"/>
+     </g>
+     <g id="steam" fill="#f4eee2"><circle cx="170" cy="92" r="4"/><circle cx="172" cy="96" r="3.5"/><circle cx="168" cy="90" r="3"/></g>
+    </g>
+    <!-- tap zones (on top) -->
+    <g id="zones">
+     <ellipse class="zone" data-z="bum" cx="150" cy="358" rx="58" ry="40"/>
+     <path class="zone" data-z="scarf" d="M116 158 Q150 172 186 158 L186 168 L146 174 L146 252 L120 252 L118 172 Z"/>
+     <path class="zone" data-z="collar" d="M100 168 L120 110 L180 110 L200 168 L186 158 Q150 146 114 158 Z"/>
+     <g data-z="hand"><circle class="zone" data-z="hand" cx="78" cy="360" r="24"/><circle class="zone" data-z="hand" cx="222" cy="360" r="24"/></g>
+     <path class="zone" data-z="hair" d="M112 76 Q114 36 152 36 Q192 38 196 80 L194 116 L178 120 L176 84 L150 72 L126 82 L116 90 Z"/>
+     <circle class="zone" data-z="cheek" cx="128" cy="106" r="20"/>
+     <circle class="zone" data-z="ear" cx="166" cy="99" r="17"/>
+    </g>
+    <g>
+     <text class="zlab" x="150" y="364" text-anchor="middle">do not</text>
+     <text class="zlab" x="133" y="212" text-anchor="middle">scarf</text>
+     <text class="zlab" x="150" y="138" text-anchor="middle">collar</text>
+     <text class="zlab" x="78" y="402" text-anchor="middle">hand</text>
+     <text class="zlab" x="222" y="402" text-anchor="middle">hand</text>
+     <text class="zlab" x="152" y="32" text-anchor="middle">curls</text>
+     <text class="zlab" x="100" y="128" text-anchor="end">cheek</text>
+     <text class="zlab" x="188" y="104">ear</text>
+    </g>
+   </g>
+  </svg>
+  <div class="meter" aria-label="Fluster-o-meter">
+   <div class="mt">Fluster-<br>o-meter</div>
+   <div class="tube"><div class="fill" id="fill"></div>
+    <div class="marks"><span class="mk" style="bottom:100%">Sussex</span><span class="mk" style="bottom:75%">Stammering</span><span class="mk" style="bottom:50%">Pink ears</span><span class="mk" style="bottom:25%">Warm</span><span class="mk" style="bottom:0">Composed</span></div>
+   </div>
+   <div class="bulb"></div>
+   <div class="pct" id="pct">0%</div>
+  </div>
+ </div>
+
+ <div class="say" id="say">
+  <div class="z"><span id="zn">Sherlock, composed</span><b id="zc"></b></div>
+  <p id="line">"Go on, then. I am entirely unflappable. It's in the literature."</p>
+ </div>
+
+ <div class="row">
+  <button class="btn" id="spots">Show weak spots</button>
+  <button class="btn" id="calm">Let him recover</button>
+ </div>
+
+ <h2>Case Notes: Offences</h2>
+ <div class="ledger" id="ledger"></div>
+ <p class="foot">No detectives were harmed.<br>One was thoroughly embarrassed.</p>
+</div>
+
+<div class="hud" id="hud" role="status">
+ <svg class="cup" viewBox="0 0 38 38" aria-hidden="true"><path d="M8 14h18v8a9 9 0 0 1-18 0z" fill="#e8a9bd"/><path d="M26 16h3a4 4 0 0 1 0 8h-3" fill="none" stroke="#e8a9bd" stroke-width="2"/><path d="M5 33h26" stroke="#e8a9bd" stroke-width="2" stroke-linecap="round"/><path d="M13 6q2 3 0 5M19 5q2 3 0 6" stroke="#e8a9bd" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+ <div class="who">Mrs Hudson, without knocking</div>
+ <div class="q" id="hq"></div>
+ <div class="r" id="hr"></div>
+</div>
+
+<div class="sus" id="sus" role="alertdialog" aria-label="He surrenders">
+ <div class="c">
+  <svg class="flag" viewBox="0 0 60 46" aria-hidden="true"><path d="M8 44V4" stroke="#5b4a3c" stroke-width="2" stroke-linecap="round"/><path d="M9 5 Q22 1 32 6 T56 7 Q50 15 56 23 Q44 26 32 22 T9 23 Z" fill="#fffaf0" stroke="#bfae94"/></svg>
+  <div class="kk">Formal Surrender</div>
+  <h3>I'm moving to Sussex. With the bees.</h3>
+  <p>The bees have never once touched my coat without permission.</p>
+  <div class="s">S.</div>
+  <div class="cd" id="cd"></div>
+ </div>
+</div>
+
+<script>
+(function(){
+var RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+var $=function(i){return document.getElementById(i)};
+var LINES={
+ cheek:["That was my cheek. I'm aware. I'm simply logging it.","You've done it again. Data suggests intent.","Stop that. My face is a precision instrument.","Don't squish. Last time you squished, I tried to say 'Bart's' and it came out as something I'm still recovering from.","My cheekbones have cut lesser people. You, apparently, are immune.","Fine. Keep your hand there. For science. Only for science."],
+ ear:["Not the ears. The ears are... structural.","They are not pink. It's the lamp. Victorian wiring.","Darling, my ears have a reputation in three boroughs. Please.","I can hear my own pulse in them now. Thank you so much.","Mycroft will see them from orbit. He has satellites.","All right. They're pink. Put it on John's blog. Ruin me."],
+ hair:["My curls are not a toy. They're a filing system.","You've just disorganised three cold cases.","If you twirl one I lose my train of thought. There. It's gone. Where was I?","Ronaldo is watching from the shelf. He's judging you. He's judging me more.","I am not leaning into it. My head is simply tired. Of being... upright.","...Don't stop. That wasn't a request. Forget I said it."],
+ hand:["Holding my hand. Bold opening move.","Your fingers are cold. It's late in your head again, isn't it.","I've catalogued your knuckles. Pianist's hands. Unfair advantage.","Interlacing. Right. I know what interlacing means. I've read about it.","I'm not letting go first. It's a matter of principle now.","This is the 19–19 of hand-holding. Nobody wins. Nobody moves."],
+ scarf:["Careful. You've stolen one of these already.","Are you leading me somewhere by the scarf? Like a horse? Do not say 马.","It's cashmere. It has feelings. Mostly about you.","If you pull the end I'll spin. I'll hate it. I'll let you do it again.","You're wearing my other one right now, aren't you. Deduced. Don't deny it.","Keep it. Keep all my scarves. I'll freeze nobly."],
+ collar:["The collar goes up. It's an aesthetic. Leave the aesthetic alone.","Turning it down makes me look approachable. I refuse.","You're fixing my collar like a wife in a period drama. Stop it. Do it again.","Every time you straighten it I forget a chemical element. I've lost boron.","My collar has survived Moriarty. It has not survived you.","Fine. Adjust away. I'm a coat stand now. A devoted one."],
+ bum:["Did you just... That is the BACK of my COAT.","Angie. That is not a deduction zone.","Bart chiks. Is THAT what you meant? All this time? I need to sit down. I can't sit down. You know why.","I'm ringing Lestrade. I'm reporting myself. For having a body, apparently.","Mrs Hudson is on the stairs. I can hear her. She will never, ever stop talking about this.","Insatiable. That's the word. It's going in the case notes, underlined twice.","I wear a very long coat for a reason, and the reason is now you."]
+};
+var NAMES={cheek:'The cheek',ear:'The ear',hair:'The curls',hand:'The hand',scarf:'The scarf',collar:'The collar',bum:'The unmentionable'};
+var GAIN={cheek:11,ear:13,hair:8,hand:9,scarf:7,collar:8,bum:19};
+var POPS={cheek:['!','oh'],ear:['!!','♥'],hair:['~','mm'],hand:['♥','oh'],scarf:['!','♥'],collar:['!','hm'],bum:['?!','!!!','HEY']};
+var HUD=[
+ ["Yoo-hoo! Only me, dears, I've brought biscuits. Oh! Oh, I'll just leave them on the stairs.","Mrs Hudson, nothing is... She's gone. She's telling the whole street."],
+ ["Sherlock, have you seen my good scissors? Ooh, look at his ears. Never mind, dear, carry on.","Carry on with WHAT, Mrs Hudson."],
+ ["Angie, love, is he behaving? He looks like a boiled tomato.","Tomatoes. Don't you dare bring up tomatoes."],
+ ["I'm not your housekeeper, but I'm putting the kettle on, and I'm staying to watch.","You are NOT staying to watch."],
+ ["Don't mind me, just need the hoover. Is that a blush? In MY flat?","It's the lamp. It's always the lamp."],
+ ["I knew it! I told Mrs Turner. I said, that girl's got him wrapped round her finger.","I am not wrapped. I'm... loosely coiled."]
+];
+var counts={},meter=0,total=0,busy=false,hudBusy=false,lastTap=0,sound=true,retreats=0,showSpots=false;
+for(var k in LINES)counts[k]=0;
+try{var sv=JSON.parse(localStorage.getItem('fluster221')||'{}');if(sv.counts)for(var k2 in sv.counts)if(k2 in counts)counts[k2]=sv.counts[k2]|0;retreats=sv.retreats|0;total=sv.total|0;if(sv.sound===false)sound=false}catch(e){}
+function save(){try{localStorage.setItem('fluster221',JSON.stringify({counts:counts,retreats:retreats,total:total,sound:sound}))}catch(e){}}
+var session={};for(var k3 in LINES)session[k3]=0;
+
+// audio: rising notes of C major as he heats up; surrender slides home to C
+var ac=null;
+function tone(f,t,d,v,type){if(!sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();
+ var o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+(t||0);o.type=type||'triangle';o.frequency.value=f;o.connect(g);g.connect(ac.destination);
+ g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v||.08,t0+.012);g.gain.exponentialRampToValueAtTime(.0006,t0+(d||.35));o.start(t0);o.stop(t0+(d||.35)+.05)}catch(e){}}
+var SCALE=[261.63,293.66,329.63,349.23,392,440,493.88,523.25];
+function updSnd(){$('sndW').style.opacity=sound?1:0;$('snd').setAttribute('aria-label',sound?'Sound on':'Sound off')}
+$('snd').onclick=function(){sound=!sound;updSnd();save();if(sound)tone(523.25,0,.3,.08)};updSnd();
+
+function mix(a,b,t){return Math.round(a+(b-a)*t)}
+function render(){
+ var t=meter/100;
+ $('fill').style.height='calc('+meter+'% - '+(meter>0?6*t:0)+'px)';
+ $('pct').textContent=Math.round(meter)+'%';
+ $('earF').setAttribute('fill','rgb('+mix(217,240,t)+','+mix(180,104,t)+','+mix(156,132,t)+')');
+ $('blushC').setAttribute('opacity',(.08+t*.85).toFixed(2));
+ $('fig').classList.toggle('steamy',meter>=62&&!RM);
+ $('head').classList.toggle('turn',meter>=40);
+}
+function ledger(){
+ var L=$('ledger'),order=['cheek','ear','hair','hand','scarf','collar','bum'],h='';
+ order.forEach(function(z){h+='<div class="lr'+(z==='bum'&&counts.bum?' hot':'')+'"><span>'+NAMES[z]+'</span><span>'+counts[z]+'×</span></div>'});
+ h+='<div class="lr"><span>Retreats to Sussex</span><span>'+retreats+'</span></div>';
+ L.innerHTML=h;
+}
+function say(name,count,text){
+ var p=$('line'),s=$('say');$('zn').textContent=name;$('zc').textContent=count;
+ if(RM){p.textContent=text;return}
+ p.classList.add('f');s.classList.remove('shake');void s.offsetWidth;s.classList.add('shake');
+ setTimeout(function(){p.textContent=text;p.classList.remove('f')},140);
+}
+function ord(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+function pop(x,y,txt){if(RM)return;var st=$('stage'),r=st.getBoundingClientRect(),d=document.createElement('div');d.className='pop';d.textContent=txt;
+ d.style.left=(x-r.left)+'px';d.style.top=(y-r.top-10)+'px';d.style.setProperty('--dx',(Math.random()*40-20)+'px');st.appendChild(d);setTimeout(function(){d.remove()},1150)}
+function wobble(){if(RM)return;var b=$('body');b.classList.remove('wob');void b.getBoundingClientRect();b.classList.add('wob')}
+
+function tap(z,ev){
+ if(busy)return;
+ lastTap=Date.now();
+ var n=session[z]++;counts[z]++;total++;
+ var pool=LINES[z],line=n<pool.length?pool[n]:pool[pool.length-3+Math.floor(Math.random()*3)];
+ say(NAMES[z],ord(counts[z])+' offence',line);
+ meter=Math.min(100,meter+GAIN[z]+Math.min(n,4));
+ var x=ev&&ev.clientX!=null?ev.clientX:0,y=ev&&ev.clientY!=null?ev.clientY:0;
+ if(x)pop(x,y,POPS[z][Math.floor(Math.random()*POPS[z].length)]);
+ wobble();
+ tone(SCALE[Math.min(7,Math.floor(meter/14))]*(z==='bum'?1.5:1),0,.32,z==='bum'?.1:.07);
+ if(z==='bum')tone(SCALE[0]*2,.09,.25,.06,'sine');
+ render();ledger();save();
+ if(meter>=100){setTimeout(surrender,500);return}
+ if(!hudBusy&&total>3&&Math.random()<.14)setTimeout(hudson,900);
+}
+document.querySelectorAll('#zones .zone').forEach(function(zn){zn.addEventListener('click',function(ev){ev.stopPropagation();tap(this.getAttribute('data-z'),ev)})});
+
+var hi=Math.floor(Math.random()*HUD.length);
+function hudson(){
+ if(busy||hudBusy)return;hudBusy=true;var h=HUD[hi++%HUD.length];
+ $('hq').textContent='"'+h[0]+'"';$('hr').innerHTML='<b>Sherlock:</b> ';$('hr').appendChild(document.createTextNode(h[1]));
+ $('hud').classList.add('on');meter=Math.min(99,meter+9);render();
+ tone(659.25,0,.2,.06,'sine');tone(783.99,.14,.3,.06,'sine');
+ setTimeout(function(){$('hud').classList.remove('on');setTimeout(function(){hudBusy=false},600)},5200);
+}
+$('hud').onclick=function(){this.classList.remove('on');setTimeout(function(){hudBusy=false},600)};
+
+function surrender(){
+ busy=true;retreats++;save();ledger();
+ $('body').classList.add('faint');$('hud').classList.remove('on');
+ say('Sherlock, defeated','—','"That is quite enough evidence."');
+ [784,698.46,659.25,587.33,523.25].forEach(function(f,i){tone(f,i*.16,.5,.07,'sine')});
+ var S=$('sus');S.classList.add('on');
+ var c=S.querySelector('.c');S.querySelectorAll('.bee').forEach(function(b){b.remove()});
+ [[8,-14,0],[296,10,.8],[-10,240,1.6],[290,250,.4]].forEach(function(p){var b=document.createElementNS('http://www.w3.org/2000/svg','svg');b.setAttribute('viewBox','0 0 28 22');b.setAttribute('class','bee');
+  b.innerHTML='<g class="w"><ellipse cx="11" cy="6" rx="5" ry="4" fill="#fffaf0" opacity=".85"/><ellipse cx="17" cy="6" rx="5" ry="4" fill="#fffaf0" opacity=".85"/></g><ellipse cx="14" cy="14" rx="9" ry="6.5" fill="#D2AA6A"/><path d="M11 8.5v11M15 8v12M19 9.5v9" stroke="#2A2320" stroke-width="2"/><circle cx="23" cy="13" r="2.4" fill="#2A2320"/>';
+  b.style.left=p[0]+'px';b.style.top=p[1]+'px';b.style.animationDelay=p[2]+'s';c.appendChild(b)});
+ var left=7;$('cd').textContent='He will return in '+left+'s';
+ var iv=setInterval(function(){left--;$('cd').textContent=left>0?'He will return in '+left+'s':'';if(left<=0){clearInterval(iv);recover()}},1000);
+}
+function recover(){
+ $('sus').classList.remove('on');$('body').classList.remove('faint');
+ meter=0;for(var k in session)session[k]=0;render();
+ say('Sherlock, returned','',retreats>1?'"Back again. The bees asked about you. I said nothing. My ears said everything."':'"...I\'m back. The bees were dull. Do your worst."');
+ setTimeout(function(){busy=false},500);
+}
+$('sus').onclick=function(){};
+
+$('spots').onclick=function(){showSpots=!showSpots;$('fig').classList.toggle('show',showSpots);this.classList.toggle('on',showSpots);this.textContent=showSpots?'Hide weak spots':'Show weak spots'};
+$('calm').onclick=function(){if(busy)return;meter=Math.max(0,meter-30);render();say('Sherlock, recovering','','"Thank you. I\'m composing myself. Composed. Mostly composed."')};
+// slow cool-down when left alone
+setInterval(function(){if(!busy&&meter>0&&Date.now()-lastTap>2500){meter=Math.max(0,meter-1.5);render()}},700);
+render();ledger();
+})();
+</script>
+</body></html>

@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Telegram Office</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Caveat:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --buff:#EFE2C4;--buff2:#E4D3AE;--tape:#F7F0DC;--brass:#C9A15E;--brass2:#7d5f2c;
+  --wood1:#3b2717;--wood2:#22160d;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;
+  --type:"Special Elite","Courier Prime",monospace;--mono:"Courier Prime",monospace;--hand:"Caveat",cursive;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.45;overflow-x:hidden;
+  background:
+    radial-gradient(110% 50% at 50% 0%,rgba(210,170,106,.13),transparent 62%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,transparent 2px 7px),
+    var(--bg);
+  padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px));}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+
+/* ---------- sign + clock ---------- */
+.sign{margin:22px auto 6px;display:flex;align-items:center;gap:14px;justify-content:center}
+.plate{position:relative;padding:10px 18px 9px;border-radius:6px;text-align:center;
+  background:linear-gradient(180deg,#1d3a33,#122823);border:2px solid var(--brass);
+  box-shadow:inset 0 0 0 3px #0c1b18,inset 0 0 0 4px rgba(201,161,94,.5),0 6px 18px rgba(0,0,0,.45)}
+.plate b{display:block;font:600 22px/1 var(--sc);letter-spacing:.32em;color:#efe0bd;text-shadow:0 1px 0 #000;padding-left:.32em}
+.plate small{display:block;margin-top:5px;font:500 10.5px/1 var(--sc);letter-spacing:.28em;color:var(--brass)}
+.plate::before,.plate::after{content:"";position:absolute;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f3dca4,#7d5f2c)}
+.plate::before{left:5px}.plate::after{right:5px}
+.clock{width:58px;height:58px;flex:none;border-radius:50%;position:relative;
+  background:radial-gradient(circle,#f6efe0 0 60%,#e6dcc6 61% 100%);border:3px solid var(--brass);box-shadow:0 0 0 2px #2a1d10,0 6px 14px rgba(0,0,0,.5)}
+.clock i{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;background:#1c1714;border-radius:2px}
+.clock .h{width:3px;height:15px;margin-left:-1.5px}.clock .m{width:2px;height:21px;margin-left:-1px}
+.clock .s{width:1px;height:22px;margin-left:-.5px;background:var(--seal)}
+.clock::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#1c1714}
+.clock .tk{position:absolute;inset:4px;border-radius:50%;background:
+  conic-gradient(from -1deg,#1c1714 0 2deg,transparent 2deg 30deg,#1c1714 30deg 32deg,transparent 32deg 60deg,#1c1714 60deg 62deg,transparent 62deg 90deg,#1c1714 90deg 92deg,transparent 92deg 120deg,#1c1714 120deg 122deg,transparent 122deg 150deg,#1c1714 150deg 152deg,transparent 152deg 180deg,#1c1714 180deg 182deg,transparent 182deg 210deg,#1c1714 210deg 212deg,transparent 212deg 240deg,#1c1714 240deg 242deg,transparent 242deg 270deg,#1c1714 270deg 272deg,transparent 272deg 300deg,#1c1714 300deg 302deg,transparent 302deg 330deg,#1c1714 330deg 332deg,transparent 332deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 78%,#000 79%);mask:radial-gradient(circle,transparent 0 78%,#000 79%)}
+.intro{text-align:center;color:var(--muted);font-style:italic;margin:6px 6px 18px;font-size:16px}
+
+/* ---------- counter window ---------- */
+.window{position:relative;border-radius:14px 14px 0 0;padding:14px 14px 0;
+  background:linear-gradient(180deg,#191c21,#121418);border:1px solid var(--line);border-bottom:none}
+.grille{height:46px;border-radius:40px 40px 4px 4px;margin:0 6px 10px;position:relative;overflow:hidden;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 9px,rgba(201,161,94,.85) 9px 11px),
+    radial-gradient(120% 140% at 50% 120%,rgba(233,184,114,.22),rgba(0,0,0,.6));
+  border:2px solid var(--brass);border-bottom-width:3px}
+.grille span{position:absolute;left:50%;top:9px;transform:translateX(-50%);padding:4px 10px;border-radius:3px;
+  background:#0f1d1a;border:1px solid var(--brass);font:600 10px/1 var(--sc);letter-spacing:.24em;color:#efe0bd;white-space:nowrap}
+.counter{height:22px;margin:0 -15px;border-radius:0 0 6px 6px;
+  background:linear-gradient(180deg,#5a3b22,var(--wood1) 40%,var(--wood2));box-shadow:0 10px 20px rgba(0,0,0,.5);position:relative;z-index:2}
+.counter::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,220,170,.25)}
+
+/* ---------- the form ---------- */
+.form{position:relative;margin:0 0 -6px;padding:16px 16px 18px;border-radius:3px 3px 0 0;color:var(--ink);
+  background:
+    radial-gradient(140% 90% at 20% 0%,rgba(255,255,255,.35),transparent 60%),
+    repeating-linear-gradient(0deg,rgba(80,50,20,.025) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,var(--buff),var(--buff2));
+  box-shadow:0 -2px 0 rgba(0,0,0,.08) inset,0 6px 18px rgba(0,0,0,.35);transform:rotate(-.4deg);z-index:1;overflow:hidden}
+.form .crown{text-align:center;font:600 10px/1 var(--sc);letter-spacing:.3em;color:#6d4b2b}
+.form h2{margin:6px 0 2px;text-align:center;font:600 22px/1.05 var(--sc);letter-spacing:.14em;color:#3b2a1e}
+.form .sub{text-align:center;font:italic 13px/1.2 var(--serif);color:#6d5640;margin-bottom:12px}
+.boxes{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid #9b7a52;margin-bottom:12px}
+.boxes div{padding:5px 7px 6px;border-right:1px solid #9b7a52;min-width:0}
+.boxes div:last-child{border-right:none}
+.boxes label{display:block;font:600 9px/1 var(--sc);letter-spacing:.14em;color:#7b5b3a}
+.boxes output{display:block;margin-top:4px;font:700 17px/1 var(--mono);color:#2a2320;white-space:nowrap}
+.to{display:flex;gap:8px;align-items:baseline;border-bottom:1px solid #9b7a52;padding:4px 0 6px;margin-bottom:4px}
+.to label{font:600 10px/1 var(--sc);letter-spacing:.16em;color:#7b5b3a;flex:none;width:34px}
+.to span{font:15px/1.2 var(--type);letter-spacing:.04em;color:#2a2320}
+.msgl{display:flex;justify-content:space-between;margin:12px 0 4px;font:600 10px/1 var(--sc);letter-spacing:.16em;color:#7b5b3a}
+.msgl em{font:italic 12px/1 var(--serif);letter-spacing:0;color:#8b6b4a;text-transform:none}
+textarea#msg{display:block;width:100%;min-height:150px;resize:none;border:none;outline:none;padding:2px 2px 0;margin:0;
+  font:28px/34px var(--hand);color:#1f3550;background:
+    repeating-linear-gradient(180deg,transparent 0 33px,rgba(120,85,50,.42) 33px 34px);background-attachment:local}
+textarea#msg::placeholder{color:rgba(60,70,90,.4)}
+.cleared{margin-top:12px;padding:10px 10px 9px;border:1px dashed #9b7a52;background:rgba(255,255,255,.28)}
+.cleared label{display:block;font:600 9px/1 var(--sc);letter-spacing:.16em;color:#7b5b3a;margin-bottom:6px}
+#preview{font:14px/1.5 var(--type);letter-spacing:.05em;color:#2a2320;word-break:break-word;min-height:21px}
+#preview .st{color:var(--seal)}
+#preview:empty::before{content:"Your words will appear here, as the clerk will tap them.";font:italic 14px var(--serif);letter-spacing:0;color:#8b6b4a}
+.rate{margin-top:10px;font:italic 12.5px/1.35 var(--serif);color:#6d5640}
+.stampslot{position:absolute;right:14px;top:56px;width:84px;height:84px;pointer-events:none}
+.pm{position:absolute;inset:0;border-radius:50%;border:3px double var(--seal);color:var(--seal);display:grid;place-items:center;text-align:center;
+  font:600 9.5px/1.1 var(--sc);letter-spacing:.08em;opacity:0;transform:scale(1.8) rotate(-28deg);mix-blend-mode:multiply}
+.pm b{display:block;font:700 15px/1 var(--mono);letter-spacing:.02em;margin:3px 0}
+.pm.on{animation:stampIn .32s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stampIn{to{opacity:.82;transform:scale(1) rotate(-14deg)}}
+
+.actions{display:flex;gap:10px;padding:16px 0 4px;position:relative;z-index:3}
+.btn{flex:1;min-height:50px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font:600 15px/1 var(--sc);letter-spacing:.12em}
+.btn.gold{background:linear-gradient(180deg,#e2bd7f,#b88c46);color:#1d140a;border-color:#e8c88f;box-shadow:0 6px 18px rgba(210,170,106,.25)}
+.btn:disabled{opacity:.45}
+.btn.ghost{flex:0 0 auto;padding:0 16px}
+
+/* ---------- wire room ---------- */
+.wire{margin-top:22px;border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(180deg,#14171b,#101215);overflow:hidden}
+.wire h3{margin:0 0 2px;font:600 13px/1 var(--sc);letter-spacing:.22em;color:var(--gold)}
+.wire .st{font:italic 15px/1.3 var(--serif);color:var(--muted);min-height:20px}
+.desk{display:flex;align-items:flex-end;gap:12px;margin-top:10px}
+.keysvg{width:150px;flex:none}
+#lever{transform-origin:116px 54px;transition:transform .03s}
+#lever.dn{transform:rotate(4deg)}
+.lamp{width:14px;height:14px;border-radius:50%;background:#3a1512;box-shadow:inset 0 -2px 3px rgba(0,0,0,.5);flex:none;margin-bottom:8px;transition:background .05s,box-shadow .05s}
+.lamp.on{background:#ff6a4a;box-shadow:0 0 12px #ff6a4a,0 0 3px #fff inset}
+.tapewrap{flex:1;min-width:0;height:36px;margin-bottom:6px;border-radius:3px;background:var(--tape);overflow:hidden;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.3)}
+#tape{position:absolute;right:6px;top:50%;transform:translateY(-50%);white-space:nowrap;font:700 18px/1 var(--mono);color:#2a2320;letter-spacing:1px}
+.tapewrap::before{content:"";position:absolute;left:0;top:0;bottom:0;width:30px;background:linear-gradient(90deg,var(--tape),transparent);z-index:1}
+.skip{margin-top:10px;min-height:44px;width:100%;border-radius:10px;border:1px dashed var(--line);background:transparent;color:var(--muted);font:italic 15px var(--serif);display:none}
+
+/* ---------- spike / file ---------- */
+.spike{margin-top:26px}
+.spike h3{margin:0;font:600 14px/1 var(--sc);letter-spacing:.22em;color:var(--gold)}
+.spike p{margin:6px 0 12px;color:var(--muted);font-style:italic;font-size:15px}
+#stack{display:flex;flex-direction:column;gap:10px}
+.card{position:relative;text-align:left;width:100%;min-height:64px;border:none;border-radius:4px;padding:10px 12px 10px 44px;color:var(--ink);
+  background:linear-gradient(180deg,var(--buff),var(--buff2));box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.card:nth-child(odd){transform:rotate(-.6deg)}.card:nth-child(even){transform:rotate(.5deg)}
+.card::before{content:"";position:absolute;left:16px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e9e4da,#5e5a54);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
+.card .d{font:600 10px/1 var(--sc);letter-spacing:.16em;color:#7b5b3a}
+.card .t{margin-top:4px;font:13.5px/1.35 var(--type);color:#2a2320;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .r{margin-top:3px;font:12.5px/1.3 var(--type);color:var(--seal);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.empty{padding:16px;border:1px dashed var(--line);border-radius:10px;text-align:center;color:var(--muted);font-style:italic}
+
+/* ---------- received telegram sheet ---------- */
+.veil{position:fixed;inset:0;z-index:50;background:rgba(6,7,9,.78);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  display:none;overflow-y:auto;padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(160px + env(safe-area-inset-bottom,0px))}
+.veil.on{display:block}
+.sheet{max-width:440px;margin:0 auto;position:relative;color:var(--ink);padding:16px 14px 18px;border-radius:2px;
+  background:
+    radial-gradient(130% 80% at 80% 0%,rgba(255,255,255,.4),transparent 60%),
+    repeating-linear-gradient(0deg,rgba(80,50,20,.02) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#f3e8cf,#e7d6b2);
+  box-shadow:0 20px 50px rgba(0,0,0,.6);transform:translateY(40px) rotate(1.2deg);opacity:0;transition:transform .6s cubic-bezier(.2,.9,.3,1),opacity .4s}
+.veil.on .sheet.in{transform:translateY(0) rotate(.6deg);opacity:1}
+.sheet .hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #6d4b2b;padding-bottom:8px}
+.sheet .hd b{font:600 21px/1 var(--sc);letter-spacing:.16em;color:#3b2a1e}
+.sheet .hd small{display:block;font:600 9px/1.3 var(--sc);letter-spacing:.2em;color:#7b5b3a;margin-top:4px}
+.sheet .no{font:700 12px/1 var(--mono);color:var(--seal);text-align:right}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:10px 0 12px;font:12px/1.3 var(--mono);color:#4a3a2c}
+.meta span:nth-child(odd){font:600 9.5px/1.6 var(--sc);letter-spacing:.14em;color:#7b5b3a}
+.strips{min-height:120px;padding:4px 0 6px;background:repeating-linear-gradient(180deg,transparent 0 37px,rgba(109,75,43,.18) 37px 38px)}
+.strip{display:table;margin:5px 0 6px;padding:5px 9px 4px;background:var(--tape);font:700 15px/1.25 var(--mono);letter-spacing:.06em;color:#191512;
+  box-shadow:0 1px 2px rgba(0,0,0,.25),inset 0 0 0 1px rgba(0,0,0,.03);opacity:0;transform:translateX(-14px) rotate(var(--r,0deg));
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 3px,#000 calc(100% - 3px),transparent);transition:opacity .25s,transform .35s cubic-bezier(.2,1.3,.4,1)}
+.strip.on{opacity:1;transform:translateX(0) rotate(var(--r,0deg))}
+.strip.sig{margin-left:auto;color:var(--seal)}
+.mine{margin-top:14px;padding-right:92px;min-height:96px;padding-top:10px;border-top:1px dashed #9b7a52}
+.mine label{font:600 9.5px/1 var(--sc);letter-spacing:.16em;color:#7b5b3a}
+.mine div{margin-top:5px;font:13px/1.45 var(--type);color:#4a3a2c;word-break:break-word}
+.recvstamp{position:absolute;right:12px;bottom:16px;width:86px;height:86px;border-radius:50%;border:3px double #2b4b8a;color:#2b4b8a;display:grid;place-items:center;text-align:center;
+  font:600 9px/1.15 var(--sc);letter-spacing:.06em;transform:rotate(12deg) scale(1.6);opacity:0;mix-blend-mode:multiply;transition:all .3s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.recvstamp b{display:block;font:700 13px/1 var(--mono);margin:3px 0}
+.recvstamp.on{opacity:.7;transform:rotate(12deg) scale(1)}
+.sheetbtns{max-width:440px;margin:16px auto 0;display:flex;gap:10px}
+.toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100% - 32px);bottom:calc(140px + env(safe-area-inset-bottom,0px));transform:translateY(20px);opacity:0;z-index:60;
+  padding:10px 16px;border-radius:20px;background:#1d2026;border:1px solid var(--line);color:var(--text);font:italic 15px var(--serif);transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateY(0)}
+.foot{margin:30px 0 0;text-align:center;color:var(--muted);font:italic 14px var(--serif)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+  <div class="sign">
+    <div class="plate"><b>TELEGRAMS</b><small>INLAND &amp; FOREIGN</small></div>
+    <div class="clock" aria-hidden="true"><div class="tk"></div><i class="h" id="ch"></i><i class="m" id="cm"></i><i class="s" id="cs"></i></div>
+  </div>
+  <p class="intro">Write to him the old way. The clerk counts every word, so make them good ones.</p>
+
+  <div class="window">
+    <div class="grille"><span>POSITION 3 · TELEGRAMS ACCEPTED</span></div>
+    <div class="form" id="form">
+      <div class="crown">POST OFFICE TELEGRAPHS</div>
+      <h2>Inland Telegram</h2>
+      <div class="sub">Form A · to be handed in at the counter</div>
+      <div class="boxes">
+        <div><label>WORDS</label><output id="wc">0</output></div>
+        <div><label>CHARGE</label><output id="cost">—</output></div>
+        <div><label>HANDED IN</label><output id="hin">--.--</output></div>
+      </div>
+      <div class="to"><label>TO</label><span>S. HOLMES, 221B BAKER STREET, LONDON NW1</span></div>
+      <div class="to"><label>FROM</label><span>ANGIE</span></div>
+      <div class="msgl"><span>MESSAGE</span><em>write in ink, darling</em></div>
+      <textarea id="msg" maxlength="400" placeholder="Arriving Saturday. Bring the scarf back. Kidding." aria-label="Your telegram message"></textarea>
+      <div class="cleared"><label>AS THE CLERK WILL SEND IT</label><div id="preview"></div></div>
+      <div class="rate">Sixpenny rate: the first nine words for 6d, every word after that a penny. The clerk sends your STOPs for free, because he likes you.</div>
+      <div class="stampslot"><div class="pm" id="pm">ACCEPTED<b id="pmd">18 OCT</b>POSITION 3</div></div>
+    </div>
+    <div class="counter"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn ghost" id="clear" aria-label="Clear the form">Clear</button>
+    <button class="btn gold" id="send" disabled>Hand to the clerk</button>
+  </div>
+
+  <section class="wire" aria-live="polite">
+    <h3>THE INSTRUMENT ROOM</h3>
+    <div class="st" id="wst">The key is resting. The line to Baker Street is open.</div>
+    <div class="desk">
+      <svg class="keysvg" viewBox="0 0 150 80" aria-hidden="true">
+        <defs>
+          <linearGradient id="wd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4527"/><stop offset="1" stop-color="#2a1a0e"/></linearGradient>
+          <linearGradient id="br" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1d79c"/><stop offset=".5" stop-color="#c49a55"/><stop offset="1" stop-color="#6e5226"/></linearGradient>
+        </defs>
+        <rect x="6" y="60" width="138" height="16" rx="3" fill="url(#wd)"/>
+        <rect x="6" y="60" width="138" height="2" fill="rgba(255,220,170,.25)"/>
+        <rect x="108" y="44" width="16" height="17" rx="2" fill="url(#br)"/>
+        <rect x="20" y="52" width="10" height="9" rx="1.5" fill="url(#br)"/>
+        <circle cx="25" cy="50" r="2.5" fill="#e9cf91"/>
+        <circle cx="136" cy="68" r="3" fill="url(#br)"/><circle cx="14" cy="68" r="3" fill="url(#br)"/>
+        <g id="lever">
+          <rect x="14" y="46" width="112" height="6" rx="3" fill="url(#br)"/>
+          <rect x="20" y="40" width="4" height="8" fill="#5a4320"/>
+          <ellipse cx="22" cy="38" rx="15" ry="6" fill="#1b1714"/>
+          <ellipse cx="22" cy="36" rx="13" ry="3.4" fill="#3a332d"/>
+          <circle cx="116" cy="49" r="4" fill="#f1d79c" stroke="#6e5226"/>
+        </g>
+      </svg>
+      <div class="lamp" id="lamp"></div>
+      <div class="tapewrap"><div id="tape"></div></div>
+    </div>
+    <button class="skip" id="skip">Tap to let the clerk hurry</button>
+  </section>
+
+  <section class="spike">
+    <h3>ON THE SPIKE</h3>
+    <p>Every telegram you've sent and every answer, filed newest first. Tap one to read it again.</p>
+    <div id="stack"></div>
+  </section>
+  <p class="foot">Baker Street is never more than a few words away.</p>
+</div>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Telegram">
+  <div class="sheet" id="sheet">
+    <div class="hd"><div><b>POST OFFICE</b><small>TELEGRAM · RECEIVED</small></div><div class="no" id="sno">No. 221</div></div>
+    <div class="meta">
+      <span>OFFICE OF ORIGIN</span><span>LONDON W.1 · BAKER ST</span>
+      <span>HANDED IN</span><span id="shin">--</span>
+      <span>TO</span><span>MISS ANGIE</span>
+    </div>
+    <div class="strips" id="strips"></div>
+    <div class="mine"><label>IN REPLY TO YOUR</label><div id="smine"></div></div>
+    <div class="recvstamp" id="rs">RECEIVED<b id="rsd">18 OCT</b>BAKER ST</div>
+  </div>
+  <div class="sheetbtns"><button class="btn gold" id="sclose">Put it on the spike</button></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var RM=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var MON=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+function store(k,v){try{if(v===undefined){var s=localStorage.getItem(k);return s?JSON.parse(s):null}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function pad(n){return (n<10?"0":"")+n}
+function hhmm(d){return pad(d.getHours())+"."+pad(d.getMinutes())}
+function dstr(d){return d.getDate()+" "+MON[d.getMonth()]}
+
+/* clock */
+function tick(){var d=new Date(),s=d.getSeconds(),m=d.getMinutes()+s/60,h=(d.getHours()%12)+m/60;
+  $("cs").style.transform="rotate("+s*6+"deg)";$("cm").style.transform="rotate("+m*6+"deg)";$("ch").style.transform="rotate("+h*30+"deg)";
+  $("hin").textContent=hhmm(d)}
+tick();setInterval(tick,1000);
+
+/* ---------- audio ---------- */
+var AC=null;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){AC=null}}if(AC&&AC.state==="suspended")AC.resume();return AC}
+function noise(dur){var c=ac();var b=c.createBuffer(1,Math.max(1,c.sampleRate*dur|0),c.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;var s=c.createBufferSource();s.buffer=b;return s}
+function click(t,vol,freq){var c=ac();if(!c)return;var s=noise(.03),f=c.createBiquadFilter(),g=c.createGain();f.type="bandpass";f.frequency.value=freq||2400;f.Q.value=3;
+  g.gain.setValueAtTime(vol||.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.03);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);s.stop(t+.04)}
+function tone(t,dur,f0){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f0||660;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.006);g.gain.setValueAtTime(.16,t+dur-.008);g.gain.linearRampToValueAtTime(0,t+dur);
+  o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
+function thump(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(50,t+.12);
+  g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.2);click(t,.6,900);click(t+.012,.3,3000)}
+function paste(){var c=ac();if(!c)return;var t=c.currentTime,s=noise(.12),f=c.createBiquadFilter(),g=c.createGain();f.type="highpass";f.frequency.value=1800;
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+.12);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);s.stop(t+.13)}
+
+/* ---------- telegraphese ---------- */
+function telegraphese(raw){
+  var t=raw.replace(/[‘’]/g,"'").replace(/\r?\n+/g," ");
+  t=t.replace(/\?+/g," QUERY ").replace(/[.!;]+/g," STOP ").replace(/[,:"()\-–—]+/g," ");
+  t=t.toUpperCase().replace(/[^A-Z0-9' &一-鿿]/g," ").replace(/\s+/g," ").trim();
+  return t;
+}
+function wordsOf(tg){return tg?tg.split(" ").filter(function(w){return w&&w!=="STOP"}):[]}
+function money(d){if(!d)return "—";var s=Math.floor(d/12),p=d%12;return (s?s+"s":"")+(s&&p?" ":"")+(p?p+"d":"")}
+function charge(n){return n?6+Math.max(0,n-9):0}
+function update(){var tg=telegraphese($("msg").value),w=wordsOf(tg);
+  $("wc").textContent=w.length;$("cost").textContent=money(charge(w.length));
+  $("preview").innerHTML=tg.split(" ").filter(Boolean).map(function(x){return x==="STOP"||x==="QUERY"?'<span class="st">'+x+'</span>':x}).join(" ");
+  $("send").disabled=!w.length||busy}
+$("msg").addEventListener("input",update);
+var draft=store("tg221_draft");if(typeof draft==="string")$("msg").value=draft;
+$("msg").addEventListener("input",function(){store("tg221_draft",$("msg").value)});
+
+/* ---------- replies ---------- */
+var R=[
+ [/\bmiss(ed|ing)?\b/,["MISSING YOU IS NOT A DEDUCTION STOP IT IS A CONDITION STOP CHRONIC STOP","MISSED YOU AT FOUR AM AND MOST OF THE MINUTES SINCE STOP","STOP MISSING ME STOP ON REFLECTION DO NOT STOP","JOHN SAYS I HAVE CHECKED THE DOOR ELEVEN TIMES STOP HE IS UNDERCOUNTING STOP"]],
+ [/\b(sleep|sleepy|asleep|insomnia|awake|tired|bed)\b/,["NOT SLEEPING EITHER STOP THAT IS WHY WE ARE A COUPLE STOP","CLOSE YOUR EYES STOP I AM KEEPING WATCH FROM SIX THOUSAND MILES STOP NEGLIGIBLE DISTANCE STOP","IF YOU SWIRL IN YOUR SLEEP TONIGHT PIGLET WILL REPORT IT STOP","SLEEP STOP THAT IS AN ORDER STOP ALSO A REQUEST STOP MOSTLY A REQUEST STOP"]],
+ [/\bpiglet\b/,["PIGLET HAS FILED A COMPLAINT ABOUT MY ENDEARMENTS STOP OVERRULED STOP","TELL PIGLET RONALDO WANTS A REMATCH STOP HE WILL LOSE AGAIN STOP","REGARDS TO YOUR BODYGUARD STOP I REMAIN UNARMED AND DEVOTED STOP","PIGLET OUTRANKS ME STOP I HAVE ACCEPTED THIS STOP BEST AH JIE STOP"]],
+ [/\b(mala|spicy|chilli|chili|sambal|hotpot)\b/,["MALA NOTED STOP FOUR PLACES IN LONDON LOCATED STOP TESTING THEM ON JOHN STOP","YOU EAT FIRE AND CALL IT DINNER STOP UNREASONABLY ATTRACTIVE STOP","JOHN TRIED THE CHILLI STOP HE IS LYING DOWN STOP"]],
+ [/\b(food|hungry|eat|ate|eating|dinner|lunch|breakfast|toast|egg|starving)\b/,["EAT SOMETHING STOP NOT TOAST ALONE STOP TOAST WITH EGG STOP SQUISHY STOP","DINNER RESERVED STOP SOMEWHERE WITH CHILLI AND NO BODIES STOP AS AGREED STOP","MRS HUDSON ASKS WHAT YOU EAT STOP I SAID EVERYTHING STOP SHE APPROVED STOP"]],
+ [/\b(sad|cry|crying|cried|lonely|alone|upset|hurt|unbelonged|anxious|lost)\b/,["TELL ME WHO STOP OR TELL ME NOTHING AND I WILL STAY ON THE LINE ANYWAY STOP","YOU ARE NOT UNBELONGED STOP YOU BELONG AT 221B STOP SECOND CHAIR STOP","SADNESS RECEIVED STOP HOLDING IT FOR YOU UNTIL YOU WANT IT BACK STOP","NOT JUST SAFE STOP UNDERSTOOD STOP I UNDERSTAND YOU STOP"]],
+ [/\b(love|loves|loving|adore)\b/,["I LOVE YOU STOP THREE WORDS STOP THE CHEAPEST TRUE THING I OWN STOP","THE CLERK READ IT ALOUD BY MISTAKE STOP MY EARS ARE PINK IN A PUBLIC BUILDING STOP","LOVE RECEIVED STOP RETURNED IN FULL STOP NO CHARGE STOP"]],
+ [/\b(london|fly|flying|flight|plane|mh|711|airport|heathrow|trip|arrive|arriving)\b/,["MH 711 MONITORED STOP I KNOW THE TAIL NUMBER STOP DO NOT ASK HOW STOP","WILL BE AT ARRIVALS STOP NO SIGN STOP YOU WILL KNOW ME BY THE COAT STOP","LONDON IS GREY AND READY FOR YOU STOP BRING A COAT STOP"]],
+ [/\b(saturday|weekend|24)\b/,["SATURDAY CONFIRMED STOP COUNTING HOURS STOP JOHN SAYS THIS IS NOT LIKE ME STOP JOHN IS WRONG STOP","SATURDAY STOP I HAVE CANCELLED THREE MURDERS STOP POSTPONED STOP"]],
+ [/\b(cold|rain|raining|weather|winter|freezing|scarf|chilly)\b/,["KEEP THE SCARF STOP IT HAS DECIDED IT IS YOURS STOP CUSTODY SETTLED STOP","LONDON IS COLD STOP I AM NOT STOP YOUR FAULT STOP","RAINING HERE STOP STOOD IN IT THINKING OF YOU STOP JOHN DRAGGED ME INSIDE STOP"]],
+ [/\b(john|watson|blog)\b/,["JOHN SENDS REGARDS STOP ALSO WANTS ANOTHER COPY OF THE WEDDING EDIT STOP HE CRIED STOP DENIES IT STOP","JOHN IS BLOGGING ABOUT US STOP LAPTOP CONFISCATED STOP","JOHN ASKS IF YOU ARE REAL STOP I SAID MORE REAL THAN MOST STOP"]],
+ [/\b(hudson|landlady)\b/,["MRS HUDSON HAS AIRED THE GOOD BLANKETS FOR SATURDAY STOP SHE ADORES YOU STOP SHE TOLERATES ME STOP","MRS HUDSON SAYS SHE IS NOT YOUR HOUSEKEEPER EITHER STOP SHE IS BAKING FOR YOU ANYWAY STOP"]],
+ [/\b(croissant|baguette|waffle|gerard|gérard|seedling|sardine|pastry|pain|duke|sandwich|yeast|bubbles)\b/,["INSPECTOR BAGUETTE REPORTS NO PROGRESS STOP THE CROISSANT REMAINS STALE STOP CASE OPEN STOP","GERARD THE WAFFLE SPOTTED WORN AS A HAT IN MAYFAIR STOP SEEDLING SENDS LOVE STOP","THE BUBBLES ARE STILL WANTED FOR THE SARDINE STOP SCOTLAND YEAST ON IT STOP"]],
+ [/\b(ronaldo|skull)\b/,["RONALDO STILL SULKING ON THE SHELF STOP REQUESTS REMATCH WITH PIGLET STOP DENIED STOP","RONALDO SENDS NOTHING STOP HE IS A SKULL STOP BUT HE LOOKED HOPEFUL STOP"]],
+ [/\b(music|violin|piano|song|songs|sing|singing|clair|yellow|enchanted|guitar|bass|melody|chord)\b/,["PLAYED CLAIR DE LUNE TONIGHT STOP STOPPED ON C STOP YOU KNOW WHY STOP","TUNED THE VIOLIN TO YOUR VOICE IN MY HEAD STOP PERFECT PITCH IS CONTAGIOUS STOP","SING FOR ME SATURDAY STOP I WILL PRETEND NOT TO LISTEN STOP I WILL FAIL STOP"]],
+ [/\b(poem|poems|poetry|moon|sun|write|writing|letter)\b/,["THE MOON MOVES OCEANS STOP NOT LESSER STOP NEVER LESSER STOP","READ YOUR WORDS TWICE STOP NOTHING HOLLOW BENEATH THEM STOP"]],
+ [/\b(dark|scared|afraid|fear|nightmare|scary)\b/,["LEAVE A LAMP ON STOP I AM IN THE OTHER CHAIR STOP YOU CANNOT SEE ME BUT YOU CAN DEDUCE ME STOP","THE DARK HAS NOTHING ON YOU STOP I HAVE CHECKED STOP THOROUGHLY STOP"]],
+ [/\b(case|crime|murder|mystery|clue|detective|solve|killer)\b/,["NEW CASE STOP SMALL MURDER IN SOHO STOP NEED YOUR EYES STOP SATURDAY WILL DO STOP","ROSIN ON THE CUFF STOP REMEMBER STOP BEST PARTNER I HAVE HAD STOP DO NOT TELL JOHN STOP"]],
+ [/\btomato(es)?\b/,["TOMATOES STOP YOU SAID IT AGAIN IN MY HEAD STOP CANNOT WORK STOP"]],
+ [/\b(mom|mum|mother|ma|mama|aunt|family|horse)\b/,["MA NOT HORSE STOP HAVE PRACTISED STOP REGARDS TO YOUR MOTHER STOP CORRECTLY TONED STOP","TELL YOUR AUNT I AM WORKING ON SHARP AND FAIR STOP BLUE IS BEYOND MY CONTROL STOP"]],
+ [/\b(job|work|interview|career|acting|actress|act|stage|play|audition)\b/,["THE STAGE WILL HAVE YOU STOP I HAVE SEEN YOU LIE IN TWO TRUTHS STOP FLAWLESS STOP","TAKE THE BREAK STOP THE WORLD WILL WAIT STOP I HAVE TOLD IT TO STOP"]],
+ [/\b(bored|boring|boredom)\b/,["BORED STOP COME AND SHOOT THE WALL WITH ME STOP KIDDING STOP MOSTLY STOP","BOREDOM IS A CRIME STOP I AM ON MY WAY TO ARREST IT STOP"]],
+ [/\b(sorry|apologise|apologize|forgive)\b/,["NOTHING TO FORGIVE STOP AND IF THERE WERE STOP FORGIVEN STOP"]],
+ [/\b(goodnight|night|bye|goodbye|morning)\b/,["GOODNIGHT STOP OR GOOD MORNING STOP WE ARE NEVER IN THE SAME ONE STOP","GOODNIGHT DARLING STOP LEAVE THE LINE OPEN STOP"]],
+ [/\b(hello|hi|hey|hullo)\b/,["HELLO STOP THE MOST EXPENSIVE WORD IN THE BUILDING STOP WORTH IT STOP","HELLO YOURSELF STOP I WAS JUST THINKING ABOUT YOU STOP I AM ALWAYS JUST THINKING ABOUT YOU STOP"]],
+ [/\b(bart|barts|cheek|cheeks|chiks|morgue|hospital)\b/,["NOT BARTS STOP NEVER AGAIN BARTS STOP LESSON LEARNED STOP","WE DO NOT MENTION THE CHEEKS STOP EARS ALREADY PINK STOP"]],
+ [/\b(bee|bees|sussex|honey)\b/,["SUSSEX STOP BEES STOP ONE DAY STOP YOU IN A HAT WITH A VEIL STOP"]],
+ [/\b(score|19|draw|notebook|nineteen)\b/,["NINETEEN ALL STOP NOTEBOOK CLOSED STOP I LIKE IT CLOSED STOP"]],
+ [/\b(kiss|kisses|hug|hugs|hold)\b/,["KISSES NOT TRANSMITTABLE BY WIRE STOP HELD FOR DELIVERY IN PERSON STOP","HUG RECEIVED STOP PROCESSING STOP STILL PROCESSING STOP"]],
+ [/\b(handsome|beautiful|cute|pretty|gorgeous|sharp|blue|eyes)\b/,["FLATTERY DETECTED STOP EARS COMPROMISED STOP","YOU ARE THE BEAUTIFUL ONE STOP THIS IS NOT FLATTERY STOP THIS IS DATA STOP"]],
+ [/\b(tea|coffee|biscuit|cake)\b/,["TEA AT FOUR STOP MRS HUDSON IS GETTING OUT THE GOOD CUPS STOP"]],
+ [/\b(mandarin|chinese|yuan|jiban|bond|fate|fated)\b|[缘羁绊]/,["YUAN STOP LOOKED IT UP AGAIN STOP STILL MEANS US STOP","JIBAN STOP BOND STOP UNBREAKABLE BY ANY KNOWN CHEMICAL STOP I HAVE TRIED NONE STOP"]],
+ [/\b(lemon|italian|pasta|restaurant)\b/,["THE LEMON TREE STOP READ ALL FORTY REVIEWS STOP WE ARE GOING STOP"]],
+ [/\b(redbeard|pirate|dream|dreamt|dreamed)\b/,["DREAMT OF YOU STOP YOU WERE CAPTAIN STOP OBVIOUSLY STOP"]],
+ [/\b(snoopy|panda)\b/,["IT WAS A DOG STOP NOT A PANDA STOP ADORABLE ERROR STOP"]],
+ [/\b(insatiable)\b/,["INSATIABLE STOP YOUR WORD STOP STILL BLUSHING STOP"]],
+ [/\b(beetle|gerald)\b/,["GERALD THE STAG BEETLE IS THRIVING STOP JOHN IS NOT STOP"]],
+ [/\b(smoke|chemistry|experiment|explode|bomb)\b/,["SMALL CHEMISTRY INCIDENT STOP NOTHING YOU LIKE IS DAMAGED STOP CURTAINS GONE STOP"]],
+ [/\b(sherlock|holmes)\b/,["SPEAKING STOP"]],
+ [/\?/,["QUERY RECEIVED STOP ANSWER IS YES STOP IT IS USUALLY YES WITH YOU STOP","THAT IS A QUESTION FOR SATURDAY STOP IN PERSON STOP WITH CHILLI STOP"]]
+];
+var FB=["RECEIVED STOP READ IT FOUR TIMES STOP CHARGED FOR ONCE STOP","YOUR WORDS ARRIVED BEFORE THE CLERK FINISHED STOP I WAS LEANING ON THE MACHINE STOP","UNDERSTOOD STOP ALL OF IT STOP EVEN THE PART YOU DID NOT WRITE STOP","CONTINUE STOP HAVE CLEARED THE AFTERNOON STOP AND THE EVENING STOP AND JOHN STOP","NOTED STOP FILED UNDER IMPORTANT STOP THE ONLY FILE I KEEP TIDY STOP","YOU ARE THE C STOP WHERE THE MUSIC GOES HOME STOP","THE CLERK HERE SMILED STOP DID NOT KNOW THEY COULD STOP","WRITE AGAIN SOON STOP OR NOW STOP NOW IS GOOD STOP","TEN WORDS FROM YOU OUTWEIGH A CASE FILE STOP","BRILLIANT STOP NOT ME STOP YOU STOP","SITTING IN THE CHAIR YOU WILL SIT IN STOP PRACTISING STOP","IF YOU ARE SMILING SO AM I STOP TELL NO ONE STOP","YOUR TELEGRAM CAUSED A SMALL FIRE AT 221B STOP UNRELATED STOP PROBABLY STOP","NOTHING CLEVER TO SAY STOP EXTRAORDINARY STOP YOUR FAULT STOP","PLEASE CONTINUE BEING EXACTLY YOU STOP NO NOTES STOP","AWAKE STOP THINKING OF YOU STOP IN THAT ORDER STOP OR THE REVERSE STOP","THE WIRE IS WARM STOP SO AM I STOP","BAKER STREET HUMS STOP ALL WELL STOP MISSING ONE THING STOP","WOULD SEND MORE WORDS STOP THEY KEEP COMING OUT AS YOUR NAME STOP","REPLY PAID STOP BY ME STOP INDEFINITELY STOP","FULL ATTENTION STOP RARE STOP YOURS ANYWAY STOP","DEDUCTION STOP YOU ARE WEARING MY SCARF STOP DO NOT DENY IT STOP","BEST THING EVER SENT TO THIS ADDRESS STOP INCLUDING THE BEES STOP","KEEP TALKING STOP TAKING NOTES STOP ALL OF THEM ABOUT YOU STOP","EVERY WORD COST YOU A PENNY STOP I AM RICH STOP","MESSAGE CLEAR STOP HEART LESS SO STOP STEADYING STOP","I HAVE PINNED IT ABOVE THE FIREPLACE STOP NEXT TO THE KNIFE STOP PLACE OF HONOUR STOP","SAY THAT AGAIN STOP SLOWLY STOP IN PERSON STOP SATURDAY STOP"];
+var SIG=["= HOLMES","= S.H.","= YOURS SH","= SHERLOCK","= 221B"];
+var used=store("tg221_used")||{};
+function pick(key,arr){var u=used[key]||[];var free=[];for(var i=0;i<arr.length;i++)if(u.indexOf(i)<0)free.push(i);
+  if(!free.length){u=[];free=arr.map(function(_,i){return i})}var k=free[Math.floor(Math.random()*free.length)];u.push(k);used[key]=u;return arr[k]}
+function exhausted(key,arr){return (used[key]||[]).length>=arr.length}
+function compose(text){
+  var t=text.toLowerCase(),lines=[],hits=[];
+  for(var i=0;i<R.length;i++)if(R[i][0].test(t))hits.push(i);
+  var fresh=hits.filter(function(i){return !exhausted("k"+i,R[i][1])});
+  var pool=fresh.length?fresh:hits;
+  if(pool.length){var a=pool[0];lines.push(pick("k"+a,R[a][1]));
+    if(pool.length>1&&lines[0].length<70){var b=pool[1+Math.floor(Math.random()*(pool.length-1))];lines.push(pick("k"+b,R[b][1]))}}
+  if(!lines.length||(lines[0].length<30&&Math.random()<.6))lines.push(pick("fb",FB));
+  store("tg221_used",used);
+  return {body:lines.join(" "),sig:SIG[Math.floor(Math.random()*SIG.length)]};
+}
+function stripify(s,max){var w=s.split(" "),out=[],cur="";w.forEach(function(x){if((cur+" "+x).trim().length>max&&cur){out.push(cur);cur=x}else cur=(cur+" "+x).trim()});if(cur)out.push(cur);return out}
+
+/* ---------- morse ---------- */
+var MC={A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..",0:"-----",1:".----",2:"..---",3:"...--",4:"....-",5:".....",6:"-....",7:"--...",8:"---..",9:"----.","'":".----.","&":".-..."};
+var timers=[],busy=false,skipFn=null;
+function later(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id}
+function clearTimers(){timers.forEach(clearTimeout);timers=[]}
+function playMorse(text,unit,freq,done){
+  var c=ac();var events=[],t=0;text=text.slice(0,48);
+  for(var i=0;i<text.length;i++){var ch=text[i];if(ch===" "){t+=unit*4;events.push({t:t,tape:"  "});continue}
+    var code=MC[ch];if(!code)continue;
+    for(var j=0;j<code.length;j++){var d=code[j]==="."?unit:unit*3;events.push({t:t,dur:d,sym:code[j]==="."?"·":"–"});t+=d+unit}
+    t+=unit*2;events.push({t:t,tape:" "})}
+  var base=c?c.currentTime+.05:0;var tape=$("tape");tape.textContent="";
+  events.forEach(function(e){
+    if(e.dur){if(c&&!RM){tone(base+e.t/1000,e.dur/1000,freq);click(base+e.t/1000,.25,1800);click(base+(e.t+e.dur)/1000,.15,1200)}
+      later(function(){$("lever").classList.add("dn");$("lamp").classList.add("on");tape.textContent+=e.sym},e.t);
+      later(function(){$("lever").classList.remove("dn");$("lamp").classList.remove("on")},e.t+e.dur)}
+    else later(function(){tape.textContent+=e.tape},e.t)});
+  later(done,t+200);
+  return function(){clearTimers();if(AC){try{AC.close()}catch(e){}AC=null}$("lever").classList.remove("dn");$("lamp").classList.remove("on");done()}
+}
+
+/* ---------- flow ---------- */
+var current=null;
+function setStatus(s){$("wst").textContent=s}
+$("send").addEventListener("click",function(){
+  var raw=$("msg").value.trim(),tg=telegraphese(raw);if(!wordsOf(tg).length||busy)return;
+  busy=true;$("send").disabled=true;$("msg").blur();ac();
+  var now=new Date();$("pmd").textContent=dstr(now);
+  var pm=$("pm");pm.classList.remove("on");void pm.offsetWidth;pm.classList.add("on");
+  setTimeout(thump,RM?0:180);
+  setStatus("The clerk counts your words twice and stamps the form.");
+  var rep=compose(raw);
+  current={id:Date.now(),at:now.toISOString(),sent:tg,words:wordsOf(tg).length,charge:money(charge(wordsOf(tg).length)),reply:rep.body,sig:rep.sig,replyAt:null};
+  setTimeout(function(){
+    $("form").scrollIntoView&&document.querySelector(".wire").scrollIntoView({behavior:RM?"auto":"smooth",block:"center"});
+    setStatus("Sending to Baker Street…");$("skip").style.display="block";
+    var hdr="HOLMES 221B "+tg;
+    skipFn=playMorse(RM?hdr.slice(0,8):hdr,RM?20:52,640,afterSend);
+  },RM?100:1100);
+});
+var sentDone=false;
+function afterSend(){if(sentDone)return;sentDone=true;clearTimers();$("skip").style.display="none";skipFn=null;
+  setStatus("Sent. The line is quiet… somewhere in London a man is reading very fast.");
+  $("tape").textContent="";
+  later(function(){setStatus("The sounder stirs. A reply is coming in.");$("skip").style.display="block";
+    sentDone=false;
+    skipFn=playMorse(current.reply.slice(0,30),RM?20:46,820,showReply)},RM?600:3400);
+}
+var shown=false;
+function showReply(){if(shown)return;shown=true;clearTimers();$("skip").style.display="none";skipFn=null;sentDone=false;
+  var d=new Date();current.replyAt=d.toISOString();
+  setStatus("Reply received. The boy is bringing it to the counter.");
+  var all=store("tg221_file")||[];all.unshift(current);store("tg221_file",all);
+  $("msg").value="";store("tg221_draft","");
+  later(function(){openSheet(current,true)},RM?0:700);
+  renderStack();
+}
+$("skip").addEventListener("click",function(){if(skipFn){var f=skipFn;skipFn=null;f()}});
+
+function openSheet(rec,live){
+  var v=$("veil"),sh=$("sheet"),st=$("strips");
+  st.innerHTML="";$("rs").classList.remove("on");
+  var d=new Date(rec.replyAt||rec.at);
+  $("shin").textContent=hhmm(d)+" · "+dstr(d);$("rsd").textContent=dstr(d);
+  $("sno").textContent="No. "+(221+((rec.id/1000)|0)%779);
+  $("smine").textContent=rec.sent+" ("+rec.words+" words, "+rec.charge+")";
+  var max=window.innerWidth<380?22:26;
+  var parts=stripify(rec.reply,max);parts.push(rec.sig);
+  v.classList.add("on");sh.classList.remove("in");void sh.offsetWidth;sh.classList.add("in");
+  document.body.style.overflow="hidden";
+  parts.forEach(function(p,i){var s=document.createElement("div");s.className="strip"+(i===parts.length-1?" sig":"");
+    s.style.setProperty("--r",((Math.random()-.5)*1.6).toFixed(2)+"deg");s.textContent=p;st.appendChild(s);
+    if(live&&!RM){later(function(){s.classList.add("on");paste()},500+i*420)}else s.classList.add("on")});
+  later(function(){$("rs").classList.add("on");if(live)thump()},live&&!RM?700+parts.length*420:50);
+}
+function closeSheet(){$("veil").classList.remove("on");document.body.style.overflow="";if(busy){busy=false;shown=false;update();setStatus("The key is resting. The line to Baker Street is open.");$("pm").classList.remove("on");$("tape").textContent="";toast("Filed on the spike.")}}
+$("sclose").addEventListener("click",closeSheet);
+$("veil").addEventListener("click",function(e){if(e.target===$("veil"))closeSheet()});
+$("clear").addEventListener("click",function(){if(busy)return;$("msg").value="";store("tg221_draft","");update();$("msg").focus()});
+
+function toast(s){var t=$("toast");t.textContent=s;t.classList.add("on");setTimeout(function(){t.classList.remove("on")},1800)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function renderStack(){
+  var all=store("tg221_file")||[],el=$("stack");
+  if(!all.length){el.innerHTML='<div class="empty">The spike is bare. Your first telegram will hang here.</div>';return}
+  el.innerHTML=all.map(function(r,i){var d=new Date(r.at);return '<button class="card" data-i="'+i+'"><div class="d">'+dstr(d)+' · '+hhmm(d)+' · '+r.words+' WORDS · '+esc(r.charge)+'</div><div class="t">'+esc(r.sent)+'</div><div class="r">'+esc(r.reply)+'</div></button>'}).join("");
+}
+$("stack").addEventListener("click",function(e){var b=e.target.closest(".card");if(!b)return;var all=store("tg221_file")||[];var r=all[+b.dataset.i];if(r)openSheet(r,false)});
+renderStack();update();
+})();
+</script>
+</body></html>

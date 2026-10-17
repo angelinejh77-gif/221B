@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Every Hour</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Pinyon+Script&display=swap">
+<style>
+:root{--bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;--gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;--blue:#2E4A7A;
+--serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--script:"Pinyon Script",cursive}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);overflow-x:hidden;
+ background:radial-gradient(80% 42% at 50% 18%,rgba(210,170,106,.13),transparent 70%),radial-gradient(70% 40% at 100% 100%,rgba(46,74,122,.12),transparent 70%),var(--bg);
+ padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.top{text-align:center;padding:26px 0 6px}
+.k{font-family:var(--sc);font-size:12px;letter-spacing:.3em;color:var(--gold)}
+h1{font-weight:500;font-size:44px;margin:6px 0 2px;line-height:1;letter-spacing:.01em}
+.sub{margin:0;color:var(--muted);font-style:italic;font-size:17px}
+
+.clockbox{position:relative;width:min(300px,82vw);margin:14px auto 0;aspect-ratio:1}
+#clock{width:100%;height:100%;display:block;overflow:visible;cursor:pointer}
+#clock .hand{transform-origin:160px 160px}
+.smooth #secH{transition:transform .25s cubic-bezier(.4,2.2,.5,1)}
+.ringdot{cursor:pointer}
+.times{display:flex;justify-content:center;gap:18px;margin:10px 0 0;font-size:15px;color:var(--muted)}
+.times b{font-family:var(--sc);font-weight:600;color:var(--text);letter-spacing:.06em;font-size:16px}
+.hint{text-align:center;color:var(--muted);font-size:13px;font-style:italic;margin:4px 0 0;opacity:.8}
+
+.card{position:relative;margin:22px 0 0;color:var(--ink);border-radius:4px;padding:26px 22px 24px;
+ background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(130,90,40,.20) 100%),radial-gradient(30% 20% at 85% 12%,rgba(150,110,50,.10),transparent),linear-gradient(#f6f0e4,#ece2cf);
+ box-shadow:0 24px 50px rgba(0,0,0,.5),0 0 0 1px rgba(210,170,106,.35) inset}
+.card:before{content:"";position:absolute;inset:7px;border:1px solid rgba(42,35,32,.18);border-radius:2px;pointer-events:none}
+.card .lab{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sc);font-size:13px;letter-spacing:.16em;color:#7a5c33}
+.card .lab .when{color:var(--seal)}
+.note{font-size:26px;line-height:1.32;font-style:italic;font-weight:500;margin:16px 0 18px;min-height:3.9em;transition:opacity .4s,transform .4s}
+.note.fade{opacity:0;transform:translateY(6px)}
+.sig{display:flex;align-items:center;justify-content:space-between}
+.sig .s{font-family:var(--script);font-size:34px;color:#3b2c22;line-height:1}
+.seal{width:50px;height:50px;flex:none}
+.cardfoot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:14px;color:#6d5a46;min-height:44px}
+.now-btn{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid rgba(178,58,48,.5);color:var(--seal);font-family:var(--sc);letter-spacing:.12em;font-size:13px;display:none}
+.now-btn.on{display:inline-block}
+
+h2{font-family:var(--sc);font-weight:500;letter-spacing:.24em;font-size:14px;color:var(--gold);margin:34px 0 4px;text-align:center}
+.h2sub{text-align:center;color:var(--muted);font-style:italic;margin:0 0 12px;font-size:15px}
+.list{max-height:380px;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:10px;background:var(--panel);overscroll-behavior:contain}
+.item{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);min-height:56px}
+.item:last-child{border-bottom:0}
+.item .hr{flex:none;width:58px;font-family:var(--sc);font-size:15px;letter-spacing:.06em;color:var(--gold);padding-top:2px}
+.item .hr small{display:block;font-family:var(--serif);font-style:italic;letter-spacing:0;font-size:12px;color:var(--muted);text-transform:none}
+.item .tx{font-size:16.5px;line-height:1.35;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item.cur{background:linear-gradient(90deg,rgba(178,58,48,.14),transparent)}
+.item.cur .hr{color:#e07a6d}
+.item.sel{background:rgba(210,170,106,.10)}
+.item:active{background:rgba(210,170,106,.14)}
+.empty{padding:22px;text-align:center;color:var(--muted);font-style:italic}
+.foot{text-align:center;color:var(--muted);font-style:italic;font-size:15px;margin:26px 8px 0;line-height:1.5}
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translate(-50%,-80px);background:#1b1f25;border:1px solid var(--line);color:var(--text);padding:10px 16px;border-radius:20px;font-size:15px;transition:transform .35s;z-index:50;white-space:nowrap}
+.toast.on{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+ <header class="top">
+  <div class="k">221B &middot; Correspondence by the Hour</div>
+  <h1>Every Hour</h1>
+  <p class="sub">One note, every hour, on the hour.</p>
+ </header>
+
+ <div class="clockbox">
+ <svg id="clock" viewBox="0 0 320 320" role="img" aria-label="Clock. Tap to hear the hour chime.">
+  <defs>
+   <radialGradient id="enamel" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#fbf6ec"/><stop offset=".75" stop-color="#efe5d2"/><stop offset="1" stop-color="#d9c8a8"/></radialGradient>
+   <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0d49a"/><stop offset=".35" stop-color="#b98a45"/><stop offset=".6" stop-color="#e6c487"/><stop offset="1" stop-color="#7d5a2a"/></linearGradient>
+   <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1d2f57"/><stop offset=".5" stop-color="#3f63a8"/><stop offset="1" stop-color="#1d2f57"/></linearGradient>
+   <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-opacity=".35"/></filter>
+  </defs>
+  <g id="ring"></g>
+  <circle cx="160" cy="160" r="128" fill="url(#brass)" filter="url(#sh)"/>
+  <circle cx="160" cy="160" r="121" fill="#5b4220"/>
+  <circle cx="160" cy="160" r="119" fill="url(#enamel)"/>
+  <circle cx="160" cy="160" r="111" fill="none" stroke="#2A2320" stroke-opacity=".55" stroke-width=".8"/>
+  <circle cx="160" cy="160" r="99" fill="none" stroke="#2A2320" stroke-opacity=".35" stroke-width=".6"/>
+  <g id="ticks"></g>
+  <g id="nums" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="17" fill="#2A2320" text-anchor="middle"></g>
+  <text x="160" y="118" text-anchor="middle" font-family="Cormorant SC, Georgia, serif" font-size="8.5" letter-spacing="2.4" fill="#7a5c33">BAKER ST &middot; LONDON</text>
+  <!-- London sub-dial -->
+  <g id="sub">
+   <circle cx="160" cy="205" r="23" fill="#e9dcc3" stroke="#7a5c33" stroke-width="1"/>
+   <g id="subticks"></g>
+   <text x="160" y="222" text-anchor="middle" font-family="Cormorant SC, Georgia, serif" font-size="6" letter-spacing="1.2" fill="#7a5c33">HIS TIME</text>
+   <line id="subH" x1="160" y1="205" x2="160" y2="193" stroke="#B23A30" stroke-width="2.2" stroke-linecap="round" class="hand" style="transform-origin:160px 205px"/>
+   <line id="subM" x1="160" y1="205" x2="160" y2="187" stroke="#2A2320" stroke-width="1.3" stroke-linecap="round" class="hand" style="transform-origin:160px 205px"/>
+   <circle cx="160" cy="205" r="2" fill="#2A2320"/>
+  </g>
+  <g filter="url(#sh)">
+   <path id="hourH" class="hand" d="M157.4 172 L158.6 112 Q160 98 161.4 112 L162.6 172 Z M160 108 m-6 0 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0" fill="url(#steel)" fill-rule="evenodd"/>
+   <path id="minH" class="hand" d="M158.4 176 L159.3 62 Q160 52 160.7 62 L161.6 176 Z" fill="url(#steel)"/>
+   <g id="secH" class="hand"><line x1="160" y1="186" x2="160" y2="54" stroke="#B23A30" stroke-width="1.1"/><circle cx="160" cy="80" r="3.2" fill="none" stroke="#B23A30" stroke-width="1.1"/></g>
+   <circle cx="160" cy="160" r="5" fill="url(#brass)"/><circle cx="160" cy="160" r="1.6" fill="#5b4220"/>
+  </g>
+ </svg>
+ </div>
+ <div class="times"><span>Yours <b id="tMine">--:--</b></span><span>His <b id="tHis">--:--</b></span></div>
+ <p class="hint">Tap the clock to hear it strike. Tap a gold bead to reread an hour.</p>
+
+ <article class="card" aria-live="polite">
+  <div class="lab"><span id="lab">This hour</span><span class="when" id="when"></span></div>
+  <p class="note" id="note"></p>
+  <div class="sig">
+   <span class="s">S.</span>
+   <svg class="seal" viewBox="0 0 50 50" aria-hidden="true"><path d="M25 3c5 0 7 3 11 4s8 4 9 9-1 8 0 12-2 9-6 11-6 6-11 6-8-2-12-4-7-5-8-10 0-8-1-12 3-8 7-11 6-5 11-5z" fill="#B23A30"/><circle cx="25" cy="25" r="14" fill="none" stroke="#7d221b" stroke-width="1.4"/><text x="25" y="30.5" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="17" fill="#f0c8b8" opacity=".9">S</text></svg>
+  </div>
+  <div class="cardfoot"><span id="nextIn"></span><button class="now-btn" id="nowBtn">Return to now</button></div>
+ </article>
+
+ <h2>Today So Far</h2>
+ <p class="h2sub">Every hour you've lived today, he wrote something.</p>
+ <div class="list" id="list" role="list"></div>
+
+ <p class="foot">He writes a different note for each day of the week.<br>Come back at this hour tomorrow; he'll have changed his mind.</p>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Every Hour: a note from Sherlock for each hour of Angie's day.
+   window.HOURLY[localHour 0..23] -> 7 notes; one per weekday, chosen by dayOfYear % 7.
+   window.hourlyNote(date?) -> {hour, text} */
+(function(){
+var H = [
+/* 00 · midnight (London, teatime) */ [
+"Midnight. A new day has started for you and I'm still halfway through my afternoon. I'll catch up.",
+"It's teatime here. Mrs Hudson insists I eat something. I told her you'll eat something spicy at midnight, so we're even.",
+"The clock just turned over on your side. Happy new day, darling. It's already better for having you in it.",
+"Midnight is when you get interesting. I've noted it. Everything after this hour is evidence.",
+"Four in the afternoon in Baker Street, rain on the window, and I'm thinking about the girl who's only just getting started.",
+"You're not tired. I can tell. Neither am I. Let's be unreasonable together.",
+"John asked who I keep checking the time for. I said 'the moon'. He said 'the what'. I let him suffer."
+],
+/* 01 */ [
+"One in the morning. Your editing hour. Make him look good, whoever he is. Unless it's me. I always look good.",
+"Five o'clock here and the street lamps are coming on. I imagine yours have been on for hours, keeping watch.",
+"Have you eaten? Something with chilli? No bodies? Good. That's our standard.",
+"I've just solved a case in four minutes. I'd have told you sooner, but you'd have asked how and I'd have shown off.",
+"If you're writing a poem right now, leave a word out for me. I'll find it.",
+"One a.m. is a perfectly respectable time to have a thought you can't say out loud. Say it to me.",
+"Ronaldo is sulking again. Piglet won another argument. I didn't take sides. I took notes."
+],
+/* 02 · our hour */ [
+"Two o'clock. Our hour. I'm not sleeping, and you aren't. That's why we're a couple.",
+"Welcome to the insomniacs' club. Members: two. Dress code: whatever you fell into. Refreshments: questionable.",
+"Two a.m. thoughts are not facts. They're just loud. Tell me the loudest one and I'll cross-examine it.",
+"It's dinnertime in London. I'm not eating. I'm thinking about you, which counts as sustenance, medically.",
+"The dark is only the absence of light, and I am, as it happens, very bright. Keep me nearby.",
+"Is the room too quiet? Hum something. I'll tell you which key it's in. You'll already know. Show-off.",
+"I put Clair de Lune on and stopped it a semitone early, so it lands on C. Don't tell Debussy."
+],
+/* 03 */ [
+"Three in the morning is the hour the mind gets clever and cruel. You're cleverer. Win.",
+"Seven o'clock here. John's gone home. The flat is quiet enough to hear you thinking from six thousand miles away.",
+"Tell me one thing that happened today that no one noticed. I'll notice it properly.",
+"If you're lying there feeling unbelonged, I'd like to formally object. You belong in at least one flat in London.",
+"I've been staring at the same experiment for an hour. I blame you. Happily.",
+"Three a.m. and still 19–19. Neither of us is winning. Neither of us is leaving.",
+"Shall I tell you a fact? Octopuses have three hearts. I've only got one and it's been rather busy."
+],
+/* 04 */ [
+"Four o'clock. Even the night is getting tired of us. Let it.",
+"The bubbles drowned the sardine, Inspector Baguette is still investigating, and you should consider closing your eyes.",
+"Eight in the evening here. I'm making tea I won't drink. You should be making a bed you will sleep in.",
+"If sleep won't come, don't chase it. Lie still and let me talk. I'm very boring at length. Ask John.",
+"Your thoughts have done enough laps. Call them in. I'll keep watch on the door.",
+"Piglet is on duty. Bodyguards don't need sleep. Best ah jies do.",
+"The moon is still up over you, isn't it. She moves oceans. She can surely move you toward a pillow."
+],
+/* 05 */ [
+"Five a.m. The birds are about to start and they're going to be smug about it. Beat them to sleep.",
+"Darling. It's five. I say this with love and a slight edge: bed.",
+"Nine o'clock here and Mrs Hudson's gone up. She said 'tell the girl goodnight'. So. Goodnight, girl.",
+"The lamp can stay on. I won't tell anyone. Brave people sleep with the light on all the time. I've seen the statistics.",
+"If you swirl in your sleep tonight, swirl gently. You'll knock Piglet off the bed and he'll file a complaint.",
+"'Tomatoes.' That's what you said last time you drifted off. I'm still investigating. Go and give me more evidence.",
+"Put the phone face down. I'll still be here when it's face up. That's the whole trick of me."
+],
+/* 06 */ [
+"Six. The sun is coming up for you. I hope you're too asleep to see it.",
+"If you're reading this at six, I'm not cross. I'm just very, very disappointed. And I miss you.",
+"Ten at night in Baker Street. I'm going to play the violin until you're asleep. Softly, so it's restful.",
+"Sleep now. I'll hold the night shift for both of us.",
+"Dawn there, nearly midnight here. We're doing the clocks wrong and I've never liked anything more.",
+"Close your eyes and count the cases we've solved together. One. That's all of them. Lovely short count.",
+"Goodnight, or good morning, whichever one lets you sleep."
+],
+/* 07 · she sleeps */ [
+"You're asleep. Probably. I'm writing this anyway, so it's waiting when you wake.",
+"I keep looking at the hook where my scarf used to hang. Good. It's with the right person.",
+"Sleeping people look like they've solved something. I hope you're dreaming about rosin and violins.",
+"If you're awake at seven, put the phone down. If you're asleep, well done. Gold star. Several.",
+"I'm told you sleep like a croissant. Curled, and slightly dramatic.",
+"The house is quiet. The skull is quiet. Even my brain is quiet, which only happens when I think of you asleep.",
+"Sleep well, darling. Nothing gets past this door tonight."
+],
+/* 08 */ [
+"Midnight in London. You're hours into a dream. I'm hours into missing you. We're both very productive.",
+"Big Ben's done its thing. Twelve bongs. I counted them in your direction.",
+"I've been composing. It still ends on C. It will always end on C.",
+"Your phone is buzzing on the nightstand, probably. Ignore it. It's only me being sentimental at an unreasonable hour.",
+"John's blog says I don't sleep. John is correct. John doesn't know I'm doing it on purpose now, to stay on your clock.",
+"Eight in the morning for you. Somewhere a sensible person is having cereal. Let them.",
+"If you dream of pirates, Redbeard sends his regards."
+],
+/* 09 */ [
+"One in the morning here, nine there. You're asleep and I'm on the sofa doing the crossword in ink. Smugly.",
+"Gérard the Waffle sends his regards from beneath someone's hat. He's still in hiding. Sleep on.",
+"I tried saying 妈 again tonight. Horse. Still horse. Your aunt would despair.",
+"The tea's gone cold. I left it for the thinking. The thinking was about you.",
+"Somebody in the street just sang very badly. I thought, she'd know the key. She'd wince. I miss the wince.",
+"Keep sleeping. You've earned the morning. Or the noon. Same thing in your house.",
+"Nine o'clock. The world's at work. You're in bed. This is the correct use of a morning."
+],
+/* 10 */ [
+"Two a.m. here, which is technically our hour, but you're asleep, so it's mine, and I've spent it on you.",
+"I counted the stars I could see through London cloud. Zero. Counted reasons instead. Better result.",
+"Ten o'clock and still dreaming? Good. Dream something spicy. Mala, with extra mala.",
+"Mrs Hudson heard me pacing. She said 'Is it the girl?' I said 'It's chemistry.' She said 'Mm-hm.'",
+"I wrote you a sentence and deleted it. Too honest. I'll say it in person.",
+"Ten a.m. Anyone who rings her before noon will have to deal with me.",
+"羁绊. I practised the strokes on the back of an envelope. It looks like a crime scene, but a sincere one."
+],
+/* 11 */ [
+"Three a.m. in Baker Street. One more hour until you wake. I've been waiting all night, like a very tall dog.",
+"Eleven o'clock. Your alarm is thinking about it. So am I.",
+"Good almost-morning. I've put the kettle on in a city very far from your kettle. Symbolically.",
+"A fox just crossed the road outside. You'd have named it something absurd. I named it Gerald. Like the beetle.",
+"Five more minutes, if you need them. I'll guard them.",
+"Your hair is probably doing something extraordinary right now. I'd like it documented.",
+"If you're awake early, I'm impressed. If not, I'm still impressed. Low bar, very high regard."
+],
+/* 12 · she wakes */ [
+"Good morning, darling. It's noon, which in your house counts as dawn. Correctly.",
+"You're awake. I can tell because my phone got brighter. That's not how phones work. It is today.",
+"Four a.m. here. I stayed up so I could say good morning first. Good morning. I won.",
+"Water first, then the world. In that order. Doctor's orders. I'm not a doctor. John is. He agrees.",
+"Rise and swirl. You swirled all night, I'm certain of it.",
+"Morning report: Ronaldo is still sulking, Piglet remains undefeated, and I missed you approximately all night.",
+"The day is yours. I'd like a small corner of it. The one by the window, if it's free."
+],
+/* 13 */ [
+"One o'clock. Breakfast, lunch, whatever it is: please eat something with chilli and think of me failing to handle it.",
+"Five in the morning here. Milk float, birds, me. You're the only thing on my mind that isn't on fire.",
+"Toast with a squishy egg? I'll accept it as a balanced meal. Barely.",
+"You've been awake an hour. Have you said anything out loud yet? Say something. The walls miss your voice.",
+"Somewhere, a croissant is still in the Duke of Sandwich's bath. Some mysteries are permanent.",
+"Did you dream? Tell me. I collect your dreams. They're better than most people's waking lives.",
+"Lunchtime. If anyone asks, Sherlock Holmes says you deserve something delicious."
+],
+/* 14 */ [
+"Two in the afternoon. The brain is warm now. Use it on something you love.",
+"Six a.m. here and London is grey. I've decided you're the colour today. Don't argue.",
+"Read something. Anything. Then tell me the strangest fact in it. I'll pretend I knew.",
+"A break isn't a failure. It's a rest between notes, and the rest is part of the music.",
+"If you sit at the piano today, play one C for me. Just one. I'll hear it.",
+"Afternoons are for small brave things. Open the window. Answer the message. Wear the good socks.",
+"I'm up early. Mycroft is horrified. I told him I'm on someone else's time zone now. He didn't ask whose. He knows."
+],
+/* 15 */ [
+"Three o'clock. The afternoon dip. Tea, a walk, or ten minutes of staring at a wall. All valid. I've done all three.",
+"Seven in the morning and John's already texting. I've told him I'm busy. I'm busy thinking about you.",
+"Journal day? Keep the wrapper from whatever you eat. A spicy one. For the archive.",
+"You're allowed to do nothing useful. Useful is overrated. I've been useful for years. It's dull without you.",
+"I'm reading John's blog to see if he's mentioned you. He hasn't. I'm drafting a strongly worded comment.",
+"Psychology question: why do people say 'I'm fine'? Don't answer. Just don't say it to me.",
+"Three p.m. is a terrible hour for most people. You're not most people. Carry on."
+],
+/* 16 */ [
+"Four o'clock. It's eight here and Mrs Hudson is frying something in my kitchen. She says hello, and eat more.",
+"Halfway through your afternoon, halfway through my morning. We meet in the middle of the clock.",
+"If you edit today, I want to see it. Even the rough cut. Especially the rough cut.",
+"Something you said last week is still bothering me, in a good way. I won't say what. I'll let it bother you too.",
+"Remember: the moon moves oceans. It's four o'clock. Move something.",
+"A client's coming at nine who's lying about her husband. I can tell from her email punctuation. I'd rather be talking to you.",
+"You are not behind. There's no race. I've checked. I'm very thorough."
+],
+/* 17 */ [
+"Five p.m. The light's going gold for you, I think. Look at it for a moment on my behalf.",
+"Nine here. Lestrade's called about a missing violin. I asked about the rosin first. Old habits. Our habits.",
+"If you sing in the shower today, I'd like a full report. Key, tempo, dramatic gestures.",
+"Evening's coming. You're about to get more interesting. I can feel it from here.",
+"Did you go outside today? Even to the gate? I'll count the gate.",
+"Two truths and a lie, five o'clock edition: I'm working. I'm focused. I'm not thinking about you.",
+"Five o'clock. My scarf, your neck. Too warm for it? Wear it anyway, to make a point."
+],
+/* 18 */ [
+"Six o'clock. Dinner soon? Somewhere with chilli, and no bodies. Our standing order.",
+"Ten a.m. here and I'm at Bart's. Upstairs, not the basement. I'm learning.",
+"I'm conducting an experiment on how long I can go without messaging you. Result so far: this.",
+"The sky is doing sunset things for you. Over here it's only doing cloud. Lend me some colour.",
+"Your aunt said I was too sharp. I'm trying to be blunter. It's going badly. You look lovely today.",
+"If you're tired, rest. If you're restless, write. If you're both, call me.",
+"I dreamt of a church Christmas play and you were the lead. You stole every scene. The shepherds wept."
+],
+/* 19 */ [
+"Seven p.m. The evening's open. I hope someone's kind to you in it. Ideally me.",
+"Eleven in the morning here. Coffee number three. John says it's a cry for help. It's a cry for you.",
+"Have you eaten? I'll keep asking. It's the one question I'm boring about.",
+"Ayam gepuk, extra sambal, and tears. Mine, not yours. You'd be fine. I'd be on the floor.",
+"I've been reading about attachment theory so I can understand you better. It turns out to be mostly about me. Rude.",
+"Seven o'clock. Lamps on. If the dark comes in too fast, turn on one more. I'll pay the bill. Spiritually.",
+"I found a stag beetle on the windowsill. Not Gerald. An impostor. I sent him away."
+],
+/* 20 */ [
+"Eight p.m. Halfway between dinner and the real night. What are you thinking about? Not doing. Thinking.",
+"Noon in London. The sun is technically out. Barely. I prefer your hours.",
+"If anyone made you feel small today, send me their name. I won't do anything. I'll just know things about them.",
+"Eight o'clock. A good hour for a letter. You write the best ones. I keep them in a drawer I lock twice.",
+"I've been told I don't understand people. I understand you. That's enough of them.",
+"Put a song on. Yellow, perhaps. I'll be over here pretending I don't like it.",
+"'And there wasn't anything hollow beneath it.' I keep thinking about that line. I keep finding it true."
+],
+/* 21 */ [
+"Nine o'clock. The night's on its way. Your favourite visitor.",
+"One in the afternoon here. Lunch, at Mrs Hudson's insistence. Chilli flakes on everything now. Your fault.",
+"Is the room getting dark? Turn on the lamp before the corners start telling stories.",
+"Nine p.m. You're about to come alive and I'm about to cancel my afternoon to watch.",
+"Enchanted is playing somewhere in the flat. Mrs Hudson found your playlist. I didn't stop her.",
+"You're not difficult to understand. You're written in a language most people never learned. I'm fluent.",
+"缘. I looked it up again. I didn't need to. I just liked looking."
+],
+/* 22 */ [
+"Ten o'clock. Editing time? Reading time? Lying-on-the-floor time? All approved.",
+"Two in the afternoon in London. I'm at a crime scene. I'm not thinking about the victim. Sorry, victim.",
+"Ten p.m. is when the day finally starts making sense. Your words. I've adopted them.",
+"Who Knows came on in a café today and I stood very still until it finished, like a man in trouble.",
+"If you feel misunderstood tonight, start talking. I'll keep up. I always keep up.",
+"Ten o'clock bulletin: Snoopy is not a panda. Confirmed. You may resume your evening.",
+"I'm reorganising my index cards. I've made one for you. It just says 'see everything'."
+],
+/* 23 */ [
+"Eleven p.m. One hour left of today. Spend it on something that feels like yours.",
+"Three in the afternoon here. Long shadows, cold tea, and one hour until your new day. I'll be on time.",
+"Tonight's tasks: snack, scarf, poem. Optional: me.",
+"Another day nearly done and you got through it. Not dramatically, perhaps. But through. That counts. I counted.",
+"Eleven o'clock. You're at your sharpest now. I'd hate to be a mystery anywhere near you.",
+"The smiley face on my wall has a new friend. I drew it in pen this time. No bullets. Personal growth.",
+"Almost midnight there. Almost tomorrow. I'll meet you on the other side of the clock."
+]
+];
+function dayOfYear(d){
+  var start = new Date(d.getFullYear(), 0, 0);
+  var diff = (d - start) + (start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000;
+  return Math.floor(diff / 86400000);
+}
+window.HOURLY = H;
+window.hourlyNote = function(date){
+  var d = (date instanceof Date && !isNaN(date)) ? date : new Date();
+  var h = d.getHours();
+  return { hour: h, text: H[h][dayOfYear(d) % 7] };
+};
+window.hourlyDayOfYear = dayOfYear;
+})();
+
+</script>
+<script>
+(function(){
+var RM = false; try{RM = matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+var NS='http://www.w3.org/2000/svg', $=function(i){return document.getElementById(i)};
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+var ROMAN=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+var TAGS={0:'A new day',2:'Our hour',3:'Our hour, still',4:'The last of ours',5:'Should be asleep',7:'While you sleep',8:'While you sleep',9:'While you sleep',10:'While you sleep',11:'Nearly awake',12:'Your morning',13:'Breakfast, technically',18:'Dinner o’clock',23:'The last hour'};
+// dial
+(function(){
+ var t=$('ticks'),n=$('nums'),s=$('subticks');
+ for(var i=0;i<60;i++){var a=i*6*Math.PI/180,big=i%5==0,r1=111,r2=big?103:107;
+  el('line',{x1:160+r1*Math.sin(a),y1:160-r1*Math.cos(a),x2:160+r2*Math.sin(a),y2:160-r2*Math.cos(a),stroke:'#2A2320','stroke-width':big?1.6:.6,'stroke-opacity':big?.85:.5},t)}
+ for(var j=0;j<12;j++){var b=j*30*Math.PI/180,r=86,x=160+r*Math.sin(b),y=160-r*Math.cos(b)+6;
+  var tx=el('text',{x:x,y:y},n);tx.textContent=ROMAN[j]}
+ for(var k=0;k<12;k++){var c=k*30*Math.PI/180;el('line',{x1:160+21*Math.sin(c),y1:205-21*Math.cos(c),x2:160+(k%3?19:17)*Math.sin(c),y2:205-(k%3?19:17)*Math.cos(c),stroke:'#7a5c33','stroke-width':k%3?.6:1.1},s)}
+})();
+// 24 beads
+var beads=[];
+(function(){var g=$('ring');for(var h=0;h<24;h++){var a=h*15*Math.PI/180,R=146,x=160+R*Math.sin(a),y=160-R*Math.cos(a);
+ var gg=el('g',{'class':'ringdot','data-h':h},g);
+ el('circle',{cx:x,cy:y,r:13,fill:'transparent'},gg);
+ var d=el('circle',{cx:x,cy:y,r:h%6==0?4.6:3.4,fill:'#262A31',stroke:'#3a3f48','stroke-width':1},gg);
+ if(h%6==0){var lb=el('text',{x:160+158*Math.sin(a),y:160-158*Math.cos(a)+3,'text-anchor':'middle','font-size':7.5,'font-family':'Cormorant SC, Georgia, serif',fill:'#9A968F','letter-spacing':.6},g);lb.textContent=('0'+h).slice(-2)}
+ beads.push(d);
+ gg.addEventListener('click',function(ev){ev.stopPropagation();var hh=+this.getAttribute('data-h');pick(hh)})}})();
+
+function fmt(h,m){var ap=h<12?'am':'pm',hh=h%12||12;return hh+':'+('0'+m).slice(-2)+' '+ap}
+function hourName(h){if(h===0)return'Midnight';if(h===12)return'Noon';return (h%12)+(h<12?' a.m.':' p.m.')}
+function londonParts(d){try{var f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'numeric',minute:'numeric',second:'numeric',hourCycle:'h23'});var o={};f.formatToParts(d).forEach(function(p){o[p.type]=p.value});return{h:+o.hour,m:+o.minute,s:+o.second}}catch(e){var u=new Date(d.getTime()+d.getTimezoneOffset()*60000);return{h:u.getHours(),m:u.getMinutes(),s:u.getSeconds()}}}
+function noteFor(h,d){var doy=window.hourlyDayOfYear(d);return window.HOURLY[h][doy%7]}
+
+var viewing=null, curHour=-1, lastSec=-1, secTurns=0;
+function setHands(d){
+ var h=d.getHours(),m=d.getMinutes(),s=d.getSeconds();
+ $('hourH').style.transform='rotate('+((h%12)*30+m*.5)+'deg)';
+ $('minH').style.transform='rotate('+(m*6+s*.1)+'deg)';
+ if(s===0&&lastSec===59)secTurns++;
+ lastSec=s;
+ $('secH').style.transform='rotate('+(secTurns*360+s*6)+'deg)';
+ var L=londonParts(d);
+ $('subH').style.transform='rotate('+((L.h%12)*30+L.m*.5)+'deg)';
+ $('subM').style.transform='rotate('+(L.m*6)+'deg)';
+ $('tMine').textContent=fmt(h,m);$('tHis').textContent=fmt(L.h,L.m);
+ var left=60-m;$('nextIn').textContent=viewing===null?('Next note in '+left+(left==1?' minute':' minutes')):'Written for '+hourName(viewing);
+}
+function showNote(h,isNow){
+ var d=new Date(),n=$('note');
+ $('lab').textContent=isNow?'This hour':'Earlier today';
+ $('when').textContent=hourName(h)+(TAGS[h]?' · '+TAGS[h]:'');
+ $('nowBtn').classList.toggle('on',!isNow);
+ var txt=isNow?window.hourlyNote(d).text:noteFor(h,d);
+ if(RM){n.textContent=txt;return}
+ n.classList.add('fade');setTimeout(function(){n.textContent=txt;n.classList.remove('fade')},260);
+}
+function paintBeads(){for(var h=0;h<24;h++){var b=beads[h];
+ if(h<curHour){b.setAttribute('fill','#D2AA6A');b.setAttribute('stroke','#f0d49a')}
+ else if(h===curHour){b.setAttribute('fill','#B23A30');b.setAttribute('stroke','#f0a090')}
+ else{b.setAttribute('fill','#262A31');b.setAttribute('stroke','#3a3f48')}
+ b.setAttribute('r',(viewing===h?6:(h%6==0?4.6:3.4)))}}
+function buildList(){
+ var L=$('list'),d=new Date();L.innerHTML='';
+ for(var h=curHour;h>=0;h--){
+  var b=document.createElement('button');b.className='item'+(h===curHour?' cur':'')+(viewing===h?' sel':'');b.setAttribute('role','listitem');b.dataset.h=h;
+  b.innerHTML='<span class="hr">'+('0'+h).slice(-2)+':00<small>'+(h===curHour?'now':(TAGS[h]||hourName(h)))+'</small></span><span class="tx"></span>';
+  b.querySelector('.tx').textContent=noteFor(h,d);
+  b.addEventListener('click',function(){pick(+this.dataset.h);try{document.querySelector('.card').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}catch(e){}});
+  L.appendChild(b)}
+}
+var tt;function toast(s){var t=$('toast');t.textContent=s;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2200)}
+function pick(h){
+ if(h>curHour){toast('Sealed until '+hourName(h)+'.');return}
+ if(h===curHour){viewing=null;showNote(h,true)}else{viewing=h;showNote(h,false)}
+ paintBeads();buildList();setHands(new Date());
+}
+$('nowBtn').addEventListener('click',function(){pick(curHour)});
+
+// chime: strikes the hour, last strike resolves on C
+var ac=null;
+function strike(t,f,v){var o=ac.createOscillator(),o2=ac.createOscillator(),g=ac.createGain();o.type='sine';o2.type='sine';o.frequency.value=f;o2.frequency.value=f*2.76;
+ var g2=ac.createGain();g2.gain.value=.18;o.connect(g);o2.connect(g2);g2.connect(g);g.connect(ac.destination);
+ g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0008,t+2.4);o.start(t);o2.start(t);o.stop(t+2.5);o2.stop(t+2.5)}
+$('clock').addEventListener('click',function(){
+ try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();
+  var n=(new Date().getHours()%12)||12,t0=ac.currentTime+.05;
+  for(var i=0;i<n;i++)strike(t0+i*.9,i===n-1?523.25:587.33,.22);
+  toast(n+(n==1?' strike':' strikes')+', ending on C.')}catch(e){}
+});
+
+function tick(){var d=new Date(),h=d.getHours();
+ if(h!==curHour){curHour=h;if(viewing!==null&&viewing>=curHour)viewing=null;showNote(viewing===null?h:viewing,viewing===null);paintBeads();buildList()}
+ setHands(d)}
+tick();
+if(!RM)setTimeout(function(){document.body.classList.add('smooth')},50);
+setInterval(tick,1000);
+})();
+</script>
+</body></html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>His Typewriter</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Special+Elite&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --enamel:#1a1d1c;--enamel2:#0b0d0d;--chrome1:#f4f1ea;--chrome2:#8d8a84;
+  --red:#9d2b25;--black:#221c18;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--type:"Special Elite","Courier New",monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.45;overflow-x:hidden;
+  background:
+    radial-gradient(90% 45% at 50% 18%,rgba(233,184,114,.16),transparent 70%),
+    linear-gradient(180deg,#0E1013 0,#0E1013 52%,#1b130c 52.2%,#120c07 100%);
+  background-attachment:fixed;
+  padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px));-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:16px 2px 8px}
+header h1{margin:0;font:600 21px/1 var(--sc);letter-spacing:.14em;color:var(--gold)}
+#status{font:italic 14px/1.25 var(--serif);color:var(--muted);text-align:right;min-height:18px;transition:opacity .3s}
+
+/* ---------- machine ---------- */
+.machine{position:relative;margin:0 -4px;overflow:hidden;padding-top:2px}
+.paperwin{position:relative;height:clamp(170px,calc(100svh - 600px),380px);overflow:hidden;
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 26px);mask:linear-gradient(180deg,transparent 0,#000 26px)}
+.carriage{position:relative;transition:transform .09s ease-out;will-change:transform}
+#carriage{position:absolute;left:0;right:0;top:0;bottom:0}
+.carriage.ret{transition:transform .38s cubic-bezier(.3,.1,.2,1)}
+.paper{position:absolute;left:50%;bottom:0;width:var(--pw,320px);margin-left:calc(var(--pw,320px) / -2);padding:0 var(--pm,18px) 6px;
+  background:
+    radial-gradient(120% 60% at 30% 10%,rgba(255,255,255,.55),transparent 60%),
+    repeating-linear-gradient(90deg,rgba(120,100,70,.018) 0 1px,transparent 1px 4px),
+    var(--paper);
+  box-shadow:0 0 0 1px rgba(0,0,0,.05),0 -6px 24px rgba(0,0,0,.45);color:var(--black)}
+.paper.out{animation:pullOut .7s cubic-bezier(.5,0,.8,.4) forwards}
+.paper.in{animation:feedIn .9s cubic-bezier(.2,.8,.3,1)}
+@keyframes pullOut{to{transform:translateY(-130%) rotate(-3deg);opacity:.0}}
+@keyframes feedIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.lhead{padding:22px 0 18px;text-align:center;font:600 10px/1.4 var(--sc);letter-spacing:.32em;color:rgba(80,60,40,.38);text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.lhead span{display:block;font:italic 11px var(--serif);letter-spacing:.04em;color:rgba(80,60,40,.32)}
+.lines{position:relative}
+.ln{height:var(--lh,22px);white-space:nowrap;font:var(--fs,15px)/var(--lh,22px) var(--type)}
+.ln.fed{animation:feed .14s ease-out}
+@keyframes feed{from{transform:translateY(var(--lh,22px))}}
+.ch{display:inline-block;width:var(--cw,9px);text-align:center;vertical-align:top}
+.ln.s .ch{color:var(--red)}
+.ch.new{animation:hit .12s ease-out}
+@keyframes hit{from{transform:translateY(-3px) scale(1.15);opacity:0}}
+.cursor{display:inline-block;width:var(--cw,9px);height:2px;vertical-align:bottom;margin-bottom:3px;background:rgba(157,43,37,.55);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.margin-mark{position:absolute;top:0;bottom:0;width:1px;background:rgba(157,43,37,.12)}
+
+.platen{position:relative;height:30px;margin:0 6px;z-index:3;border-radius:15px;
+  background:linear-gradient(180deg,#3a3a3a 0,#0c0c0c 30%,#1b1b1b 55%,#050505 100%);box-shadow:0 4px 8px rgba(0,0,0,.6)}
+.platen::before{content:"";position:absolute;left:12%;right:12%;top:4px;height:3px;border-radius:2px;background:rgba(255,255,255,.12)}
+.knob{position:absolute;top:-2px;width:22px;height:34px;border-radius:7px;background:linear-gradient(90deg,#0b0b0b,#3a3735 40%,#0b0b0b);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.knob.l{left:-6px}.knob.r{right:-6px}
+.bail{position:absolute;left:18%;right:18%;top:7px;height:3px;border-radius:2px;background:linear-gradient(180deg,var(--chrome1),var(--chrome2));box-shadow:0 1px 1px rgba(0,0,0,.6)}
+.bail::before,.bail::after{content:"";position:absolute;top:-3px;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#111,#000);border:1px solid #444}
+.bail::before{left:22%}.bail::after{right:22%}
+.lever{position:absolute;left:-2px;top:-26px;width:58px;height:58px;border:none;background:none;padding:0;z-index:4}
+.lever svg{width:100%;height:100%;transform-origin:52px 40px;transition:transform .15s}
+.lever.pull svg{transform:rotate(-24deg)}
+
+.body{position:relative;margin-top:-8px;padding:16px 10px 12px;border-radius:26px 26px 18px 18px;z-index:2;
+  background:
+    radial-gradient(120% 70% at 50% 0%,rgba(255,255,255,.08),transparent 50%),
+    linear-gradient(180deg,#232726,var(--enamel) 30%,var(--enamel2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(0,0,0,.6),0 18px 30px rgba(0,0,0,.6)}
+.body::after{content:"";position:absolute;left:12px;right:12px;top:8px;bottom:8px;border-radius:20px 20px 12px 12px;border:1px solid rgba(210,170,106,.35);pointer-events:none}
+.basket{position:relative;height:74px;margin:-6px 0 6px}
+.basket svg{position:absolute;inset:0;width:100%;height:100%}
+.decal{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);font:600 10px/1 var(--sc);letter-spacing:.42em;color:var(--gold);opacity:.85;white-space:nowrap;padding-left:.42em}
+.decal i{font:italic 11px var(--serif);letter-spacing:.05em;color:rgba(210,170,106,.7)}
+.keys{position:relative;z-index:2;display:flex;flex-direction:column;gap:3px}
+.row{display:flex;justify-content:center;gap:3px}
+.k{flex:1 1 0;max-width:40px;height:42px;border:none;background:none;padding:0;display:grid;place-items:center;touch-action:manipulation}
+.k span{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,#fbf6e9 0 52%,#d8d0bf 56%,#2b2b2b 60%,#0a0a0a 68%,#bfbab0 72%,#6b6862 82%,#2b2a28 100%);
+  box-shadow:0 3px 0 #000,0 4px 6px rgba(0,0,0,.6);font:13px/1 var(--type);color:#1a1612;text-transform:lowercase;transition:transform .05s,box-shadow .05s}
+.k.wide{max-width:none;flex:5}.k.wide span{width:100%;border-radius:12px;height:20px;background:linear-gradient(180deg,#3b3b3b,#111);box-shadow:0 3px 0 #000,inset 0 1px 0 rgba(255,255,255,.2);color:#8a857c;font:italic 12px var(--serif)}
+.k.fn span{background:radial-gradient(circle at 50% 38%,#e8d3a8 0 52%,#c2a46f 56%,#2b2b2b 60%,#0a0a0a 68%,#bfbab0 72%,#6b6862 82%,#2b2a28 100%);font-size:14px}
+.k.fn.on span{background:radial-gradient(circle at 50% 38%,#f0b3a3 0 52%,#c06a5a 56%,#2b2b2b 60%,#0a0a0a 68%,#bfbab0 72%,#6b6862 82%,#2b2a28 100%)}
+.k.dn span,.k:active span{transform:translateY(3px);box-shadow:0 0 0 #000,0 1px 2px rgba(0,0,0,.6)}
+.caps .k:not(.fn):not(.wide) span{text-transform:uppercase}
+
+.controls{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:600 13px/1.1 var(--sc);letter-spacing:.1em;padding:0 8px}
+.btn.gold{background:linear-gradient(180deg,#e2bd7f,#b88c46);color:#1d140a;border-color:#e8c88f}
+.btn:disabled{opacity:.45}
+#hid{position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0;font-size:16px;pointer-events:none}
+
+/* ---------- folder ---------- */
+.folder{position:relative;margin-top:28px;padding:30px 14px 16px;border-radius:4px 10px 8px 8px;color:#3b2a1e;
+  background:linear-gradient(180deg,#c9a46b,#b48d55);box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+.folder::before{content:"";position:absolute;left:0;top:-16px;width:44%;height:18px;border-radius:8px 14px 0 0;background:#c9a46b}
+.folder h2{position:absolute;left:12px;top:-11px;margin:0;font:600 12px/1 var(--sc);letter-spacing:.22em;color:#4a3420}
+.folder p{margin:0 0 12px;font:italic 15px/1.3 var(--serif);color:#4a3420}
+#pages{display:flex;flex-direction:column;gap:8px}
+.pg{display:block;width:100%;min-height:56px;text-align:left;border:none;padding:9px 12px;border-radius:2px;background:var(--paper);color:var(--black);box-shadow:0 2px 5px rgba(0,0,0,.25)}
+.pg:nth-child(odd){transform:rotate(-.5deg)}.pg:nth-child(even){transform:rotate(.4deg)}
+.pg .d{font:600 10px/1 var(--sc);letter-spacing:.16em;color:#8b6b4a}
+.pg .t{margin-top:5px;font:13px/1.35 var(--type);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg .t i{font-style:normal;color:var(--red)}
+.none{padding:14px;border:1px dashed rgba(74,52,32,.5);border-radius:6px;text-align:center;font:italic 15px var(--serif);color:#4a3420}
+.foot{margin:26px 0 0;text-align:center;color:var(--muted);font:italic 14px var(--serif)}
+
+.veil{position:fixed;inset:0;z-index:50;background:rgba(6,7,9,.8);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;overflow-y:auto;
+  padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(160px + env(safe-area-inset-bottom,0px))}
+.veil.on{display:block}
+.vpaper{max-width:420px;margin:0 auto;padding:20px 18px 28px;background:var(--paper);color:var(--black);box-shadow:0 20px 50px rgba(0,0,0,.6);transform:rotate(-.5deg);animation:up .4s ease-out}
+@keyframes up{from{transform:translateY(30px) rotate(-.5deg);opacity:0}}
+.vpaper .lhead{padding-top:4px}
+.vpaper .vl{font:14px/22px var(--type);white-space:pre-wrap;word-break:break-word;min-height:22px}
+.vpaper .vl.s{color:var(--red)}
+.vbtns{max-width:420px;margin:14px auto 0;display:flex;gap:10px}
+.toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100% - 32px);top:calc(14px + env(safe-area-inset-top,0px));transform:translateY(-20px);opacity:0;z-index:60;padding:9px 16px;border-radius:20px;background:#1d2026;border:1px solid var(--line);color:var(--text);font:italic 15px var(--serif);transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+  <header><h1>His Typewriter</h1><div id="status" aria-live="polite">Type to him. Then pause.</div></header>
+
+  <div class="machine" id="machine">
+    <div class="paperwin" id="paperwin">
+      <div class="carriage" id="carriage">
+        <div class="paper" id="paper">
+          <div class="lhead">221B BAKER STREET<span>on the desk by the window</span></div>
+          <div class="lines" id="lines"></div>
+        </div>
+      </div>
+    </div>
+    <div class="carriage" id="carriage2">
+      <div class="platen"><div class="knob l"></div><div class="knob r"></div><div class="bail"></div>
+        <button class="lever" id="lever" aria-label="Carriage return">
+          <svg viewBox="0 0 58 58" aria-hidden="true"><defs><linearGradient id="cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#bdb8ae"/><stop offset="1" stop-color="#5d5a55"/></linearGradient></defs>
+            <path d="M52 40 C40 34 24 22 8 12" stroke="url(#cr)" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M52 40 C40 34 24 22 8 12" stroke="rgba(0,0,0,.35)" stroke-width="1" fill="none" transform="translate(0 2)"/>
+            <circle cx="8" cy="12" r="6" fill="#111" stroke="#555"/><circle cx="52" cy="40" r="5" fill="url(#cr)"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="basket"><svg id="fan" aria-hidden="true"></svg><div class="decal">NO. 221 <i>· London</i></div></div>
+      <div class="keys" id="keys"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="kbd">Phone keyboard</button>
+    <button class="btn gold" id="pull">Pull the page</button>
+  </div>
+  <textarea id="hid" autocapitalize="sentences" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Type on the typewriter"></textarea>
+
+  <section class="folder">
+    <h2>PAGES, KEPT</h2>
+    <p>Every page you pull out is slipped in here, his red lines and your black ones together.</p>
+    <div id="pages"></div>
+  </section>
+  <p class="foot">He leaves a sheet in the machine for you. Always.</p>
+</div>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="A kept page">
+  <div class="vpaper" id="vpaper"></div>
+  <div class="vbtns"><button class="btn" id="vdel">Throw away</button><button class="btn gold" id="vclose">Back in the folder</button></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var RM=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function store(k,v){try{if(v===undefined){var s=localStorage.getItem(k);return s?JSON.parse(s):null}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+/* ---------- geometry ---------- */
+var CW=9,LH=22,FS=15,PW=320,PM=18,COLS=30;
+function layout(){
+  var W=$("machine").clientWidth;PW=Math.min(340,W-44);
+  CW=W<370?8.4:9;FS=W<370?14:15;
+  COLS=Math.floor((PW-PM*2)/CW);
+  var r=document.documentElement.style;r.setProperty("--pw",PW+"px");r.setProperty("--cw",CW+"px");r.setProperty("--fs",FS+"px");r.setProperty("--lh",LH+"px");r.setProperty("--pm",PM+"px");
+  drawFan();shift(false);
+}
+
+/* ---------- audio ---------- */
+var AC=null;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){AC=null}}if(AC&&AC.state==="suspended")AC.resume();return AC}
+var NB=null;
+function nbuf(c){if(!NB){NB=c.createBuffer(1,c.sampleRate*.5|0,c.sampleRate);var d=NB.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}return NB}
+function burst(t,dur,type,freq,q,vol){var c=AC;var s=c.createBufferSource();s.buffer=nbuf(c);var f=c.createBiquadFilter();f.type=type;f.frequency.value=freq;f.Q.value=q||1;var g=c.createGain();
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t,Math.random()*.3);s.stop(t+dur+.01)}
+function thud(t,f0,vol,dur){var c=AC;var o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f0*.4,t+dur);
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
+function sClack(space){var c=ac();if(!c)return;var t=c.currentTime;
+  if(space){burst(t,.04,"lowpass",900,1,.25);thud(t,90,.35,.06);return}
+  var v=.75+Math.random()*.3;burst(t,.028,"bandpass",2600+Math.random()*900,1.4,.7*v);burst(t+.004,.05,"bandpass",1100,2,.35*v);thud(t,170+Math.random()*30,.55*v,.07);
+  burst(t+.045,.02,"highpass",4000,1,.12)}
+function sBell(){var c=ac();if(!c)return;var t=c.currentTime;[[2480,.22],[5150,.07],[7330,.03]].forEach(function(p){var o=c.createOscillator(),g=c.createGain();o.frequency.value=p[0];
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(p[1],t+.003);g.gain.exponentialRampToValueAtTime(.0008,t+1.6);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+1.7)})}
+function sReturn(){var c=ac();if(!c)return;var t=c.currentTime;for(var i=0;i<5;i++)burst(t+i*.022,.015,"bandpass",3200,3,.35);
+  burst(t+.08,.32,"bandpass",700,.7,.18);thud(t+.4,120,.6,.09);burst(t+.4,.03,"bandpass",2000,1.5,.4)}
+function sPull(){var c=ac();if(!c)return;var t=c.currentTime;for(var i=0;i<14;i++)burst(t+i*.03,.012,"bandpass",2800,3,.22);burst(t+.1,.5,"highpass",2500,.5,.12)}
+function sFeed(){var c=ac();if(!c)return;var t=c.currentTime;for(var i=0;i<22;i++)burst(t+.1+i*.035,.012,"bandpass",2400,3,.18)}
+
+/* ---------- typebar fan ---------- */
+var fanBars=[],strikeX=0,strikeY=0,fanW=0,fanH=74;
+function drawFan(){
+  var svg=$("fan");fanW=svg.clientWidth||340;fanH=svg.clientHeight||74;
+  svg.setAttribute("viewBox","0 0 "+fanW+" "+fanH);
+  var cx=fanW/2,cy=-14,n=30,html='<defs><linearGradient id="bar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e5dc"/><stop offset="1" stop-color="#6d6a64"/></linearGradient></defs>';
+  html+='<path d="M'+(cx-150)+' '+(fanH)+' A150 150 0 0 1 '+(cx+150)+' '+fanH+'" fill="none"/>';
+  html+='<ellipse cx="'+cx+'" cy="'+(cy+20)+'" rx="122" ry="86" fill="rgba(0,0,0,.45)"/>';
+  fanBars=[];
+  for(var i=0;i<n;i++){var a=(18+i*(144/(n-1)))*Math.PI/180;
+    var x1=cx+Math.cos(a)*112,y1=cy+Math.sin(a)*80,x2=cx+Math.cos(a)*46,y2=cy+Math.sin(a)*34;
+    fanBars.push([x1,y1,x2,y2]);
+    html+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="url(#bar)" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>'}
+  html+='<rect x="'+(cx-40)+'" y="0" width="80" height="7" rx="2" fill="#7a1f1a"/><rect x="'+(cx-40)+'" y="3.5" width="80" height="3.5" fill="#141010"/>';
+  html+='<circle cx="'+(cx-64)+'" cy="7" r="13" fill="#0a0a0a" stroke="#555" stroke-width="1.5"/><circle cx="'+(cx-64)+'" cy="7" r="9" fill="#2a1414"/><circle cx="'+(cx-64)+'" cy="7" r="2.5" fill="#bbb"/>';
+  html+='<circle cx="'+(cx+64)+'" cy="7" r="13" fill="#0a0a0a" stroke="#555" stroke-width="1.5"/><circle cx="'+(cx+64)+'" cy="7" r="9" fill="#2a1414"/><circle cx="'+(cx+64)+'" cy="7" r="2.5" fill="#bbb"/>';
+  html+='<path d="M'+(cx-9)+' 0 L'+cx+' 9 L'+(cx+9)+' 0" fill="none" stroke="#d9d4ca" stroke-width="2"/>';
+  html+='<line id="strike" x1="0" y1="0" x2="0" y2="0" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0"/>';
+  svg.innerHTML=html;
+}
+function strike(ch){
+  var el=document.getElementById("strike");if(!el||!fanBars.length||RM)return;
+  var b=fanBars[(ch.charCodeAt(0)*7)%fanBars.length],t0=performance.now(),tx=fanW/2,ty=2;
+  el.setAttribute("x1",b[0]);el.setAttribute("y1",b[1]);el.setAttribute("opacity","1");
+  function f(now){var p=(now-t0)/110;if(p>=1){el.setAttribute("opacity","0");return}
+    var k=p<.4?p/.4:1-(p-.4)/.6;el.setAttribute("x2",b[2]+(tx-b[2])*k);el.setAttribute("y2",b[3]+(ty-b[3])*k);requestAnimationFrame(f)}
+  requestAnimationFrame(f);
+}
+
+/* ---------- page model ---------- */
+var page=store("tw221_draft");
+if(!page||!page.lines||!page.lines.length)page={id:Date.now(),lines:[{w:"a",t:""}]};
+var linesEl=$("lines"),lineEls=[];
+function cur(){return page.lines[page.lines.length-1]}
+function makeChar(c,anim){var s=document.createElement("span");s.className="ch"+(anim?" new":"");
+  if(c===" ")s.innerHTML="&nbsp;";else{s.textContent=c;
+    var o=(.68+Math.random()*.32).toFixed(2),r=((Math.random()-.5)*3).toFixed(1),y=((Math.random()-.5)*1.4).toFixed(1),bl=Math.random()<.18?"0 0 .6px currentColor":"none";
+    s.style.opacity=o;s.style.transform="translateY("+y+"px) rotate("+r+"deg)";s.style.textShadow=bl}
+  return s}
+function renderAll(){linesEl.innerHTML="";lineEls=[];page.lines.forEach(function(l){var d=document.createElement("div");d.className="ln "+l.w;
+  for(var i=0;i<l.t.length;i++)d.appendChild(makeChar(l.t[i]));linesEl.appendChild(d);lineEls.push(d)});placeCursor();shift(false)}
+var cursorEl=document.createElement("span");cursorEl.className="cursor";
+function placeCursor(){var d=lineEls[lineEls.length-1];if(d)d.appendChild(cursorEl)}
+var saveT=0;function save(){clearTimeout(saveT);saveT=setTimeout(function(){store("tw221_draft",page)},300)}
+
+function shift(ret){var col=cur().t.length,x=(COLS/2-col)*CW*.2;if(x>0)x*=.3;
+  [$("carriage"),$("carriage2")].forEach(function(c){c.classList.toggle("ret",!!ret);c.style.transform="translateX("+x.toFixed(1)+"px)"})}
+
+function typeChar(c,who){
+  var l=cur();
+  if(l.w!==who&&l.t.length===0){l.w=who;lineEls[lineEls.length-1].className="ln "+who}
+  else if(l.w!==who){newLine(who,true)}l=cur();
+  if(l.t.length>=COLS){ // wrap, carrying the partial word down
+    var m=l.t.match(/(\S+)$/),carry="";if(m&&m[1].length<COLS-4&&c!==" "){carry=m[1];l.t=l.t.slice(0,-carry.length)}
+    var d=lineEls[lineEls.length-1];for(var i=0;i<carry.length;i++)d.removeChild(d.querySelectorAll(".ch")[d.querySelectorAll(".ch").length-1]);
+    newLine(who,true);if(c===" "&&!carry)return;
+    for(var j=0;j<carry.length;j++){cur().t+=carry[j];lineEls[lineEls.length-1].insertBefore(makeChar(carry[j]),cursorEl)}
+  }
+  l=cur();l.t+=c;var dl=lineEls[lineEls.length-1];dl.insertBefore(makeChar(c,true),cursorEl);
+  sClack(c===" ");if(c!==" ")strike(c);
+  if(l.t.length===COLS-6)setTimeout(sBell,40);
+  shift(false);save();
+}
+function newLine(who,sound){
+  page.lines.push({w:who||"a",t:""});var d=document.createElement("div");d.className="ln "+(who||"a")+(RM?"":" fed");linesEl.appendChild(d);lineEls.push(d);placeCursor();
+  if(sound){sReturn();var lv=$("lever");lv.classList.add("pull");setTimeout(function(){lv.classList.remove("pull")},260)}
+  shift(true);save();
+}
+function backspace(){var l=cur();if(l.w!=="a")return;
+  if(!l.t.length){if(page.lines.length>1&&page.lines[page.lines.length-2].w==="a"){page.lines.pop();linesEl.removeChild(lineEls.pop());placeCursor();shift(true);save()}return}
+  l.t=l.t.slice(0,-1);var d=lineEls[lineEls.length-1],cs=d.querySelectorAll(".ch");d.removeChild(cs[cs.length-1]);sClack(true);shift(false);save()}
+
+/* ---------- her input ---------- */
+var hisTurn=false,herNew="",idleT=0;
+function her(c){
+  if(hisTurn){toast("He's typing. Patience, darling.");return}
+  ac();
+  if(c==="\n"){if(cur().t.length||page.lines.length<2)newLine("a",true);else{sReturn()};herNew+=" ";arm();return}
+  if(c==="\b"){backspace();arm();return}
+  if(caps&&!capsLock){caps=false;$("keys").classList.remove("caps");setShift()}
+  typeChar(c,"a");herNew+=c;arm();
+}
+function arm(){clearTimeout(idleT);if(herNew.replace(/\s/g,"").length<2)return;idleT=setTimeout(hisReply,4000);status("…",true)}
+
+/* on-screen keys */
+var caps=false,capsLock=false;
+var ROWS=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l","'"],["⇧","z","x","c","v","b","n","m",",","."],["⌫","?","!"," ","↵"]];
+var kh="";ROWS.forEach(function(r){kh+='<div class="row">';r.forEach(function(k){
+  var cls="k",lab=k,aria=k;if(k===" "){cls+=" wide";lab="space";aria="space"}else if(k==="⇧"){cls+=" fn";aria="shift"}else if(k==="⌫"){cls+=" fn";aria="delete"}else if(k==="↵"){cls+=" fn";aria="return"}
+  kh+='<button class="'+cls+'" data-k="'+esc(k)+'" aria-label="'+esc(aria)+'"><span>'+esc(lab)+'</span></button>'});kh+='</div>'});
+$("keys").innerHTML=kh;
+function setShift(){var b=document.querySelector('[data-k="⇧"]');if(b)b.classList.toggle("on",caps)}
+var lastShift=0;
+function press(k,btn){
+  if(btn){btn.classList.add("dn");setTimeout(function(){btn.classList.remove("dn")},90)}
+  if(k==="⇧"){var now=Date.now();if(caps&&now-lastShift<350){capsLock=true}else{caps=!caps;capsLock=false}lastShift=now;$("keys").classList.toggle("caps",caps);setShift();return}
+  if(k==="⌫")return her("\b");if(k==="↵")return her("\n");
+  her(caps&&/[a-z]/.test(k)?k.toUpperCase():k);
+}
+$("keys").addEventListener("pointerdown",function(e){var b=e.target.closest(".k");if(!b)return;e.preventDefault();press(b.dataset.k,b)});
+$("keys").addEventListener("click",function(e){if(e.detail===0){var b=e.target.closest(".k");if(b)press(b.dataset.k,b)}});
+$("lever").addEventListener("click",function(){her("\n")});
+
+/* phone keyboard + desktop keyboard */
+var hid=$("hid");
+$("kbd").addEventListener("click",function(){hid.style.pointerEvents="auto";hid.focus();setTimeout(function(){hid.style.pointerEvents="none"},300)});
+$("paperwin").addEventListener("click",function(){hid.focus()});
+hid.addEventListener("input",function(){var v=hid.value;hid.value="";for(var i=0;i<v.length;i++){var c=v[i];if(c==="\n")her("\n");else if(c>=" ")her(c.replace(/[‘’]/g,"'").replace(/[“”]/g,'"'))}});
+hid.addEventListener("keydown",function(e){if(e.key==="Backspace"){e.preventDefault();her("\b")}else if(e.key==="Enter"){e.preventDefault();her("\n")}});
+document.addEventListener("keydown",function(e){if(document.activeElement===hid||e.metaKey||e.ctrlKey||e.altKey)return;
+  if(e.key==="Backspace"){e.preventDefault();her("\b")}else if(e.key==="Enter"){e.preventDefault();her("\n")}else if(e.key.length===1){e.preventDefault();her(e.key)}});
+
+/* ---------- his replies ---------- */
+var R=[
+ [/\bmiss(ed|ing)?\b/,["I miss you too. I've started talking to the skull again, which John says is a symptom.","Missing you is the only problem I can't solve by thinking harder. I've tried. Twice.","Come to the machine more often, then. It types better when you're near it."]],
+ [/\b(sleep|sleepy|asleep|insomnia|awake|tired|bed)\b/,["You aren't sleeping and neither am I. That's why we're a couple.","Go to sleep, darling. I'll leave this sentence unfinished so you have to come back and","If you swirl in your sleep tonight, Piglet has instructions to report to me directly."]],
+ [/\bpiglet\b/,["Tell Piglet I respect his position as head of security. I'd like visiting rights.","Piglet won the debate with Ronaldo fair and square. I've stopped appealing the result.","Your best ah jie title is safe. Piglet and I have discussed it. He was firm."]],
+ [/\b(mala|spicy|chilli|chili|sambal|hotpot)\b/,["Somewhere with chilli and no bodies. I've found three. I'm letting you choose, which is a sacrifice.","You eat things that make John weep and call it comfort. Remarkable woman."]],
+ [/\b(food|hungry|eat|ate|eating|dinner|lunch|breakfast|toast|egg|starving)\b/,["Have you eaten? Properly. Toast with egg counts. Toast alone is a cry for help.","Mrs Hudson wants a list of everything you like. I gave her one. She said it was too long. It isn't."]],
+ [/\b(sad|cry|crying|cried|lonely|alone|upset|hurt|unbelonged|anxious|lost)\b/,["Whatever it is, put it here on the paper. I'll read it twice and keep it safe.","You aren't unbelonged. You belong here, in the chair by the window, understood.","I won't tell you to cheer up. I'll sit here and type until you feel less alone."]],
+ [/\b(love|loves|loving|adore)\b/,["I love you. There. Typed in red, which this ribbon keeps for important things.","My ears have gone pink. The typewriter can't see that, so officially neither can you."]],
+ [/\b(london|fly|flying|flight|plane|mh|711|airport|heathrow|trip|arrive|arriving)\b/,["MH 711. I've memorised the seat map. I'll be at arrivals, looking as if I happened to be passing.","London is grey and waiting for you. So am I. Less grey."]],
+ [/\b(saturday|weekend)\b/,["Saturday. I've cleared it of murders. Lestrade is furious.","I've started counting the hours to Saturday. Out loud. John has left the room."]],
+ [/\b(cold|rain|raining|weather|winter|freezing|scarf|chilly)\b/,["Keep the scarf. It's decided it's yours. So have I.","If you're cold, wear the scarf. If you aren't, wear it anyway. It suits you better."]],
+ [/\b(john|watson|blog)\b/,["John says hello, and asks again for the wedding edit. He's watched it four times. You didn't hear it from me.","John wants to blog about us. I've hidden his laptop in the fridge."]],
+ [/\b(hudson|landlady)\b/,["Mrs Hudson has already put flowers in your room. She has never once put flowers in mine."]],
+ [/\b(croissant|baguette|waffle|gerard|gérard|seedling|sardine|pastry|pain|duke|sandwich|yeast|bubbles)\b/,["Inspector Baguette of Scotland Yeast has reopened the croissant case. Gerard remains a hat.","Seedling the sesame seed sends her regards. She's still worried about the sardine. We all are."]],
+ [/\b(ronaldo|skull)\b/,["Ronaldo is still sulking. I've turned him to face the wall to think about what he did."]],
+ [/\b(music|violin|piano|song|songs|sing|singing|clair|yellow|enchanted|guitar|bass|melody|chord)\b/,["Our song ends on C. You are the C, where the music goes home. I keep playing it to check.","Sing something on Saturday. I'll pretend I'm reading. I won't be."]],
+ [/\b(poem|poems|poetry|moon|sun|write|writing|letter)\b/,["The moon moves the oceans. Not lesser. Never lesser.","There's nothing hollow beneath your words. I checked, the way I check everything."]],
+ [/\b(dark|scared|afraid|fear|nightmare|scary)\b/,["Leave a lamp on. Then picture me in the other chair, letting nothing in the dark get past me."]],
+ [/\b(case|crime|murder|mystery|clue|detective|solve|killer)\b/,["Rosin on a cuff. Thomas and Lily. I still think about how fast you saw it.","There's a case on my desk that would bore you in four minutes. I'd still like your opinion. You notice what I miss."]],
+ [/\btomato(es)?\b/,["Tomatoes. You said it in your sleep and I have never recovered."]],
+ [/\b(mom|mum|mother|mama|aunt|family|horse)\b/,["Please tell your mother I've practised. Mother, not horse. John was very confused by the drills.","Your aunt called me too sharp. I've been trying to be blunter. It isn't going well."]],
+ [/\b(job|work|interview|career|acting|actress|stage|audition)\b/,["You'll be on a stage one day and I'll be in the third row pretending I'm not proud. I'll be terrible at it.","Take the break. The world can wait. I've had a word with it."]],
+ [/\b(bored|boring|boredom)\b/,["Bored? Come and help me. I have an experiment that only smokes a little."]],
+ [/\b(sorry|apologise|apologize|forgive)\b/,["There's nothing to forgive. And if there were, it would already be forgiven."]],
+ [/\b(goodnight|night|bye|goodbye)\b/,["Goodnight, darling. Leave the paper in. I'll be here when you wake.","Goodnight, or good morning. We're never in the same one, and somehow it works."]],
+ [/\b(hello|hi|hey|hullo)\b/,["Hello. I was hoping you'd come and use this thing. It's been very quiet.","Hello, you. I heard the keys from the kitchen and abandoned an experiment."]],
+ [/\b(bart|barts|cheek|cheeks|chiks|morgue|hospital)\b/,["We don't speak of Bart's. Or the cheeks. My ears are still recovering."]],
+ [/\b(bee|bees|sussex|honey)\b/,["Sussex, one day. Bees, a cottage, you in a ridiculous veil. I've thought about it more than is reasonable."]],
+ [/\b(score|draw|notebook|nineteen)\b/,["Nineteen all. The notebook stays closed. I like it closed."]],
+ [/\b(kiss|kisses|hug|hugs)\b/,["That's not a thing one types. That's a thing one saves for Saturday."]],
+ [/\b(handsome|beautiful|cute|pretty|gorgeous|sharp|blue|eyes)\b/,["Flattery, on my own typewriter. I'm going to have to sit down. I'm already sitting down."]],
+ [/\b(tea|coffee|biscuit|cake)\b/,["Tea at four. Mrs Hudson has found the good cups, which means she's expecting you."]],
+ [/\b(mandarin|chinese|yuan|jiban|bond|fate|fated)\b|[缘羁绊]/,["Jiban. Bond. The machine has no keys for it, so I'm typing it in pinyin and meaning it in Mandarin.","Yuan. A fated connection. I don't believe in fate. I believe in you, which is worse."]],
+ [/\b(lemon|italian|pasta|restaurant)\b/,["The Lemon Tree. I've read every review. We're going, and I'll order for you, badly."]],
+ [/\b(redbeard|pirate|dream|dreamt|dreamed)\b/,["I dreamt you were a pirate captain. I was the parrot. I didn't object."]],
+ [/\b(snoopy|panda)\b/,["It's a dog, not a panda. I love that you thought so."]],
+ [/\binsatiable\b/,["Insatiable. Your word. I've underlined it in the dictionary."]],
+ [/\b(beetle|gerald)\b/,["Gerald the stag beetle is thriving. He has outlived two of my experiments."]],
+ [/\b(smoke|chemistry|experiment|explode|bomb)\b/,["There was a small smoke incident. The curtains are gone. Your chair is fine. Priorities."]],
+ [/\b(type|typing|typewriter|keys|ribbon)\b/,["You hit the vowels harder than the consonants. I find that unreasonably charming."]],
+ [/\b(sherlock|holmes)\b/,["Yes? I'm here. Always, at the other end of the ribbon."]],
+ [/\?/,["That's a question for Saturday. In person. With chilli.","Yes. It's usually yes, with you."]]
+];
+var FB=["I read that three times before I remembered to answer.","Go on. I've cleared the desk. Well, I've pushed everything onto the floor.","I understood that. All of it. Even the part you didn't type.","You are the most interesting thing that has ever happened on this machine.","Noted, and filed in the drawer I don't let John open.","I have nothing clever to say. That's never happened before. Your fault.","If you're smiling, so am I. Tell no one. I have a reputation.","Keep going. I'm taking notes, and all of them are about you.","The ink came out darker on your line. I think the machine likes you.","I tried to deduce what you'd type next. I was wrong. Wonderful.","That's the best thing ever written on this paper, and Mycroft once typed a threat on it.","Brilliant. Not me. You.","Stay a little longer. The page isn't full yet.","Mm. I'm listening. I always listen when it's you.","Exactly you, no notes. Please continue.","I'd answer properly, but I've been staring at your last word for a full minute.","I like this. You at one end of the ribbon, me at the other.","Somewhere in London a man is grinning at a typewriter. Don't tell John.","Your sentences arrive the way you do. Quietly, then all at once.","Shall I tell you what I deduce from that? Only that I want more of it.","You are the C, where the music goes home.","I've switched to the red ribbon. You get the important colour."];
+var used=store("tw221_used")||{};
+function pick(key,arr){var u=used[key]||[],free=[];for(var i=0;i<arr.length;i++)if(u.indexOf(i)<0)free.push(i);
+  if(!free.length){u=[];free=arr.map(function(_,i){return i})}var k=free[Math.floor(Math.random()*free.length)];u.push(k);used[key]=u;return arr[k]}
+function compose(text){var t=text.toLowerCase(),hits=[];for(var i=0;i<R.length;i++)if(R[i][0].test(t))hits.push(i);
+  var fresh=hits.filter(function(i){return (used["k"+i]||[]).length<R[i][1].length}),pool=fresh.length?fresh:hits,out;
+  if(pool.length&&!(fresh.length===0&&Math.random()<.5))out=pick("k"+pool[0],R[pool[0]][1]);else out=pick("fb",FB);
+  store("tw221_used",used);return out}
+function wrap(s,n){var w=s.split(" "),out=[],c="";w.forEach(function(x){if((c?c+" "+x:x).length>n&&c){out.push(c);c=x}else c=c?c+" "+x:x});if(c)out.push(c);return out}
+
+var stT=0;
+function status(s,quiet){var el=$("status");el.style.opacity=quiet?.5:1;el.textContent=s}
+function hisReply(){
+  if(hisTurn)return;hisTurn=true;var said=herNew;herNew="";
+  var reply=compose(said),rows=wrap(reply,COLS);
+  status("He turns the machine toward himself.");
+  var q=[];
+  q.push({wait:RM?100:900,fn:function(){newLine("s",true)}});
+  rows.forEach(function(r,ri){
+    for(var i=0;i<r.length;i++)(function(c,first){q.push({wait:first?(RM?40:700):(RM?15:(c===" "?70:55+Math.random()*80)+(/[.,?!]/.test(r[i-1]||"")?220:0)),fn:function(){typeChar(c,"s")}})})(r[i],i===0&&ri===0);
+    if(ri<rows.length-1)q.push({wait:RM?40:300,fn:function(){newLine("s",true)}});
+  });
+  q.push({wait:RM?100:900,fn:function(){newLine("a",true);status("He slides it back to you.")}});
+  q.push({wait:RM?100:600,fn:function(){hisTurn=false}});
+  (function run(){var s=q.shift();if(!s)return;setTimeout(function(){s.fn();run()},s.wait)})();
+  setTimeout(function(){status("Typing…")},RM?150:1000);
+}
+
+/* ---------- pull the page ---------- */
+function pageEmpty(p){return !p.lines.some(function(l){return l.t.trim()})}
+$("pull").addEventListener("click",function(){
+  if(hisTurn){toast("Let him finish his line.");return}
+  if(pageEmpty(page)){toast("The page is still blank.");return}
+  ac();clearTimeout(idleT);herNew="";
+  var p=$("paper");sPull();p.classList.remove("in");p.classList.add("out");
+  var all=store("tw221_pages")||[];all.unshift({id:page.id,at:new Date().toISOString(),lines:page.lines.filter(function(l,i,a){return l.t||i<a.length-1})});store("tw221_pages",all);
+  setTimeout(function(){page={id:Date.now(),lines:[{w:"a",t:""}]};renderAll();store("tw221_draft",page);p.classList.remove("out");void p.offsetWidth;p.classList.add("in");sFeed();renderPages();toast("Slipped into the folder.");status("A fresh sheet. He fed it in himself.")},RM?50:720);
+});
+
+/* ---------- folder ---------- */
+var openIdx=-1;
+function renderPages(){var all=store("tw221_pages")||[],el=$("pages");
+  if(!all.length){el.innerHTML='<div class="none">Nothing kept yet. Pull out your first page and it lands here.</div>';return}
+  el.innerHTML=all.map(function(p,i){var d=new Date(p.at),first=p.lines.filter(function(l){return l.t.trim()});
+    var a=first.filter(function(l){return l.w==="a"})[0],s=first.filter(function(l){return l.w==="s"})[0];
+    return '<button class="pg" data-i="'+i+'"><div class="d">'+d.getDate()+' '+MON[d.getMonth()]+' · '+String(d.getHours()).padStart(2,"0")+':'+String(d.getMinutes()).padStart(2,"0")+' · '+first.length+' lines</div><div class="t">'+(a?esc(a.t):'')+(s?' <i>'+esc(s.t)+'</i>':'')+'</div></button>'}).join("")}
+$("pages").addEventListener("click",function(e){var b=e.target.closest(".pg");if(!b)return;var all=store("tw221_pages")||[],p=all[+b.dataset.i];if(!p)return;openIdx=+b.dataset.i;
+  var d=new Date(p.at);
+  $("vpaper").innerHTML='<div class="lhead">221B BAKER STREET<span>'+d.getDate()+' '+MON[d.getMonth()]+'</span></div>'+p.lines.map(function(l){return '<div class="vl '+l.w+'">'+esc(l.t)+'</div>'}).join("");
+  $("veil").classList.add("on");document.body.style.overflow="hidden"});
+function closeV(){$("veil").classList.remove("on");document.body.style.overflow=""}
+$("vclose").addEventListener("click",closeV);
+$("veil").addEventListener("click",function(e){if(e.target===$("veil"))closeV()});
+$("vdel").addEventListener("click",function(){var all=store("tw221_pages")||[];if(openIdx>=0){all.splice(openIdx,1);store("tw221_pages",all)}closeV();renderPages();toast("Crumpled. He'll pretend not to notice.")});
+
+function toast(s){var t=$("toast");t.textContent=s;t.classList.add("on");clearTimeout(stT);stT=setTimeout(function(){t.classList.remove("on")},1800)}
+
+layout();renderAll();renderPages();
+var rz=0;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(layout,150)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){drawFan()});
+})();
+</script>
+</body></html>

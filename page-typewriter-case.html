@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Typewriter Mystery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600&family=Special+Elite&family=Homemade+Apple&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;
+  --type:#1c1917;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{
+  font-family:"Cormorant Garamond",Georgia,serif;font-size:18px;line-height:1.45;
+  min-height:100vh;overflow-x:hidden;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 150px) max(16px,env(safe-area-inset-left,0px));
+  background:
+    radial-gradient(110% 45% at 50% 0%,rgba(210,170,106,.10),transparent 60%),
+    radial-gradient(90% 40% at 50% 100%,rgba(178,58,48,.05),transparent 70%),
+    var(--bg);
+}
+.wrap{max-width:460px;margin:0 auto}
+button{font-family:inherit}
+header{text-align:center;margin-bottom:18px}
+.eyebrow{font:600 12px/1 "Cormorant SC",serif;letter-spacing:.32em;color:var(--gold)}
+h1{font:500 38px/1.04 "Cormorant Garamond",serif;margin:10px 0 8px}
+h1 i{color:var(--gold);font-weight:400}
+.sub{color:var(--muted);font-style:italic;margin:0 auto;max-width:330px;font-size:17px}
+h2{font:600 13px/1 "Cormorant SC",serif;letter-spacing:.26em;color:var(--gold);margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+h2 .st{font:500 11px/1 "Special Elite",monospace;letter-spacing:.08em;color:var(--muted)}
+
+/* case brief */
+.brief{background:var(--paper);color:var(--ink);border-radius:3px;padding:18px 18px 16px;position:relative;box-shadow:0 14px 30px rgba(0,0,0,.5);transform:rotate(.5deg);
+  background-image:linear-gradient(180deg,rgba(255,255,255,.4),rgba(0,0,0,.03)),repeating-linear-gradient(0deg,transparent 0 27px,rgba(42,35,32,.06) 27px 28px)}
+.brief .fileno{font:13px/1 "Special Elite",monospace;letter-spacing:.06em;display:flex;justify-content:space-between;border-bottom:1px solid rgba(42,35,32,.3);padding-bottom:8px;margin-bottom:10px}
+.brief p{margin:0 0 10px;font-size:17px;line-height:1.45}
+.brief .facts{font:13.5px/1.5 "Special Elite",monospace;border-left:2px solid var(--seal);padding-left:10px;margin:12px 0 4px}
+.brief .clip{position:absolute;top:-10px;left:26px;width:16px;height:44px;border:2.5px solid #9a9ea6;border-radius:9px;border-bottom-color:transparent;transform:rotate(-6deg)}
+
+/* sherlock voice */
+.voice{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:16px 0 0;min-height:64px}
+.voice .s{flex:0 0 30px;height:30px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font:600 15px/1 "Cormorant SC",serif;color:var(--gold)}
+.voice p{margin:0;font-size:16.5px;line-height:1.4;font-style:italic;transition:opacity .25s}
+.voice p.fade{opacity:0}
+
+/* exhibit: note */
+.exhibit{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;width:100%;color:inherit;text-align:left}
+.exhibit .thumb{flex:0 0 112px;height:140px;position:relative;overflow:hidden;border-radius:2px;box-shadow:0 6px 14px rgba(0,0,0,.5);transform:rotate(-2deg)}
+.exhibit .thumb .sheet{transform-origin:0 0}
+.exhibit .cap{font-size:16px;line-height:1.35}
+.exhibit .cap b{display:block;font:600 12px/1 "Cormorant SC",serif;letter-spacing:.2em;color:var(--gold);margin-bottom:6px}
+.exhibit .cap span{color:var(--muted);font-style:italic;font-size:15px;display:block;margin-top:6px}
+
+/* typed sheets */
+.sheet{position:relative;background:#F6F1E4;color:var(--type);font-family:"Special Elite","Courier New",monospace;padding:22px 20px 26px;
+  background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1.3px),linear-gradient(180deg,#f8f3e7,#efe7d5);background-size:4px 4px,100% 100%}
+.sheet .ln{white-space:nowrap;height:1.5em;display:block}
+.k{display:inline-block;width:.6em;text-align:center;position:relative;text-shadow:0 0 .5px rgba(0,0,0,.55),.25px 0 0 rgba(0,0,0,.25)}
+.k.drop{color:transparent;text-shadow:0 0 0 rgba(0,0,0,.018)}
+.k.hop{top:-.18em;transform:rotate(-8deg)!important}
+.k.fade{color:transparent;background:linear-gradient(180deg,var(--type) 0 46%,rgba(28,25,23,.3) 54%,rgba(28,25,23,.08) 66%);-webkit-background-clip:text;background-clip:text;text-shadow:none}
+.k.fade.drop{background:none}
+.k.cur{animation:strike .12s ease-out}
+@keyframes strike{0%{transform:translateY(-3px) scale(1.15);opacity:.4}100%{}}
+.sheet .bleed{position:absolute;right:14px;bottom:12px;transform:scaleX(-1) rotate(-1deg);font:700 15px/1.3 Georgia,serif;color:rgba(42,35,32,.07);text-align:right;pointer-events:none;letter-spacing:.04em}
+.sheet .fold{position:absolute;left:0;right:0;top:44%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),transparent)}
+
+/* machine picker */
+.picker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pick{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 4px 8px;cursor:pointer;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:4px;min-height:84px;transition:border-color .2s,transform .2s}
+.pick svg{width:56px;height:40px}
+.pick .lt{font:600 15px/1 "Cormorant SC",serif;letter-spacing:.1em}
+.pick .nm{font-size:11.5px;line-height:1.1;color:var(--muted);font-style:italic;text-align:center}
+.pick[aria-pressed="true"]{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.45)}
+.pick .dot{width:5px;height:5px;border-radius:50%;background:var(--line)}
+.pick.tested .dot{background:var(--gold)}
+.pick:focus-visible,.chip:focus-visible,.btn:focus-visible,.exhibit:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* the machine */
+.machine{margin-top:14px;position:relative;--body:#2b2b2e;--body2:#16161a;--trim:#D2AA6A}
+.viewport{position:relative;height:178px;overflow:hidden;border-radius:12px 12px 0 0;background:linear-gradient(180deg,#0b0c0f,#141519);cursor:text;touch-action:manipulation}
+.viewport .paper{position:absolute;top:0;left:0;width:340px;transition:transform .09s ease-out;box-shadow:0 0 22px rgba(0,0,0,.6);font-size:15px}
+.viewport .paper.ret{transition:transform .38s cubic-bezier(.3,.7,.2,1)}
+.viewport .guide{position:absolute;bottom:34px;left:50%;width:1px;height:16px;transform:translateX(-50%);pointer-events:none}
+.viewport .guide::before{content:"";position:absolute;left:-9px;bottom:-2px;width:18px;height:6px;border:1.5px solid rgba(210,170,106,.6);border-top:0;border-radius:0 0 3px 3px}
+.viewport .hint{position:absolute;left:0;right:0;top:12px;text-align:center;color:rgba(236,232,225,.55);font:13px/1 "Special Elite",monospace;letter-spacing:.06em;pointer-events:none;transition:opacity .3s}
+.roller{height:34px;margin-top:-30px;position:relative;z-index:2;border-radius:16px;margin-left:-6px;margin-right:-6px;
+  background:linear-gradient(180deg,#3a3a3d 0%,#0c0c0e 45%,#1b1b1e 70%,#4a4a4e 100%);box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.roller::before,.roller::after{content:"";position:absolute;top:6px;width:20px;height:22px;border-radius:6px;background:linear-gradient(180deg,#d9d4c9,#7b766c)}
+.roller::before{left:-6px}.roller::after{right:-6px}
+.lever{position:absolute;left:-4px;top:-38px;width:44px;height:44px;border:0;background:transparent;cursor:pointer;z-index:3}
+.lever::before{content:"";position:absolute;left:6px;top:20px;width:30px;height:6px;border-radius:3px;background:linear-gradient(90deg,#e5dfd2,#8c867b);transform:rotate(-24deg);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.body{position:relative;margin-top:-6px;padding:16px 14px 18px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,var(--body),var(--body2));box-shadow:0 18px 30px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.plate{display:flex;justify-content:space-between;align-items:baseline;font:600 12px/1 "Cormorant SC",serif;letter-spacing:.22em;color:var(--trim);margin-bottom:12px}
+.plate i{font:italic 400 14px/1 "Cormorant Garamond",serif;letter-spacing:0;color:rgba(236,232,225,.7)}
+.keys{display:flex;flex-direction:column;gap:5px;align-items:center}
+.row{display:flex;gap:4px}
+.key{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f4efe4,#bdb6a8 70%,#8a8478);box-shadow:0 3px 0 #3a3733,0 4px 6px rgba(0,0,0,.5);font:11px/26px "Special Elite",monospace;color:#2a2320;text-align:center;transition:transform .06s,box-shadow .06s;user-select:none;-webkit-user-select:none}
+.key.dn{transform:translateY(3px);box-shadow:0 0 0 #3a3733,0 1px 2px rgba(0,0,0,.5)}
+.space{width:170px;height:16px;border-radius:8px;margin-top:4px;background:linear-gradient(180deg,#e8e2d6,#9c968a);box-shadow:0 3px 0 #3a3733}
+.space.dn{transform:translateY(3px);box-shadow:none}
+.loc{margin-top:12px;font-size:15px;color:rgba(236,232,225,.75);font-style:italic;text-align:center}
+.loc b{font-style:normal;font-weight:600;color:var(--trim)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{min-height:44px;padding:8px 13px;border-radius:22px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:13px/1.2 "Special Elite",monospace;cursor:pointer;text-align:left}
+.chip:active{border-color:var(--gold)}
+.btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.btn{min-height:46px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);font:600 13px/1.1 "Cormorant SC",serif;letter-spacing:.14em;cursor:pointer}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.btn:active{background:rgba(210,170,106,.1)}
+#kb{position:absolute;left:50%;top:40px;width:1px;height:1px;opacity:0;border:0;padding:0;font-size:16px;background:transparent;color:transparent;caret-color:transparent}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mini{position:relative;height:118px;overflow:hidden;border-radius:2px;cursor:pointer;border:0;padding:0;background:#2a2b2f;box-shadow:0 6px 12px rgba(0,0,0,.45)}
+.mini .sheet{transform-origin:0 0;pointer-events:none}
+.mini .lab{position:absolute;left:0;right:0;bottom:0;padding:4px 0;background:rgba(14,16,19,.82);font:600 12px/1 "Cormorant SC",serif;letter-spacing:.14em;color:var(--gold)}
+.mini .pin{position:absolute;top:4px;left:50%;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e06a5c,var(--seal));z-index:2;box-shadow:0 1px 2px rgba(0,0,0,.5)}
+.blank{position:absolute;inset:18px 6px 26px;display:flex;align-items:center;justify-content:center;color:#9a968f;font:12px/1.2 "Special Elite",monospace;text-align:center}
+.boardcap{color:var(--muted);font-style:italic;font-size:15px;margin:10px 2px 0;text-align:center}
+
+/* verdict */
+.verdict{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.vbtn{min-height:52px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:600 20px/1 "Cormorant SC",serif;cursor:pointer}
+.vbtn.no{opacity:.4;text-decoration:line-through}
+.vbtn.yes{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+
+/* suspects */
+.locked{position:relative}
+.locked.off{filter:blur(3px) grayscale(.6);opacity:.45;pointer-events:none;user-select:none}
+.locknote{text-align:center;color:var(--muted);font-style:italic;font-size:15px;margin:-4px 0 10px}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--paper);color:var(--ink);border-radius:4px;padding:14px 14px 12px;position:relative;box-shadow:0 10px 22px rgba(0,0,0,.45);display:grid;grid-template-columns:54px 1fr;gap:4px 12px;transition:transform .3s,opacity .3s}
+.card:nth-child(odd){transform:rotate(-.6deg)}.card:nth-child(even){transform:rotate(.5deg)}
+.card .mono{grid-row:span 2;width:54px;height:66px;border:1px solid rgba(42,35,32,.35);display:flex;align-items:center;justify-content:center;font:500 24px/1 "Cormorant SC",serif;color:#6b5a4a;background:repeating-linear-gradient(135deg,rgba(42,35,32,.04) 0 3px,transparent 3px 7px)}
+.card h3{margin:0;font:600 20px/1.1 "Cormorant Garamond",serif}
+.card .role{font:12.5px/1.2 "Special Elite",monospace;color:#6b5a4a}
+.card dl{grid-column:1 / -1;margin:8px 0 0;font-size:15.5px;line-height:1.35;display:grid;grid-template-columns:72px 1fr;gap:4px 8px}
+.card dt{font:600 11px/1.6 "Cormorant SC",serif;letter-spacing:.14em;color:#8a7360}
+.card dd{margin:0}
+.card .acc{grid-column:1 / -1;margin-top:10px;min-height:44px;border-radius:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:600 13px/1 "Cormorant SC",serif;letter-spacing:.18em;cursor:pointer}
+.card .acc:active{background:var(--ink);color:var(--paper)}
+.card.cleared{opacity:.55}
+.card.cleared::after{content:"CLEARED";position:absolute;right:12px;top:12px;font:13px/1 "Special Elite",monospace;color:#3a5a8c;border:1.5px solid #3a5a8c;padding:4px 7px;transform:rotate(8deg);letter-spacing:.1em}
+.card.guilty{box-shadow:0 0 0 2px var(--seal),0 14px 30px rgba(0,0,0,.55)}
+.card.guilty::after{content:"TYPED IT";position:absolute;right:12px;top:12px;font:13px/1 "Special Elite",monospace;color:var(--seal);border:1.5px solid var(--seal);padding:4px 7px;transform:rotate(-7deg);letter-spacing:.1em}
+
+/* reveal */
+.reveal{display:none;margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 18px 22px;position:relative;overflow:hidden}
+.reveal.show{display:block;animation:rise .8s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.seal{width:84px;height:84px;margin:0 auto 10px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#d15a4d,var(--seal) 55%,#7c241c);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.5),inset 0 -3px 6px rgba(0,0,0,.3);transform:scale(0) rotate(-30deg);transition:transform .7s cubic-bezier(.2,1.6,.4,1) .2s}
+.reveal.show .seal{transform:none}
+.seal span{font:600 15px/1 "Cormorant SC",serif;letter-spacing:.06em;color:#f3d6c8;text-align:center}
+.reveal .rk{text-align:center;font:600 12px/1 "Cormorant SC",serif;letter-spacing:.28em;color:var(--gold)}
+.chain{margin:16px 0 4px;padding:0;list-style:none;counter-reset:c}
+.chain li{position:relative;padding:0 0 12px 34px;font-size:16.5px;line-height:1.4}
+.chain li::before{counter-increment:c;content:counter(c);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font:600 12px/21px "Cormorant SC",serif;text-align:center}
+.reveal p{margin:12px 0 0;font-size:17px;line-height:1.5}
+.reveal p.m{color:var(--muted);font-style:italic}
+.reveal .sig{font-family:"Homemade Apple",cursive;color:var(--gold);font-size:15px;margin-top:14px;text-align:right}
+.reveal .tw{margin-top:18px;background:#F6F1E4;color:var(--type);font:15px/1.5 "Special Elite",monospace;padding:14px 16px;border-radius:2px;transform:rotate(-.8deg)}
+.again{display:block;margin:18px auto 0;min-height:44px;padding:0 18px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:22px;font:600 12px/1 "Cormorant SC",serif;letter-spacing:.16em;cursor:pointer}
+
+/* zoom viewer */
+.zv{position:fixed;inset:0;z-index:2147483100;background:#0A0B0D;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) 0 calc(env(safe-area-inset-bottom,0px) + 10px)}
+.zv.open{display:flex}
+.zv .top{display:flex;align-items:center;justify-content:space-between;padding:0 max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+.zv .ttl{font:600 12px/1.2 "Cormorant SC",serif;letter-spacing:.2em;color:var(--gold)}
+.zv .x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:22px;cursor:pointer}
+.stage{flex:1;position:relative;overflow:hidden;touch-action:none}
+.stage .inner{position:absolute;left:50%;top:50%;transform-origin:0 0;will-change:transform}
+.stage .inner .sheet{font-size:15px;width:340px;box-shadow:0 10px 40px rgba(0,0,0,.7)}
+.zv .ctl{display:flex;gap:8px;padding:10px 16px 0;justify-content:center;flex-wrap:wrap}
+.seg{display:flex;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.seg button{min-width:48px;min-height:44px;border:0;background:transparent;color:var(--muted);font:600 14px/1 "Cormorant SC",serif;letter-spacing:.08em;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:rgba(210,170,106,.14);color:var(--gold)}
+.zbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:20px;cursor:pointer}
+.zhelp{text-align:center;color:var(--muted);font-style:italic;font-size:14px;margin-top:8px}
+
+.foot{margin-top:34px;text-align:center;color:var(--muted);font-style:italic;font-size:15px}
+.foot .sig{display:block;font-family:"Homemade Apple",cursive;font-style:normal;color:var(--gold);margin-top:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">A CASE FOR TWO</div>
+  <h1>The <i>Typewriter</i> Mystery</h1>
+  <p class="sub">Four machines, one anonymous note, and a society of very polite people, one of whom isn't.</p>
+</header>
+
+<div class="brief">
+  <div class="clip"></div>
+  <div class="fileno"><span>CASE No. 221/T</span><span>GOWER ST, LONDON</span></div>
+  <p>You were invited to the Gower Street Literary Society to catalogue their late founder's unpublished memoir. At 9.40 this evening a note was found tucked inside it, addressed to you.</p>
+  <p>It was typed on one of the society's four typewriters. Each has a fault. Typewriters are dreadful at keeping secrets.</p>
+  <div class="facts">The note is on the back of tonight's agenda, printed by the porter at 8 p.m.<br>Nobody brought their own machine. The porter checked bags. He enjoys it.</div>
+</div>
+
+<div class="voice" aria-live="polite"><div class="s">S</div><p id="say">Darling. Somebody has threatened you in writing, which is both unforgivable and very stupid of them. Let's find out who.</p></div>
+
+<h2>Exhibit I <span class="st">the note</span></h2>
+<button class="exhibit" id="openNote" aria-label="Open the anonymous note in the zoom viewer">
+  <div class="thumb" id="noteThumb"></div>
+  <div class="cap"><b>THE ANONYMOUS NOTE</b>Typed, unsigned, slightly smug.<span>Tap to examine. Pinch to zoom. Look at everything, including the spaces.</span></div>
+</button>
+
+<h2>The four machines <span class="st" id="tcount">0 of 4 tested</span></h2>
+<div class="picker" id="picker"></div>
+
+<div class="machine" id="machine">
+  <div class="viewport" id="vp" aria-label="Typewriter paper. Tap to type.">
+    <div class="paper" id="paper"></div>
+    <div class="guide"></div>
+    <div class="hint" id="vphint">tap the paper to type</div>
+    <input id="kb" type="text" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="enter" aria-label="Type on the typewriter">
+  </div>
+  <div class="roller"><button class="lever" id="lever" aria-label="Carriage return"></button></div>
+  <div class="body">
+    <div class="plate"><span id="mname">MACHINE A</span><i id="mmodel"></i></div>
+    <div class="keys" id="keys" aria-hidden="true"></div>
+    <div class="loc" id="mloc"></div>
+  </div>
+</div>
+<div class="chips" id="chips"></div>
+<div class="btns">
+  <button class="btn" id="bRet">Return</button>
+  <button class="btn" id="bNew">Fresh sheet</button>
+  <button class="btn gold" id="bCmp">Compare</button>
+</div>
+
+<h2>Evidence board <span class="st">tap to compare</span></h2>
+<div class="board" id="board"></div>
+<p class="boardcap">Your test sheets, pinned up as you type. The viewer flicks between them and the note at the same zoom, like a blink comparator.</p>
+
+<h2>Which machine? <span class="st" id="mstate">undecided</span></h2>
+<div class="verdict" id="verdict"></div>
+
+<h2>The suspects <span class="st" id="sstate">locked</span></h2>
+<p class="locknote" id="locknote">Name the machine first. Then we'll know which door matters.</p>
+<div class="locked off" id="suspects"><div class="cards" id="cards"></div></div>
+
+<div class="reveal" id="reveal" aria-live="polite">
+  <div class="seal"><span>CASE<br>CLOSED</span></div>
+  <div class="rk">HOW YOU DID IT</div>
+  <ol class="chain">
+    <li>Every <b>E</b> on the note hops above the line and leans. Only the Olivetti does that, and the Olivetti never leaves the Reading Room.</li>
+    <li>The Reading Room locks at six. Three people hold keys: Philippa, Edmund and Toby.</li>
+    <li>The note puts two spaces after every full stop. Toby uses one. Philippa and Edmund were taught two, and never recovered.</li>
+    <li>The agenda it's typed on came off the printer at eight. Edmund was on the 7.30 to Brighton. Philippa was "typing the minutes upstairs."</li>
+  </ol>
+  <p>Chapter eleven of the memoir reveals that the society's most famous poem, the one framed in the hall, was written by Philippa, aged nineteen, and published under the founder's name. She wasn't protecting him. She was frightened of being seen after forty years of hiding in a footnote.</p>
+  <p class="m">I don't excuse the note. But I understand being more frightened of being seen than of being alone. You'd be kinder to her than I would. You usually are.</p>
+  <div class="tw">THE MACHINE CONFESSED.<br>THE TYPIST FOLLOWED.<br>YOU WERE BRILLIANT.  I WAS<br>MERELY PRESENT.</div>
+  <div class="sig">yours, S.</div>
+  <button class="again" id="again">Reopen the case</button>
+</div>
+
+<div class="foot">Mrs Hudson has asked that we stop testing typewriters at two in the morning. We have agreed to consider it.<span class="sig">S.</span></div>
+</div>
+
+<!-- zoom viewer -->
+<div class="zv" id="zv" role="dialog" aria-modal="true" aria-label="Evidence viewer">
+  <div class="top"><span class="ttl" id="zttl">THE NOTE</span><button class="x" id="zclose" aria-label="Close viewer">&times;</button></div>
+  <div class="stage" id="stage"><div class="inner" id="zinner"></div></div>
+  <div class="ctl">
+    <div class="seg" id="zseg"></div>
+  </div>
+  <div class="ctl">
+    <button class="zbtn" id="zout" aria-label="Zoom out">&minus;</button>
+    <button class="zbtn" id="zfit" aria-label="Reset zoom">&#9675;</button>
+    <button class="zbtn" id="zin" aria-label="Zoom in">+</button>
+  </div>
+  <div class="zhelp">Pinch or double-tap to zoom, drag to look around. Switching keeps the same view.</div>
+</div>
+
+<script>
+(function(){
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const COLS = 32;
+const M = [
+  {id:'A', model:'Remington Rand, 1948', color:['#2b2b2e','#121215'], trim:'#D2AA6A', loc:'Kept in <b>the Library</b>, ground floor. Never locked.', fault:'drop', short:'Remington'},
+  {id:'B', model:'Olivetti Lettera, 1959', color:['#5d7a70','#2f433d'], trim:'#F1E3C4', loc:'Kept in <b>the Reading Room</b>, upstairs. Locked at six; three keys.', fault:'hop', short:'Olivetti'},
+  {id:'C', model:'Underwood No. 5, 1931', color:['#3a2f2a','#1a1412'], trim:'#D8B47A', loc:'Kept in <b>the Members’ Lounge</b>. Open all evening, next to the sherry.', fault:'dbl', short:'Underwood'},
+  {id:'D', model:'Imperial Good Companion, 1952', color:['#6b2f2a','#381512'], trim:'#EBD3A8', loc:'Kept in <b>the Front Hall</b>, by the porter’s desk.', fault:'fade', short:'Imperial'}
+];
+const NOTE_LINES = ["TO THE YOUNG LADY WHO","CATALOGUES THE MEMOIR.","","STOP READING.  SOME PAGES","ARE BURIED FOR A REASON.","CLOSE CHAPTER ELEVEN.  DO","IT TONIGHT, OR REGRET IT."];
+
+// per-character rendering with machine faults
+function hash(n){ n=(n^61)^(n>>>16); n=n+(n<<3); n=n^(n>>>4); n=Math.imul(n,0x27d4eb2d); n=n^(n>>>15); return (n>>>0)/4294967340; }
+function charHTML(ch, fault, seed){
+  if(ch===' ') return '<span class="k">&nbsp;</span>';
+  const j1=hash(seed*7+1), j2=hash(seed*13+5), j3=hash(seed*3+11);
+  const st = `transform:translateY(${((j1-.5)*.9).toFixed(2)}px) rotate(${((j2-.5)*2.4).toFixed(1)}deg);opacity:${(.8+j3*.2).toFixed(2)}`;
+  const esc = ch==='<'?'&lt;':ch==='>'?'&gt;':ch==='&'?'&amp;':ch;
+  const low = ch.toLowerCase();
+  let cls='k'+(fault==='fade'?' fade':'');
+  if(fault==='drop' && low==='r') return `<span class="${cls} drop">${esc}</span>`;
+  if(fault==='hop' && low==='e') return `<span class="${cls} hop" style="opacity:${(.85+j3*.15).toFixed(2)}">${esc}</span>`;
+  if(fault==='dbl' && low==='s') return `<span class="${cls}" style="${st}">${esc}</span><span class="${cls}" style="opacity:.86">${esc}</span>`;
+  return `<span class="${cls}" style="${st}">${esc}</span>`;
+}
+function lineHTML(str, fault, li){ let h=''; for(let i=0;i<str.length;i++) h+=charHTML(str[i], fault, li*101+i); return '<span class="ln">'+(h||'&nbsp;')+'</span>'; }
+function sheetHTML(lines, fault, extra){ return '<div class="sheet">'+lines.map((l,i)=>lineHTML(l,fault,i)).join('')+(extra||'')+'</div>'; }
+const NOTE_HTML = sheetHTML(NOTE_LINES,'hop','<div class="fold"></div><div class="bleed">AGENDA<br>Thursday, 8 p.m.<br>i. Minutes<br>ii. The Memoir</div>');
+
+// state
+const KEY='sherlock-typewriter-case-v1';
+let S = {lines:{A:[''],B:[''],C:[''],D:['']}, seen:{}, mach:null, culprit:null, wrongM:{}, cleared:{}};
+try{ const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s && s.lines) S=Object.assign(S,s); }catch(e){}
+const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+let cur='A';
+
+// Sherlock's voice
+const sayEl=document.getElementById('say'); let sayT;
+function say(t){ if(REDUCED){ sayEl.textContent=t; return; } sayEl.classList.add('fade'); clearTimeout(sayT); sayT=setTimeout(()=>{ sayEl.textContent=t; sayEl.classList.remove('fade'); },200); }
+
+// thumbnail of note
+function fitInto(host, html, w, h){
+  host.innerHTML=html; const sh=host.firstChild; sh.style.width='340px'; sh.style.fontSize='15px';
+  const sc = Math.min(w/340, 1); sh.style.transform='scale('+sc+')'; sh.style.position='absolute'; sh.style.left='0'; sh.style.top='0';
+}
+fitInto(document.getElementById('noteThumb'), NOTE_HTML, 112, 140);
+
+// typewriter svg icon
+function twSVG(c1,c2,trim){
+  return `<svg viewBox="0 0 56 40" aria-hidden="true"><rect x="10" y="2" width="36" height="12" rx="1.5" fill="#F4EEE2" opacity=".9"/><rect x="4" y="12" width="48" height="6" rx="3" fill="#1b1b1e" stroke="${trim}" stroke-width=".6"/><path d="M6 18h44l4 18H2z" fill="${c1}" stroke="${c2}"/><g fill="#E9E3D6">${[0,1,2,3,4,5,6].map(i=>`<circle cx="${11+i*5.6}" cy="25" r="1.7"/>`).join('')}${[0,1,2,3,4,5].map(i=>`<circle cx="${13.8+i*5.6}" cy="30" r="1.7"/>`).join('')}</g><rect x="18" y="33" width="20" height="2" rx="1" fill="#E9E3D6"/></svg>`;
+}
+const picker=document.getElementById('picker');
+M.forEach(m=>{
+  const b=document.createElement('button'); b.className='pick'; b.dataset.id=m.id; b.setAttribute('aria-pressed','false');
+  b.innerHTML=twSVG(m.color[0],m.color[1],m.trim)+`<span class="lt">${m.id}</span><span class="nm">${m.short}</span><span class="dot"></span>`;
+  b.onclick=()=>{ choose(m.id); };
+  picker.appendChild(b);
+});
+// keys
+const keysEl=document.getElementById('keys'), keyEls={};
+['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].forEach(r=>{ const row=document.createElement('div'); row.className='row'; [...r].forEach(ch=>{ const k=document.createElement('div'); k.className='key'; k.textContent=ch; keyEls[ch]=k; row.appendChild(k); }); keysEl.appendChild(row); });
+const spaceEl=document.createElement('div'); spaceEl.className='space'; keysEl.appendChild(spaceEl);
+
+const paper=document.getElementById('paper'), vp=document.getElementById('vp'), kb=document.getElementById('kb');
+const mach=()=>M.find(m=>m.id===cur);
+
+function renderPaper(animateLast){
+  const m=mach(), lines=S.lines[cur];
+  let html=lines.map((l,i)=>lineHTML(l,m.fault,i)).join('');
+  paper.innerHTML='<div class="sheet" style="min-height:240px">'+html+'</div>';
+  if(animateLast){ const ln=paper.querySelectorAll('.ln'); const last=ln[ln.length-1]; const ks=last&&last.querySelectorAll('.k'); if(ks&&ks.length){ ks[ks.length-1].classList.add('cur'); if(m.fault==='dbl'&&ks.length>1) ks[ks.length-2].classList.add('cur'); } }
+  positionPaper();
+  document.getElementById('vphint').style.opacity = (lines.length===1&&!lines[0])?1:0;
+}
+function positionPaper(){
+  const lines=S.lines[cur]; const li=lines.length-1; const col=visualCols(lines[li]);
+  const fs=15, cw=fs*.6, lh=fs*1.5;
+  const x = vp.clientWidth/2 - 20 - col*cw - cw/2;
+  const y = vp.clientHeight - 36 - 22 - (li+1)*lh + 4;
+  paper.style.transform=`translate(${x}px,${y}px)`;
+}
+function visualCols(str){ if(mach().fault!=='dbl') return str.length; let n=0; for(const ch of str) n+= ch.toLowerCase()==='s'?2:1; return n; }
+
+function choose(id){
+  cur=id; const m=mach();
+  document.querySelectorAll('.pick').forEach(p=>p.setAttribute('aria-pressed', p.dataset.id===id?'true':'false'));
+  const el=document.getElementById('machine');
+  el.style.setProperty('--body',m.color[0]); el.style.setProperty('--body2',m.color[1]); el.style.setProperty('--trim',m.trim);
+  document.getElementById('mname').textContent='MACHINE '+m.id;
+  document.getElementById('mmodel').textContent=m.model;
+  document.getElementById('mloc').innerHTML=m.loc;
+  paper.classList.remove('ret'); renderPaper(false);
+  const intro={A:"Machine A. Heavy, honest-looking, built like a magistrate. Type something.",
+               B:"Machine B, the pretty one. Pretty things lie beautifully. Test it.",
+               C:"Machine C has been next to the sherry for ninety years. Keep that in mind.",
+               D:"Machine D. The porter's. He says it's 'perfectly fine'. He would."};
+  say(intro[id]);
+}
+
+// sound
+let AC=null;
+function ac(){ try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){ AC=null; } return AC; }
+function noise(a,dur){ const b=a.createBuffer(1,Math.max(1,a.sampleRate*dur|0),a.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3); const s=a.createBufferSource(); s.buffer=b; return s; }
+function clack(soft){
+  const a=ac(); if(!a) return; const t=a.currentTime;
+  const s=noise(a,.05), f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1800+Math.random()*900; f.Q.value=.9;
+  const g=a.createGain(); g.gain.value=soft?.18:.42; s.connect(f).connect(g).connect(a.destination); s.start(t);
+  const o=a.createOscillator(), og=a.createGain(); o.type='triangle'; o.frequency.setValueAtTime(190,t); o.frequency.exponentialRampToValueAtTime(70,t+.05);
+  og.gain.setValueAtTime(soft?.08:.22,t); og.gain.exponentialRampToValueAtTime(.0001,t+.07); o.connect(og).connect(a.destination); o.start(t); o.stop(t+.08);
+}
+function bell(){
+  const a=ac(); if(!a) return; const t=a.currentTime;
+  [[2093,.16],[4186*1.01,.05],[2637,.04]].forEach(([fq,v])=>{ const o=a.createOscillator(), g=a.createGain(); o.frequency.value=fq; g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(.0001,t+1.3); o.connect(g).connect(a.destination); o.start(t); o.stop(t+1.4); });
+}
+function ratchet(){
+  const a=ac(); if(!a) return; const t=a.currentTime;
+  for(let i=0;i<7;i++){ const s=noise(a,.018), f=a.createBiquadFilter(); f.type='highpass'; f.frequency.value=2500; const g=a.createGain(); g.gain.value=.16; s.connect(f).connect(g).connect(a.destination); s.start(t+i*.035); }
+  const s=noise(a,.12), f=a.createBiquadFilter(); f.type='lowpass'; f.frequency.value=600; const g=a.createGain(); g.gain.value=.3; s.connect(f).connect(g).connect(a.destination); s.start(t+.3);
+}
+
+// typing
+const faultSeen = (id)=> !!S.seen[id];
+function markSeen(id, why){
+  if(S.seen[id]) return; S.seen[id]=1; save(); updateTested();
+  const hints={A:"Read back what you just typed. Something is missing, and it isn't your talent.",
+    B:"See that letter? Sitting above the line, leaning, like it's overheard gossip. Remember it.",
+    C:"You pressed that key once. The machine has a different recollection.",
+    D:"Look at the bottom half of every letter. Threadbare ribbon. Not your fault, for once in history it's the ribbon's."};
+  say(hints[id]);
+  if(Object.keys(S.seen).length===4) setTimeout(()=>say("That's all four confessing their tics. Now open the note and look properly. Every letter, every space."),4200);
+}
+let sinceSay=0;
+function typeChar(ch){
+  const lines=S.lines[cur]; let li=lines.length-1;
+  if(visualCols(lines[li]) + (mach().fault==='dbl' && ch.toLowerCase()==='s'?2:1) > COLS){ carriageReturn(true); li=lines.length-1; }
+  lines[li]+=ch;
+  const vc=visualCols(lines[li]);
+  clack(ch===' ');
+  const kk=keyEls[ch.toUpperCase()]||(ch===' '?spaceEl:null);
+  if(kk){ kk.classList.add('dn'); setTimeout(()=>kk.classList.remove('dn'),90); }
+  if(vc===COLS-5) bell();
+  paper.classList.remove('ret'); renderPaper(true); renderBoard();
+  const low=ch.toLowerCase(), f=mach().fault;
+  if((f==='drop'&&low==='r')||(f==='hop'&&low==='e')||(f==='dbl'&&low==='s')) markSeen(cur);
+  if(f==='fade' && lines.join('').replace(/\s/g,'').length>=4) markSeen(cur);
+  save();
+}
+function carriageReturn(auto){
+  const lines=S.lines[cur]; if(lines.length>=24) lines.shift(); lines.push('');
+  ratchet(); paper.classList.add('ret'); renderPaper(false); renderBoard(); save();
+}
+function backspace(){ const lines=S.lines[cur]; const li=lines.length-1; if(lines[li]) { lines[li]=lines[li].slice(0,-1); clack(true); } else if(lines.length>1){ lines.pop(); } renderPaper(false); renderBoard(); save(); }
+function focusKb(){ try{ kb.focus({preventScroll:true}); }catch(e){ kb.focus(); } }
+vp.addEventListener('pointerdown', e=>{ e.preventDefault(); focusKb(); });
+kb.addEventListener('beforeinput', ev=>{
+  if(ev.inputType==='deleteContentBackward'){ ev.preventDefault(); backspace(); return; }
+  if(ev.inputType==='insertLineBreak'||ev.inputType==='insertParagraph'){ ev.preventDefault(); carriageReturn(); return; }
+  if(ev.data){ ev.preventDefault(); [...ev.data.replace(/[‘’]/g,"'").replace(/[“”]/g,'"')].forEach(ch=>{ if(/[\x20-\x7e]/.test(ch)) typeChar(ch); }); }
+});
+kb.addEventListener('input', ()=>{ const v=kb.value; kb.value=''; [...v].forEach(ch=>{ if(/[\x20-\x7e]/.test(ch)) typeChar(ch); }); });
+kb.addEventListener('keydown', ev=>{ if(ev.key==='Backspace'){ ev.preventDefault(); backspace(); } else if(ev.key==='Enter'){ ev.preventDefault(); carriageReturn(); } });
+document.getElementById('bRet').onclick=()=>carriageReturn();
+document.getElementById('lever').onclick=()=>carriageReturn();
+document.getElementById('bNew').onclick=()=>{ S.lines[cur]=['']; ratchet(); renderPaper(false); renderBoard(); save(); say("Fresh sheet. Wasteful, but I admire the commitment."); };
+window.addEventListener('resize', positionPaper);
+
+// test-line chips (auto-type with rhythm)
+const CHIPS=["Rosin for rare errors.","She sees sleuths.","Keep the scarf, darling.","Ten ripe tomatoes."];
+const chipsEl=document.getElementById('chips'); let autoT=null;
+CHIPS.forEach(t=>{ const b=document.createElement('button'); b.className='chip'; b.textContent=t; b.onclick=()=>autoType(t.replace(/’/g,"'")); chipsEl.appendChild(b); });
+function autoType(text){
+  clearTimeout(autoT); ac();
+  if(S.lines[cur][S.lines[cur].length-1]) carriageReturn();
+  let i=0; const go=()=>{ if(i>=text.length){ return; } typeChar(text[i++]); autoT=setTimeout(go, REDUCED?20:(55+Math.random()*80)); };
+  setTimeout(go, REDUCED?0:420);
+}
+
+// evidence board
+const board=document.getElementById('board');
+function renderBoard(){
+  board.innerHTML='';
+  M.forEach(m=>{
+    const b=document.createElement('button'); b.className='mini'; b.setAttribute('aria-label','Compare test sheet from machine '+m.id);
+    const lines=S.lines[m.id]; const has=lines.some(l=>l.trim());
+    const host=document.createElement('div');
+    if(has){ fitInto(host, sheetHTML(lines,m.fault), 1,1); host.firstChild.style.transform='scale(.25)';host.firstChild.style.top='12px'; host.firstChild.style.minHeight='400px'; }
+    else { host.innerHTML='<div class="blank">untested</div>'; }
+    b.appendChild(host);
+    b.insertAdjacentHTML('beforeend','<span class="pin"></span><span class="lab">'+m.id+'</span>');
+    b.onclick=()=>openViewer(m.id);
+    board.appendChild(b);
+  });
+}
+function updateTested(){
+  const n=Object.keys(S.seen).length;
+  document.getElementById('tcount').textContent=n+' of 4 tested';
+  document.querySelectorAll('.pick').forEach(p=>p.classList.toggle('tested', !!S.seen[p.dataset.id]));
+}
+
+// zoom viewer
+const zv=document.getElementById('zv'), stage=document.getElementById('stage'), zinner=document.getElementById('zinner'), zseg=document.getElementById('zseg');
+let view='N', z={s:1,x:0,y:0};
+['N','A','B','C','D'].forEach(id=>{ const b=document.createElement('button'); b.textContent=id==='N'?'Note':id; b.dataset.id=id; b.setAttribute('aria-pressed','false'); b.onclick=()=>showView(id); zseg.appendChild(b); });
+function showView(id){
+  view=id;
+  [...zseg.children].forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===id?'true':'false'));
+  document.getElementById('zttl').textContent = id==='N'?'THE NOTE':'TEST SHEET, MACHINE '+id;
+  if(id==='N') zinner.innerHTML=NOTE_HTML;
+  else { const m=M.find(q=>q.id===id); const lines=S.lines[id]; zinner.innerHTML = lines.some(l=>l.trim())? sheetHTML(lines,m.fault) : '<div class="sheet" style="min-height:260px"><span class="ln">(untested)</span></div>'; }
+  zinner.firstChild.style.width='340px';
+  applyZ();
+}
+function fitZ(){ const w=stage.clientWidth, h=stage.clientHeight; const s=Math.min((w-24)/340, 1.6); z={s, x:-170*s, y:-Math.min(h/2-12, 150*s)}; applyZ(); }
+function applyZ(){ zinner.style.transform=`translate(${z.x}px,${z.y}px) scale(${z.s})`; }
+function zoomAt(f, cx, cy){ // cx,cy relative to stage centre
+  const ns=Math.max(.6, Math.min(6, z.s*f)); const k=ns/z.s;
+  z.x = cx - (cx - z.x)*k; z.y = cy - (cy - z.y)*k; z.s=ns; applyZ();
+}
+function openViewer(id){ zv.classList.add('open'); document.body.style.overflow='hidden'; showView(id); fitZ();
+  if(id==='N' && !S.noteOpened){ S.noteOpened=1; save(); say("Look at the shape of it. Then the letters. Then the gaps between sentences. Nobody ever looks at the gaps."); } }
+function closeViewer(){ zv.classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('openNote').onclick=()=>openViewer('N');
+document.getElementById('bCmp').onclick=()=>openViewer(cur);
+document.getElementById('zclose').onclick=closeViewer;
+document.getElementById('zin').onclick=()=>zoomAt(1.4,0,0);
+document.getElementById('zout').onclick=()=>zoomAt(1/1.4,0,0);
+document.getElementById('zfit').onclick=fitZ;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&zv.classList.contains('open')) closeViewer(); });
+const ptrs=new Map(); let lastDist=0, lastMid=null, lastTap=0;
+const rel=(e)=>{ const r=stage.getBoundingClientRect(); return {x:e.clientX-r.left-r.width/2, y:e.clientY-r.top-r.height/2}; };
+stage.addEventListener('pointerdown',e=>{ stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,rel(e));
+  if(ptrs.size===1){ const now=Date.now(); if(now-lastTap<300){ const p=rel(e); zoomAt(z.s<2?2.5:1/2.5*1, p.x, p.y); if(z.s<1.2) fitZ(); } lastTap=now; }
+  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; lastDist=Math.hypot(a.x-b.x,a.y-b.y); lastMid={x:(a.x+b.x)/2,y:(a.y+b.y)/2}; } });
+stage.addEventListener('pointermove',e=>{ if(!ptrs.has(e.pointerId)) return; const prev=ptrs.get(e.pointerId), p=rel(e); ptrs.set(e.pointerId,p);
+  if(ptrs.size===1){ z.x+=p.x-prev.x; z.y+=p.y-prev.y; applyZ(); }
+  else if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y), mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    if(lastDist){ z.x+=mid.x-lastMid.x; z.y+=mid.y-lastMid.y; zoomAt(d/lastDist, mid.x, mid.y); } lastDist=d; lastMid=mid; } });
+const up=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2){ lastDist=0; } };
+stage.addEventListener('pointerup',up); stage.addEventListener('pointercancel',up);
+stage.addEventListener('wheel',e=>{ e.preventDefault(); const p=rel(e); zoomAt(e.deltaY<0?1.12:1/1.12,p.x,p.y); },{passive:false});
+
+// machine verdict
+const verdict=document.getElementById('verdict');
+const WRONG_M={
+  A:"Every R on the note is present and correct. Machine A couldn't strike an R if its pension depended on it.",
+  C:"Every S on the note is single. Machine C stammers on every one, like a man proposing.",
+  D:"The note's ink is even, top to bottom. Machine D's ribbon is worn through along the lower half."
+};
+M.forEach(m=>{ const b=document.createElement('button'); b.className='vbtn'; b.textContent=m.id; b.dataset.id=m.id; b.setAttribute('aria-label','Accuse machine '+m.id);
+  b.onclick=()=>accuseMachine(m.id); verdict.appendChild(b); });
+function accuseMachine(id){
+  if(S.mach) return;
+  if(!S.seen[id] && Object.keys(S.seen).length<2){ say("Accusing a machine you've barely met? Test them first. Even typewriters deserve due process."); return; }
+  if(id==='B'){ S.mach='B'; save(); paintVerdict(true);
+    say("The Olivetti. Every E on the note hops above the line and leans, exactly like yours did. Now the useful question: who can reach the Reading Room?");
+    setTimeout(()=>document.getElementById('suspects').scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'start'}),900);
+  } else { S.wrongM[id]=1; save(); paintVerdict(); say(WRONG_M[id]); }
+}
+function paintVerdict(fresh){
+  [...verdict.children].forEach(b=>{ const id=b.dataset.id; b.classList.toggle('no', !!S.wrongM[id] || (S.mach && id!==S.mach)); b.classList.toggle('yes', S.mach===id); });
+  document.getElementById('mstate').textContent = S.mach? 'machine '+S.mach+', the Olivetti' : 'undecided';
+  const sus=document.getElementById('suspects');
+  sus.classList.toggle('off', !S.mach);
+  document.getElementById('locknote').style.display = S.mach?'none':'block';
+  document.getElementById('sstate').textContent = S.culprit? 'solved' : S.mach? 'four people, one liar' : 'locked';
+  if(S.mach) sus.removeAttribute('aria-hidden'); else sus.setAttribute('aria-hidden','true');
+}
+
+// suspects
+const SUS=[
+  {id:'crane', mono:'PC', name:'Philippa Crane', role:'Secretary, 64', key:'Yes', night:'"Typing the minutes upstairs until about eight." Nobody saw her leave.', habit:'Learnt to type in 1979. Two spaces after every full stop, without exception.'},
+  {id:'hale', mono:'EH', name:'Edmund Hale', role:'Treasurer, 58', key:'Yes', night:'Left at 7.15 for the 7.30 to Brighton. Ticket punched at Victoria, 7.29.', habit:'Old school. Two spaces after a full stop, and he will explain why.'},
+  {id:'marsh', mono:'TM', name:'Toby Marsh', role:'Archivist, 26', key:'Yes, the archive is through the Reading Room', night:'Alone in the archive until ten. Says he had headphones on.', habit:'Learnt on a laptop. One space after a full stop. Calls two "a crime".'},
+  {id:'moreau', mono:'IM', name:'Dr Inès Moreau', role:'Visiting novelist', key:'No', night:'At the bar from seven, holding court. Seven witnesses, all charmed.', habit:'Dictates everything to a recorder. Has never typed a word in her life.'}
+];
+const WRONG_S={
+  hale:"Key, yes. Two spaces, yes. But the agenda wasn't printed until eight, and by eight Edmund was halfway to Brighton. Unless he typed it on the train, on a machine he couldn't carry, he's out.",
+  marsh:"Key, yes. Alone, yes. Suspicious headphones, yes. But look at the full stops on the note: two spaces, every time. Toby would rather be arrested.",
+  moreau:"No key, and the Olivetti doesn't leave the Reading Room. Also she has never typed anything. I admire her, frankly."
+};
+const cardsEl=document.getElementById('cards');
+SUS.forEach(s=>{
+  const c=document.createElement('div'); c.className='card'; c.dataset.id=s.id;
+  c.innerHTML=`<div class="mono">${s.mono}</div><h3>${s.name}</h3><div class="role">${s.role}</div>
+  <dl><dt>KEY</dt><dd>${s.key}</dd><dt>TONIGHT</dt><dd>${s.night}</dd><dt>TYPES</dt><dd>${s.habit}</dd></dl>
+  <button class="acc">Accuse ${s.name.split(' ')[s.name.split(' ').length-1]}</button>`;
+  c.querySelector('.acc').onclick=()=>accuse(s.id);
+  cardsEl.appendChild(c);
+});
+function accuse(id){
+  if(!S.mach||S.culprit) return;
+  if(id==='crane'){ S.culprit='crane'; save(); paintCards(); paintVerdict();
+    say("Philippa Crane. Machine, key, full stops and the clock all agree, and they're not on speaking terms usually. Darling, that was beautiful.");
+    showReveal(true);
+  } else { S.cleared[id]=1; save(); paintCards(); say(WRONG_S[id]); }
+}
+function paintCards(){
+  [...cardsEl.children].forEach(c=>{ const id=c.dataset.id; c.classList.toggle('cleared', !!S.cleared[id] || (S.culprit && id!==S.culprit)); c.classList.toggle('guilty', S.culprit===id);
+    c.querySelector('.acc').style.display = (S.culprit || S.cleared[id])?'none':''; });
+}
+function showReveal(fresh){
+  const r=document.getElementById('reveal'); r.classList.add('show');
+  if(fresh){ bell(); setTimeout(()=>r.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'start'}),700); }
+}
+document.getElementById('again').onclick=()=>{
+  S={lines:{A:[''],B:[''],C:[''],D:['']}, seen:{}, mach:null, culprit:null, wrongM:{}, cleared:{}}; save();
+  document.getElementById('reveal').classList.remove('show');
+  paintVerdict(); paintCards(); updateTested(); renderBoard(); choose('A');
+  say("Case reopened. Same note, same machines. Different coffee, I hope.");
+  window.scrollTo({top:0,behavior:REDUCED?'auto':'smooth'});
+};
+
+// init
+choose('A'); say("Darling. Somebody has threatened you in writing, which is both unforgivable and very stupid of them. Let's find out who.");
+renderBoard(); updateTested(); paintVerdict(); paintCards();
+if(S.culprit) showReveal(false);
+})();
+</script>
+</body>
+</html>

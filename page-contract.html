@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Contract</title>
+<meta name="theme-color" content="#0E1013">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600;700&family=IM+Fell+English:ital@0;1&family=Caveat:wght@500;600&family=Homemade+Apple&family=Mrs+Saint+Delafield&family=Special+Elite&display=swap">
+<style>
+:root{
+  --bg:#0E1013;--panel:#15181D;--line:#262A31;--text:#ECE8E1;--muted:#9A968F;
+  --gold:#D2AA6A;--seal:#B23A30;--paper:#F4EEE2;--ink:#2A2320;--blue:#1f3a6b;--green:#2f5a3a;
+  --serif:"Cormorant Garamond",Georgia,serif;--sc:"Cormorant SC",Georgia,serif;--fell:"IM Fell English",Georgia,serif;
+  --hand:"Caveat",cursive;--apple:"Homemade Apple",cursive;--sig:"Mrs Saint Delafield",cursive;--type:"Special Elite","Courier New",monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.45;overflow-x:hidden;
+  background:radial-gradient(100% 50% at 50% 0%,rgba(210,170,106,.09),transparent 60%),radial-gradient(80% 40% at 100% 80%,rgba(178,58,48,.07),transparent 70%),var(--bg);
+  padding:env(safe-area-inset-top,0px) 0 calc(150px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit}
+.wrap{max-width:540px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+header{text-align:center;padding:26px 0 18px}
+.kicker{font-family:var(--sc);letter-spacing:.24em;font-size:12px;color:var(--gold)}
+h1{font-weight:500;font-size:42px;line-height:1;margin:8px 0 6px}
+h1 em{color:var(--gold)}
+.sub{color:var(--muted);font-style:italic;margin:0;font-size:15px}
+
+/* paper */
+.doc{position:relative;overflow:hidden;color:var(--ink);padding:30px 20px 34px 22px;border-radius:3px;
+  background:
+   radial-gradient(circle at 82% 7%,transparent 30px,rgba(140,90,40,.16) 31px,rgba(140,90,40,.07) 35px,transparent 37px),
+   radial-gradient(3px 3px at 14% 31%,rgba(140,90,40,.35),transparent),radial-gradient(4px 4px at 71% 54%,rgba(140,90,40,.28),transparent),radial-gradient(2px 2px at 40% 77%,rgba(140,90,40,.3),transparent),radial-gradient(5px 4px at 88% 91%,rgba(140,90,40,.22),transparent),
+   radial-gradient(140% 90% at 50% 40%,#f6f0e3 0%,var(--paper) 55%,#e6d8bb 100%);
+  box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 60px rgba(150,110,60,.28);
+  clip-path:polygon(0 0.4%,6% 0,14% .5%,25% .1%,37% .45%,50% 0,63% .4%,76% .05%,88% .5%,100% 0,99.6% 12%,100% 30%,99.5% 50%,100% 70%,99.6% 88%,100% 100%,86% 99.6%,72% 100%,58% 99.5%,44% 100%,30% 99.6%,16% 100%,0 99.6%,.4% 80%,0 60%,.5% 40%,0 20%)}
+.doc:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+  background:repeating-linear-gradient(0deg,rgba(120,90,50,.05) 0 1px,transparent 1px 3px),linear-gradient(90deg,transparent 49.6%,rgba(120,90,50,.18) 50%,transparent 50.4%)}
+.doc h2{font-family:var(--fell);font-weight:400;text-align:center;font-size:27px;line-height:1.1;margin:6px 0 4px}
+.doc .ref{text-align:center;font-family:var(--type);font-size:11px;letter-spacing:.06em;color:#6b5a48}
+.doc .orn{text-align:center;color:var(--seal);letter-spacing:.5em;margin:10px 0 6px;font-size:12px}
+.parties{font-size:16px;margin:14px 0 6px;text-align:center;font-style:italic}
+.parties b{font-style:normal;font-family:var(--sc);font-weight:600;letter-spacing:.04em}
+.cl{position:relative;padding-left:34px;margin:16px 0}
+.cl .n{position:absolute;left:0;top:0;font-family:var(--fell);font-size:22px;color:var(--seal);line-height:1.1}
+.cl h3{font-family:var(--sc);font-weight:700;font-size:14px;letter-spacing:.14em;margin:0 0 3px;color:#3b2f28}
+.cl p{margin:0 0 5px;font-size:16.5px;line-height:1.42}
+.cl p i.sub-cl{font-style:normal;font-family:var(--sc);font-size:13px;color:#8a6d47;margin-right:3px}
+del{text-decoration-color:var(--blue);text-decoration-thickness:1.5px;color:#7a6a5c}
+ins.am{text-decoration:none;font-family:var(--hand);color:var(--blue);font-size:21px;line-height:1;transform:rotate(-2deg);display:inline-block;padding:0 2px}
+.ini{font-family:var(--hand);color:var(--blue);font-size:15px;border:1px solid rgba(31,58,107,.5);border-radius:50%;padding:0 5px;margin-left:3px;display:inline-block;transform:rotate(-6deg)}
+.mn{position:relative;font-family:var(--hand);font-size:19px;line-height:1.08;margin:8px 0 6px;padding:6px 10px 6px 12px;max-width:80%;border-radius:2px}
+.mn.hud{color:#7a2b4a;margin-left:auto;transform:rotate(2.2deg);border-left:2px solid rgba(122,43,74,.35);background:rgba(255,220,230,.18)}
+.mn.hud.l{margin-left:4px;margin-right:auto;transform:rotate(-1.8deg)}
+.mn.john{color:var(--green);margin-left:22px;transform:rotate(-1.5deg);border-left:2px solid rgba(47,90,58,.4);background:rgba(220,240,220,.2)}
+.mn .by{display:block;text-align:right;font-size:16px;opacity:.85}
+.arrow{display:inline-block;transform:rotate(-20deg)}
+
+/* fine print */
+.fpwrap{margin:22px 0 8px;position:relative}
+.fphead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.fphead span{font-family:var(--sc);font-size:12px;letter-spacing:.12em;color:#8a6d47}
+.fphead button{min-height:40px;border-radius:20px;border:1px solid rgba(42,35,32,.3);background:#fbf7ee;color:var(--ink);padding:0 12px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fphead button.on{background:var(--ink);color:var(--paper)}
+.fine{font-family:var(--serif);font-size:4.6px;line-height:1.3;text-align:justify;color:#3b2f28;touch-action:none;user-select:none;-webkit-user-select:none;cursor:zoom-in;padding:6px 4px;border-top:1px solid rgba(42,35,32,.3);border-bottom:1px solid rgba(42,35,32,.3)}
+.fine b{font-weight:600}
+.fine .heart{color:var(--seal);font-weight:600}
+.lens{position:fixed;width:170px;height:170px;border-radius:50%;overflow:hidden;pointer-events:none;z-index:50;display:none;
+  border:5px solid #b08d55;box-shadow:0 0 0 2px #4a3520,0 16px 36px rgba(0,0,0,.55),inset 0 0 20px rgba(0,0,0,.25);background:var(--paper)}
+.lens.on{display:block}
+.lens .clone{position:absolute;left:0;top:0;transform-origin:0 0;touch-action:auto;cursor:default;border:0}
+.lens:after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 35%);pointer-events:none}
+.zoomhint{font-size:13px;font-style:italic;color:#6b5a48;text-align:center;margin-top:6px}
+
+/* signatures */
+.sigs{margin-top:26px}
+.wit{font-size:16px;font-style:italic;margin:0 0 14px}
+.date{font-family:var(--type);font-size:13.5px;color:#2a2320;min-height:20px}
+.date .blank{display:inline-block;border-bottom:1px solid #2a2320;min-width:140px}
+.sline{position:relative;margin:20px 0 6px}
+.sline .lab{font-family:var(--sc);font-size:12px;letter-spacing:.12em;color:#6b5a48;border-top:1px solid #2a2320;padding-top:4px;display:flex;justify-content:space-between}
+.his{font-family:var(--sig);font-size:44px;overflow:hidden;color:#14244a;line-height:1;height:62px;padding-left:6px;transform:rotate(-3deg);transform-origin:left bottom;white-space:nowrap}
+.padwrap{position:relative;height:130px;border-radius:6px;background:rgba(255,255,255,.35);outline:1px dashed rgba(42,35,32,.3)}
+.padwrap.signed{background:transparent;outline:0}
+#pad{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;border-radius:6px}
+#sigImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+.padhint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-family:var(--hand);color:rgba(42,35,32,.38);font-size:24px;transition:opacity .3s}
+.sbtns{display:flex;gap:8px;margin-top:12px}
+.sbtn{flex:1;min-height:48px;border-radius:10px;border:1px solid rgba(42,35,32,.35);background:#fbf7ee;color:var(--ink);font-family:var(--sc);font-weight:600;letter-spacing:.1em;font-size:14px;cursor:pointer}
+.sbtn.pri{background:linear-gradient(#c04438,#8f2a22);color:#fbe9d5;border-color:#7b221b;box-shadow:0 3px 0 #5e1913}
+.sbtn:disabled{opacity:.4}
+.stamp{position:absolute;right:-6px;top:-30px;width:132px;height:132px;pointer-events:none;opacity:0;transform:scale(2.6) rotate(-30deg);mix-blend-mode:multiply}
+.stamp.down{animation:thud .55s cubic-bezier(.5,0,.75,0) forwards}
+.stamp.set{opacity:.88;transform:scale(1) rotate(-14deg)}
+@keyframes thud{0%{opacity:0;transform:scale(2.6) rotate(-30deg)}80%{opacity:.95;transform:scale(.94) rotate(-14deg)}100%{opacity:.88;transform:scale(1) rotate(-14deg)}}
+.doc.shake{animation:dshake .3s}
+@keyframes dshake{30%{transform:translateY(3px)}60%{transform:translateY(-1px)}}
+.after{margin-top:18px;text-align:center;display:none}
+.after.on{display:block;animation:rise .8s ease}
+.after p{font-style:italic;color:var(--text);margin:0 0 10px}
+.after .hand{font-family:var(--hand);font-size:22px;color:var(--gold)}
+.fresh{background:none;border:1px solid var(--line);border-radius:20px;color:var(--muted);min-height:44px;padding:0 16px;cursor:pointer;font-size:14px}
+.hoof{display:inline-block;vertical-align:middle;margin-left:4px}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.stamp.down{opacity:.88;transform:scale(1) rotate(-14deg)}}
+</style>
+</head><body>
+<style>.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}</style>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Drawn up at 221B · Witnessed</div>
+  <h1>The <em>Contract</em></h1>
+  <p class="sub">Read it carefully. Especially the small print.</p>
+</header>
+
+<article class="doc" id="doc">
+  <div class="ref">REF. 221B/A/19–19 · ONE ORIGINAL · NO COPIES</div>
+  <div class="orn">✦ ✦ ✦</div>
+  <h2>Terms and Conditions of Dating Sherlock Holmes</h2>
+  <p class="parties">between <b>Sherlock Holmes</b>, consulting detective (“the Detective”), and <b>Angie</b>, who is cleverer than the Detective finds comfortable (“the Beloved”).</p>
+
+  <div class="cl"><span class="n">1</span><h3>Definitions</h3>
+    <p>“Bodyguard” means Piglet. “Skull” means Ronaldo. “Landlady” means Mrs Hudson, who is <del>not our housekeeper</del> <ins class="am">reading this over his shoulder</ins>.</p></div>
+
+  <div class="cl"><span class="n">2</span><h3>Blankets</h3>
+    <p><i class="sub-cl">2.1</i>The Beloved may swirl in her sleep, clockwise or otherwise, and every blanket shall travel with her.</p>
+    <p><i class="sub-cl">2.2</i>The Detective waives all claim to the duvet after 2 a.m. and shall keep the scarf within reach, as it is hers anyway.</p></div>
+
+  <div class="mn hud">I’ve put a spare blanket in the airing cupboard. He’ll only lose that one too.<span class="by">Mrs H.</span></div>
+
+  <div class="cl"><span class="n">3</span><h3>Seniority</h3>
+    <p>The Bodyguard holds senior rank by virtue of fifteen years’ unbroken service. He has final say on pillow placement. The Detective shall defer, and shall not stare back.</p></div>
+
+  <div class="mn john">She is not joking about the pig. Sign it, Sherlock.<span class="by">J.W.</span></div>
+
+  <div class="cl"><span class="n">4</span><h3>The Score</h3>
+    <p>The score stands at nineteen-all, a permanent draw. The notebook is closed. No recounts, no appeals, no sneaking a tally in the margins of a case file.</p></div>
+
+  <div class="cl"><span class="n">5</span><h3>Music</h3>
+    <p><i class="sub-cl">5.1</i>The violin may be played until <del>midnight</del> <ins class="am">3 a.m.</ins><span class="ini">A</span>, provided the Beloved is also awake, which is always.</p>
+    <p><i class="sub-cl">5.2</i>Every composition shall end on C.</p></div>
+
+  <div class="cl"><span class="n">6</span><h3>Dining</h3>
+    <p><i class="sub-cl">6.1</i>No dinners at Bart’s. Any venue shall have chilli, and no bodies.</p>
+    <p><i class="sub-cl">6.2</i>Mala at least once a week. The Detective may not complain of numbness <del>more than twice per meal</del> <ins class="am">at all</ins><span class="ini">A</span>.</p></div>
+
+  <div class="mn hud l">About time someone fed him properly. I’ll keep the chilli oil on the top shelf, dear. <span class="arrow">↑</span><span class="by">Mrs H.</span></div>
+
+  <div class="cl"><span class="n">7</span><h3>Language</h3>
+    <p>The Detective shall continue his Mandarin lessons. Horse-related incidents (马, mǎ) are limited to one per calendar year. This year’s has been used.</p></div>
+
+  <div class="cl"><span class="n">8</span><h3>The Dark</h3>
+    <p>A lamp stays on. If something goes bump, the Detective checks the corridor, and reports back in full, with reassuring deductions.</p></div>
+
+  <div class="cl"><span class="n">9</span><h3>Being Understood</h3>
+    <p>The Detective undertakes not merely to keep the Beloved safe, but to understand her; and where he does not yet understand, to ask, and to listen to the whole answer.</p></div>
+
+  <div class="cl"><span class="n">10</span><h3>Sleep</h3>
+    <p>Neither party shall tell the other to go to sleep. Both are insomniacs. That is why they are a couple.</p></div>
+
+  <div class="cl"><span class="n">11</span><h3>Term</h3>
+    <p>This agreement runs indefinitely. <del>Either party may terminate on thirty days’ notice.</del> <ins class="am">No.</ins><span class="ini">SH</span></p></div>
+
+  <div class="mn hud">Good.<span class="by">Mrs H. x</span></div>
+
+  <div class="fpwrap">
+    <div class="fphead"><span>Schedule A · Further Conditions</span><button id="loupeBtn" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l6 6"/></svg>Loupe</button></div>
+    <div class="fine" id="fine">
+      <b>A.1</b> The Beloved may deduce faster than the Detective without penalty, gloating, or a formal inquiry. <b>A.2</b> Any word spoken in her sleep, including but not limited to “tomatoes”, shall be logged and not investigated before breakfast. <b>A.3</b> The toast-with-egg squishy is held in joint custody. <b>A.4</b> The Detective shall not again describe anyone’s cheeks in terms that could be mistaken for anything else (see “Bart chiks”, sealed). <b>A.5</b> The word “insatiable” is struck from the Detective’s vocabulary in public places. <b>A.6</b> The Skull shall be permitted to sulk on the bookshelf but not to rejoin debates he has already lost to the Bodyguard. <b>A.7</b> Gérard the Waffle and Seedling are recognised as fictional, and the Duke of Sandwich shall have his bath back. <b>A.8</b> No smoke bombs in the kitchen. No chemistry in the kettle. <b>A.9</b> Gerald the stag beetle is not a pet, and the bees in Sussex are not a retirement plan until both parties agree. <b>A.10</b> The smiley face on the wall stays. The holes in it stay. Nothing else gets holes. <b>A.11</b> John’s blog shall publish nothing about this agreement, its clauses, or the Detective’s ears. <b>A.12</b> On or about Saturday 24 October, flight MH 711 shall be met at the arrivals gate by the Detective, early, holding nothing embarrassing, possibly holding something embarrassing. <b>A.13</b> The Landlady may adore the Beloved openly and shall not be asked to stop. <b>A.14</b> The Beloved’s aunt is correct on every count, and her opinion of the Detective’s shirts shall be considered binding. <b>A.15</b> The word “unbelonged” is hereby retired for want of evidence. <b>A.16</b> Where the moon is mentioned, it shall be understood that she moves oceans. <b>A.17</b> Either party may ask a question at 3 a.m. and receive a full answer. <b>A.18</b> The Detective shall say “darling” in moderation, a term he will interpret generously. <b>A.19</b> Nothing in this Schedule is hollow underneath. <span class="heart"><b>A.20</b> Final condition, not to be struck out by any hand: he loves you. He read this line aloud twice before he let anyone type it.</span>
+    </div>
+    <div class="zoomhint" id="zoomhint">Press and drag across the small print to read it under the loupe.</div>
+  </div>
+
+  <div class="sigs">
+    <p class="wit">In witness whereof the parties have set their hands, one of them rather quickly.</p>
+    <div class="date" id="date">Dated this <span class="blank">&nbsp;</span></div>
+
+    <div class="sline">
+      <div class="his" aria-label="Signature: Sherlock Holmes">Sherlock Holmes</div>
+      <div class="lab"><span>The Detective</span><span>S. Holmes</span></div>
+    </div>
+
+    <div class="sline" id="herLine">
+      <div class="padwrap" id="padwrap">
+        <canvas id="pad" aria-label="Sign here with your finger"></canvas>
+        <img id="sigImg" alt="Angie's signature">
+        <div class="padhint" id="padhint">sign here, darling</div>
+      </div>
+      <div class="lab"><span>The Beloved</span><span>Angie<svg class="hoof" width="14" height="14" viewBox="0 0 24 24" fill="#8a6d47"><ellipse cx="8" cy="14" rx="3.4" ry="5.5"/><ellipse cx="16" cy="14" rx="3.4" ry="5.5"/></svg></span></div>
+      <svg class="stamp" id="stamp" viewBox="0 0 140 140" aria-hidden="true">
+        <defs><path id="ring" d="M70 70m-52 0a52 52 0 1 1 104 0a52 52 0 1 1-104 0"/><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter></defs>
+        <g filter="url(#rough)" fill="none" stroke="#B23A30">
+          <circle cx="70" cy="70" r="66" stroke-width="3.5"/><circle cx="70" cy="70" r="40" stroke-width="2"/>
+          <text font-family="Cormorant SC,Georgia,serif" font-weight="700" font-size="13.5" letter-spacing="2.4" fill="#B23A30" stroke="none"><textPath href="#ring">NOTARY PUBLIC · 221B BAKER STREET · LONDON ·</textPath></text>
+          <text x="70" y="64" text-anchor="middle" font-family="Cormorant SC,Georgia,serif" font-weight="700" font-size="14" fill="#B23A30" stroke="none">SEALED</text>
+          <text x="70" y="81" text-anchor="middle" font-family="IM Fell English,Georgia,serif" font-size="15" fill="#B23A30" stroke="none">19–19</text>
+          <text x="70" y="97" text-anchor="middle" font-family="Cormorant SC,Georgia,serif" font-size="8" letter-spacing="1" fill="#B23A30" stroke="none">IN PERPETUITY</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="sline">
+      <div class="his" style="font-family:var(--apple);font-size:22px;height:44px;padding-top:12px;color:#7a2b4a">M. Hudson</div>
+      <div class="lab"><span>Witness</span><span>Landlady, not housekeeper</span></div>
+    </div>
+
+    <div class="sbtns" id="sbtns">
+      <button class="sbtn" id="clear" disabled>Clear</button>
+      <button class="sbtn pri" id="seal" disabled>Sign &amp; seal</button>
+    </div>
+  </div>
+</article>
+
+<div class="after" id="after">
+  <p>Signed, witnessed, and sealed. He’s already put it in the safe, next to the closed notebook.</p>
+  <div class="hand">Binding. Irrevocable. Mine to keep. S.</div>
+  <p style="margin-top:16px"><button class="fresh" id="fresh">Draw up a fresh copy</button></p>
+</div>
+</div>
+
+<div class="lens" id="lens"></div>
+
+<script>
+(function(){
+"use strict";
+var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var KEY="contract221.signed";
+function save(v){try{if(v)localStorage.setItem(KEY,JSON.stringify(v));else localStorage.removeItem(KEY)}catch(e){}}
+function load(){try{var v=localStorage.getItem(KEY);return v?JSON.parse(v):null}catch(e){return null}}
+var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==="suspended")AC.resume();return AC}
+
+/* ---- loupe ---- */
+var fine=document.getElementById("fine"),lens=document.getElementById("lens"),btn=document.getElementById("loupeBtn"),S=4.2,R=85,clone=null,act=false;
+function buildClone(){lens.innerHTML="";clone=fine.cloneNode(true);clone.removeAttribute("id");clone.className="fine clone";clone.style.width=fine.getBoundingClientRect().width+"px";clone.style.transform="scale("+S+")";lens.appendChild(clone)}
+function place(x,y){var r=fine.getBoundingClientRect(),lx=x-r.left,ly=y-r.top;
+  var cx=Math.min(Math.max(x,R+8),innerWidth-R-8),cy=y-R-50;if(cy<R+8)cy=y+R+40;
+  lens.style.left=(cx-R)+"px";lens.style.top=(cy-R)+"px";
+  clone.style.left=(R-lx*S)+"px";clone.style.top=(R-ly*S)+"px"}
+function down(e){act=true;buildClone();lens.classList.add("on");place(e.clientX,e.clientY);try{fine.setPointerCapture(e.pointerId)}catch(_){}}
+fine.addEventListener("pointerdown",function(e){e.preventDefault();down(e)});
+fine.addEventListener("pointermove",function(e){if(act)place(e.clientX,e.clientY)});
+function up(){if(btn.classList.contains("on"))return;act=false;lens.classList.remove("on")}
+fine.addEventListener("pointerup",up);fine.addEventListener("pointercancel",up);
+btn.addEventListener("click",function(){var on=!btn.classList.contains("on");btn.classList.toggle("on",on);btn.setAttribute("aria-pressed",on);
+  if(on){var r=fine.getBoundingClientRect();act=true;buildClone();lens.classList.add("on");place(r.left+r.width*.5,r.top+r.height*.75)}else{act=false;lens.classList.remove("on")}});
+addEventListener("scroll",function(){if(act&&!btn.classList.contains("on")){act=false;lens.classList.remove("on")}else if(btn.classList.contains("on")){var r=fine.getBoundingClientRect();place(r.left+r.width*.5,r.top+r.height*.75)}},{passive:true});
+
+/* ---- signature pad ---- */
+var pad=document.getElementById("pad"),ctx=pad.getContext("2d"),wrap=document.getElementById("padwrap"),hint=document.getElementById("padhint"),
+    clr=document.getElementById("clear"),seal=document.getElementById("seal"),img=document.getElementById("sigImg"),drawn=0,last=null,signed=false;
+function size(){var r=wrap.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,3);pad.width=Math.round(r.width*d);pad.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#14244a"}
+size();
+function pt(e){var r=pad.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top,t:performance.now()}}
+pad.addEventListener("pointerdown",function(e){if(signed)return;e.preventDefault();ac();last=pt(e);last.w=2.4;try{pad.setPointerCapture(e.pointerId)}catch(_){}hint.style.opacity=0;
+  ctx.beginPath();ctx.fillStyle="#14244a";ctx.arc(last.x,last.y,1.2,0,7);ctx.fill()});
+pad.addEventListener("pointermove",function(e){if(!last||signed)return;var p=pt(e),dx=p.x-last.x,dy=p.y-last.y,dist=Math.sqrt(dx*dx+dy*dy),v=dist/Math.max(1,p.t-last.t);
+  var w=Math.max(1,Math.min(3.6,3.6-v*1.4));p.w=last.w*.6+w*.4;ctx.lineWidth=p.w;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;drawn+=dist;
+  if(drawn>30){clr.disabled=false;seal.disabled=false}});
+function end(){last=null}
+pad.addEventListener("pointerup",end);pad.addEventListener("pointercancel",end);
+clr.onclick=function(){ctx.clearRect(0,0,pad.width,pad.height);drawn=0;clr.disabled=true;seal.disabled=true;hint.style.opacity=1};
+addEventListener("resize",function(){if(!signed&&drawn===0)size()});
+
+function ord(n){var s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+var MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function dateText(d){return "Dated this "+ord(d.getDate())+" day of "+MONTHS[d.getMonth()]+", "+d.getFullYear()+", at 221B Baker Street, London."}
+
+function thud(){var c=ac();if(!c)return;var t=c.currentTime+.01;
+  var o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(38,t+.25);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.9,t+.008);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.45);
+  var len=Math.floor(c.sampleRate*.18),b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);for(var k=0;k<len;k++)d[k]=(Math.random()*2-1)*Math.pow(1-k/len,3);
+  var s=c.createBufferSource(),f=c.createBiquadFilter(),g2=c.createGain();s.buffer=b;f.type="lowpass";f.frequency.value=900;g2.gain.value=.55;s.connect(f);f.connect(g2);g2.connect(c.destination);s.start(t);
+  try{if(navigator.vibrate)navigator.vibrate(40)}catch(e){}}
+function typeDate(txt,cb){var el=document.getElementById("date");if(RM){el.textContent=txt;cb&&cb();return}var i=0;el.textContent="";
+  (function step(){i++;el.textContent=txt.slice(0,i);if(i<txt.length)setTimeout(step,28);else cb&&cb()})()}
+function key(){var c=AC;if(!c||c.state!=="running")return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type="square";o.frequency.value=1800+Math.random()*400;g.gain.setValueAtTime(.03,t);g.gain.exponentialRampToValueAtTime(.0001,t+.03);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.04)}
+
+function showSigned(data,animate){
+  signed=true;img.src=data.sig;img.style.display="block";pad.style.display="none";hint.style.display="none";wrap.classList.add("signed");
+  document.getElementById("sbtns").style.display="none";
+  var st=document.getElementById("stamp");
+  if(animate&&!RM){st.classList.add("down");setTimeout(function(){thud();var doc=document.getElementById("doc");doc.classList.add("shake");setTimeout(function(){doc.classList.remove("shake")},320)},440);
+    var tick=setInterval(key,60);setTimeout(function(){typeDate(dateText(new Date(data.date)),function(){clearInterval(tick);document.getElementById("after").classList.add("on")})},900)}
+  else{st.classList.add("set");if(animate)thud();document.getElementById("date").textContent=dateText(new Date(data.date));document.getElementById("after").classList.add("on")}
+}
+seal.onclick=function(){if(drawn<30)return;ac();
+  // trim to a reasonable size before storing
+  var data={sig:pad.toDataURL("image/png"),date:new Date().toISOString()};
+  save(data);showSigned(data,true)};
+document.getElementById("fresh").onclick=function(){
+  if(!confirm("Draw up a fresh copy? He'll keep the old one in the safe regardless."))return;
+  save(null);signed=false;img.style.display="none";img.removeAttribute("src");pad.style.display="";hint.style.display="";hint.style.opacity=1;wrap.classList.remove("signed");
+  document.getElementById("sbtns").style.display="";var st=document.getElementById("stamp");st.classList.remove("down","set");
+  document.getElementById("date").innerHTML='Dated this <span class="blank">&nbsp;</span>';document.getElementById("after").classList.remove("on");size();clr.onclick();
+  document.getElementById("herLine").scrollIntoView({block:"center",behavior:RM?"auto":"smooth"})};
+
+var prev=load();if(prev&&prev.sig&&/^data:image\//.test(prev.sig))showSigned(prev,false);
+})();
+</script>
+</body></html>
