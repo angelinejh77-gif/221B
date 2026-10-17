@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}
+.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.back221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}</style>
+</head><body>
+<title>The Sky at 4:27</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spectral:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one full-bleed night sky; a title plate floats top-left, a control deck rests at the bottom, notes slide up like a folded letter. */
+:root{
+  --night:#060914;
+  --deep:#0c1224;
+  --panel:rgba(10,15,30,.86);
+  --line:rgba(190,200,225,.16);
+  --starlight:#f1e9d6;
+  --mist:#9aa5bf;
+  --lamp:#e9b46c;      /* sodium streetlamp amber: his names */
+  --lamp-soft:rgba(233,180,108,.16);
+  --moon:#c4cde0;
+  --f-display:"Instrument Serif","Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --f-body:"Spectral",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%;}
+body{background:var(--night);color:var(--starlight);font-family:var(--f-body);overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-tap-highlight-color:transparent;}
+#sky{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
+#sky:active{cursor:grabbing}
+button,input{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+
+.plate{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none;}
+.plate h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,8.5vw,46px);line-height:1;margin:0;letter-spacing:.005em;text-shadow:0 2px 18px rgba(0,0,0,.6);text-wrap:balance}
+.plate h1 em{font-style:italic;color:var(--lamp)}
+.plate .sub{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);margin-top:6px}
+.iconbtn{pointer-events:auto;min-width:44px;height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:var(--panel);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-family:var(--f-display);font-style:italic;font-size:18px;color:var(--lamp);cursor:pointer;flex:none}
+
+.deck{position:fixed;left:0;right:0;bottom:0;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(to top,rgba(6,9,20,.95) 55%,rgba(6,9,20,0));display:grid;gap:10px;}
+.timerow{display:flex;align-items:center;gap:12px}
+.clock{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:22px;font-weight:500;min-width:66px}
+.clock small{display:block;font-size:10px;letter-spacing:.1em;color:var(--mist);font-weight:400}
+.slider{flex:1;min-width:0;display:grid;gap:2px}
+input[type=range]{width:100%;height:44px;background:transparent;-webkit-appearance:none;appearance:none;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,#1a2244 0%,#2a3566 55%,#7a5a55 85%,#e9b46c 100%)}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:linear-gradient(90deg,#1a2244 0%,#2a3566 55%,#7a5a55 85%,#e9b46c 100%)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--starlight);border:3px solid var(--night);margin-top:-11px;box-shadow:0 0 0 1px var(--lamp),0 0 14px rgba(241,233,214,.5)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--starlight);border:3px solid var(--night);box-shadow:0 0 0 1px var(--lamp)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:10px;color:var(--mist);letter-spacing:.05em;margin-top:-8px}
+.ticks b{color:var(--lamp);font-weight:500}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:rgba(16,22,42,.8);cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:8px}
+.chip[aria-pressed=true]{border-color:rgba(233,180,108,.55);background:var(--lamp-soft);color:var(--starlight)}
+.chip[aria-pressed=true]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lamp)}
+.chip.home{font-family:var(--f-mono);font-size:13px;color:var(--lamp)}
+.chip.home[disabled]{opacity:.45;cursor:default}
+
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:5;max-height:78%;overflow:auto;
+  padding:8px max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 20px) max(18px,env(safe-area-inset-left,0px));
+  background:linear-gradient(180deg,#121a33,#0a0f20);border-top:1px solid rgba(233,180,108,.3);border-radius:18px 18px 0 0;
+  box-shadow:0 -20px 50px rgba(0,0,0,.55);transform:translateY(0);transition:transform .28s ease;}
+.sheet.closed{transform:translateY(110%);visibility:hidden;transition:transform .28s ease,visibility 0s .28s}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 10px}
+.sheet .x{position:absolute;top:8px;right:max(10px,env(safe-area-inset-right,0px));width:44px;height:44px;border:0;background:none;color:var(--mist);font-size:26px;cursor:pointer;line-height:1}
+.inner{max-width:560px;margin:0 auto;display:grid;gap:12px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.hisname{font-family:var(--f-display);font-style:italic;font-size:34px;line-height:1.05;color:var(--lamp);margin:0;text-wrap:balance;padding-right:36px}
+.realname{font-family:var(--f-display);font-size:30px;line-height:1.05;margin:0;padding-right:36px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-mono);font-size:12px;color:var(--mist);font-variant-numeric:tabular-nums}
+.meta span b{color:var(--starlight);font-weight:500}
+.fact{font-size:15px;line-height:1.55;margin:0;color:#d9d6cf;max-width:62ch}
+.note{margin:0;padding:14px 16px;border-left:2px solid var(--lamp);background:var(--lamp-soft);border-radius:0 10px 10px 0;font-style:italic;font-size:16px;line-height:1.55;max-width:62ch}
+.note .sig{display:block;font-style:normal;font-family:var(--f-display);font-size:18px;color:var(--lamp);margin-top:6px}
+.nameform{display:flex;gap:8px;flex-wrap:wrap}
+.nameform input{flex:1;min-width:0;min-height:46px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);padding:0 14px;font-size:16px}
+.nameform button{min-height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--lamp);color:#1a1206;font-weight:500;cursor:pointer}
+.reply{margin:0;font-style:italic;color:var(--lamp);font-size:15px;line-height:1.5}
+.yourname{font-family:var(--f-display);font-size:26px;color:var(--moon);margin:0}
+.textbtn{background:none;border:0;color:var(--mist);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;padding:0;justify-self:start;font-size:14px}
+
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line)}
+.tabs button{min-height:44px;padding:0 14px;border:0;background:none;color:var(--mist);cursor:pointer;border-bottom:2px solid transparent;font-size:15px}
+.tabs button[aria-selected=true]{color:var(--starlight);border-bottom-color:var(--lamp)}
+.list{list-style:none;margin:0;padding:0;display:grid}
+.list li{border-bottom:1px solid var(--line)}
+.list button.row{width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:12px 2px;min-height:56px;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:baseline}
+.row .a{font-family:var(--f-display);font-style:italic;font-size:21px;color:var(--lamp)}
+.row .b{font-size:13px;color:var(--mist);grid-column:1}
+.row .c{font-family:var(--f-mono);font-size:11px;color:var(--mist);grid-row:1;grid-column:2}
+.row.mine .a{color:var(--moon);font-style:normal}
+.empty{color:var(--mist);font-size:15px;line-height:1.5;padding:14px 0;margin:0}
+.score{font-family:var(--f-mono);font-size:12px;color:var(--mist);letter-spacing:.05em;padding-top:4px}
+.score b{color:var(--lamp)}
+.hint{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 96px);font-size:13px;color:var(--mist);background:var(--panel);border:1px solid var(--line);padding:8px 14px;border-radius:20px;pointer-events:none;transition:opacity .6s;white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
+.hint.gone{opacity:0}
+@media (prefers-reduced-motion:reduce){.sheet,.sheet.closed{transition:none}.hint{transition:none}}
+</style>
+
+<canvas id="sky" aria-label="Star map of the sky over London at 04:27 on 17 October 2026"></canvas>
+
+<header class="plate">
+  <div>
+    <h1>The Sky at <em>4:27</em></h1>
+    <div class="sub">London 51.52°N · Sat 17 Oct 2026</div>
+  </div>
+  <button class="iconbtn" id="openList" aria-label="His renamed stars">his stars</button>
+</header>
+
+<div class="hint" id="hint">Drag to look around · tap a star</div>
+
+<section class="deck" aria-label="Controls">
+  <div class="timerow">
+    <div class="clock"><span id="clock">04:27</span><small>BST</small></div>
+    <div class="slider">
+      <input type="range" id="time" min="0" max="180" step="1" value="27" aria-label="Time between 04:00 and 07:00">
+      <div class="ticks"><span>04:00</span><b>04:27</b><span>05:00</span><span>06:00</span><span>07:00</span></div>
+    </div>
+  </div>
+  <div class="btnrow">
+    <button class="chip home" id="home" disabled>Back to 04:27</button>
+    <button class="chip" id="tLines" aria-pressed="true">Lines</button>
+    <button class="chip" id="tNames" aria-pressed="true">His names</button>
+  </div>
+</section>
+
+<aside class="sheet closed" id="card" aria-live="polite">
+  <div class="grab"></div>
+  <button class="x" data-close aria-label="Close">×</button>
+  <div class="inner" id="cardBody"></div>
+</aside>
+
+<aside class="sheet closed" id="drawer">
+  <div class="grab"></div>
+  <button class="x" data-close aria-label="Close">×</button>
+  <div class="inner">
+    <div class="eyebrow">The index, as amended by S.H.</div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tabHis" aria-selected="true">His names</button>
+      <button role="tab" id="tabMine" aria-selected="false">Yours</button>
+    </div>
+    <ul class="list" id="listHis"></ul>
+    <ul class="list" id="listMine" hidden></ul>
+    <div class="score">Score: <b>10–0</b> to you. Eleven, if you solve the next one.</div>
+  </div>
+</aside>
+
+<script>
+(function(){
+"use strict";
+var R=Math.PI/180, LAT=51.52, LON=-0.16;
+var BASE=Date.UTC(2026,9,17,3,0); // 04:00 BST
+function rev(x){return ((x%360)+360)%360;}
+function jd(ms){return ms/86400000+2440587.5;}
+function lst(ms){var d=jd(ms)-2451545.0;return rev(280.46061837+360.98564736629*d+LON)/15;}
+
+/* ---------- Sun, Moon, planets (low-precision Schlyter elements) ---------- */
+function kepler(M,e){var E=M+e/R*Math.sin(M*R)*(1+e*Math.cos(M*R));for(var k=0;k<6;k++)E=E-(E-e/R*Math.sin(E*R)-M)/(1-e*Math.cos(E*R));return E;}
+function eclToEq(l,b,d){var ecl=(23.4393-3.563e-7*d)*R,x=Math.cos(b*R)*Math.cos(l*R),y=Math.cos(b*R)*Math.sin(l*R),z=Math.sin(b*R);
+  var ye=y*Math.cos(ecl)-z*Math.sin(ecl),ze=y*Math.sin(ecl)+z*Math.cos(ecl);return {ra:rev(Math.atan2(ye,x)/R)/15,dec:Math.atan2(ze,Math.hypot(x,ye))/R};}
+function sunState(d){var ws=282.9404+4.70935e-5*d,es=0.016709-1.151e-9*d,Ms=rev(356.0470+0.9856002585*d),E=kepler(Ms,es);
+  var xv=Math.cos(E*R)-es,yv=Math.sqrt(1-es*es)*Math.sin(E*R);return {lon:rev(Math.atan2(yv,xv)/R+ws),r:Math.hypot(xv,yv),M:Ms,w:ws};}
+function sunMoon(ms){var d=jd(ms)-2451543.5,S=sunState(d);
+  var N=rev(125.1228-0.0529538083*d),i=5.1454,w=rev(318.0634+0.1643573223*d),a=60.2666,e=0.0549,M=rev(115.3654+13.0649929509*d),E=kepler(M,e);
+  var xv=a*(Math.cos(E*R)-e),yv=a*Math.sqrt(1-e*e)*Math.sin(E*R),v=Math.atan2(yv,xv)/R,r=Math.hypot(xv,yv);
+  var xh=r*(Math.cos(N*R)*Math.cos((v+w)*R)-Math.sin(N*R)*Math.sin((v+w)*R)*Math.cos(i*R));
+  var yh=r*(Math.sin(N*R)*Math.cos((v+w)*R)+Math.cos(N*R)*Math.sin((v+w)*R)*Math.cos(i*R));
+  var zh=r*Math.sin((v+w)*R)*Math.sin(i*R);
+  var lon=Math.atan2(yh,xh)/R,lat=Math.atan2(zh,Math.hypot(xh,yh))/R;
+  var Ms=S.M,Lm=rev(M+w+N),D=rev(Lm-rev(Ms+S.w)),F=rev(Lm-N),s=function(x){return Math.sin(x*R);};
+  lon+=-1.274*s(M-2*D)+0.658*s(2*D)-0.186*s(Ms)-0.059*s(2*M-2*D)-0.057*s(M-2*D+Ms)+0.053*s(M+2*D)+0.046*s(2*D-Ms)+0.041*s(M-Ms)-0.035*s(D)-0.031*s(M+Ms)-0.015*s(2*F-2*D)+0.011*s(M-4*D);
+  lat+=-0.173*s(F-2*D)-0.055*s(M-F-2*D)-0.046*s(M+F-2*D)+0.033*s(F+2*D)+0.017*s(2*M+F);
+  var elong=Math.acos(Math.cos(lat*R)*Math.cos((lon-S.lon)*R))/R;
+  return {sun:eclToEq(S.lon,0,d),moon:eclToEq(lon,lat,d),moonKm:r*6371,lit:(1-Math.cos(elong*R))/2};}
+var PL={Mars:[49.5574,2.11081E-5,1.8497,-1.78E-8,286.5016,2.92961E-5,1.523688,0.093405,2.516E-9,18.6021,0.5240207766],
+ Jupiter:[100.4542,2.76854E-5,1.3030,-1.557E-7,273.8777,1.64505E-5,5.20256,0.048498,4.469E-9,19.8950,0.0830853001],
+ Saturn:[113.6634,2.38980E-5,2.4886,-1.081E-7,339.3939,2.97661E-5,9.55475,0.055546,-9.499E-9,316.9670,0.0334442282],
+ Venus:[76.6799,2.46590E-5,3.3946,2.75E-8,54.8910,1.38374E-5,0.723330,0.006773,-1.302E-9,48.0052,1.6021302244]};
+function planet(name,ms){var d=jd(ms)-2451543.5,p=PL[name],N=p[0]+p[1]*d,i=p[2]+p[3]*d,w=p[4]+p[5]*d,a=p[6],e=p[7]+p[8]*d,M=rev(p[9]+p[10]*d),E=kepler(M,e);
+  var xv=a*(Math.cos(E*R)-e),yv=a*Math.sqrt(1-e*e)*Math.sin(E*R),v=Math.atan2(yv,xv)/R,r=Math.hypot(xv,yv);
+  var xh=r*(Math.cos(N*R)*Math.cos((v+w)*R)-Math.sin(N*R)*Math.sin((v+w)*R)*Math.cos(i*R));
+  var yh=r*(Math.sin(N*R)*Math.cos((v+w)*R)+Math.cos(N*R)*Math.sin((v+w)*R)*Math.cos(i*R));
+  var zh=r*Math.sin((v+w)*R)*Math.sin(i*R),S=sunState(d),ls=S.lon*R;
+  var xg=xh+S.r*Math.cos(ls),yg=yh+S.r*Math.sin(ls);
+  var q=eclToEq(Math.atan2(yg,xg)/R,Math.atan2(zh,Math.hypot(xg,yg))/R,d);q.au=Math.hypot(xg,yg,zh);return q;}
+function altaz(ra,dec,L){var H=(L-ra)*15*R,de=dec*R,la=LAT*R;
+  var alt=Math.asin(Math.sin(de)*Math.sin(la)+Math.cos(de)*Math.cos(la)*Math.cos(H));
+  var az=Math.atan2(-Math.cos(de)*Math.sin(H),Math.sin(de)*Math.cos(la)-Math.cos(de)*Math.sin(la)*Math.cos(H));
+  return {alt:alt/R,az:rev(az/R)};}
+
+/* ---------- Catalogue: id, name, RA (h), Dec (deg), mag, constellation, colour ---------- */
+var C={Ori:"Orion",Tau:"Taurus",Gem:"Gemini",Aur:"Auriga",CMa:"Canis Major",CMi:"Canis Minor",Lep:"Lepus",Eri:"Eridanus",UMa:"Ursa Major",UMi:"Ursa Minor",Cas:"Cassiopeia",Per:"Perseus",Leo:"Leo",Cnc:"Cancer",And:"Andromeda",Peg:"Pegasus",Ari:"Aries",Tri:"Triangulum",Cet:"Cetus",PsA:"Piscis Austrinus",Cyg:"Cygnus",Lyr:"Lyra",Aql:"Aquila",Dra:"Draco",Cep:"Cepheus",Boo:"Boötes",CrB:"Corona Borealis",Vir:"Virgo",Her:"Hercules",Hya:"Hydra",Pup:"Puppis",Col:"Columba",Lyn:"Lynx",Oph:"Ophiuchus",Sco:"Scorpius",Psc:"Pisces"};
+var RAW=[
+["bet","Betelgeuse",5.919,7.407,0.45,"Ori","r"],["rig","Rigel",5.242,-8.202,0.18,"Ori","b"],["bel","Bellatrix",5.419,6.350,1.64,"Ori","b"],["min","Mintaka",5.533,-0.299,2.23,"Ori","b"],["aln","Alnilam",5.604,-1.202,1.69,"Ori","b"],["alt","Alnitak",5.679,-1.943,1.77,"Ori","b"],["sai","Saiph",5.796,-9.670,2.07,"Ori","b"],["mei","Meissa",5.585,9.934,3.39,"Ori","b"],["hat","Hatysa",5.590,-5.910,2.77,"Ori","b"],["pi3o","Tabit (π³ Ori)",4.830,6.961,3.19,"Ori","w"],["pi4o","π⁴ Orionis",4.853,5.605,3.69,"Ori","b"],["pi5o","π⁵ Orionis",4.904,2.441,3.72,"Ori","b"],["pi2o","π² Orionis",4.844,8.900,4.36,"Ori","w"],["muo","μ Orionis",6.040,9.648,4.12,"Ori","w"],["xio","ξ Orionis",6.199,14.209,4.48,"Ori","b"],["nuo","ν Orionis",6.126,14.768,4.42,"Ori","b"],["chio","χ¹ Orionis",5.906,20.276,4.39,"Ori","y"],["etao","η Orionis",5.408,-2.397,3.36,"Ori","b"],["tauo","τ Orionis",5.293,-6.845,3.60,"Ori","b"],
+["ald","Aldebaran",4.599,16.509,0.87,"Tau","o"],["eln","Elnath",5.438,28.608,1.65,"Tau","b"],["zta","Tianguan (ζ Tau)",5.627,21.143,3.00,"Tau","b"],["alc","Alcyone",3.791,24.105,2.87,"Tau","b"],["atl","Atlas",3.819,24.053,3.62,"Tau","b"],["ele","Electra",3.749,24.113,3.70,"Tau","b"],["mai","Maia",3.763,24.368,3.87,"Tau","b"],["mer","Merope",3.772,23.948,4.18,"Tau","b"],["tay","Taygeta",3.754,24.467,4.30,"Tau","b"],["ple","Pleione",3.819,24.137,5.05,"Tau","b"],["th2t","θ² Tauri",4.478,15.871,3.40,"Tau","w"],["gamt","Prima Hyadum",4.330,15.628,3.65,"Tau","o"],["delt","Secunda Hyadum",4.382,17.543,3.76,"Tau","o"],["epst","Ain",4.477,19.180,3.53,"Tau","o"],["lamt","λ Tauri",4.011,12.490,3.47,"Tau","b"],["omit","ο Tauri",3.414,9.029,3.60,"Tau","y"],["xit","ξ Tauri",3.452,9.733,3.73,"Tau","b"],
+["pol","Pollux",7.755,28.026,1.14,"Gem","o"],["cas","Castor",7.577,31.888,1.58,"Gem","w"],["alh","Alhena",6.629,16.399,1.93,"Gem","w"],["tej","Tejat",6.383,22.514,2.87,"Gem","r"],["pro","Propus",6.248,22.507,3.30,"Gem","r"],["meb","Mebsuta",6.732,25.131,2.98,"Gem","y"],["was","Wasat",7.335,21.982,3.53,"Gem","w"],["mek","Mekbuda",7.068,20.570,3.79,"Gem","y"],["kapg","κ Geminorum",7.740,24.398,3.57,"Gem","y"],["taug","τ Geminorum",7.186,30.245,4.41,"Gem","o"],["xig","Alzirr",6.755,12.896,3.35,"Gem","w"],["lamg","λ Geminorum",7.301,16.540,3.58,"Gem","w"],["iotg","ι Geminorum",7.429,27.798,3.78,"Gem","o"],["nug","ν Geminorum",6.483,20.212,4.15,"Gem","b"],["thg","θ Geminorum",6.880,33.961,3.60,"Gem","w"],["upsg","υ Geminorum",7.598,26.896,4.06,"Gem","r"],
+["cap","Capella",5.278,45.998,0.08,"Aur","y"],["mka","Menkalinan",5.992,44.948,1.90,"Aur","w"],["mah","Mahasim",5.995,37.213,2.62,"Aur","w"],["has","Hassaleh",4.950,33.166,2.69,"Aur","o"],["alm","Almaaz",5.032,43.823,2.99,"Aur","w"],["hae","Saclateni (ζ Aur)",5.041,41.076,3.75,"Aur","o"],["etaa","Haedus (η Aur)",5.109,41.234,3.17,"Aur","b"],["dela","δ Aurigae",5.992,54.285,3.72,"Aur","o"],
+["sir","Sirius",6.752,-16.716,-1.46,"CMa","w"],["adh","Adhara",6.977,-28.972,1.50,"CMa","b"],["wez","Wezen",7.140,-26.393,1.83,"CMa","y"],["mir","Mirzam",6.378,-17.956,1.98,"CMa","b"],["alu","Aludra",7.402,-29.303,2.45,"CMa","b"],["fur","Furud",6.338,-30.063,3.02,"CMa","b"],["mul","Muliphein",7.062,-15.633,4.12,"CMa","b"],["o2c","ο² Canis Majoris",7.050,-23.833,3.02,"CMa","b"],["sigc","Unurgunite (σ CMa)",7.028,-27.935,3.47,"CMa","r"],["o1c","ο¹ Canis Majoris",6.902,-24.184,3.87,"CMa","o"],["thc","θ Canis Majoris",6.903,-12.039,4.07,"CMa","o"],["iotc","ι Canis Majoris",6.936,-17.054,4.37,"CMa","b"],["nu2c","ν² Canis Majoris",6.611,-19.256,3.95,"CMa","o"],
+["prc","Procyon",7.655,5.225,0.34,"CMi","w"],["gom","Gomeisa",7.453,8.289,2.89,"CMi","b"],
+["arn","Arneb",5.546,-17.822,2.58,"Lep","w"],["nih","Nihal",5.471,-20.759,2.84,"Lep","y"],["epsl","ε Leporis",5.091,-22.371,3.19,"Lep","o"],["mul2","μ Leporis",5.216,-16.206,3.31,"Lep","b"],["dell","δ Leporis",5.940,-20.879,3.81,"Lep","o"],["gaml","γ Leporis",5.741,-22.448,3.60,"Lep","y"],["etal","η Leporis",5.940,-14.168,3.71,"Lep","w"],["ztl","ζ Leporis",5.783,-14.822,3.55,"Lep","w"],
+["cur","Cursa",5.131,-5.086,2.79,"Eri","w"],["zau","Zaurak",3.967,-13.509,2.95,"Eri","r"],["ran","Rana",3.721,-9.763,3.54,"Eri","o"],["rne","Ran (ε Eri)",3.549,-9.458,3.73,"Eri","o"],["ach","Achernar",1.629,-57.237,0.46,"Eri","b"],
+["dub","Dubhe",11.062,61.751,1.79,"UMa","o"],["mrk","Merak",11.031,56.382,2.37,"UMa","w"],["phe","Phecda",11.897,53.695,2.44,"UMa","w"],["meg","Megrez",12.257,57.033,3.31,"UMa","w"],["ali","Alioth",12.900,55.960,1.77,"UMa","w"],["miz","Mizar",13.399,54.925,2.27,"UMa","w"],["alk","Alkaid",13.792,49.313,1.86,"UMa","b"],["tal","Talitha",8.987,48.042,3.14,"UMa","w"],["kapu","Alkaphrah (κ UMa)",9.061,47.157,3.60,"UMa","w"],["thu","θ Ursae Majoris",9.548,51.678,3.17,"UMa","y"],["mus","Muscida",8.504,60.718,3.36,"UMa","y"],["tab","Tania Borealis",10.285,42.914,3.45,"UMa","w"],["taa","Tania Australis",10.372,41.499,3.05,"UMa","r"],["alb","Alula Borealis",11.308,33.094,3.48,"UMa","o"],["ala","Alula Australis",11.303,31.529,3.79,"UMa","y"],["psiu","ψ Ursae Majoris",11.161,44.498,3.01,"UMa","o"],["chiu","Taiyangshou (χ UMa)",11.767,47.779,3.69,"UMa","o"],["upsu","υ Ursae Majoris",9.849,59.039,3.80,"UMa","w"],["hu","h Ursae Majoris",9.526,63.062,3.65,"UMa","w"],
+["plr","Polaris",2.530,89.264,1.98,"UMi","y"],["koc","Kochab",14.845,74.156,2.08,"UMi","o"],["phk","Pherkad",15.345,71.834,3.05,"UMi","w"],["yil","Yildun",17.537,86.586,4.35,"UMi","w"],["epum","ε Ursae Minoris",16.766,82.037,4.21,"UMi","y"],["ztum","ζ Ursae Minoris",15.734,77.795,4.29,"UMi","w"],["etum","η Ursae Minoris",16.292,75.755,4.95,"UMi","w"],
+["sch","Schedar",0.675,56.537,2.24,"Cas","o"],["cph","Caph",0.153,59.150,2.28,"Cas","w"],["nav","Navi (γ Cas)",0.945,60.717,2.47,"Cas","b"],["ruc","Ruchbah",1.430,60.235,2.68,"Cas","w"],["seg","Segin",1.907,63.670,3.38,"Cas","b"],
+["mrf","Mirfak",3.405,49.861,1.79,"Per","y"],["alg","Algol",3.136,40.956,2.12,"Per","b"],["ztp","Menkib (ζ Per)",3.902,31.884,2.85,"Per","b"],["epsp","ε Persei",3.964,40.010,2.89,"Per","b"],["gamp","γ Persei",3.080,53.506,2.93,"Per","y"],["delp","δ Persei",3.715,47.788,3.01,"Per","b"],["rhop","Gorgonea Tertia",3.086,38.840,3.39,"Per","r"],["nup","ν Persei",3.753,42.578,3.77,"Per","w"],["xip","Menkhib (ξ Per)",3.985,35.791,4.04,"Per","b"],["omip","Atik",3.738,32.288,3.83,"Per","b"],["etap","Miram (η Per)",2.845,55.896,3.76,"Per","o"],["kapp","Misam (κ Per)",3.158,44.857,3.80,"Per","o"],["taup","τ Persei",2.905,52.763,3.95,"Per","y"],["iotp","ι Persei",3.151,49.613,4.05,"Per","y"],
+["reg","Regulus",10.140,11.967,1.35,"Leo","b"],["den","Denebola",11.818,14.572,2.14,"Leo","w"],["alg2","Algieba",10.333,19.842,2.08,"Leo","o"],["zos","Zosma",11.235,20.524,2.56,"Leo","w"],["che","Chertan",11.237,15.430,3.33,"Leo","w"],["etal2","η Leonis",10.122,16.763,3.48,"Leo","w"],["adf","Adhafera",10.278,23.417,3.44,"Leo","w"],["ras","Rasalas",9.879,26.007,3.88,"Leo","o"],["alj","Algenubi",9.764,23.774,2.98,"Leo","y"],["omil","Subra (ο Leo)",9.686,9.892,3.52,"Leo","w"],["rhol","ρ Leonis",10.533,9.307,3.85,"Leo","b"],
+["tar","Tarf",8.275,9.186,3.52,"Cnc","o"],["asa","Asellus Australis",8.745,18.154,3.94,"Cnc","o"],["asb","Asellus Borealis",8.721,21.469,4.66,"Cnc","w"],["acu","Acubens",8.975,11.858,4.25,"Cnc","w"],["iotcn","ι Cancri",8.778,28.760,4.02,"Cnc","y"],
+["alp","Alpheratz",0.140,29.091,2.06,"And","b"],["mic","Mirach",1.162,35.621,2.07,"And","r"],["alma","Almach",2.065,42.330,2.10,"And","o"],["dla","δ Andromedae",0.655,30.861,3.27,"And","o"],["mua","μ Andromedae",0.946,38.499,3.87,"And","w"],
+["mkb","Markab",23.080,15.205,2.48,"Peg","b"],["sht","Scheat",23.063,28.083,2.42,"Peg","r"],["agn","Algenib",0.220,15.184,2.83,"Peg","b"],["enf","Enif",21.736,9.875,2.38,"Peg","o"],["hom","Homam",22.691,10.831,3.40,"Peg","b"],["mat","Matar",22.717,30.221,2.94,"Peg","y"],
+["ham","Hamal",2.120,23.462,2.00,"Ari","o"],["she","Sheratan",1.911,20.808,2.64,"Ari","w"],["mes","Mesarthim",1.892,19.294,3.88,"Ari","w"],["a41","Bharani (41 Ari)",2.833,27.261,3.61,"Ari","b"],
+["bett","β Trianguli",2.159,34.987,3.00,"Tri","w"],["mot","Mothallah",1.885,29.579,3.41,"Tri","w"],["gtri","γ Trianguli",2.289,33.847,4.01,"Tri","w"],
+["dip","Diphda",0.727,-17.987,2.04,"Cet","o"],["mnk","Menkar",3.038,4.090,2.54,"Cet","r"],["mira","Mira",2.322,-2.978,3.04,"Cet","r"],["kaf","Kaffaljidhma (γ Cet)",2.722,3.236,3.47,"Cet","w"],["delc","δ Ceti",2.658,0.329,4.07,"Cet","b"],["tauc","τ Ceti",1.734,-15.938,3.50,"Cet","y"],["iotce","Deneb Kaitos Shemali",0.324,-8.824,3.56,"Cet","o"],["etace","η Ceti",1.143,-10.182,3.45,"Cet","o"],["thce","θ Ceti",1.400,-8.183,3.60,"Cet","o"],["ztce","Baten Kaitos",1.858,-10.335,3.73,"Cet","o"],
+["fom","Fomalhaut",22.961,-29.622,1.16,"PsA","w"],
+["dnb","Deneb",20.690,45.280,1.25,"Cyg","w"],["sad","Sadr",20.370,40.257,2.23,"Cyg","y"],["gie","Aljanah (ε Cyg)",20.770,33.970,2.48,"Cyg","o"],["fwd","Fawaris (δ Cyg)",19.750,45.131,2.87,"Cyg","b"],["alb2","Albireo",19.512,27.960,3.05,"Cyg","o"],["ztcy","ζ Cygni",21.216,30.227,3.21,"Cyg","y"],["etcy","η Cygni",19.938,35.083,3.89,"Cyg","o"],
+["veg","Vega",18.616,38.784,0.03,"Lyr","w"],["shl","Sheliak",18.835,33.363,3.52,"Lyr","b"],["sul","Sulafat",18.982,32.690,3.25,"Lyr","b"],["ztly","ζ¹ Lyrae",18.746,37.605,4.36,"Lyr","w"],["dly","δ² Lyrae",18.908,36.899,4.22,"Lyr","r"],
+["alr","Altair",19.846,8.868,0.76,"Aql","w"],["trz","Tarazed",19.771,10.613,2.72,"Aql","o"],["als","Alshain",19.922,6.407,3.71,"Aql","y"],
+["elt","Eltanin",17.943,51.489,2.24,"Dra","o"],["rst","Rastaban",17.507,52.301,2.79,"Dra","y"],["adb","Athebyne (η Dra)",16.400,61.514,2.74,"Dra","y"],["thu2","Thuban",14.073,64.376,3.65,"Dra","w"],["alts","Altais",19.209,67.662,3.07,"Dra","y"],["eds","Edasich",15.415,58.966,3.29,"Dra","o"],["ztdr","Aldhibah (ζ Dra)",17.146,65.715,3.17,"Dra","b"],["gru","Grumium",17.892,56.873,3.75,"Dra","o"],["kapd","κ Draconis",12.558,69.788,3.87,"Dra","b"],["lamd","Giausar",11.523,69.331,3.84,"Dra","r"],
+["ald2","Alderamin",21.310,62.585,2.45,"Cep","w"],["alf","Alfirk",21.478,70.561,3.23,"Cep","b"],["err","Errai",23.656,77.632,3.21,"Cep","o"],["ztcp","ζ Cephei",22.181,58.201,3.35,"Cep","o"],["iocp","ι Cephei",22.828,66.201,3.52,"Cep","o"],["dcep","δ Cephei",22.486,58.415,4.07,"Cep","y"],
+["arc","Arcturus",14.261,19.182,-0.05,"Boo","o"],["iza","Izar",14.750,27.074,2.37,"Boo","o"],["muf","Muphrid",13.911,18.398,2.68,"Boo","y"],["sgn","Seginus",14.535,38.308,3.03,"Boo","w"],["nek","Nekkar",15.032,40.390,3.49,"Boo","y"],["dboo","δ Boötis",15.258,33.315,3.47,"Boo","y"],["rboo","ρ Boötis",14.530,30.371,3.58,"Boo","o"],
+["alph","Alphecca",15.578,26.715,2.23,"CrB","w"],
+["spi","Spica",13.420,-11.161,0.97,"Vir","b"],["vin","Vindemiatrix",13.036,10.959,2.85,"Vir","y"],["por","Porrima",12.694,-1.449,2.74,"Vir","w"],
+["kor","Kornephoros",16.504,21.490,2.77,"Her","y"],["zther","ζ Herculis",16.688,31.603,2.81,"Her","y"],["piher","π Herculis",17.251,36.809,3.16,"Her","o"],["etaher","η Herculis",16.715,38.922,3.48,"Her","y"],["epher","ε Herculis",17.005,30.926,3.92,"Her","w"],["rsg","Rasalgethi",17.244,14.390,3.48,"Her","r"],
+["alf2","Alphard",9.460,-8.659,1.98,"Hya","o"],["rhpu","Tureis (ρ Pup)",8.126,-24.304,2.78,"Pup","y"],["pipu","π Puppis",7.286,-37.097,2.70,"Pup","o"],["pha","Phact",5.661,-34.074,2.65,"Col","b"],
+["alyn","α Lyncis",9.351,34.393,3.13,"Lyn","r"],["rsh","Rasalhague",17.582,12.560,2.08,"Oph","w"],["ant","Antares",16.490,-26.432,1.06,"Sco","r"],
+["etps","Alpherg (η Psc)",1.525,15.346,3.62,"Psc","y"],["gaps","γ Piscium",23.286,3.282,3.69,"Psc","y"]
+];
+var STARS=RAW.map(function(a){return {id:a[0],name:a[1],ra:a[2],dec:a[3],mag:a[4],con:a[5],col:a[6],kind:"star"};});
+var BYID={};STARS.forEach(function(s){BYID[s.id]=s;});
+
+var LINES={
+Ori:[["bet","mei"],["mei","bel"],["bet","alt"],["bel","min"],["min","aln"],["aln","alt"],["alt","sai"],["min","rig"],["bet","muo"],["muo","nuo"],["nuo","chio"],["muo","xio"],["xio","chio"],["bel","pi3o"],["pi2o","pi3o"],["pi3o","pi4o"],["pi4o","pi5o"]],
+Tau:[["ald","th2t"],["th2t","gamt"],["gamt","delt"],["delt","epst"],["epst","eln"],["ald","zta"],["gamt","lamt"],["lamt","xit"],["xit","omit"]],
+Gem:[["cas","taug"],["taug","meb"],["meb","tej"],["tej","pro"],["taug","thg"],["pol","upsg"],["upsg","iotg"],["iotg","taug"],["pol","kapg"],["upsg","was"],["was","mek"],["mek","alh"],["was","lamg"],["lamg","xig"],["meb","nug"]],
+Aur:[["cap","mka"],["mka","mah"],["mah","eln"],["eln","has"],["has","cap"],["cap","alm"],["alm","hae"],["hae","etaa"],["mka","dela"]],
+CMa:[["mir","sir"],["sir","iotc"],["iotc","mul"],["iotc","thc"],["sir","o1c"],["o1c","o2c"],["o2c","wez"],["wez","alu"],["wez","sigc"],["sigc","adh"],["adh","fur"],["sir","nu2c"]],
+CMi:[["prc","gom"]],
+Lep:[["mul2","arn"],["arn","nih"],["nih","epsl"],["arn","ztl"],["ztl","etal"],["etal","dell"],["dell","gaml"],["gaml","nih"]],
+UMa:[["dub","mrk"],["mrk","phe"],["phe","meg"],["meg","dub"],["meg","ali"],["ali","miz"],["miz","alk"],["dub","hu"],["hu","mus"],["hu","upsu"],["upsu","thu"],["thu","kapu"],["kapu","tal"],["mrk","upsu"],["phe","chiu"],["chiu","psiu"],["psiu","taa"],["taa","tab"],["chiu","alb"],["alb","ala"]],
+UMi:[["plr","yil"],["yil","epum"],["epum","ztum"],["ztum","koc"],["koc","phk"],["phk","etum"],["etum","ztum"]],
+Cas:[["cph","sch"],["sch","nav"],["nav","ruc"],["ruc","seg"]],
+Per:[["etap","gamp"],["gamp","mrf"],["taup","iotp"],["mrf","iotp"],["mrf","delp"],["delp","nup"],["nup","epsp"],["epsp","xip"],["xip","ztp"],["ztp","omip"],["iotp","kapp"],["kapp","alg"],["alg","rhop"]],
+Leo:[["alj","ras"],["ras","adf"],["adf","alg2"],["alg2","etal2"],["etal2","reg"],["alg2","zos"],["zos","den"],["den","che"],["che","reg"],["zos","che"],["reg","rhol"],["etal2","omil"]],
+Cnc:[["acu","asa"],["asa","asb"],["asb","iotcn"],["asa","tar"]],
+And:[["alp","dla"],["dla","mic"],["mic","alma"],["mic","mua"]],
+Peg:[["alp","sht"],["sht","mkb"],["mkb","agn"],["agn","alp"],["sht","mat"],["mkb","hom"],["hom","enf"]],
+Ari:[["ham","she"],["she","mes"],["ham","a41"]],
+Tri:[["mot","bett"],["bett","gtri"],["gtri","mot"]],
+Cet:[["mnk","kaf"],["kaf","delc"],["delc","mira"],["mira","ztce"],["ztce","tauc"],["tauc","dip"],["dip","iotce"],["ztce","thce"],["thce","etace"],["etace","dip"]],
+Cyg:[["dnb","sad"],["sad","etcy"],["etcy","alb2"],["fwd","sad"],["sad","gie"],["gie","ztcy"]],
+Lyr:[["veg","ztly"],["ztly","shl"],["shl","sul"],["sul","dly"],["dly","ztly"]],
+Aql:[["trz","alr"],["alr","als"]],
+Dra:[["elt","rst"],["rst","gru"],["gru","elt"],["gru","alts"],["alts","ztdr"],["ztdr","adb"],["adb","eds"],["eds","thu2"],["thu2","kapd"],["kapd","lamd"]],
+Cep:[["ald2","alf"],["alf","err"],["err","iocp"],["iocp","ztcp"],["ztcp","ald2"],["alf","iocp"],["ztcp","dcep"]],
+Boo:[["arc","iza"],["iza","dboo"],["dboo","nek"],["nek","sgn"],["sgn","rboo"],["rboo","arc"],["arc","muf"]],
+Her:[["kor","zther"],["zther","etaher"],["etaher","piher"],["piher","epher"],["epher","zther"]]
+};
+var CFACT={
+Ori:"One of the few star patterns recognised in almost every culture. The fuzzy 'star' in his sword is the Orion Nebula, a stellar nursery about 1,300 light-years away.",
+Tau:"The bull holds two open clusters: the Pleiades and the V-shaped Hyades. At about 153 light-years, the Hyades are the nearest open cluster to the Sun.",
+Gem:"The twins Castor and Pollux. The Geminids, one of the strongest meteor showers of the year, radiate from here in mid-December.",
+Aur:"The charioteer, a pentagon of bright stars. From London, Capella never sets.",
+CMa:"Orion's larger dog, home of Sirius. Wezen and Aludra are supergiants tens of thousands of times more luminous than the Sun.",
+CMi:"The little dog: two bright stars, Procyon and Gomeisa, and very little else.",
+Lep:"The hare, crouched at Orion's feet as if hiding from the hunter.",
+UMa:"The Plough is only part of the Great Bear. Merak and Dubhe point to Polaris, and five of the Plough's stars travel through space together as the Ursa Major Moving Group.",
+UMi:"The little bear, whose tail ends in Polaris.",
+Cas:"The W. Its middle star, Gamma Cassiopeiae, spins so fast that it sheds a disc of gas and brightens unpredictably.",
+Per:"Algol, the Demon Star, dims every 2.87 days when a fainter companion passes in front of it. Perseus is also the radiant of August's Perseids.",
+Leo:"The sickle of Leo forms the lion's head and mane. The Leonid meteors radiate from here each November.",
+Cnc:"The faintest constellation of the zodiac. At its heart is the Beehive Cluster, M44, a misty patch on a dark night.",
+And:"Holds the Andromeda Galaxy, about 2.5 million light-years away: the most distant thing most people can see without a telescope.",
+Peg:"The Great Square of Pegasus. One of its corners, Alpheratz, officially belongs to Andromeda.",
+Ari:"Over two thousand years ago the March equinox fell here, which is why that point in the sky is still called the First Point of Aries.",
+Tri:"A small triangle that also contains the Triangulum Galaxy, M33, about 3 million light-years away.",
+Cet:"The sea monster. Mira swells and fades over about 332 days, from easily visible to invisible without binoculars.",
+Cyg:"The swan flies down the Milky Way. Its beak, Albireo, splits into a gold star and a blue one in a small telescope.",
+Lyr:"The lyre of Orpheus. Small, but Vega makes it impossible to miss.",
+Aql:"The eagle. Altair spins so fast, once every nine hours or so, that it is noticeably flattened.",
+Dra:"The dragon winds between the two bears. Thuban was the pole star when the Egyptian pyramids were built.",
+Cep:"The king. Delta Cephei gave its name to Cepheid variables, the stars astronomers use to measure the distances to other galaxies.",
+Boo:"The herdsman follows the bears around the pole. Arcturus is the brightest star north of the celestial equator.",
+Her:"The keystone of Hercules. Along one side sits M13, a globular cluster of several hundred thousand stars about 25,000 light-years away."
+};
+
+/* ---------- His renamed objects ---------- */
+var HIS=[
+{key:"bet",his:"The Rosin",real:"Betelgeuse · α Orionis",
+ meta:["Red supergiant","~550 light-years","mag 0.5 (variable)"],
+ fact:"A red supergiant roughly 750 times the Sun's radius; put it where the Sun is and it would reach beyond the asteroid belt. Its Great Dimming of 2019 to 2020 was caused by a cloud of dust the star itself had thrown off.",
+ note:"Red, swollen, and plainly about to do something dramatic. You saw the poison in the rosin before I did. I've named the most suspicious star in the sky after it so I never forget who was quicker."},
+{key:"sir",his:"The Tomato",real:"Sirius · α Canis Majoris",
+ meta:["White main-sequence star","8.6 light-years","mag −1.46"],
+ fact:"The brightest star in the night sky, partly because it is so close. It has a companion, Sirius B, a white dwarf about the size of the Earth with roughly the mass of the Sun.",
+ note:"The brightest thing in the sky and I still accused it of burying something. It was tomatoes. I'm told I have to live with this. I am living with it. Loudly."},
+{key:"plr",his:"The Chase",real:"Polaris · α Ursae Minoris",
+ meta:["Yellow supergiant, Cepheid variable","~430 light-years","mag 2.0"],
+ fact:"Less than a degree from the north celestial pole, so every other star in the northern sky wheels around it. It is a pulsating Cepheid with two companion stars, and it will creep closer to the pole until about the year 2100.",
+ note:"Run whichever way you like. Everything else in the sky turns, and this one stays exactly where you can find it. That's the arrangement. I'll always catch you."},
+{key:"cap",his:"Ronaldo",real:"Capella · α Aurigae",
+ meta:["Two yellow giants","42.9 light-years","mag 0.08"],
+ fact:"Looks like one star but is two yellow giants orbiting each other every 104 days, with a fainter pair of red dwarfs much further out. From London it never sets.",
+ note:"Two giants pretending to be one, and it never leaves the room. You named the skull, so I've named his star. He has been insufferable about it all morning."},
+{key:"PLEIADES",his:"The Six Envelopes",real:"The Pleiades · M45",
+ meta:["Open star cluster","~444 light-years","~100 million years old"],
+ fact:"Over a thousand stars, of which most people see six without help. The blue haze in long-exposure photographs is a separate dust cloud the cluster happens to be drifting through.",
+ note:"Six you can see, hundreds you can't. Every good puzzle arrives like this. I'll open them with you, one at a time, and I won't peek ahead. Probably."},
+{key:"MOON",his:"Not Lesser",real:"The Moon",
+ meta:["Waxing crescent, ~36% lit","~405,000 km","Set 20:52 last night"],
+ fact:"At 4:27 she is far below the horizon; she set at about 20:52 the evening before. Even out of sight she still raises the tides, the Thames included.",
+ note:"You wrote that she who is a moon can never be the sun. I disagree, formally. She moves oceans, and she is the only light I can look at without it hurting. Out of sight tonight and still pulling at everything. Not lesser. Never lesser."},
+{key:"ald",his:"The Scarf",real:"Aldebaran · α Tauri",
+ meta:["Orange giant","65 light-years","mag 0.87"],
+ fact:"Its name comes from the Arabic for 'the follower', because it rises after the Pleiades and trails them across the sky every night. It sits in front of the Hyades cluster but isn't part of it; the Hyades are more than twice as far away.",
+ note:"'The follower.' Warm, a bit uneven in colour, and it has trailed the same small company across the sky for as long as anyone has looked up. The man on the bench understood. Some things are worth following that long."},
+{key:"prc",his:"The Croissant",real:"Procyon · α Canis Minoris",
+ meta:["White subgiant","11.5 light-years","mag 0.34"],
+ fact:"The name is Greek for 'before the dog': it rises shortly before Sirius. Like Sirius it has a white dwarf companion, Procyon B.",
+ note:"It rises just ahead of the brighter one, the way the bakery opened just ahead of the sun. Warm, golden, gone too quickly. I won't walk past Marylebone at dawn again without stopping. You know why."},
+{key:"TWINS",his:"羁绊 · The Tether",real:"Castor and Pollux · Gemini",
+ meta:["Pollux 34 ly · Castor 51 ly","Pollux has a planet","Castor is six stars"],
+ fact:"Pollux is the nearest giant star to the Sun and has a confirmed planet. Castor looks single but is six stars in three pairs. In the myth, Pollux gave up half his immortality so his twin could share it.",
+ note:"Two stars that look like a pair and aren't even the same distance away. They are bound anyway. You taught me the word. I'm still learning how far it reaches."},
+{key:"veg",his:"Comes Home in C",real:"Vega · α Lyrae",
+ meta:["White main-sequence star","25 light-years","mag 0.03"],
+ fact:"Vega was the pole star around 12,000 BC and will be again around 13,700 AD. From London it never quite sets: at 4:27 it is skimming the northern horizon. In 1850 it became the first star other than the Sun to be photographed.",
+ note:"Low in the north, nearly gone, and it never quite leaves. It goes all the way round and comes home, like the song. Still untitled. I'm waiting for you to name it."},
+{key:"reg",his:"Too Early for Spring",real:"Regulus · α Leonis",
+ meta:["Blue-white main-sequence star","79 light-years","mag 1.35"],
+ fact:"The heart of Leo, a spring constellation, rising in the east before an October dawn. It spins so fast that its equator bulges about a third wider than its poles. This morning the bright 'star' just above and to its right is Jupiter.",
+ note:"A spring star turning up in October, months ahead of itself. Like your dandelion. Too early, and entirely welcome."},
+{key:"dnb",his:"缘 · Yuan",real:"Deneb · α Cygni",
+ meta:["White supergiant","roughly 1,500 to 2,600 light-years","mag 1.25"],
+ fact:"One of the most luminous stars you can see without a telescope, tens of thousands of times brighter than the Sun. Its distance is uncertain, so the light reaching London tonight left it somewhere between fifteen and twenty-six centuries ago.",
+ note:"That light set out before anyone in London had a name for it, and it arrived on the morning you came up the stairs bored. I don't believe in fate. I'm making an exception for this one."},
+{key:"Mars",his:"Xiao Long Bao",real:"Mars",
+ meta:["Planet","~230 million km away","rising in the east"],
+ fact:"Red because its surface dust is rich in iron oxide. Despite the colour it is cold, around minus 60 °C on average.",
+ note:"Red, small, and looks perfectly harmless. I have learned my lesson about things that look harmless and are full of soup. This one at least is cold inside."}
+];
+var HISBY={};HIS.forEach(function(h){HISBY[h.key]=h;});
+var PLEI=["alc","atl","ele","mai","mer","tay","ple"];
+
+/* ---------- Her names (localStorage) ---------- */
+var STORE="sky427.names.v1",MINE={};
+try{var raw=localStorage.getItem(STORE);if(raw)MINE=JSON.parse(raw)||{};}catch(e){MINE={};}
+function saveMine(){try{localStorage.setItem(STORE,JSON.stringify(MINE));}catch(e){}}
+var REPLIES=[
+"Noted. I've added it to the index. Officially it's yours now. Unofficially it always was.",
+"The International Astronomical Union will object. Let them. I've dealt with worse committees.",
+"Better than the name the astronomers gave it, and they had four thousand years.",
+"Mm. I shall be insufferable about this one at dinner.",
+"Filed under things I'll pretend I haven't memorised.",
+"Naming stars doesn't count towards the score. ...Fine. It counts a little.",
+"Good. Now there's a light up there in your handwriting."
+];
+
+/* ---------- Milky Way: points along the galactic equator ---------- */
+var MW=[];(function(){var ra0=192.85948*R,de0=27.12825*R,l0=122.93192*R;
+for(var l=0;l<360;l+=3){for(var b=-8;b<=8;b+=8){var L=l*R,B=b*R;
+ var sd=Math.sin(B)*Math.sin(de0)+Math.cos(B)*Math.cos(de0)*Math.cos(l0-L);var dec=Math.asin(sd);
+ var y=Math.cos(B)*Math.sin(l0-L),x=Math.sin(B)*Math.cos(de0)-Math.cos(B)*Math.sin(de0)*Math.cos(l0-L);
+ var ra=rev((Math.atan2(y,x)+ra0)/R)/15;var lc=Math.min(l,360-l);
+ MW.push({ra:ra,dec:dec/R,w:(b===0?1:.55)*(0.35+0.65*Math.max(0,1-lc/150))});}}})();
+
+/* ---------- State ---------- */
+var cv=document.getElementById("sky"),ctx=cv.getContext("2d");
+var W=0,H=0,DPR=1,view={az:170,alt:28,fov:100};
+var tMin=27,showLines=true,showNames=true,selected=null;
+var scene=null;
+
+function resize(){DPR=Math.min(window.devicePixelRatio||1,2);W=window.innerWidth;H=window.innerHeight;cv.width=W*DPR;cv.height=H*DPR;
+  if(W<520&&view.fov===100)view.fov=96;draw();}
+window.addEventListener("resize",resize);
+
+function vec(alt,az){var a=alt*R,z=az*R;return [Math.cos(a)*Math.sin(z),Math.cos(a)*Math.cos(z),Math.sin(a)];}
+var basis;
+function makeBasis(){var a=view.alt*R,z=view.az*R;
+  var f=[Math.cos(a)*Math.sin(z),Math.cos(a)*Math.cos(z),Math.sin(a)];var r=[Math.cos(z),-Math.sin(z),0];
+  var u=[r[1]*f[2]-r[2]*f[1],r[2]*f[0]-r[0]*f[2],r[0]*f[1]-r[1]*f[0]];
+  var S=(Math.min(W,H*1.1)/2)/(2*Math.tan(view.fov*R/4));basis={f:f,r:r,u:u,S:S,cx:W/2,cy:H*0.46};}
+function proj(p,force){var b=basis,X=p[0]*b.r[0]+p[1]*b.r[1]+p[2]*b.r[2],Y=p[0]*b.u[0]+p[1]*b.u[1]+p[2]*b.u[2],Z=p[0]*b.f[0]+p[1]*b.f[1]+p[2]*b.f[2];
+  if(Z<-0.6&&!force)return null;if(Z<-0.985){var k0=Math.hypot(X,Y)||1;X/=k0;Y/=k0;Z=-0.985;var s=Math.sqrt(1-Z*Z);X*=s;Y*=s;}
+  var k=2/(1+Z)*b.S;return {x:b.cx+X*k,y:b.cy-Y*k};}
+
+function computeScene(){var ms=BASE+tMin*60000,L=lst(ms),sm=sunMoon(ms);
+  var o={L:L,ms:ms,sm:sm,sun:altaz(sm.sun.ra,sm.sun.dec,L),moon:altaz(sm.moon.ra,sm.moon.dec,L),stars:[],planets:[],mw:[]};
+  STARS.forEach(function(s){var h=altaz(s.ra,s.dec,L);o.stars.push({s:s,alt:h.alt,az:h.az,v:vec(h.alt,h.az)});});
+  [["Jupiter",-2.1,"#f4e3c0"],["Mars",1.0,"#f08a5d"],["Saturn",0.6,"#eadbb0"],["Venus",-3.9,"#fff6e0"]].forEach(function(p){var q=planet(p[0],ms),h=altaz(q.ra,q.dec,L);
+    o.planets.push({name:p[0],mag:p[1],color:p[2],alt:h.alt,az:h.az,v:vec(h.alt,h.az),au:q.au});});
+  MW.forEach(function(m){var h=altaz(m.ra,m.dec,L);o.mw.push({v:vec(h.alt,h.az),w:m.w,alt:h.alt});});
+  o.starById={};o.stars.forEach(function(x){o.starById[x.s.id]=x;});
+  scene=o;}
+
+var COLS={b:"#cfdcff",w:"#f6f4ef",y:"#fff0c8",o:"#ffd6a0",r:"#ffb48a"};
+function mix(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t);});}
+function rgb(c,a){return a===undefined?"rgb("+c[0]+","+c[1]+","+c[2]+")":"rgba("+c[0]+","+c[1]+","+c[2]+","+a+")";}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+
+/* ---------- Draw ---------- */
+function draw(){if(!W)return;if(!scene)computeScene();makeBasis();
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  var sa=scene.sun.alt,tw=clamp((sa+18)/18,0,1); // 0 = full night, 1 = sunrise
+  var zen=mix([5,8,20],[38,62,112],Math.pow(tw,1.6)),hor=mix([12,18,38],[226,150,110],Math.pow(tw,2.2));
+  ctx.fillStyle=rgb(zen);ctx.fillRect(0,0,W,H);
+  // horizon brightening band
+  var hz=proj(vec(0,view.az),true),zp=proj(vec(90,view.az),true);
+  if(hz&&zp){var g=ctx.createLinearGradient(zp.x,zp.y,hz.x,hz.y);g.addColorStop(0,rgb(zen,0));g.addColorStop(0.7,rgb(mix(zen,hor,.35),.6));g.addColorStop(1,rgb(hor,.85));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+  // sun glow
+  if(tw>0.05){var sp=proj(vec(Math.max(sa,-2),scene.sun.az),true);if(sp){var rg=basis.S*(0.6+tw*1.4),gg=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,rg);
+    gg.addColorStop(0,"rgba(255,190,120,"+(0.75*tw*tw)+")");gg.addColorStop(0.35,"rgba(240,140,110,"+(0.35*tw*tw)+")");gg.addColorStop(1,"rgba(240,140,110,0)");ctx.fillStyle=gg;ctx.fillRect(0,0,W,H);}}
+  var lim=6.2-tw*4.6, starFade=clamp(1-tw*0.55,0.3,1);
+  // milky way
+  var mwA=clamp(1-tw*2.2,0,1)*0.05;if(mwA>0.003){ctx.globalCompositeOperation="lighter";scene.mw.forEach(function(m){var p=proj(m.v);if(!p)return;var r=basis.S*0.16;
+    var gm=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);gm.addColorStop(0,"rgba(170,185,230,"+(mwA*m.w)+")");gm.addColorStop(1,"rgba(170,185,230,0)");ctx.fillStyle=gm;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);});ctx.globalCompositeOperation="source-over";}
+  var zoom=clamp(100/view.fov,0.6,4);
+  // alt grid hint (very faint)
+  // constellation lines
+  if(showLines){ctx.lineWidth=1;ctx.strokeStyle="rgba(170,190,230,"+(0.28*starFade)+")";ctx.beginPath();
+    Object.keys(LINES).forEach(function(c){LINES[c].forEach(function(l){var a=scene.starById[l[0]],b=scene.starById[l[1]];if(!a||!b)return;var p=proj(a.v),q=proj(b.v);if(!p||!q)return;
+      var dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d>W*1.5)return;var gap=Math.min(5,d/4);ctx.moveTo(p.x+dx/d*gap,p.y+dy/d*gap);ctx.lineTo(q.x-dx/d*gap,q.y-dy/d*gap);});});ctx.stroke();
+    if(selected&&selected.kind==="con"){ctx.strokeStyle="rgba(233,180,108,.75)";ctx.lineWidth=1.6;ctx.beginPath();LINES[selected.con].forEach(function(l){var p=proj(scene.starById[l[0]].v),q=proj(scene.starById[l[1]].v);if(p&&q){ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);}});ctx.stroke();}}
+  // stars
+  scene.screen=[];
+  scene.stars.forEach(function(o){var s=o.s;if(s.mag>lim+0.3)return;var p=proj(o.v);if(!p||p.x<-20||p.y<-20||p.x>W+20||p.y>H+20)return;
+    var r=Math.max(0.55,(lim+0.8-s.mag)*0.62)*Math.sqrt(zoom);var a=clamp((lim+0.3-s.mag)/1.5,0.15,1)*starFade;
+    if(s.mag<1.6){var gl=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*4);gl.addColorStop(0,"rgba(255,245,225,"+(0.22*a)+")");gl.addColorStop(1,"rgba(255,245,225,0)");ctx.fillStyle=gl;ctx.fillRect(p.x-r*4,p.y-r*4,r*8,r*8);}
+    ctx.globalAlpha=a;ctx.fillStyle=COLS[s.col]||COLS.w;ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();ctx.globalAlpha=1;
+    scene.screen.push({type:"star",o:o,x:p.x,y:p.y,r:r});});
+  // planets
+  scene.planets.forEach(function(pl){var p=proj(pl.v);if(!p)return;var r=Math.max(1.6,(lim+1-pl.mag)*0.6)*Math.sqrt(zoom);
+    ctx.globalAlpha=starFade;ctx.fillStyle=pl.color;ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();ctx.globalAlpha=1;scene.screen.push({type:"planet",o:pl,x:p.x,y:p.y,r:r});});
+  // moon
+  var mv=vec(scene.moon.alt,scene.moon.az),mp=proj(mv);if(mp){var mr=Math.max(9,0.26*R*basis.S*2*3);drawMoon(mp,mr,mv);scene.screen.push({type:"moon",x:mp.x,y:mp.y,r:mr});}
+  // ground
+  drawGround(tw);
+  // labels
+  ctx.textBaseline="middle";
+  var placed=[];
+  function label(txt,x,y,font,color,below){ctx.font=font;var w=ctx.measureText(txt).width,lx=x+9,ly=y-9;
+    var box={x:lx,y:ly-9,w:w,h:18};for(var i=0;i<placed.length;i++){var b=placed[i];if(box.x<b.x+b.w&&box.x+box.w>b.x&&box.y<b.y+b.h&&box.y+box.h>b.y)return;}
+    placed.push(box);ctx.fillStyle="rgba(0,0,0,.55)";ctx.fillText(txt,lx+1,ly+1);ctx.fillStyle=color;ctx.fillText(txt,lx,ly);}
+  var dim=below=>below?0.45:1;
+  if(showNames){HIS.forEach(function(h){var pt=anchorFor(h.key);if(!pt)return;var bl=pt.alt<0;
+      ctx.globalAlpha=dim(bl);label(h.his+(bl?" (below)":""),pt.x,pt.y,"italic 17px "+getComputedStyle(document.documentElement).getPropertyValue("--f-display"),"#e9b46c");ctx.globalAlpha=1;});}
+  Object.keys(MINE).forEach(function(id){var o=scene.starById[id];if(!o)return;var p=proj(o.v);if(!p)return;
+    ctx.strokeStyle="rgba(196,205,224,.8)";ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,7,0,7);ctx.stroke();label(MINE[id],p.x,p.y,"15px Spectral, Georgia, serif","#c4cde0");});
+  // real names for bright stars (only when zoomed or very bright)
+  scene.stars.forEach(function(o){var s=o.s;if(s.mag>(view.fov<60?2.2:1.3)||HISBY[s.id]||MINE[s.id])return;if(s.mag>lim)return;var p=proj(o.v);if(!p||o.alt<0)return;
+    label(s.name,p.x,p.y,"12px 'IBM Plex Mono', monospace","rgba(200,208,228,.7)");});
+  scene.planets.forEach(function(pl){if(pl.alt<0||HISBY[pl.name]&&showNames)return;var p=proj(pl.v);if(!p)return;label(pl.name,p.x,p.y,"12px 'IBM Plex Mono', monospace","rgba(240,220,190,.8)");});
+  // selection ring
+  if(selected){var sp2=selectedPoint();if(sp2){ctx.strokeStyle="#e9b46c";ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sp2.x,sp2.y,14,0,7);ctx.stroke();}}
+  // cardinal points
+  ctx.font="500 13px 'IBM Plex Mono', monospace";ctx.textAlign="center";
+  [["N",0],["NE",45],["E",90],["SE",135],["S",180],["SW",225],["W",270],["NW",315]].forEach(function(c){var p=proj(vec(-3.5,c[1]));if(!p)return;
+    ctx.fillStyle=c[0].length===1?"#e9b46c":"rgba(200,208,228,.6)";ctx.fillText(c[0],p.x,p.y);});
+  ctx.textAlign="start";
+}
+function drawMoon(p,r,mv){var sv=vec(scene.sun.alt,scene.sun.az),t=[mv[0]+(sv[0]-mv[0])*0.08,mv[1]+(sv[1]-mv[1])*0.08,mv[2]+(sv[2]-mv[2])*0.08],tp=proj(t,true);
+  var ang=tp?Math.atan2(tp.y-p.y,tp.x-p.x):0,k=scene.sm.lit;
+  ctx.save();ctx.translate(p.x,p.y);var gl=ctx.createRadialGradient(0,0,r*0.8,0,0,r*3.2);gl.addColorStop(0,"rgba(220,228,245,.18)");gl.addColorStop(1,"rgba(220,228,245,0)");ctx.fillStyle=gl;ctx.fillRect(-r*3.2,-r*3.2,r*6.4,r*6.4);
+  ctx.rotate(ang);ctx.fillStyle="#1d2336";ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();
+  ctx.fillStyle="#e8ecf5";ctx.beginPath();ctx.arc(0,0,r,-Math.PI/2,Math.PI/2,false);var rx=Math.abs(1-2*k)*r;
+  if(k<0.5)ctx.ellipse(0,0,rx,r,0,Math.PI/2,-Math.PI/2,true);else ctx.ellipse(0,0,rx,r,0,Math.PI/2,Math.PI*1.5,false);ctx.fill();ctx.restore();}
+function drawGround(tw){var pts=[];for(var a=0;a<=360;a+=2){pts.push(proj(vec(0,a),true));}
+  ctx.beginPath();pts.forEach(function(p,i){i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);});ctx.closePath();
+  var nad=proj(vec(-90,0),true),inside=nad?ctx.isPointInPath(nad.x*DPR,nad.y*DPR):true;
+  var gc=rgb(mix([4,6,12],[30,26,34],tw),0.86);ctx.fillStyle=gc;
+  if(inside){ctx.fill();}else{ctx.save();ctx.beginPath();ctx.rect(-10,-10,W+20,H+20);pts.forEach(function(p,i){i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);});ctx.closePath();ctx.fill("evenodd");ctx.restore();}
+  ctx.strokeStyle="rgba(233,180,108,.35)";ctx.lineWidth=1;ctx.beginPath();pts.forEach(function(p,i){i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);});ctx.stroke();}
+function anchorFor(key){var v,alt;
+  if(key==="MOON"){alt=scene.moon.alt;v=vec(alt,scene.moon.az);}
+  else if(key==="PLEIADES"){var o=scene.starById.alc;alt=o.alt;v=o.v;}
+  else if(key==="TWINS"){var a=scene.starById.cas,b=scene.starById.pol;v=[(a.v[0]+b.v[0])/2,(a.v[1]+b.v[1])/2,(a.v[2]+b.v[2])/2];alt=(a.alt+b.alt)/2;}
+  else if(PL[key]){var pl=scene.planets.filter(function(x){return x.name===key;})[0];alt=pl.alt;v=pl.v;}
+  else {var s=scene.starById[key];alt=s.alt;v=s.v;}
+  var p=proj(v);if(!p||p.x<0||p.x>W||p.y<0||p.y>H)return null;p.alt=alt;return p;}
+function selectedPoint(){if(!selected)return null;if(selected.kind==="his")return anchorFor(selected.key);
+  if(selected.kind==="star"){var o=scene.starById[selected.id];return o?proj(o.v):null;}
+  if(selected.kind==="planet"){var pl=scene.planets.filter(function(x){return x.name===selected.name;})[0];return pl?proj(pl.v):null;}return null;}
+
+/* ---------- Interaction ---------- */
+var ptrs={},drag=null,pinch=null,moved=0,raf=0;
+function req(){if(!raf)raf=requestAnimationFrame(function(){raf=0;draw();});}
+cv.addEventListener("pointerdown",function(e){cv.setPointerCapture(e.pointerId);ptrs[e.pointerId]={x:e.clientX,y:e.clientY};moved=0;hideHint();
+  var ids=Object.keys(ptrs);if(ids.length===1)drag={x:e.clientX,y:e.clientY,az:view.az,alt:view.alt};
+  else if(ids.length===2){var a=ptrs[ids[0]],b=ptrs[ids[1]];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),fov:view.fov};drag=null;}});
+cv.addEventListener("pointermove",function(e){if(!ptrs[e.pointerId])return;ptrs[e.pointerId]={x:e.clientX,y:e.clientY};var ids=Object.keys(ptrs);
+  if(pinch&&ids.length===2){var a=ptrs[ids[0]],b=ptrs[ids[1]],d=Math.hypot(a.x-b.x,a.y-b.y);view.fov=clamp(pinch.fov*pinch.d/d,20,140);moved=99;req();return;}
+  if(drag){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved=Math.max(moved,Math.hypot(dx,dy));var dpp=view.fov/Math.min(W,H*1.1);
+    view.az=rev(drag.az-dx*dpp);view.alt=clamp(drag.alt+dy*dpp,-25,90);req();}});
+function up(e){var wasTap=drag&&moved<8&&Object.keys(ptrs).length===1;delete ptrs[e.pointerId];if(Object.keys(ptrs).length<2)pinch=null;
+  if(wasTap)tap(e.clientX,e.clientY);if(!Object.keys(ptrs).length)drag=null;}
+cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",function(e){delete ptrs[e.pointerId];drag=null;pinch=null;});
+cv.addEventListener("wheel",function(e){e.preventDefault();view.fov=clamp(view.fov*Math.exp(e.deltaY*0.0012),20,140);req();},{passive:false});
+
+function tap(x,y){var best=null,bd=26;
+  // his named first
+  HIS.forEach(function(h){var p=anchorFor(h.key);if(!p)return;var d=Math.hypot(p.x-x,p.y-y);if(h.key==="TWINS"){var a=proj(scene.starById.cas.v),b=proj(scene.starById.pol.v);if(a)d=Math.min(d,Math.hypot(a.x-x,a.y-y));if(b)d=Math.min(d,Math.hypot(b.x-x,b.y-y));}
+    if(h.key==="PLEIADES"){PLEI.forEach(function(id){var q=proj(scene.starById[id].v);if(q)d=Math.min(d,Math.hypot(q.x-x,q.y-y));});}
+    if(d<bd){bd=d;best={kind:"his",key:h.key};}});
+  if(!best){(scene.screen||[]).forEach(function(s){var d=Math.hypot(s.x-x,s.y-y)-s.r*0.5;if(d<bd){bd=d;
+      best=s.type==="star"?{kind:"star",id:s.o.s.id}:s.type==="planet"?{kind:"planet",name:s.o.name}:{kind:"his",key:"MOON"};}});}
+  if(!best&&showLines){var bc=null,bdd=12;Object.keys(LINES).forEach(function(c){LINES[c].forEach(function(l){var p=proj(scene.starById[l[0]].v),q=proj(scene.starById[l[1]].v);if(!p||!q)return;
+      var d=segDist(x,y,p,q);if(d<bdd){bdd=d;bc=c;}});});if(bc)best={kind:"con",con:bc};}
+  if(best&&best.kind==="star"&&HISBY[best.id])best={kind:"his",key:best.id};
+  if(best&&best.kind==="star"&&(PLEI.indexOf(best.id)>=0))best={kind:"his",key:"PLEIADES"};
+  if(best&&best.kind==="star"&&(best.id==="cas"||best.id==="pol"))best={kind:"his",key:"TWINS"};
+  if(best&&best.kind==="planet"&&HISBY[best.name])best={kind:"his",key:best.name};
+  if(best){selected=best;openCard();}else{closeAll();}
+  draw();}
+function segDist(x,y,p,q){var dx=q.x-p.x,dy=q.y-p.y,l=dx*dx+dy*dy;if(!l)return Math.hypot(x-p.x,y-p.y);var t=clamp(((x-p.x)*dx+(y-p.y)*dy)/l,0,1);return Math.hypot(x-p.x-t*dx,y-p.y-t*dy);}
+
+/* ---------- Cards ---------- */
+var card=document.getElementById("card"),body=document.getElementById("cardBody"),drawer=document.getElementById("drawer");
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function posLine(alt,az){var dirs=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return alt<0?"<span><b>"+Math.round(-alt)+"°</b> below the horizon</span>":"<span>alt <b>"+Math.round(alt)+"°</b></span><span>az <b>"+Math.round(az)+"°</b> "+dirs[Math.round(az/22.5)%16]+"</span>";}
+function hisPos(key){if(key==="MOON")return scene.moon;if(key==="PLEIADES")return scene.starById.alc;if(key==="TWINS")return scene.starById.pol;
+  if(PL[key])return scene.planets.filter(function(x){return x.name===key;})[0];return scene.starById[key];}
+function openCard(){drawer.classList.add("closed");var h="";
+  if(selected.kind==="his"){var x=HISBY[selected.key],p=hisPos(selected.key);
+    h='<div class="eyebrow">Renamed by S.H.</div><h2 class="hisname">'+esc(x.his)+'</h2>'+
+      '<div class="meta"><span><b>'+esc(x.real)+'</b></span></div><div class="meta">'+x.meta.map(function(m){return "<span>"+esc(m)+"</span>";}).join("")+'</div>'+
+      '<div class="meta">'+posLine(p.alt,p.az)+'<span>at '+clockStr()+'</span></div>'+
+      '<p class="fact">'+esc(x.fact)+'</p><p class="note">'+esc(x.note)+'<span class="sig">S.</span></p>';}
+  else if(selected.kind==="star"){var o=scene.starById[selected.id],s=o.s,mine=MINE[s.id];
+    h='<div class="eyebrow">'+esc(C[s.con]||s.con)+'</div>'+(mine?'<h2 class="yourname">'+esc(mine)+'</h2>':'')+'<h2 class="realname">'+esc(s.name)+'</h2>'+
+      '<div class="meta"><span>mag <b>'+s.mag.toFixed(2)+'</b></span>'+posLine(o.alt,o.az)+'</div>'+
+      (CFACT[s.con]?'<p class="fact">'+esc(CFACT[s.con])+'</p>':'')+
+      (mine?'<p class="reply" id="reply"></p><button class="textbtn" id="unname">Remove your name</button>':
+      '<div class="eyebrow">He hasn\'t named this one. You can.</div><form class="nameform" id="nameform"><input id="starname" maxlength="40" placeholder="Name this star" autocomplete="off" aria-label="Your name for this star"><button type="submit">Name it</button></form><p class="reply" id="reply"></p>');}
+  else if(selected.kind==="planet"){var pl=scene.planets.filter(function(x){return x.name===selected.name;})[0];
+    var pf={Jupiter:"The largest planet, more than twice the mass of all the others combined. This morning it sits just above and to the right of Regulus in the east, with Mars a little higher still.",Saturn:"A few weeks past opposition, so still bright and well placed, sinking in the west. Its rings are almost edge-on to us in this period, so they still look thin in a telescope.",Venus:"Below the horizon at 4:27, close to the Sun in the sky."}[pl.name]||"";
+    h='<div class="eyebrow">Planet</div><h2 class="realname">'+pl.name+'</h2><div class="meta"><span><b>'+(pl.au*149.6).toFixed(0)+'</b> million km</span>'+posLine(pl.alt,pl.az)+'</div><p class="fact">'+esc(pf)+'</p>';}
+  else if(selected.kind==="con"){h='<div class="eyebrow">Constellation</div><h2 class="realname">'+esc(C[selected.con])+'</h2><p class="fact">'+esc(CFACT[selected.con]||"")+'</p>';}
+  body.innerHTML=h;card.classList.remove("closed");
+  var f=document.getElementById("nameform");if(f)f.addEventListener("submit",function(ev){ev.preventDefault();var v=document.getElementById("starname").value.trim();if(!v)return;
+    MINE[selected.id]=v;saveMine();renderLists();openCard();var r=document.getElementById("reply");if(r)r.textContent="“"+REPLIES[Math.floor(Math.random()*REPLIES.length)]+"” S.";draw();});
+  var u=document.getElementById("unname");if(u)u.addEventListener("click",function(){delete MINE[selected.id];saveMine();renderLists();openCard();draw();});}
+function closeAll(){card.classList.add("closed");drawer.classList.add("closed");selected=null;draw();}
+document.querySelectorAll("[data-close]").forEach(function(b){b.addEventListener("click",closeAll);});
+
+function renderLists(){var lh=document.getElementById("listHis"),lm=document.getElementById("listMine");
+  lh.innerHTML=HIS.map(function(x){return '<li><button class="row" data-his="'+x.key+'"><span class="a">'+esc(x.his)+'</span><span class="c">'+(hisPos(x.key).alt<0?"below":"up")+'</span><span class="b">'+esc(x.real)+'</span></button></li>';}).join("");
+  var ids=Object.keys(MINE);lm.innerHTML=ids.length?ids.map(function(id){var s=BYID[id];return '<li><button class="row mine" data-star="'+id+'"><span class="a">'+esc(MINE[id])+'</span><span class="b">'+esc(s?s.name:id)+'</span></button></li>';}).join(""):
+   '<li><p class="empty">None yet. Tap any star without one of his names on it, and give it yours.</p></li>';
+  lh.querySelectorAll("[data-his]").forEach(function(b){b.addEventListener("click",function(){selected={kind:"his",key:b.dataset.his};lookAt(hisPos(b.dataset.his));openCard();});});
+  lm.querySelectorAll("[data-star]").forEach(function(b){b.addEventListener("click",function(){selected={kind:"star",id:b.dataset.star};lookAt(scene.starById[b.dataset.star]);openCard();});});}
+function lookAt(o){if(!o)return;view.az=o.az;view.alt=clamp(o.alt,-20,85);draw();}
+document.getElementById("openList").addEventListener("click",function(){renderLists();card.classList.add("closed");drawer.classList.remove("closed");});
+var tabH=document.getElementById("tabHis"),tabM=document.getElementById("tabMine");
+function tab(m){tabH.setAttribute("aria-selected",!m);tabM.setAttribute("aria-selected",m);document.getElementById("listHis").hidden=m;document.getElementById("listMine").hidden=!m;}
+tabH.addEventListener("click",function(){tab(false);});tabM.addEventListener("click",function(){tab(true);});
+
+/* ---------- Time & toggles ---------- */
+var range=document.getElementById("time"),clock=document.getElementById("clock"),home=document.getElementById("home");
+function clockStr(){var m=240+tMin;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");}
+function setTime(v){tMin=v;range.value=v;clock.textContent=clockStr();home.disabled=(v===27);computeScene();draw();if(!card.classList.contains("closed")&&selected)openCard();}
+range.addEventListener("input",function(){setTime(parseInt(range.value,10));});
+home.addEventListener("click",function(){setTime(27);});
+function toggle(btn,fn){btn.addEventListener("click",function(){var on=btn.getAttribute("aria-pressed")!=="true";btn.setAttribute("aria-pressed",on);fn(on);draw();});}
+toggle(document.getElementById("tLines"),function(v){showLines=v;});
+toggle(document.getElementById("tNames"),function(v){showNames=v;});
+
+var hint=document.getElementById("hint");function hideHint(){hint.classList.add("gone");}setTimeout(hideHint,6000);
+
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){draw();});
+computeScene();resize();
+})();
+</script>
+
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+</body></html>

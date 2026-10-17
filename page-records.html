@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}
+.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.back221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}</style>
+</head><body>
+<title>Records for Angie</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..700&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a walnut listening room. Turntable deck on top, the prescription chips, then the crate; a liner-notes sheet slides up over it. Single deliberate dark look. */
+:root{
+  --walnut:#22150f; --walnut-2:#2f1d14; --grain:#3b261a;
+  --oxblood:#7a2229; --oxblood-deep:#4a1418;
+  --brass:#cfa95a; --brass-dim:#8f7440;
+  --paper:#f1e6cf; --paper-ink:#2a1a12;
+  --cream:#eadcc0; --muted:#b9a68a;
+  --vinyl:#111; --groove:#2a2a2a;
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Spectral","Iowan Old Style",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --zh:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  color-scheme:dark;
+}
+body{background:var(--walnut);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.55;
+  background-image:repeating-linear-gradient(92deg,transparent 0 22px,rgba(0,0,0,.08) 22px 23px,transparent 23px 61px,rgba(255,220,180,.025) 61px 62px);}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px;display:flex;flex-direction:column;gap:36px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(40px,9vw,76px);line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--brass)}
+.lede{max-width:60ch;color:var(--muted);margin:6px 0 0;font-style:italic}
+h2{font-family:var(--display);font-weight:500;font-size:28px;margin:0;text-wrap:balance}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.sec-head .eyebrow{color:var(--muted)}
+
+/* Deck */
+.deck{background:linear-gradient(160deg,var(--grain),var(--walnut-2));border:1px solid rgba(207,169,90,.25);border-radius:14px;padding:18px;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:22px;align-items:center;box-shadow:0 20px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,230,190,.08)}
+.tt{width:100%;max-width:340px;aspect-ratio:1;justify-self:center}
+.tt svg{width:100%;height:100%;display:block}
+#platter{transform-origin:150px 150px;transform-box:view-box}
+.spinning #platter{animation:spin 1.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#arm{transform-origin:258px 42px;transform-box:view-box;transform:rotate(-24deg);transition:transform 1.1s cubic-bezier(.5,.1,.2,1)}
+.armdown #arm{transform:rotate(0deg)}
+@media (prefers-reduced-motion:reduce){.spinning #platter{animation:none}#arm{transition:none}.sheet,.vinyl-out{transition:none!important}}
+.now{display:flex;flex-direction:column;gap:12px;min-width:0}
+.now .np-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+.now .np-title{font-family:var(--display);font-size:clamp(24px,4.5vw,34px);line-height:1.1;margin:0;overflow-wrap:anywhere}
+.now .np-sub{color:var(--muted);margin:0}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.btn{min-height:44px;padding:10px 18px;border-radius:999px;border:1px solid var(--brass);background:transparent;color:var(--paper);font:500 15px/1 var(--body);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{background:rgba(207,169,90,.12)}
+.btn.primary{background:var(--oxblood);border-color:var(--oxblood);color:var(--paper)}
+.btn.primary:hover{background:#8c2a31}
+.btn:focus-visible,.rec:focus-visible,.chip:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.btn[aria-pressed="true"]{background:var(--brass);color:var(--paper-ink)}
+
+/* Title box */
+.naming{background:var(--paper);color:var(--paper-ink);border-radius:10px;padding:18px;display:grid;gap:10px}
+.naming label{font-family:var(--display);font-size:22px}
+.naming p{margin:0}
+.naming .hint{font-size:14px;color:#6a4f3c;font-style:italic}
+.naming form{display:flex;flex-wrap:wrap;gap:10px}
+.naming input{flex:1 1 220px;min-width:0;min-height:44px;border:1px solid #b79a73;border-radius:8px;padding:8px 12px;font:16px var(--body);background:#fffaf0;color:var(--paper-ink)}
+.naming .btn{border-color:var(--oxblood);color:var(--paper);background:var(--oxblood)}
+.reply{font-style:italic;border-left:3px solid var(--oxblood);padding-left:12px;min-height:1.5em}
+.reply:empty{display:none}
+
+/* Moods */
+.moods{display:flex;flex-wrap:wrap;gap:10px}
+.chip{min-height:44px;padding:8px 16px;border-radius:999px;border:1px solid rgba(207,169,90,.45);background:var(--walnut-2);color:var(--cream);font:15px var(--body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--brass);color:var(--paper-ink);border-color:var(--brass)}
+.rx{background:var(--oxblood-deep);border:1px dashed rgba(207,169,90,.45);border-radius:10px;padding:14px 16px;margin:0;max-width:70ch}
+.rx:empty{display:none}
+.rx b{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);display:block;margin-bottom:4px}
+
+/* Crate */
+.crate{background:linear-gradient(#3a2418,#24160f);border-radius:12px;padding:18px 14px 26px;border:1px solid rgba(207,169,90,.2);box-shadow:inset 0 -14px 0 #1a0f0a,inset 0 2px 0 rgba(255,220,180,.06)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px}
+.rec{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-width:0;transition:transform .25s,opacity .25s}
+.rec .cover{aspect-ratio:1;max-width:100%;border-radius:3px;overflow:hidden;box-shadow:0 8px 14px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.05);position:relative}
+.rec .cover svg{width:100%;height:100%;display:block}
+.rec:hover{transform:translateY(-6px)}
+.rec .t{font-family:var(--display);font-size:16px;line-height:1.15;overflow-wrap:anywhere}
+.rec .c{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.grid.filtered .rec:not(.lit){opacity:.32}
+.grid.filtered .rec.lit{transform:translateY(-8px)}
+.grid.filtered .rec.lit .cover{box-shadow:0 0 0 2px var(--brass),0 10px 18px rgba(0,0,0,.6)}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(10,5,3,.7);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:92%;overflow-y:auto;background:var(--paper);color:var(--paper-ink);border-radius:18px 18px 0 0;
+  padding:22px max(18px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));transform:translateY(0);transition:transform .35s ease;box-shadow:0 -20px 40px rgba(0,0,0,.5)}
+.sheet-in{max-width:760px;margin:0 auto;display:grid;gap:18px}
+.sheet-top{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:18px;align-items:center}
+.sleeve{position:relative;aspect-ratio:1;max-width:100%}
+.sleeve .cover{position:absolute;inset:0;z-index:2;border-radius:3px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.35)}
+.sleeve .cover svg{width:100%;height:100%;display:block}
+.vinyl-out{position:absolute;inset:4%;z-index:1;border-radius:50%;background:repeating-radial-gradient(circle,#151515 0 2px,#202020 2px 3px);transform:translateX(0);transition:transform .7s cubic-bezier(.3,.7,.2,1) .1s}
+.vinyl-out i{position:absolute;inset:34%;border-radius:50%}
+.open .vinyl-out{transform:translateX(38%)}
+.sheet h3{font-family:var(--display);font-size:clamp(24px,5vw,34px);font-weight:600;margin:0;line-height:1.08;text-wrap:balance}
+.meta{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#6a4f3c;margin-top:6px}
+.zh{font-family:var(--zh)}
+.notes{display:grid;gap:14px}
+.notes section{border-top:1px solid #d6c3a0;padding-top:12px}
+.notes h4{margin:0 0 4px;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--oxblood)}
+.notes p{margin:0;max-width:66ch}
+.moment{font-style:italic}
+.sheet .btn{color:var(--paper-ink);border-color:var(--paper-ink)}
+.sheet .btn:hover{background:rgba(42,26,18,.08)}
+.sheet .btn.primary{background:var(--oxblood);border-color:var(--oxblood);color:var(--paper)}
+.close{position:absolute;top:10px;right:max(10px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:none;background:transparent;font-size:26px;color:var(--paper-ink);cursor:pointer}
+.sign{font-family:var(--display);font-style:italic;color:var(--oxblood)}
+footer{color:var(--muted);font-style:italic;text-align:right;font-family:var(--display);font-size:18px}
+.score{font-family:var(--mono);font-style:normal;font-size:12px;letter-spacing:.12em;color:var(--brass);display:block;margin-top:4px}
+
+@media (max-width:640px){
+  .deck{grid-template-columns:1fr;padding:14px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sheet-top{grid-template-columns:minmax(0,120px) minmax(0,1fr);gap:14px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">221B · Saturday 17 October 2026 · left on the music stand</span>
+    <h1>Records for <em>Angie</em></h1>
+    <p class="lede">A crate I put together while you were asleep on the sofa. Each one has notes inside the sleeve. The first one is mine. It still needs a name.</p>
+  </header>
+
+  <section class="deck" id="deck" aria-label="Turntable">
+    <div class="tt">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Turntable">
+        <rect x="4" y="4" width="292" height="292" rx="14" fill="#1a0f0a"/>
+        <circle cx="150" cy="150" r="128" fill="#2a2a2a"/>
+        <g id="platter">
+          <circle cx="150" cy="150" r="122" fill="#0e0e0e"/>
+          <g fill="none" stroke="#262626" stroke-width="1">
+            <circle cx="150" cy="150" r="114"/><circle cx="150" cy="150" r="106"/><circle cx="150" cy="150" r="98"/><circle cx="150" cy="150" r="90"/><circle cx="150" cy="150" r="82"/><circle cx="150" cy="150" r="74"/><circle cx="150" cy="150" r="66"/><circle cx="150" cy="150" r="58"/>
+          </g>
+          <path d="M60 80 A122 122 0 0 1 120 34" stroke="rgba(255,255,255,.08)" stroke-width="18" fill="none"/>
+          <circle id="labelDisc" cx="150" cy="150" r="42" fill="#7a2229"/>
+          <text id="labelText" x="150" y="146" text-anchor="middle" font-family="Bodoni Moda, Georgia, serif" font-size="9" fill="#f1e6cf">Untitled,</text>
+          <text id="labelText2" x="150" y="160" text-anchor="middle" font-family="Bodoni Moda, Georgia, serif" font-size="9" font-style="italic" fill="#f1e6cf">for A.</text>
+          <circle cx="150" cy="150" r="3" fill="#cfa95a"/>
+        </g>
+        <circle cx="258" cy="42" r="16" fill="#3b261a" stroke="#cfa95a" stroke-width="2"/>
+        <g id="arm">
+          <path d="M258 42 L262 170 L238 214" stroke="#cfa95a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="226" y="208" width="20" height="14" rx="2" transform="rotate(-30 236 215)" fill="#8f7440"/>
+          <circle cx="258" cy="42" r="6" fill="#cfa95a"/>
+        </g>
+        <circle cx="30" cy="272" r="6" id="lamp" fill="#4a1418"/>
+        <text x="44" y="276" font-family="IBM Plex Mono, monospace" font-size="9" fill="#b9a68a">33⅓</text>
+      </svg>
+    </div>
+    <div class="now">
+      <span class="np-label" id="npLabel">On the deck</span>
+      <p class="np-title" id="npTitle">Untitled, for A.</p>
+      <p class="np-sub" id="npSub">S. H., violin, with a low line underneath. 17 seconds. Ends on C.</p>
+      <div class="row" id="npControls"></div>
+      <div class="naming" id="naming">
+        <label for="songTitle">Title the song</label>
+        <p class="hint">I tried. Everything I wrote was either a deduction or embarrassing. It's yours to name.</p>
+        <form id="titleForm">
+          <input id="songTitle" maxlength="60" autocomplete="off" placeholder="Type a title">
+          <button class="btn" type="submit">Name it</button>
+        </form>
+        <p class="reply" id="reply" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="rxh" style="display:flex;flex-direction:column;gap:14px">
+    <div class="sec-head"><h2 id="rxh">Prescriptions</h2><span class="eyebrow">tell me how you are</span></div>
+    <div class="moods" id="moods"></div>
+    <p class="rx" id="rx" aria-live="polite"></p>
+  </section>
+
+  <section aria-labelledby="crh" style="display:flex;flex-direction:column;gap:14px">
+    <div class="sec-head"><h2 id="crh">The crate</h2><span class="eyebrow">twelve sleeves · tap to pull one out</span></div>
+    <div class="crate"><div class="grid" id="grid"></div></div>
+  </section>
+
+  <footer>Yours, S.<span class="score">Score as of tonight: 10–0 to you</span></footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" hidden>
+  <button class="close" id="close" aria-label="Put the record back">×</button>
+  <div class="sheet-in" id="sheetIn"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var KEY="recordsForAngie.songTitle";
+function load(){try{return localStorage.getItem(KEY)||"";}catch(e){return "";}}
+function save(v){try{localStorage.setItem(KEY,v);}catch(e){}}
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+/* ---------- Abstract sleeve art (original, generated) ---------- */
+function bars(n,fn){var s="";for(var i=0;i<n;i++)s+=fn(i);return s;}
+var ART={
+  untitled:function(){return '<rect width="100" height="100" fill="#7a2229"/>'+
+    '<path d="M8 40 L14 32 L20 28 L26 32 L32 40 L38 44 L44 40 L50 32 L56 28 L62 20 L68 22 L74 28" stroke="#f1e6cf" stroke-width="2" fill="none" stroke-linejoin="round"/>'+
+    '<line x1="8" y1="78" x2="92" y2="78" stroke="#cfa95a" stroke-width="5"/>'+
+    '<circle cx="88" cy="62" r="5" fill="#cfa95a"/><text x="8" y="94" font-family="IBM Plex Mono,monospace" font-size="6" fill="#f1e6cf" letter-spacing="1">ENDS ON C</text>';},
+  chaconne:function(){return '<rect width="100" height="100" fill="#1d1b2a"/>'+bars(16,function(i){var y=8+i*5.4;return '<rect x="'+(10+(i%4)*3)+'" y="'+y+'" width="'+(i===8?80:(56+(i%4)*6))+'" height="2.4" fill="'+(i>=8&&i<12?"#e8c66a":"#cfc6b0")+'" opacity="'+(0.35+(i%4)*0.18)+'"/>';})+'<text x="10" y="96" font-family="IBM Plex Mono,monospace" font-size="6" fill="#e8c66a">BWV 1004</text>';},
+  danse:function(){var s='<rect width="100" height="100" fill="#0f1210"/>';for(var i=0;i<12;i++){var a=i/12*Math.PI*2-Math.PI/2;s+='<line x1="50" y1="50" x2="'+(50+38*Math.cos(a)).toFixed(1)+'" y2="'+(50+38*Math.sin(a)).toFixed(1)+'" stroke="#d9d4c3" stroke-width="'+(i===0?3:1)+'"/>';}return s+'<circle cx="50" cy="50" r="12" fill="#0f1210" stroke="#b33a2c" stroke-width="2"/><text x="50" y="53" text-anchor="middle" font-family="Bodoni Moda,serif" font-size="8" fill="#b33a2c">A·E♭</text>';},
+  clair:function(){return '<rect width="100" height="100" fill="#13243a"/><circle cx="62" cy="36" r="20" fill="#efe6c8"/><circle cx="70" cy="30" r="18" fill="#13243a"/>'+bars(6,function(i){return '<line x1="'+(14+i*4)+'" y1="'+(70+i*4)+'" x2="'+(86-i*4)+'" y2="'+(70+i*4)+'" stroke="#efe6c8" stroke-width="1" opacity="'+(0.7-i*0.1)+'"/>';});},
+  erquan:function(){return '<rect width="100" height="100" fill="#efe3c8"/><circle cx="50" cy="34" r="16" fill="none" stroke="#2a1a12" stroke-width="2"/>'+
+    '<line x1="6" y1="58" x2="94" y2="58" stroke="#2a1a12" stroke-width="1"/>'+bars(5,function(i){return '<ellipse cx="50" cy="'+(68+i*6)+'" rx="'+(16-i*2.4)+'" ry="1.6" fill="#2a1a12" opacity="'+(0.7-i*0.12)+'"/>';})+'<text x="90" y="20" text-anchor="end" font-family="Noto Serif SC,Songti SC,serif" font-size="8" fill="#7a2229" writing-mode="tb">二泉映月</text>';},
+  lark:function(){var s='<rect width="100" height="100" fill="#d9e2d0"/><path d="M4 92 Q30 90 40 70 T64 34 T92 8" stroke="#2b3a2a" stroke-width="1.2" fill="none" stroke-dasharray="2 3"/>';return s+'<path d="M84 14 l6 -4 l-2 6 z" fill="#2b3a2a"/><rect x="0" y="88" width="100" height="12" fill="#5b6e48"/>';},
+  satie:function(){return '<rect width="100" height="100" fill="#e6ddd0"/><rect x="16" y="26" width="26" height="50" fill="#9aa7b0"/><rect x="58" y="26" width="26" height="50" fill="#c9b28c"/><rect x="16" y="14" width="68" height="4" fill="#2a1a12"/><text x="16" y="92" font-family="IBM Plex Mono,monospace" font-size="6" fill="#2a1a12" letter-spacing="1">LENT ET DOULOUREUX</text>';},
+  elgar:function(){return '<rect width="100" height="100" fill="#5a1d2a"/><path d="M20 60 C20 30, 50 30, 50 50 C50 70, 80 70, 80 40" stroke="#f0d9b5" stroke-width="2.5" fill="none"/><path d="M20 40 C20 70, 50 70, 50 50 C50 30, 80 30, 80 60" stroke="#cfa95a" stroke-width="2.5" fill="none"/><text x="50" y="90" text-anchor="middle" font-family="Bodoni Moda,serif" font-style="italic" font-size="8" fill="#f0d9b5">Liebesgruss</text>';},
+  massenet:function(){return '<rect width="100" height="100" fill="#2d3b4a"/><path d="M6 70 Q30 30 50 50 T94 30" stroke="#e8dcc0" stroke-width="2" fill="none"/><path d="M6 78 Q30 46 50 62 T94 44" stroke="#cfa95a" stroke-width="1.5" fill="none"/><circle cx="50" cy="50" r="2.5" fill="#e8dcc0"/>';},
+  chopin:function(){var s='<rect width="100" height="100" fill="#241a33"/>';for(var i=0;i<4;i++){s+='<path d="M'+(14+i*2)+' '+(28+i*16)+' q 10 -'+(4+i*3)+' 20 0 t 20 0 t 20 0 t 20 0" stroke="#d8c6e8" stroke-width="'+(1+i*0.4)+'" fill="none" opacity="'+(0.45+i*0.15)+'"/>';}return s+'<text x="10" y="94" font-family="IBM Plex Mono,monospace" font-size="6" fill="#d8c6e8">E♭ · 12/8</text>';},
+  paganini:function(){var s='<rect width="100" height="100" fill="#c7a03c"/>';for(var i=0;i<24;i++){var x=10+(i%6)*14,y=12+Math.floor(i/6)*18;s+='<rect x="'+x+'" y="'+y+'" width="10" height="12" fill="'+(i===23?"#7a2229":"#2a1a12")+'" opacity="'+(i===23?1:0.25+((i*7)%10)/20)+'"/>';}return s+'<text x="10" y="96" font-family="IBM Plex Mono,monospace" font-size="6" fill="#2a1a12">N° 24</text>';},
+  mendelssohn:function(){return '<rect width="100" height="100" fill="#1f3a34"/><path d="M8 30 L22 18 L34 40 L46 14 L58 34" stroke="#f1e6cf" stroke-width="2" fill="none"/><line x1="8" y1="66" x2="92" y2="66" stroke="#cfa95a" stroke-width="3"/><circle cx="8" cy="66" r="3" fill="#cfa95a"/><text x="92" y="82" text-anchor="end" font-family="Bodoni Moda,serif" font-style="italic" font-size="8" fill="#cfa95a">attacca</text>';}
+};
+function svg(id){return '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">'+ART[id]()+'</svg>';}
+
+/* ---------- The records ---------- */
+var R=[
+ {id:"untitled",title:"Untitled, for A.",composer:"S. H.",cat:"Unpublished · 221B, 17 Oct 2026",label:"#7a2229",synth:true,
+  why:"I told you once I'd never written anything for anyone. That was accurate until about six this morning. You asked what it was called and I changed the subject. This is me not changing it.",
+  listen:"It runs off quickly at the start, sixteen quick notes that don't know where they're going. That's you, going the wrong way down the street, laughing. Then a low line comes in underneath and barely moves. Don't read anything into that. The tune slows down, almost catches its breath on a long G, and then the last bars fall to B and land on C. It comes home.",
+  moment:"After the duet. You said you were rusty. You weren't."},
+ {id:"chaconne",title:"Chaconne",composer:"J. S. Bach",cat:"from Partita No. 2 in D minor, BWV 1004 · c. 1720",label:"#1d1b2a",q:"Bach Chaconne Partita No. 2 D minor BWV 1004 violin",
+  why:"The first thing I played after you came up the stairs at 04:27. You said you were bored. Bored people deserve architecture.",
+  listen:"It's the last movement of the partita and longer than the four before it put together. Everything is built over a short four-bar pattern in triple time that comes round again and again, some sixty times, while the violin plays two, three, four voices at once. Around the halfway mark it turns from D minor into D major and the light changes. Later it goes back to minor, and you realise the minor never really left. Brahms wrote to Clara Schumann that if he had imagined composing it himself, the excitement would have driven him out of his mind.",
+  moment:"04:27. Your coat still on."},
+ {id:"danse",title:"Danse macabre",composer:"Camille Saint-Saëns",cat:"Op. 40 · tone poem · 1874",label:"#0f1210",q:"Saint-Saëns Danse macabre Op. 40",
+  why:"For the rosin. You spotted it before I did. I'll deny that in front of Lestrade, but I'm putting it on record here.",
+  listen:"The harp strikes a D twelve times. It's midnight. Then Death tunes his fiddle: the solo violin has its top E string lowered to E-flat, so the open strings sound A against E-flat, a tritone, the interval old theorists called the devil in music. The xylophone is bones rattling. Near the end an oboe crows like a cockerel, dawn breaks, and the dead scatter back to their graves.",
+  moment:"The poisoned violinist. Your eyes on the rosin."},
+ {id:"clair",title:"Clair de lune",composer:"Claude Debussy",cat:"Suite bergamasque, L. 75, 3rd mvt · begun 1890, pub. 1905",label:"#13243a",q:"Debussy Clair de lune Suite bergamasque",
+  why:"\"She who is a moon can never be the sun.\" I've read it more times than I'll admit. I disagree with the premise and I love the poem.",
+  listen:"D-flat major, 9/8, marked pianissimo. The opening chords start just off the beat, so for a few bars you can't find the pulse and the music seems to float. The title is borrowed from a Verlaine poem. You play piano, so listen to the pedal: it's doing half the work, letting each harmony blur into the next like moonlight on water.",
+  moment:"Your poem. The moon."},
+ {id:"erquan",title:"二泉映月 Er Quan Ying Yue",zh:true,composer:"Hua Yanjun (阿炳 Ah Bing)",cat:"The Moon Reflected on the Second Spring · erhu · recorded 1950",label:"#efe3c8",q:"二泉映月 Er Quan Ying Yue erhu Hua Yanjun",
+  why:"羁绊 and 缘. You gave me two words and I went looking for what they sound like. This is the closest I found.",
+  listen:"The erhu has two strings tuned a fifth apart and no fingerboard. The player's fingers press the strings in the air, which is why the slides between notes are so liquid. Hua Yanjun was a blind street musician in Wuxi; the Second Spring is the famous spring at Huishan there. The music survives because two musicologists, Yang Yinliu and Cao Anhe, recorded him on a wire recorder in the summer of 1950, months before he died. Listen to the opening phrase sigh downward, then come back again and again, each time stretched a little further.",
+  moment:"Your Mandarin words. Also, again, the moon."},
+ {id:"lark",title:"The Lark Ascending",composer:"Ralph Vaughan Williams",cat:"Romance for violin and orchestra · 1914, rev. 1920",label:"#d9e2d0",q:"Vaughan Williams The Lark Ascending",
+  why:"You ran the wrong way and laughed, and said you enjoy the chase. I'll always catch you. The bird, admittedly, has a head start.",
+  listen:"Quiet held chords, then the violin alone, written without barlines, climbing in trills and pentatonic turns like a bird going up in spirals. At the very end it does it again, higher and higher, until it vanishes into silence above the orchestra. Inspired by George Meredith's poem. First played in 1920 by Marie Hall.",
+  moment:"The chase. The wrong way, on purpose."},
+ {id:"satie",title:"Gymnopédie No. 1",composer:"Erik Satie",cat:"for piano · 1888",label:"#e6ddd0",q:"Satie Gymnopédie No. 1",
+  why:"For Saturdays with no case. They're rare. I'm told they can be pleasant.",
+  listen:"Marked Lent et douloureux, slow and sorrowful. The left hand rocks between two soft major-seventh chords, on G and on D, before the tune arrives, and the tune never hurries. It's in 3/4, a slow waltz nobody is dancing to. Good with croissants.",
+  moment:"Croissants at dawn. The bakery. You know what happened in the bakery."},
+ {id:"elgar",title:"Salut d'amour",composer:"Edward Elgar",cat:"Op. 12 · 1888",label:"#5a1d2a",q:"Elgar Salut d'amour Op. 12 violin",
+  why:"I didn't choose this one. It was in the crate already. Mrs Hudson must have... Fine. I chose it.",
+  listen:"Elgar wrote it as an engagement present for Caroline Alice Roberts, who had given him a poem. He called it Liebesgruss, in German, because she spoke German; the publisher renamed it in French because French sold better, and Elgar sold the rights for a small flat fee. The main tune comes round three times. Each time it tries a little harder not to look at you.",
+  moment:"The old man and the lopsided scarf outside the hospital."},
+ {id:"massenet",title:"Méditation",composer:"Jules Massenet",cat:"from the opera Thaïs · Act II entr'acte · 1894",label:"#2d3b4a",q:"Massenet Méditation Thaïs violin",
+  why:"I improvised and you found the harmony underneath before I'd worked out where I was going. That shouldn't be possible. Then you called yourself rusty.",
+  listen:"Solo violin over harp and strings, in D major. In the opera it's the moment a woman reconsiders her whole life. The tune rises to a passionate climax in the middle, then returns very quietly, and the violin ends high and soft, as if it's still deciding.",
+  moment:"Our duet. Your harmony under my line."},
+ {id:"chopin",title:"Nocturne in E-flat major",composer:"Frédéric Chopin",cat:"Op. 9 No. 2 · c. 1830–32",label:"#241a33",q:"Chopin Nocturne Op. 9 No. 2",
+  why:"For nights you can't sleep. Call me. Or play this first, then call me.",
+  listen:"12/8, with the left hand rocking gently underneath. The main melody comes back several times and Chopin decorates it a little more each time, like someone telling the same story with more feeling. Near the end there's a small cadenza, a quick shimmering run, before it settles. Dedicated to Marie Pleyel.",
+  moment:"Four in the morning, generally. Today specifically."},
+ {id:"paganini",title:"Caprice No. 24 in A minor",composer:"Niccolò Paganini",cat:"24 Caprices, Op. 1 · published 1820",label:"#c7a03c",q:"Paganini Caprice No. 24",
+  why:"Showing off. Yes, I'm aware. It's 10–0 to you; I'm allowed one.",
+  listen:"A twelve-bar theme, then eleven variations and a finale. In variation 9 the violinist plucks with the left hand, the same fingers that are stopping the notes. The theme was so good that Brahms, Rachmaninoff and Lutosławski all wrote their own variations on it. Count the variations. You'll get it right first time, which is irritating.",
+  moment:"The scoreboard. Ronaldo is keeping count."},
+ {id:"mendelssohn",title:"Violin Concerto in E minor",composer:"Felix Mendelssohn",cat:"Op. 64 · 1844, premiered Leipzig 1845",label:"#1f3a34",q:"Mendelssohn Violin Concerto E minor Op. 64",
+  why:"You stood up in the middle of a concert hall and said \"It's unfinished.\" Then you named him the soul weaver. That was the bravest thing I've seen all week, and my week included a poisoning.",
+  listen:"The violin comes in almost immediately, after barely a bar and a half of soft strings. The cadenza is written out and placed before the recapitulation instead of near the end, and its rippling arpeggios carry the orchestra back in. At the end of the first movement a single bassoon holds one note, a B, straight into the slow movement so nobody can clap. A low steady line, holding on. Ferdinand David played the premiere.",
+  moment:"The concert. \"It's unfinished.\""}
+];
+var byId={};R.forEach(function(r){byId[r.id]=r;});
+
+var MOODS=[
+ {k:"cant",name:"Can't sleep",ids:["chopin","satie","clair"],note:"Chopin first, lights off. Then Satie. If you're still awake after Debussy, you're allowed to text me. I won't be asleep either."},
+ {k:"brave",name:"Brave",ids:["mendelssohn","chaconne","paganini"],note:"Mendelssohn, because you've already been brave once today. Bach for the long haul. Paganini if you need to win an argument."},
+ {k:"heavy",name:"Heavy day",ids:["erquan","chaconne","massenet"],note:"Er Quan Ying Yue doesn't pretend things are fine, which is why it helps. Then the Chaconne: it goes into the dark and comes out the other side. Massenet when you're ready to put the kettle on."},
+ {k:"happy",name:"Happy",ids:["lark","danse","elgar"],note:"The Lark, loud. Danse macabre, because you like a murder. Elgar if you want to be sentimental. I won't tell anyone."},
+ {k:"miss",name:"Missing him",ids:["untitled","elgar","massenet"],note:"Put mine on first. It ends on C. It always comes home. So do I."}
+];
+
+/* ---------- Render crate ---------- */
+var grid=document.getElementById("grid");
+function songName(){var t=load();return t||"Untitled, for A.";}
+function renderGrid(){
+  grid.innerHTML=R.map(function(r){
+    var title=r.id==="untitled"?songName():r.title;
+    return '<button class="rec" type="button" data-id="'+r.id+'" aria-label="'+esc(title+", "+r.composer)+'"><span class="cover">'+svg(r.id)+'</span><span class="t'+(r.zh?" zh":"")+'">'+esc(title)+'</span><span class="c">'+esc(r.composer)+'</span></button>';
+  }).join("");
+}
+renderGrid();
+grid.addEventListener("click",function(e){var b=e.target.closest(".rec");if(b)openSheet(b.dataset.id,b);});
+
+/* ---------- Moods ---------- */
+var moodsEl=document.getElementById("moods"),rx=document.getElementById("rx"),activeMood=null;
+moodsEl.innerHTML=MOODS.map(function(m){return '<button class="chip" type="button" aria-pressed="false" data-k="'+m.k+'">'+m.name+'</button>';}).join("");
+moodsEl.addEventListener("click",function(e){
+  var b=e.target.closest(".chip");if(!b)return;
+  var m=MOODS.filter(function(x){return x.k===b.dataset.k;})[0];
+  activeMood=activeMood===m.k?null:m.k;
+  Array.prototype.forEach.call(moodsEl.children,function(c){c.setAttribute("aria-pressed",String(c.dataset.k===activeMood));});
+  grid.classList.toggle("filtered",!!activeMood);
+  Array.prototype.forEach.call(grid.children,function(c){c.classList.toggle("lit",!!activeMood&&m.ids.indexOf(c.dataset.id)>=0);});
+  rx.innerHTML=activeMood?'<b>Rx · '+esc(m.name)+'</b>'+esc(m.note):"";
+});
+
+/* ---------- Sheet ---------- */
+var sheet=document.getElementById("sheet"),scrim=document.getElementById("scrim"),sheetIn=document.getElementById("sheetIn"),lastFocus=null;
+function yt(q){return "https://www.youtube.com/results?search_query="+encodeURIComponent(q);}
+function sp(q){return "https://open.spotify.com/search/"+encodeURIComponent(q);}
+function listenLinks(r){
+  if(r.synth)return "";
+  return '<a class="btn" href="'+yt(r.q)+'" target="_blank" rel="noopener">Listen on YouTube</a><a class="btn" href="'+sp(r.q)+'" target="_blank" rel="noopener">Listen on Spotify</a>';
+}
+function openSheet(id,from){
+  var r=byId[id];lastFocus=from||null;
+  var title=r.id==="untitled"?songName():r.title;
+  sheetIn.innerHTML=
+   '<div class="sheet-top"><div class="sleeve"><div class="vinyl-out"><i style="background:'+r.label+'"></i></div><div class="cover">'+svg(r.id)+'</div></div>'+
+   '<div style="min-width:0"><h3 id="shTitle" class="'+(r.zh?"zh":"")+'">'+esc(title)+'</h3><div class="meta">'+esc(r.composer)+'<br>'+esc(r.cat)+'</div></div></div>'+
+   '<div class="notes">'+
+     '<section><h4>Why this one</h4><p>'+esc(r.why)+'</p></section>'+
+     '<section><h4>What to listen for</h4><p>'+esc(r.listen)+'</p></section>'+
+     '<section><h4>Which part of today</h4><p class="moment">'+esc(r.moment)+'</p></section>'+
+   '</div>'+
+   '<div class="row"><button class="btn primary" type="button" id="placeBtn">'+(r.synth?"Put it on and play":"Place on the turntable")+'</button>'+listenLinks(r)+'</div>'+
+   '<p class="sign">— S.</p>';
+  scrim.hidden=false;sheet.hidden=false;sheet.scrollTop=0;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){sheet.classList.add("open");});});
+  document.getElementById("placeBtn").addEventListener("click",function(){place(r.id,r.synth);closeSheet();document.getElementById("deck").scrollIntoView({behavior:"smooth",block:"start"});});
+  document.getElementById("close").focus();
+}
+function closeSheet(){sheet.classList.remove("open");sheet.hidden=true;scrim.hidden=true;if(lastFocus)try{lastFocus.focus({preventScroll:true});}catch(e){}}
+document.getElementById("close").addEventListener("click",closeSheet);
+scrim.addEventListener("click",closeSheet);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sheet.hidden)closeSheet();});
+
+/* ---------- Turntable ---------- */
+var deck=document.getElementById("deck"),current="untitled";
+var npTitle=document.getElementById("npTitle"),npSub=document.getElementById("npSub"),npLabel=document.getElementById("npLabel"),npControls=document.getElementById("npControls");
+function setLabel(r){
+  document.getElementById("labelDisc").setAttribute("fill",r.label);
+  var light=["#efe3c8","#d9e2d0","#e6ddd0","#c7a03c"].indexOf(r.label)>=0;
+  var t1=document.getElementById("labelText"),t2=document.getElementById("labelText2");
+  t1.setAttribute("fill",light?"#2a1a12":"#f1e6cf");t2.setAttribute("fill",light?"#2a1a12":"#f1e6cf");
+  var name=r.id==="untitled"?songName():r.title;
+  if(name.length>16){var cut=name.lastIndexOf(" ",16);if(cut<6)cut=16;t1.textContent=name.slice(0,cut).trim();t2.textContent=(name.slice(cut).trim()).slice(0,18);}
+  else{t1.textContent=name;t2.textContent=r.id==="untitled"&&!load()?"for A.":"";}
+  if(r.id==="untitled"&&!load()){t1.textContent="Untitled,";t2.textContent="for A.";}
+}
+function renderNow(){
+  var r=byId[current];setLabel(r);
+  npTitle.textContent=r.id==="untitled"?songName():r.title;
+  npTitle.classList.toggle("zh",!!r.zh);
+  npSub.textContent=r.synth?"S. H., violin, with a low line underneath. About 17 seconds. Ends on C.":r.composer+" · "+r.cat;
+  if(r.synth){
+    npControls.innerHTML='<button class="btn primary" type="button" id="playBtn" aria-pressed="false">Play</button>';
+    document.getElementById("playBtn").addEventListener("click",function(){playing?stopSong():playSong();});
+  }else{
+    npControls.innerHTML=listenLinks(r)+'<button class="btn" type="button" id="liftBtn">Lift the needle</button>';
+    document.getElementById("liftBtn").addEventListener("click",function(){setSpin(false);place("untitled",true,true);});
+  }
+}
+function setSpin(on){deck.classList.toggle("spinning",on);deck.classList.toggle("armdown",on);document.getElementById("lamp").setAttribute("fill",on?"#d9483f":"#4a1418");npLabel.textContent=on?"Now spinning":"On the deck";}
+function place(id,synth,quiet){
+  if(playing)stopSong();
+  current=id;renderNow();
+  if(quiet)return;
+  if(synth){playSong();}else{setSpin(true);}
+}
+
+/* ---------- His song, synthesized ---------- */
+var MEL=[[76,1],[79,1],[81,1],[79,1],[76,1],[74,1],[76,1],[79,1],[81,1],[84,1],[83,1],[81,1],[79,1],[76,1],[74,1],[76,1],[72,2],[76,2],[79,4],[77,2],[76,2],[74,4],[72,2],[76,2],[81,4],[79,6],[76,1],[79,1],[81,1],[79,1],[76,1],[74,1],[74,2],[71,2],[72,10]];
+var BASS=[[48,16],[53,24],[45,32],[43,40],[43,46],[48,54]];
+var BEAT=0.26,ctx=null,master=null,playing=false,endTimer=null;
+function hz(m){return 440*Math.pow(2,(m-69)/12);}
+function voice(t0,dur,freq,o){
+  var g=ctx.createGain();g.gain.setValueAtTime(0,t0);
+  g.gain.linearRampToValueAtTime(o.peak,t0+o.atk);
+  g.gain.linearRampToValueAtTime(o.peak*0.82,t0+Math.min(dur*0.5,o.atk+0.15));
+  g.gain.setValueAtTime(o.peak*0.82,t0+Math.max(dur-0.06,o.atk));
+  g.gain.linearRampToValueAtTime(0,t0+dur+o.rel);
+  var f=ctx.createBiquadFilter();f.type="lowpass";f.frequency.value=o.cut;f.Q.value=0.8;
+  f.connect(g);g.connect(master);
+  var lfo=ctx.createOscillator();lfo.frequency.value=o.vib;
+  var lg=ctx.createGain();lg.gain.setValueAtTime(0,t0);lg.gain.linearRampToValueAtTime(o.depth,t0+Math.min(0.25,dur*0.6));
+  lfo.connect(lg);
+  [-o.det,o.det].forEach(function(d){var s=ctx.createOscillator();s.type="sawtooth";s.frequency.value=freq;s.detune.value=d;lg.connect(s.detune);s.connect(f);s.start(t0);s.stop(t0+dur+o.rel+0.05);});
+  lfo.start(t0);lfo.stop(t0+dur+o.rel+0.05);
+}
+function playSong(){
+  var AC=window.AudioContext||window.webkitAudioContext;if(!AC){npSub.textContent="This browser can't play the synthesized version. The notes are in the sleeve.";return;}
+  try{ctx=new AC();}catch(e){return;}
+  master=ctx.createGain();master.gain.value=0.22;
+  var comp=ctx.createDynamicsCompressor();master.connect(comp);comp.connect(ctx.destination);
+  var dl=ctx.createDelay();dl.delayTime.value=0.19;var fb=ctx.createGain();fb.gain.value=0.28;var wet=ctx.createGain();wet.gain.value=0.25;
+  var lp=ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2200;
+  master.connect(dl);dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(wet);wet.connect(comp);
+  var t=ctx.currentTime+0.12,b=0;
+  MEL.forEach(function(n){var d=n[1]*BEAT;voice(t+b*BEAT,d*0.96,hz(n[0]),{peak:0.5,atk:Math.min(0.08,d*0.4),rel:0.12,cut:3000,vib:5.6,depth:12,det:5});b+=n[1];});
+  var total=b;
+  BASS.forEach(function(n,i){var start=n[1],end=i<BASS.length-1?BASS[i+1][1]:total;voice(t+start*BEAT,(end-start)*BEAT*0.97,hz(n[0]),{peak:0.42,atk:0.25,rel:0.4,cut:900,vib:5.0,depth:8,det:4});});
+  playing=true;setSpin(true);
+  var pb=document.getElementById("playBtn");if(pb){pb.textContent="Stop";pb.setAttribute("aria-pressed","true");}
+  endTimer=setTimeout(function(){stopSong(true);},(total*BEAT+1.2)*1000);
+}
+function stopSong(natural){
+  clearTimeout(endTimer);playing=false;setSpin(false);
+  var pb=document.getElementById("playBtn");if(pb){pb.textContent=natural?"Play again":"Play";pb.setAttribute("aria-pressed","false");}
+  if(ctx){var c=ctx;try{master.gain.setTargetAtTime(0,c.currentTime,0.05);}catch(e){}setTimeout(function(){try{c.close();}catch(e){}},300);ctx=null;}
+}
+
+/* ---------- Naming ---------- */
+var LINES=[
+ "\"{t}.\" ... Yes. That's what it was called all along. I just didn't have the data.",
+ "\"{t}.\" I've written it on the score. In ink. Don't tell me if you change your mind.",
+ "\"{t}.\" My ears have gone pink. That is a circulatory response and means nothing.",
+ "\"{t}.\" Better than anything I came up with, and I came up with forty-one. 11–0.",
+ "\"{t}.\" Ronaldo approves. I asked.",
+ "\"{t}.\" Dork. That's what you'll call me for liking it this much. Fine."
+];
+var input=document.getElementById("songTitle"),reply=document.getElementById("reply");
+input.value=load();
+document.getElementById("titleForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var v=input.value.trim().slice(0,60);
+  if(!v){reply.textContent="It needs at least one word. Even \"tomatoes\" would do. Please don't choose \"tomatoes\".";return;}
+  save(v);
+  var line=LINES[Math.floor(Math.random()*LINES.length)].replace("{t}",v);
+  reply.textContent=line;
+  renderGrid();
+  if(activeMood){var m=MOODS.filter(function(x){return x.k===activeMood;})[0];grid.classList.add("filtered");Array.prototype.forEach.call(grid.children,function(c){c.classList.toggle("lit",m.ids.indexOf(c.dataset.id)>=0);});}
+  if(current==="untitled"){setLabel(byId.untitled);npTitle.textContent=v;}
+});
+
+renderNow();
+})();
+</script>
+
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+</body></html>

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}
+.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.back221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}</style>
+</head><body>
+<title>The Specimen Cabinet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+SC:wght@500&family=IM+Fell+English:ital@0;1&family=Pinyon+Script&display=swap">
+<style>
+/* Layout: one velvet display case, a bell jar on stage, specimen tags beneath, the label card last */
+:root{
+  --bg:#141D18; --surface:#1C2721; --line:#33433A; --fg:#EEE5D4; --muted:#B5AB97; --brass:#CDA86C; --ink-red:#C9675C;
+  --display:'IM Fell English', 'Cormorant Garamond', Georgia, serif;
+  --body:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --label:'Cormorant SC', 'Cormorant Garamond', Georgia, serif;
+  --script:'Pinyon Script', 'Snell Roundhand', cursive;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:40px 72px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.eyebrow{font-family:var(--label);font-size:13px;letter-spacing:.32em;color:var(--muted);text-transform:lowercase}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(36px,8vw,56px);line-height:1.05;text-wrap:balance}
+.sub{margin:0;font-style:italic;font-size:18px;color:var(--muted)}
+.stage{position:relative;width:100%;height:clamp(320px,62vw,500px);border:1px solid var(--line);background:radial-gradient(ellipse at 50% 42%, #24332B 0%, var(--bg) 72%);touch-action:none;cursor:grab;overflow:hidden}
+.stage:active{cursor:grabbing}
+.stage canvas{display:block;width:100%;height:100%}
+.hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:var(--label);font-size:12px;letter-spacing:.24em;color:var(--muted);pointer-events:none}
+.tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.tags{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tag{min-height:56px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-style:italic;font-size:17px;line-height:1.2;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.tag small{font-family:var(--label);font-style:normal;font-size:11px;letter-spacing:.2em;color:var(--muted)}
+.tag[aria-pressed="true"]{border-color:var(--brass);background:#24312A}
+.tag:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.card{border:1px solid var(--line);background:var(--surface);padding:24px clamp(18px,5vw,36px) 26px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .latin{margin:0;font-family:var(--display);font-style:italic;font-weight:400;font-size:28px;color:var(--brass);text-wrap:balance}
+.card .common{font-family:var(--label);font-size:13px;letter-spacing:.24em;color:var(--muted)}
+.card p.note{margin:6px 0 0;font-size:20px;line-height:1.7;max-width:62ch}
+.sig{display:flex;justify-content:flex-end;align-items:baseline;gap:10px;margin-top:4px}
+.sig span:first-child{font-family:var(--label);font-size:12px;letter-spacing:.2em;color:var(--muted)}
+.sig span:last-child{font-family:var(--script);font-size:30px;color:var(--ink-red)}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">221b · private collection</span>
+    <h1>The Specimen Cabinet</h1>
+    <p class="sub">gathered in the company of A., the 17th of October</p>
+  </header>
+
+  <div class="stage" id="stage" aria-label="A glass bell jar holding the selected specimen. Drag to turn it.">
+    <div class="hint" id="hint">drag to turn it over</div>
+  </div>
+
+  <div class="tags" role="group" aria-label="Choose a specimen" id="tags"></div>
+
+  <section class="card" aria-live="polite">
+    <h2 class="latin" id="latin"></h2>
+    <span class="common" id="common"></span>
+    <p class="note" id="note"></p>
+    <div class="sig"><span>collector</span><span>S. H.</span></div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const SPEC=[
+ {id:'dandelion',latin:'Taraxacum praecox',common:'the early one',note:"A dandelion that arrived too early for spring. You'd call it out of place. I'd call it simply first. Each seed leaves without knowing where it lands, and the plant never sees what grows. That is not at all the same as nothing growing."},
+ {id:'leaf',latin:'Acer autumnalis',common:'from your poem',note:"Kissed by the wind, startled by time, due back to the earth. I've kept it here instead, so it needn't return to the soil just yet. Some things deserve to be kept a little longer than the season allows."},
+ {id:'tomato',latin:'Solanum lycopersicum',common:'exhibit of my shame',note:"The reason I can no longer show my face on Baker Street. Retained as proof that I am occasionally wrong, and that being wrong in front of you is the most fun I've had in years. Not to be shown to John."},
+ {id:'rosin',latin:'Colophonium',common:'your first clue',note:"The first clue you solved for me. Dull to look at, essential to the music: without it the bow slides and nothing sings. People overlook you the same way, then wonder why everything sounds better when you're in the room."},
+ {id:'moon',latin:'Luna',common:'not lesser',note:"Moves every ocean on earth. The only light you can look at directly without it hurting. After careful study, classified as not lesser than the sun, merely other. Filed, permanently, under A."},
+ {id:'thread',latin:'Filum rubrum · 羁绊',common:'do not cut',note:"Recovered from a poem, where it was disguised as an invisible thread. Once a tether, now a bond. It holds you back and holds you on, both at once. Specimen not to be cut under any circumstances whatsoever."}
+];
+const tagsEl=document.getElementById('tags');
+const latinEl=document.getElementById('latin'),commonEl=document.getElementById('common'),noteEl=document.getElementById('note');
+let current=0;
+SPEC.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='tag';b.id='tag-'+s.id;b.setAttribute('aria-pressed',i===0?'true':'false');b.innerHTML=s.latin.split(' · ')[0]+'<small>'+s.common+'</small>';tagsEl.appendChild(b)});
+function showText(i){const s=SPEC[i];latinEl.textContent=s.latin;commonEl.textContent=s.common;noteEl.textContent=s.note}
+showText(0);
+
+if(typeof THREE==='undefined'){document.getElementById('hint').textContent='the cabinet could not load in this view';document.querySelectorAll('.tag').forEach((b,j)=>{b.onclick=()=>{current=j;showText(j);document.querySelectorAll('.tag').forEach((x,k)=>x.setAttribute('aria-pressed',k===j?'true':'false'))}});return}
+
+const stage=document.getElementById('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+stage.prepend(renderer.domElement);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(32,1,0.1,50);
+camera.position.set(0,0.6,7.2);camera.lookAt(0,0.1,0);
+
+scene.add(new THREE.HemisphereLight(0xf3e6cc,0x16201a,0.55));
+const key=new THREE.DirectionalLight(0xfff1d8,1.15);key.position.set(3.5,4,3);scene.add(key);
+const rim=new THREE.DirectionalLight(0x9fb7c9,0.5);rim.position.set(-4,1.5,-3);scene.add(rim);
+
+const base=new THREE.Mesh(new THREE.CylinderGeometry(1.75,1.9,0.28,64),new THREE.MeshStandardMaterial({color:0x2a1d14,roughness:0.55,metalness:0.1}));
+base.position.y=-1.9;scene.add(base);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(1.76,0.035,12,90),new THREE.MeshStandardMaterial({color:0xcda86c,roughness:0.3,metalness:0.85}));
+ring.rotation.x=Math.PI/2;ring.position.y=-1.76;scene.add(ring);
+const glassMat=new THREE.MeshStandardMaterial({color:0xdfe9e4,transparent:true,opacity:0.1,roughness:0.05,metalness:0.2,side:THREE.DoubleSide,depthWrite:false});
+const dome=new THREE.Group();
+const cyl=new THREE.Mesh(new THREE.CylinderGeometry(1.62,1.62,2.3,64,1,true),glassMat);cyl.position.y=-0.6;dome.add(cyl);
+const cap=new THREE.Mesh(new THREE.SphereGeometry(1.62,64,24,0,Math.PI*2,0,Math.PI/2),glassMat);cap.position.y=0.55;dome.add(cap);
+const knob=new THREE.Mesh(new THREE.SphereGeometry(0.12,24,16),new THREE.MeshStandardMaterial({color:0xcda86c,roughness:0.3,metalness:0.85}));knob.position.y=2.24;dome.add(knob);
+scene.add(dome);
+
+const holder=new THREE.Group();holder.position.y=0.05;scene.add(holder);
+const mat=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:0.6},o||{}));
+
+function tube(points,r,material,seg){const c=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(p[0],p[1],p[2])));return new THREE.Mesh(new THREE.TubeGeometry(c,seg||60,r,10,false),material)}
+
+function makeDandelion(){const g=new THREE.Group();
+ g.add(tube([[0,-1.75,0],[0.05,-1,0.02],[-0.04,-0.2,0],[0,0.55,0]],0.035,mat(0x587a42)));
+ const n=170,pos=[],tips=[],c=new THREE.Vector3(0,0.85,0),R=0.62,ga=Math.PI*(3-Math.sqrt(5));
+ for(let i=0;i<n;i++){const y=1-(i/(n-1))*2;const r=Math.sqrt(1-y*y);const t=ga*i;const d=new THREE.Vector3(Math.cos(t)*r,y,Math.sin(t)*r);if(d.y<-0.75)continue;
+  const tip=c.clone().add(d.clone().multiplyScalar(R));pos.push(c.x,c.y,c.z,tip.x,tip.y,tip.z);tips.push(tip.x,tip.y,tip.z);
+  const f=d.clone().multiplyScalar(R*1.12).add(c);for(let k=0;k<3;k++){const j=new THREE.Vector3((Math.random()-.5)*.09,(Math.random()-.5)*.09,(Math.random()-.5)*.09);pos.push(tip.x,tip.y,tip.z,f.x+j.x,f.y+j.y,f.z+j.z)}}
+ const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+ g.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0xf1ead9,transparent:true,opacity:0.75})));
+ const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.Float32BufferAttribute(tips,3));
+ g.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xfffaf0,size:0.045})));
+ const core=new THREE.Mesh(new THREE.SphereGeometry(0.13,24,16),mat(0x7a6448,{roughness:0.9}));core.position.copy(c);g.add(core);
+ const drift=new THREE.Group();[[1.05,1.25,0.2],[1.25,0.7,-0.3],[-1.1,1.35,0.1]].forEach(p=>{const s=new THREE.Group();const lp=[0,0,0,0,0.22,0];for(let k=0;k<8;k++){const a=k/8*Math.PI*2;lp.push(0,0.22,0,Math.cos(a)*0.1,0.3,Math.sin(a)*0.1)}const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));s.add(new THREE.LineSegments(sg,new THREE.LineBasicMaterial({color:0xf1ead9,transparent:true,opacity:0.8})));s.position.set(p[0],p[1],p[2]);s.rotation.z=-0.4;drift.add(s)});
+ g.add(drift);g.userData.drift=drift;return g}
+
+function makeLeaf(){const g=new THREE.Group();
+ const P=[[60,10],[66,30],[80,22],[76,40],[96,38],[84,54],[94,62],[72,66],[74,82],[60,72],[46,82],[48,66],[26,62],[36,54],[24,38],[44,40],[40,22],[54,30]];
+ const sh=new THREE.Shape();P.forEach((p,i)=>{const x=(p[0]-60)/34,y=-(p[1]-52)/34;i?sh.lineTo(x,y):sh.moveTo(x,y)});sh.closePath();
+ const geo=new THREE.ExtrudeGeometry(sh,{depth:0.03,bevelEnabled:true,bevelThickness:0.015,bevelSize:0.015,bevelSegments:2});
+ const pa=geo.attributes.position;for(let i=0;i<pa.count;i++){const x=pa.getX(i),y=pa.getY(i);pa.setZ(i,pa.getZ(i)+0.12*Math.sin(x*1.4)*Math.cos(y*0.8)+0.06*x*x)}geo.computeVertexNormals();
+ const leaf=new THREE.Mesh(geo,mat(0xc5612b,{roughness:0.75,side:THREE.DoubleSide}));g.add(leaf);
+ const vm=new THREE.LineBasicMaterial({color:0x7a2f12});const vp=[];const o=[0,-(70-52)/34];
+ [[60,16],[88,42],[32,42],[84,62],[36,62]].forEach(t=>{const x=(t[0]-60)/34,y=-(t[1]-52)/34;vp.push(o[0],o[1],0.06,x*0.92,y*0.92,0.06+0.06*x*x)});
+ const vg=new THREE.BufferGeometry();vg.setAttribute('position',new THREE.Float32BufferAttribute(vp,3));g.add(new THREE.LineSegments(vg,vm));
+ g.add(tube([[0,o[1],0.03],[0.02,-1.0,0.05],[-0.06,-1.5,0.02]],0.03,mat(0x7a3a1a)));
+ g.rotation.x=-0.25;return g}
+
+function makeTomato(){const g=new THREE.Group();
+ const geo=new THREE.SphereGeometry(0.95,96,64);const pa=geo.attributes.position,v=new THREE.Vector3();
+ for(let i=0;i<pa.count;i++){v.fromBufferAttribute(pa,i);const a=Math.atan2(v.z,v.x);const lob=1+0.045*Math.cos(a*6)*(1-Math.abs(v.y));v.x*=lob;v.z*=lob;v.y*=0.8;if(v.y>0.6)v.y-=0.12*(v.y-0.6)*6;pa.setXYZ(i,v.x,v.y,v.z)}geo.computeVertexNormals();
+ g.add(new THREE.Mesh(geo,mat(0xb83a26,{roughness:0.32,metalness:0.02})));
+ const cm=mat(0x4b6b35,{roughness:0.8,side:THREE.DoubleSide});
+ for(let k=0;k<6;k++){const s=new THREE.Shape();s.moveTo(0,0);s.quadraticCurveTo(0.09,0.18,0,0.42);s.quadraticCurveTo(-0.09,0.18,0,0);const sg=new THREE.ShapeGeometry(s);const m=new THREE.Mesh(sg,cm);const piv=new THREE.Group();m.rotation.x=-Math.PI/2+0.35;piv.add(m);piv.rotation.y=k/6*Math.PI*2;piv.position.y=0.64;g.add(piv)}
+ g.add(tube([[0,0.62,0],[0.02,0.85,0.02],[0.12,1.02,0.05]],0.04,mat(0x3f5a2c)));
+ return g}
+
+function makeRosin(){const g=new THREE.Group();
+ const amber=new THREE.MeshStandardMaterial({color:0xc98a2e,roughness:0.18,metalness:0.05,emissive:0x3a1e04,emissiveIntensity:0.5,transparent:true,opacity:0.94});
+ const cake=new THREE.Mesh(new THREE.CylinderGeometry(1,1,0.42,96),amber);g.add(cake);
+ const groove=new THREE.Mesh(new THREE.TorusGeometry(0.58,0.04,12,80),new THREE.MeshStandardMaterial({color:0x8a5a1c,roughness:0.4}));groove.rotation.x=Math.PI/2;groove.position.y=0.21;g.add(groove);
+ const cloth=new THREE.Mesh(new THREE.CylinderGeometry(1.08,1.08,0.24,96,1,true),mat(0x4a2a3a,{roughness:0.95,side:THREE.DoubleSide}));cloth.position.y=-0.12;g.add(cloth);
+ const dp=[];for(let i=0;i<90;i++){const a=Math.random()*Math.PI*2,r=0.2+Math.random()*0.75;dp.push(Math.cos(a)*r,0.23+Math.random()*0.02,Math.sin(a)*r)}
+ const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));g.add(new THREE.Points(dg,new THREE.PointsMaterial({color:0xf3dcae,size:0.03})));
+ g.rotation.x=0.55;return g}
+
+function moonTexture(){const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');
+ x.fillStyle='#cfc6b2';x.fillRect(0,0,1024,512);
+ let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+ for(let i=0;i<14;i++){x.fillStyle='rgba(120,112,98,'+(0.18+rnd()*0.2)+')';x.beginPath();x.ellipse(rnd()*1024,120+rnd()*280,40+rnd()*110,30+rnd()*70,rnd()*3,0,Math.PI*2);x.fill()}
+ for(let i=0;i<260;i++){const cx=rnd()*1024,cy=rnd()*512,r=2+Math.pow(rnd(),3)*34;x.fillStyle='rgba(90,84,74,0.35)';x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();x.strokeStyle='rgba(240,234,220,0.35)';x.lineWidth=Math.max(1,r*0.18);x.beginPath();x.arc(cx-r*0.12,cy-r*0.12,r,0,Math.PI*2);x.stroke()}
+ const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t}
+
+function makeMoon(){const g=new THREE.Group();const tx=moonTexture();
+ g.add(new THREE.Mesh(new THREE.SphereGeometry(1.0,96,64),new THREE.MeshStandardMaterial({map:tx,bumpMap:tx,bumpScale:0.04,roughness:0.95})));
+ const sp=[];for(let i=0;i<60;i++){const a=Math.random()*Math.PI*2,r=1.25+Math.random()*0.3,y=(Math.random()-0.5)*2.4;sp.push(Math.cos(a)*r,y,Math.sin(a)*r)}
+ const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));g.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xe9d7a8,size:0.035})));
+ return g}
+
+function makeThread(){const g=new THREE.Group();
+ const P=[[-1.45,-0.75,0],[-0.95,0.15,0.35],[-0.35,0.55,-0.2],[0.25,0.2,0.45],[0.1,-0.3,0.1],[-0.25,-0.05,-0.3],[0.05,0.42,-0.15],[0.55,0.45,0.3],[0.95,-0.05,0.05],[1.2,-0.55,-0.25],[1.5,-0.95,0.15]];
+ const m=new THREE.MeshStandardMaterial({color:0xa82c26,roughness:0.65});
+ g.add(tube(P,0.04,m,220));
+ [P[0],P[P.length-1]].forEach(p=>{const fr=new THREE.Group();for(let k=0;k<5;k++){const f=tube([[0,0,0],[(Math.random()-.5)*0.08,-0.06,(Math.random()-.5)*0.08],[(Math.random()-.5)*0.14,-0.13,(Math.random()-.5)*0.14]],0.008,m,8);fr.add(f)}fr.position.set(p[0],p[1],p[2]);g.add(fr)});
+ return g}
+
+const builders={dandelion:makeDandelion,leaf:makeLeaf,tomato:makeTomato,rosin:makeRosin,moon:makeMoon,thread:makeThread};
+const objs=SPEC.map(s=>{const o=builders[s.id]();o.visible=false;holder.add(o);return o});
+objs[0].visible=true;
+
+let rotY=0.3,rotX=0.12,velY=0,velX=0,dragging=false,lx=0,ly=0,idle=0,appear=1;
+const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function select(i){if(i===current)return;objs[current].visible=false;current=i;objs[i].visible=true;appear=0;rotY=0.3;rotX=0.12;velX=velY=0;showText(i);
+ document.querySelectorAll('.tag').forEach((b,j)=>b.setAttribute('aria-pressed',j===i?'true':'false'))}
+window.__select=select;
+
+stage.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;stage.setPointerCapture(e.pointerId);document.getElementById('hint').hidden=true});
+stage.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;velY=dx*0.008;velX=dy*0.006;rotY+=velY;rotX=Math.max(-1.2,Math.min(1.2,rotX+velX));idle=0});
+const up=()=>{dragging=false};stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
+
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w/h<0.9?9.2:7.2;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage);resize();
+
+let t0=performance.now();
+function frame(now){const dt=Math.min(0.05,(now-t0)/1000);t0=now;
+ if(!dragging){velY*=0.94;velX*=0.9;rotY+=velY;rotX=Math.max(-1.2,Math.min(1.2,rotX+velX));idle+=dt;if(!reduce&&idle>1.2)rotY+=dt*0.25}
+ appear=Math.min(1,appear+dt*2.5);const e=1-Math.pow(1-appear,3);
+ holder.rotation.y=rotY;holder.rotation.x=rotX;holder.scale.setScalar(reduce?1:0.85+0.15*e);
+ if(!reduce){holder.position.y=0.05+Math.sin(now/1400)*0.04;const d=objs[0].userData.drift;if(d&&current===0)d.children.forEach((s,k)=>{s.position.y+=Math.sin(now/900+k)*0.0015})}
+ renderer.render(scene,camera);requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+
+function selectProxy(i){select(i)}
+document.querySelectorAll('.tag').forEach((b,j)=>{b.onclick=()=>selectProxy(j)});
+})();
+</script>
+
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+</body></html>
