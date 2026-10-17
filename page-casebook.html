@@ -1080,6 +1080,7 @@ function shuffled(n, seed, avoid) {
   return a;
 }
 
+function mixed(list, key) { const l = arr(list); return shuffled(l.length, hashStr(String(C && C.id) + '|' + key)).map(i => l[i]); }
 const soundOn = () => DB.ui.sound !== false;
 function applyTS() { const v = +DB.ui.ts || 1; document.documentElement.style.setProperty('--ts', String(v)); }
 function tabbarHTML(list, attr, label) {
@@ -1593,7 +1594,7 @@ function sceneHTML() {
     <p class="meta">${n} of ${locs.length} places searched</p>
     <p class="lede">Tap a place to search it. What you find goes straight into your notebook. Some things only come clear up close.</p>
   </section>
-  <div class="locs">${locs.map(locHTML).join('')}</div>`;
+  <div class="locs">${[locs[0], ...mixed(locs.slice(1), 'locs')].filter(Boolean).map(locHTML).join('')}</div>`;
 }
 function locHTML(l) {
   const o = ui.open.has(l.id), f = searched(l.id);
@@ -1658,7 +1659,7 @@ function puzzleInner(i) {
   }
   if (t === 'choice') {
     if (done) return head + solved;
-    return head + `<div class="options">${arr(p.options).map((o, k) => `<button type="button" class="opt-btn${u.wrong.indexOf(k) >= 0 ? ' no' : ''}" data-act="choice" data-p="${i}" data-i="${k}">${esc(o)}</button>`).join('')}</div>` + msg;
+    return head + `<div class="options">${mixed(arr(p.options).map((o, k) => [o, k]), 'opt' + i).map(([o, k]) => `<button type="button" class="opt-btn${u.wrong.indexOf(k) >= 0 ? ' no' : ''}" data-act="choice" data-p="${i}" data-i="${k}">${esc(o)}</button>`).join('')}</div>` + msg;
   }
   if (t === 'order') {
     const items = arr(p.items), n = items.length;
@@ -1684,8 +1685,8 @@ function puzzleInner(i) {
       <div class="row"><button type="button" class="btn" data-act="m-check" data-p="${i}"${all ? '' : ' disabled'}>Check the pairs</button></div>` + msg;
   }
   if (t === 'spot') {
-    if (done) return head + `<ul class="spot-list done">${arr(p.options).map((o, k) => `<li class="${o === p.answer ? 'bad' : ''}"><span class="sn">${k + 1}</span><span class="stx">${esc(o)}</span></li>`).join('')}</ul>` + solved;
-    return head + `<div class="spot-list">${arr(p.options).map((o, k) => { const ok = u.wrong.indexOf(k) >= 0; return `<button type="button" class="spot-b${ok ? ' ok' : ''}" data-act="spot" data-p="${i}" data-k="${k}"${ok ? ' aria-disabled="true"' : ''}><span class="sn">${k + 1}</span><span class="stx">${esc(o)}</span>${ok ? '<span class="sv">Checks out</span>' : ''}</button>`; }).join('')}</div>` + msg;
+    if (done) return head + `<ul class="spot-list done">${mixed(arr(p.options), 'spot' + i).map((o, k) => `<li class="${o === p.answer ? 'bad' : ''}"><span class="sn">${k + 1}</span><span class="stx">${esc(o)}</span></li>`).join('')}</ul>` + solved;
+    return head + `<div class="spot-list">${mixed(arr(p.options).map((o, k) => [o, k]), 'spot' + i).map(([o, k], n) => { const ok = u.wrong.indexOf(k) >= 0; return `<button type="button" class="spot-b${ok ? ' ok' : ''}" data-act="spot" data-p="${i}" data-k="${k}"${ok ? ' aria-disabled="true"' : ''}><span class="sn">${n + 1}</span><span class="stx">${esc(o)}</span>${ok ? '<span class="sv">Checks out</span>' : ''}</button>`; }).join('')}</div>` + msg;
   }
   return head;
 }
@@ -1878,7 +1879,7 @@ const MEDIA = {
 };
 const medOf = su => MEDIA[su && su.medium] ? su.medium : 'interview';
 function peopleHTML() {
-  const sus = arr(C.suspects);
+  const sus = mixed(C.suspects, 'people');
   return `
   <section class="phead">
     <p class="caps" aria-hidden="true">People</p>
@@ -1957,7 +1958,7 @@ function susHTML(su) {
 /* ---------- TIMELINE ---------- */
 function tlCards() { return arr(C.timeline && C.timeline.cards); }
 function timelineHTML() {
-  const tl = C.timeline || {}, cards = tlCards(), av = cards.filter(c => discovered(c.from)), loose = av.filter(c => !S.place[c.id]);
+  const tl = C.timeline || {}, cards = mixed(tlCards(), 'tl'), av = cards.filter(c => discovered(c.from)), loose = av.filter(c => !S.place[c.id]);
   const placed = av.length - loose.length, hidden = cards.length - av.length;
   let tray = loose.map(cardBtn).join('');
   if (!av.length) tray = '<span class="hint">Cards appear here as you search and question people.</span>';
@@ -2076,10 +2077,10 @@ function accuseHTML() {
   </section>
   <form class="aform" id="aform" novalidate>
     <fieldset><legend>Who did it</legend>
-      ${arr(C.suspects).map(su => `<label class="opt${ui.who === su.id ? ' on' : ''}"><input type="radio" name="who" value="${esc(su.id)}"${ui.who === su.id ? ' checked' : ''}><span>${esc(su.name)}<small>${esc(su.role)}</small></span></label>`).join('')}
+      ${mixed(C.suspects, 'accuse').map(su => `<label class="opt${ui.who === su.id ? ' on' : ''}"><input type="radio" name="who" value="${esc(su.id)}"${ui.who === su.id ? ' checked' : ''}><span>${esc(su.name)}<small>${esc(su.role)}</small></span></label>`).join('')}
     </fieldset>
     <fieldset><legend>Why</legend>
-      ${arr(a.motives).map(m => `<label class="opt${ui.why === m.id ? ' on' : ''}"><input type="radio" name="why" value="${esc(m.id)}"${ui.why === m.id ? ' checked' : ''}><span>${esc(m.label)}</span></label>`).join('')}
+      ${mixed(a.motives, 'motive').map(m => `<label class="opt${ui.why === m.id ? ' on' : ''}"><input type="radio" name="why" value="${esc(m.id)}"${ui.why === m.id ? ' checked' : ''}><span>${esc(m.label)}</span></label>`).join('')}
     </fieldset>
     <p class="err" id="aerr" aria-live="assertive">${esc(ui.err)}</p>
     <div class="row"><button class="btn" type="submit">Name them</button></div>
