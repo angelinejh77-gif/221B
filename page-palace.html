@@ -590,5 +590,6 @@ var lastTap=0;
 renderer.domElement.addEventListener('pointerup',function(e){ var n=performance.now(); if(n-lastTap<300 && !pickAt(e.clientX,e.clientY)){ if(controls){controls.minAzimuthAngle=-1.05;controls.maxAzimuthAngle=1.05;} flyTo(HOME.pos.clone(),HOME.tgt.clone()); } lastTap=n; });
 })();
 </script>
+<script src="tellhim.js"></script>
 </body>
 </html>
