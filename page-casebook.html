@@ -960,6 +960,142 @@ legend{font-family:var(--display);font-size:13px;letter-spacing:.42em;text-trans
 .cover .tagline{font-size:calc(18px * var(--ts))}
 .msg.me,.bub.q{font-size:calc(14.5px * var(--ts))}
 
+/* the last case: shelf card */
+.file.lastcase{grid-column:1/-1;content-visibility:visible}
+.shelf .file.lastcase .file-link{-webkit-appearance:none;appearance:none;width:100%;height:auto;font:inherit;cursor:pointer;align-items:center;text-align:center;gap:10px;padding:30px 22px 26px;
+  background:radial-gradient(120% 90% at 50% 0%,#23263D 0%,#12131F 62%),#12131F;color:#ECE8E1;border:1.5px solid #E6BE7A;box-shadow:4px 4px 0 #E6BE7A,inset 0 0 0 5px #12131F,inset 0 0 0 6px rgba(230,190,122,.35)}
+.shelf .file.lastcase .file-link:hover{box-shadow:6px 6px 0 #E6BE7A,inset 0 0 0 5px #12131F,inset 0 0 0 6px rgba(230,190,122,.35)}
+.shelf .file.lastcase .file-title{color:#F4EEE2;font-size:30px}
+.shelf .file.lastcase .file-sub{color:#CFC5B4;max-width:24em}
+.lc-seal{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;margin-bottom:4px;background:radial-gradient(circle at 35% 30%,#D2463A,#8E1F18 62%,#5B130D);box-shadow:0 3px 8px rgba(0,0,0,.5),inset 0 0 0 4px rgba(0,0,0,.16),inset 0 0 0 7px rgba(255,255,255,.05)}
+.lc-seal svg{width:32px;height:32px;stroke:#F3D9C8;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lc-seal.broken{clip-path:polygon(0 0,100% 0,100% 46%,74% 52%,100% 60%,100% 100%,0 100%,0 58%,30% 50%,0 42%)}
+.lc-seal b{font-family:var(--script);font-weight:400;font-size:40px;line-height:1;color:#F3D9C8}
+.file.sealed .lc-seal{animation:lcpulse 3.6s ease-in-out infinite}
+@keyframes lcpulse{50%{box-shadow:0 3px 18px rgba(210,70,58,.55),inset 0 0 0 4px rgba(0,0,0,.16),inset 0 0 0 7px rgba(255,255,255,.05)}}
+.lc-k{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#E6BE7A}
+.lc-count{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;max-width:260px;margin-top:6px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E6BE7A}
+.lc-bar{display:block;width:100%;height:3px;background:rgba(230,190,122,.2)}
+.lc-bar i{display:block;height:100%;background:#E6BE7A}
+.lc-status{font-family:var(--script);font-size:28px;line-height:1.2;color:#E6BE7A}
+.lc-replay{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;margin-top:12px;padding:0 16px;background:#12131F;color:#E6BE7A;border:1.5px solid var(--ink);box-shadow:3px 3px 0 #E6BE7A;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.lc-replay:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #E6BE7A}
+.rv-cta{margin:22px 0;padding:24px 20px 22px;text-align:center;background:radial-gradient(120% 90% at 50% 0%,#23263D 0%,#12131F 62%),#12131F;color:#ECE8E1;border:1.5px solid var(--ink);box-shadow:4px 4px 0 #E6BE7A;display:flex;flex-direction:column;align-items:center;gap:12px}
+.rv-cta-k{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#E6BE7A}
+.rv-cta p{margin:0;font-style:italic;font-size:calc(16px * var(--ts));color:#E3DACB;max-width:26em}
+.rv-cta .btn{background:#E6BE7A;color:#1A140A;border-color:#E6BE7A;box-shadow:3px 3px 0 #000}
+
+/* the last case: reveal overlay */
+html.rv-lock,html.rv-lock body{overflow:hidden}
+.rv{position:fixed;inset:0;z-index:2147482000;overflow:hidden;background:#03040A;color:#ECE8E1;font-family:var(--body);outline:none;opacity:0;animation:rvIn 1.6s ease forwards;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;--gold:#E6BE7A;--rvE:cubic-bezier(.45,.05,.2,1);--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+@keyframes rvIn{to{opacity:1}}
+.rv.closing{animation:rvOut .7s ease forwards;pointer-events:none}
+@keyframes rvOut{from{opacity:1}to{opacity:0}}
+.rv canvas{position:absolute;left:0;top:0;display:block}
+.rv-sky{opacity:0;transition:opacity 2.6s ease}
+.rv:not([data-stage="dim"]) .rv-sky{opacity:1}
+.rv-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(130% 85% at 50% 42%,transparent 45%,rgba(0,0,0,.6) 100%)}
+.rv-fx{z-index:6;pointer-events:none}
+.rv-top{position:absolute;z-index:9;top:max(10px,var(--sat));left:var(--gl);right:var(--gr);display:flex;justify-content:space-between;align-items:center;gap:10px;opacity:0;transition:opacity 1s ease 2.4s}
+.rv:not([data-stage="dim"]) .rv-top{opacity:1}
+.rv-tb{min-height:40px;padding:0 15px;border-radius:20px;border:1px solid rgba(230,190,122,.32);background:rgba(8,10,18,.55);color:#D8CEBE;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.rv-x{width:44px;min-height:44px;padding:0;display:grid;place-items:center;border-radius:50%;margin-left:auto}
+.rv-x svg{width:18px;height:18px;stroke:#D8CEBE;stroke-width:1.8;fill:none;stroke-linecap:round}
+.rv[data-stage="ask"] [data-rv="skip"],.rv[data-stage="yes"] [data-rv="skip"],.rv[data-stage="later"] [data-rv="skip"]{visibility:hidden}
+.rv-prelude{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:0 32px;text-align:center;transition:opacity 1.2s ease;pointer-events:none}
+.rv-prelude p{margin:0;font-family:var(--display);font-style:italic;font-size:23px;line-height:1.35;color:#ECE3D2;opacity:0;transform:translateY(10px);filter:blur(5px);transition:opacity 1.8s ease,transform 1.8s ease,filter 1.8s ease}
+.rv-prelude p:last-child{color:var(--gold)}
+.rv-prelude p.on{opacity:1;transform:none;filter:none}
+.rv:not([data-stage="prelude"]) .rv-prelude{opacity:0}
+.rv-boxwrap{position:absolute;z-index:3;left:50%;top:var(--by,47%);width:260px;height:240px;margin:-120px 0 0 -130px;perspective:780px;cursor:grab;touch-action:pan-y;
+  opacity:var(--bo,0);transform:translateY(var(--bd,46px)) scale(var(--bs,1));transition:top 2s var(--rvE),transform 2s var(--rvE),opacity 1.8s ease}
+.rv[data-stage="box"],.rv[data-stage="letter"],.rv[data-stage="ask"],.rv[data-stage="yes"],.rv[data-stage="later"]{--bo:1;--bd:0px}
+.rv[data-stage="letter"]{--by:calc(var(--sat) + 104px);--bs:.46}
+.rv[data-stage="ask"]{--by:calc(var(--sat) + 214px);--bs:.84}
+.rv[data-stage="yes"],.rv[data-stage="later"]{--by:calc(var(--sat) + 142px);--bs:.62}
+.rv-halo{position:absolute;left:50%;top:44%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;background:radial-gradient(circle,rgba(230,190,122,.36),rgba(230,190,122,.08) 45%,transparent 70%);opacity:0;transition:opacity 2.4s ease;pointer-events:none}
+.rv.opened .rv-halo{opacity:.55}
+.rv.sparkle .rv-halo{opacity:1;animation:rvhalo 5s ease-in-out infinite}
+@keyframes rvhalo{50%{transform:scale(1.08);opacity:.75}}
+.rv-box3d{position:absolute;left:50%;top:60%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(-24deg) rotateY(var(--ry,-24deg))}
+.rv-base,.rv-lid,.rv-ringpos{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.rv-f{position:absolute;left:0;top:0;display:block;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.rv-boxwrap::after{content:"";position:absolute;left:50%;top:79%;width:210px;height:44px;margin-left:-105px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);pointer-events:none;transform:translateZ(-1px)}
+.b-front,.b-back,.b-left,.b-right{width:132px;height:62px;margin:-31px 0 0 -66px}
+.b-front{transform:translateZ(66px);background:linear-gradient(180deg,#86203A 0%,#5C1022 46%,#33060F 100%);box-shadow:inset 0 2px 0 rgba(230,190,122,.6),inset 0 -8px 16px rgba(0,0,0,.35)}
+.b-back{transform:rotateY(180deg) translateZ(66px);background:#3A0812}
+.b-left{transform:rotateY(-90deg) translateZ(66px);background:linear-gradient(180deg,#5A1022,#2A040C)}
+.b-right{transform:rotateY(90deg) translateZ(66px);background:linear-gradient(180deg,#5E1124 0%,#3A0914 55%,#22030A 100%);box-shadow:inset 0 2px 0 rgba(230,190,122,.4)}
+.b-bottom{width:132px;height:132px;margin:-66px 0 0 -66px;transform:rotateX(-90deg) translateZ(31px);background:#1A0207;box-shadow:0 0 40px 20px rgba(0,0,0,.6)}
+.b-cush{width:132px;height:132px;margin:-66px 0 0 -66px;transform:rotateX(90deg) translateZ(31px);background:radial-gradient(ellipse at 50% 46%,#7A1A2E 0%,#561021 55%,#33060F 100%);box-shadow:inset 0 0 0 5px #3A0812,inset 0 0 18px rgba(0,0,0,.5)}
+.b-cush i{position:absolute;left:20%;right:20%;top:50%;height:7px;margin-top:-3.5px;border-radius:4px;background:linear-gradient(180deg,#120105,#3A0711);box-shadow:0 1px 0 rgba(255,190,170,.12)}
+.rv-lid{transform:translate3d(0,-31px,-66px) rotateX(var(--lid,0deg)) translate3d(0,-17px,66px);transition:transform 3s var(--rvE)}
+.rv.opened .rv-lid{--lid:106deg}
+.l-top,.l-in{width:132px;height:132px;margin:-66px 0 0 -66px}
+.l-top{transform:rotateX(90deg) translateZ(17px);background:radial-gradient(ellipse at 38% 30%,#9A2B45 0%,#6A1427 42%,#3E0915 100%);box-shadow:inset 0 0 0 1px rgba(230,190,122,.35)}
+.l-in{transform:rotateX(-90deg) translateZ(16px);background:linear-gradient(165deg,#FBF4E8 0%,#E8DCC7 40%,#CDBB9C 75%,#B7A27E 100%);box-shadow:inset 0 0 0 5px #6A1427,inset 0 0 0 6px rgba(230,190,122,.7),inset 0 0 26px rgba(120,90,50,.35)}
+.l-in::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:1px solid rgba(176,132,62,.65);box-shadow:0 0 0 4px rgba(176,132,62,.12)}
+.l-front,.l-back,.l-left,.l-right{width:132px;height:34px;margin:-17px 0 0 -66px}
+.l-front{transform:translateZ(66px);background:linear-gradient(180deg,#9A2B45,#5C1022);box-shadow:inset 0 -2px 0 rgba(230,190,122,.6)}
+.l-back{transform:rotateY(180deg) translateZ(66px);background:#4A0B19}
+.l-left{transform:rotateY(-90deg) translateZ(66px);background:linear-gradient(180deg,#6A1427,#3A0812)}
+.l-right{transform:rotateY(90deg) translateZ(66px);background:linear-gradient(180deg,#7A1A31,#440A18);box-shadow:inset 0 -2px 0 rgba(230,190,122,.4)}
+.rv-ringpos{transform:translate3d(0,-31px,6px) rotateY(calc(var(--ry,-24deg) * -1)) rotateX(24deg)}
+.rv-ring{position:absolute;width:66px;height:66px;left:-33px;top:-44px;opacity:0;transform:translateY(22px);transition:opacity 1.4s ease 1.2s,transform 2.4s var(--rvE) 1.2s;filter:drop-shadow(0 0 6px rgba(255,236,190,.35))}
+.rv-ring svg{width:100%;height:100%;display:block;overflow:visible}
+.rv.opened .rv-ring{opacity:1;transform:none}
+.rv.sparkle .rv-gl{animation:rvgl 3.2s ease-in-out infinite}
+.rv-gl{opacity:.25;transform-box:fill-box;transform-origin:center}
+@keyframes rvgl{0%,100%{opacity:.15;transform:scale(.6)}45%{opacity:1;transform:scale(1.25)}}
+.rv-burst{position:absolute;left:50%;top:54px;width:0;height:0;pointer-events:none}
+.rv-burst i{position:absolute;left:0;top:0;width:var(--s,18px);height:var(--s,18px);margin:calc(var(--s,18px) / -2) 0 0 calc(var(--s,18px) / -2);background:radial-gradient(circle,#fff 0 18%,#FFF1CC 30%,transparent 62%);clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);opacity:0}
+.rv-burst i:nth-child(1){--s:30px;--x:0px;--y:0px;--d:0s}
+.rv-burst i:nth-child(2){--s:14px;--x:-34px;--y:-20px;--d:.25s}
+.rv-burst i:nth-child(3){--s:18px;--x:36px;--y:-28px;--d:.45s}
+.rv-burst i:nth-child(4){--s:11px;--x:-22px;--y:26px;--d:.7s}
+.rv-burst i:nth-child(5){--s:16px;--x:30px;--y:18px;--d:.9s}
+.rv-burst i:nth-child(6){--s:10px;--x:4px;--y:-46px;--d:1.15s}
+.rv-burst.go i{animation:rvtw 1.7s ease-out var(--d) both}
+.rv.sparkle .rv-burst i:nth-child(1){animation:rvtw 1.7s ease-out 0s both,rvtw2 4.2s ease-in-out 2.2s infinite}
+@keyframes rvtw{0%{opacity:0;transform:translate(var(--x),var(--y)) scale(.1) rotate(0)}35%{opacity:1;transform:translate(var(--x),var(--y)) scale(1.15) rotate(30deg)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.4) rotate(70deg)}}
+@keyframes rvtw2{0%,70%,100%{opacity:0;transform:scale(.2)}82%{opacity:1;transform:scale(1) rotate(45deg)}}
+.rv-letter{position:absolute;z-index:4;left:0;right:0;top:calc(var(--sat) + 188px);bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 var(--gr) calc(var(--sab) + 70px) var(--gl);outline:none;
+  opacity:0;pointer-events:none;transition:opacity 1.6s ease;-webkit-mask-image:linear-gradient(transparent 0,#000 26px,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(transparent 0,#000 26px,#000 calc(100% - 48px),transparent)}
+.rv[data-stage="letter"] .rv-letter{opacity:1;pointer-events:auto;-webkit-user-select:text;user-select:text}
+.rv-paper{position:relative;max-width:540px;margin:22px auto 0;padding:34px 26px 26px;background:var(--grain),linear-gradient(180deg,#F7F1E5,#EFE6D4);color:#2A2320;border-radius:2px;
+  box-shadow:inset 0 0 0 7px #F4EDE0,inset 0 0 0 8px rgba(176,140,80,.5),0 24px 60px rgba(0,0,0,.55),0 0 50px rgba(230,190,122,.1);font-size:calc(16.5px * var(--ts));line-height:1.74}
+.rv-p{margin:0 0 1em;opacity:0;transform:translateY(10px);filter:blur(3px);transition:opacity 2s ease,transform 2s ease,filter 2s ease}
+.rv-p.on{opacity:1;transform:none;filter:none}
+.rv-p.salute{font-family:var(--script);font-size:38px;line-height:1.1;color:#6A1E21;margin-bottom:.4em}
+.rv-han{font-family:var(--han);color:#8E1F18;letter-spacing:.04em}
+.rv-sig{font-family:var(--script);font-size:44px;line-height:1;text-align:right;color:#6A1E21;margin:0 4px 6px 0}
+.rv-toq{text-align:center;margin:16px 0 0}
+.rv-toq .rv-ghost{background:#12131F;color:#F1D59E;border-color:#12131F;font-style:normal;font-family:var(--display);font-size:17px;letter-spacing:.04em;padding:0 30px}
+.rv-ask{position:absolute;z-index:5;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:18px;padding:calc(var(--sat) + 330px) var(--gr) calc(var(--sab) + 40px) var(--gl);pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.rv[data-stage="ask"] .rv-ask{opacity:1}
+.rv-q{flex:1;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;column-gap:.26em;margin:0;max-width:9.5em;text-align:center;font-family:var(--script);font-weight:400;font-size:clamp(44px,12.5vw,70px);line-height:1.12;color:#F0D396;text-shadow:0 0 26px rgba(230,190,122,.45),0 2px 2px rgba(0,0,0,.6)}
+.rv-q span{display:inline-block;opacity:0;transform:translateY(14px);filter:blur(7px);transition:opacity 1.8s ease,transform 1.8s ease,filter 1.8s ease;transition-delay:var(--d)}
+.rv[data-stage="ask"] .rv-q span{opacity:1;transform:none;filter:none}
+.rv-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;opacity:0;transform:translateY(12px);transition:opacity 1.4s ease,transform 1.4s ease;transition-delay:var(--d,0s)}
+.rv[data-stage="ask"] .rv-ask .rv-btns{opacity:1;transform:none;pointer-events:auto}
+.rv-yes{min-height:56px;padding:0 24px;border-radius:30px;border:0;cursor:pointer;background:linear-gradient(180deg,#F5DDA9,#D6A85E);color:#24180A;font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.05em;
+  box-shadow:inset 0 0 0 1px rgba(255,244,214,.7),0 10px 34px rgba(230,190,122,.32);animation:rvyes 3.4s ease-in-out infinite}
+@keyframes rvyes{50%{box-shadow:inset 0 0 0 1px rgba(255,244,214,.7),0 10px 44px rgba(230,190,122,.55)}}
+.rv-yes.sm{min-height:50px;font-size:17px;animation:none}
+.rv-later,.rv-ghost{min-height:50px;padding:0 22px;border-radius:26px;cursor:pointer;background:rgba(8,10,20,.55);border:1px solid rgba(230,190,122,.45);color:#EDE3CF;font-family:var(--body);font-style:italic;font-size:16px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.rv button:focus-visible{outline:2px solid #F5DDA9;outline-offset:3px}
+.rv-after{position:absolute;z-index:8;left:0;right:0;top:calc(var(--sat) + 232px);bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 var(--gr) calc(var(--sab) + 36px) var(--gl);text-align:center;opacity:0;pointer-events:none;transition:opacity 1s ease}
+.rv[data-stage="yes"] .rv-after,.rv[data-stage="later"] .rv-after{opacity:1;pointer-events:auto}
+.rv-after-t p{max-width:28em;margin:0 auto 1em;font-size:calc(17px * var(--ts));line-height:1.7;color:#EFE8DA;text-shadow:0 1px 14px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8);opacity:0;transform:translateY(10px);transition:opacity 1.8s ease,transform 1.8s ease;transition-delay:var(--d,0s)}
+.rv-after-t p.rv-said{font-family:var(--script);font-size:50px;line-height:1.1;color:#F0D396;margin-bottom:.35em;--d:.3s}
+.rv[data-stage="yes"] .rv-after-t p,.rv[data-stage="later"] .rv-after-t p{opacity:1;transform:none}
+.rv-after-b{margin:24px auto 0}
+.rv[data-stage="yes"] .rv-after-b,.rv[data-stage="later"] .rv-after-b{opacity:1;transform:none}
+.rv-tap{position:absolute;z-index:5;left:0;right:0;bottom:calc(var(--sab) + 18px);margin:0;text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(236,232,225,.42);opacity:0;transition:opacity 1s ease;pointer-events:none}
+.rv[data-stage="prelude"] .rv-tap,.rv[data-stage="box"] .rv-tap{opacity:1;transition-delay:3.5s}
+.rv.instant *,.rv.instant{transition-delay:0s!important}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
   .playing .bars i{height:10px}
@@ -979,7 +1115,11 @@ window.CASES = [{"id":"c00","title":"Death in the Blue Room","tagline":"A member
 'use strict';
 
 /* ================= data ================= */
-var RAW = Array.isArray(window.CASES) ? window.CASES : [];
+function unseal(c) {
+  if (!c || typeof c._sealed !== 'string') return c;
+  try { const b = atob(c._sealed), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return JSON.parse(new TextDecoder().decode(u)); } catch (e) { return null; }
+}
+var RAW = (Array.isArray(window.CASES) ? window.CASES : []).map(unseal);
 const CASES = RAW.filter(c => c && typeof c.id === 'string')
   .sort((a, b) => a.id.localeCompare(b.id, undefined, {numeric: true}));
 const BYID = Object.create(null);
@@ -1059,6 +1199,13 @@ const peek = id => DB.cases[id] || null;
 function st(id) { let s = DB.cases[id]; const f = fresh(); if (!s) s = DB.cases[id] = f; else for (const k in f) if (!(k in s)) s[k] = f[k]; return s; }
 const solvedCount = () => CASES.reduce((n, c) => n + (peek(c.id) && peek(c.id).solved ? 1 : 0), 0);
 const score = () => BASE_SCORE + solvedCount();
+/* the sealed finale: a case with "locked":"all" stays sealed until every other case is solved */
+const isLocked = c => !!(c && c.locked === 'all');
+const isSolved = c => !!(c && (peek(c.id) || {}).solved);
+function othersSolved(c) { const o = CASES.filter(x => x !== c && !isLocked(x)); return [o.filter(isSolved).length, o.length]; }
+function isSealed(c) { if (!isLocked(c) || isSolved(c)) return false; const [a, b] = othersSolved(c); return a < b; }
+const dispTitle = c => !isLocked(c) || isSolved(c) ? c.title : (c.coverTitle || 'The Last Case');
+const dispTagline = c => !isLocked(c) || isSolved(c) ? c.tagline : isSealed(c) ? 'Sealed. Solve every other case to break the seal.' : (c.coverTagline || '');
 function progressOf(c, s) {
   if (!s) return 0;
   const locs = arr(c.locations).length || 1, qs = arr(c.suspects).reduce((n, x) => n + arr(x.questions).length, 0) || 1;
@@ -1129,6 +1276,18 @@ const TIMBRE = {
     const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = Math.min(9000, f * 9);
     const g = c.createGain(); g.gain.value = .32; s.connect(lp); lp.connect(g); g.connect(d); s.start(t); s.stop(t + dur * 1.2); return dur;
   },
+  bow(c, t, f, d, len, vol) {
+    len = len || 1.1; vol = vol || .12;
+    const g = c.createGain(), lp = c.createBiquadFilter(), body = c.createBiquadFilter(), lfo = c.createOscillator(), lg = c.createGain();
+    lp.type = 'lowpass'; lp.frequency.value = Math.min(5200, f * 6); lp.Q.value = .6;
+    body.type = 'peaking'; body.frequency.value = 2900; body.Q.value = 1.2; body.gain.value = 4;
+    lfo.frequency.value = 5.4; lg.gain.setValueAtTime(0, t); lg.gain.linearRampToValueAtTime(0, t + Math.min(.25, len * .3)); lg.gain.linearRampToValueAtTime(f * .0055, t + Math.min(.6, len * .6)); lfo.connect(lg);
+    const os = [['sawtooth', 1, 1], ['sawtooth', 1.0025, .7], ['triangle', 2, .18]].map(([ty, r, a]) => { const o = c.createOscillator(), og = c.createGain(); o.type = ty; o.frequency.value = f * r; lg.connect(o.frequency); og.gain.value = a; o.connect(og); og.connect(lp); return o; });
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .09); g.gain.linearRampToValueAtTime(vol * .82, t + .3); g.gain.setValueAtTime(vol * .82, t + Math.max(.31, len - .1)); g.gain.exponentialRampToValueAtTime(.0001, t + len + .35);
+    lp.connect(body); body.connect(g); g.connect(d);
+    os.concat([lfo]).forEach(o => { o.start(t); o.stop(t + len + .4); });
+    return len + .35;
+  },
   breath(c, t, f, d) {
     const o = c.createOscillator(), o2 = c.createOscillator(), lfo = c.createOscillator(), lg = c.createGain(), g = c.createGain(), g2 = c.createGain();
     o.type = 'sine'; o.frequency.value = f; o2.type = 'triangle'; o2.frequency.value = f; g2.gain.value = .22;
@@ -1141,13 +1300,16 @@ function timbreFor(label) {
   const l = String(label || '').toLowerCase();
   if (/bell|clock|chime|gong|toll|carillon|temple|tower/.test(l)) return 'bell';
   if (/glass|bowl|wine|crystal/.test(l)) return 'glass';
+  if (/bowed/.test(l)) return 'bow';
   if (/string|guitar|qin|zheng|pipa|harp|cello|violin|erhu|bass|lute|sitar|sape|ukulele|mandolin|pluck|banjo|koto/.test(l)) return 'pluck';
   if (/whistle|flute|horn|hum|voice|sing|kettle|siren|train|ocarina|xiao|dizi|breath|organ|harmonica|recorder|clarinet|oboe/.test(l)) return 'breath';
   return 'piano';
 }
 function playSound(snd) {
   const c = audio(); if (!c) return 0;
-  const k = timbreFor(snd.label), f = hz(Number(snd.midi) || 60), t = c.currentTime + .05;
+  const k = timbreFor(snd.label), t = c.currentTime + .05;
+  if (Array.isArray(snd.seq) && snd.seq.length) { const step = k === 'bow' ? .78 : .62; snd.seq.forEach((m, j) => TIMBRE[k](c, t + j * step, hz(+m || 60), BUS, j === snd.seq.length - 1 ? 1.5 : step * .92)); return step * (snd.seq.length - 1) + 1.9; }
+  const f = hz(Number(snd.midi) || 60);
   const gap = k === 'bell' ? 1.8 : 1.3;
   const d1 = TIMBRE[k](c, t, f, BUS); TIMBRE[k](c, t + gap, f, BUS);
   return gap + d1 * .8;
@@ -1194,6 +1356,12 @@ function setHash(h, replace) {
 }
 function route() {
   const r = parse();
+  if (r.name === 'case' && isSealed(BYID[r.id])) {
+    setHash('library', true);
+    if (!view || view.name !== 'library') openLibrary('cases'); else if (view.tab !== 'cases') setLibTab('cases', false);
+    toast('That one is sealed. <b>Solve every other case to break the seal.</b>', 'That case is sealed.');
+    return;
+  }
   if (r.name === 'case') {
     const s = st(r.id); const tab = r.tab || s.tab || 'brief';
     if (!view || view.name !== 'case' || view.id !== r.id) { fromLib = !!(view && view.name === 'library'); openCase(r.id, tab); }
@@ -1221,6 +1389,7 @@ const NOTE_MILESTONES = (n, T, sc) => {
 };
 const searchIndex = Object.create(null);
 function idx(c) {
+  if (isLocked(c) && !isSolved(c)) return (isSealed(c) ? [c.id, 'the last case sealed'] : [c.id, dispTitle(c), dispTagline(c), c.setting]).join(' ').toLowerCase();
   if (!searchIndex[c.id]) searchIndex[c.id] = [c.id, c.title, c.tagline, c.setting, c.date, arr(c.tags).join(' '), c.victim && c.victim.name, arr(c.suspects).map(s => s.name).join(' ')].join(' ').toLowerCase();
   return searchIndex[c.id];
 }
@@ -1260,10 +1429,12 @@ function setLibTab(tab, replaceHash) {
 }
 function casesHTML() {
   const n = solvedCount(), sc = BASE_SCORE + n, T = TOTAL;
-  const tagCounts = {}; CASES.forEach(c => arr(c.tags).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
+  const tagCounts = {}; CASES.filter(c => !isSealed(c)).forEach(c => arr(c.tags).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
   const tags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
   const F = lf();
-  const last = DB.ui.last && BYID[DB.ui.last] && !(peek(DB.ui.last) || {}).solved ? BYID[DB.ui.last] : null;
+  const last = DB.ui.last && BYID[DB.ui.last] && !(peek(DB.ui.last) || {}).solved && !isSealed(BYID[DB.ui.last]) ? BYID[DB.ui.last] : null;
+  const fin = CASES.find(isLocked);
+  const shelfNote = fin && !isSolved(fin) && !isSealed(fin) ? "Every file closed but one, and I've broken the seal on that one myself. Take your time over it, darling. I've been taking mine." : NOTE_MILESTONES(n, T, sc);
   return `
     <header class="mast">
       <div class="mast-top">
@@ -1275,10 +1446,10 @@ function casesHTML() {
     </header>
     <section class="thread" aria-label="Sherlock's note">
       <span class="from">SH · on the shelf</span>
-      <p class="msg">${esc(NOTE_MILESTONES(n, T, sc))}</p>
+      <p class="msg">${esc(shelfNote)}</p>
     </section>
     <div class="row">
-      ${last ? `<a class="btn" href="#${esc(last.id)}">Continue: ${esc(last.title)}</a>` : ''}
+      ${last ? `<a class="btn" href="#${esc(last.id)}">Continue: ${esc(dispTitle(last))}</a>` : ''}
       <button type="button" class="btn ${last ? 'ghost' : ''}" data-act="random">Random unsolved case</button>
     </div>
     <section class="controls" aria-label="Find a case">
@@ -1307,7 +1478,7 @@ function bindCases() {
 }
 function miniRow(c, right) {
   const T = themeOf(c.theme, c.id);
-  return `<li style="--cac:${rgb(T.ac)}"><a href="#${esc(c.id)}"><span class="no">${esc(num(c.id))}</span><span class="t">${esc(c.title)}</span><span class="p">${right}</span></a></li>`;
+  return `<li style="--cac:${rgb(T.ac)}"><a href="#${esc(c.id)}"><span class="no">${esc(num(c.id))}</span><span class="t">${esc(dispTitle(c))}</span><span class="p">${right}</span></a></li>`;
 }
 function progressHTML() {
   const n = solvedCount(), T = TOTAL, R = 54, CIRC = 2 * Math.PI * R, p = T ? n / T : 0;
@@ -1360,7 +1531,33 @@ function settingsHTML() {
   </div>
   <p class="fine">The Casebook · ${TOTAL} ${TOTAL === 1 ? 'file' : 'files'} · kept for Angie</p>`;
 }
+function sealedCard(c) {
+  const [a, b] = othersSolved(c), pct = b ? Math.round(a / b * 100) : 0;
+  return `<li class="file lastcase sealed">
+    <button type="button" class="file-link" data-act="sealed" aria-label="${esc(dispTitle(c))}. Sealed. ${a} of ${b} solved.">
+      <span class="lc-seal" aria-hidden="true">${LOCK_SVG}</span>
+      <span class="lc-k">No. ${esc(num(c.id))} · Sealed</span>
+      <span class="file-title">${esc(dispTitle(c))}</span>
+      <span class="file-sub">${esc(dispTagline(c))}</span>
+      <span class="lc-count"><span class="lc-bar" aria-hidden="true"><i style="width:${Math.max(2, pct)}%"></i></span><span>${a} of ${b} solved</span></span>
+    </button></li>`;
+}
+function lastCard(c) {
+  const s = peek(c.id), solved = isSolved(c), ans = s && s.answer, R = c.reveal;
+  const status = !solved ? '' : ans === 'yes' ? 'You said yes.' : ans === 'later' ? 'He\'ll ask again tomorrow. And the day after.' : 'He\'s still waiting for your answer.';
+  return `<li class="file lastcase${solved ? ' solved' : ' open'}">
+    <a class="file-link" href="#${esc(c.id)}" aria-label="Case ${num(c.id)}: ${esc(dispTitle(c))}${solved ? ', solved' : ''}">
+      <span class="lc-seal${solved ? ' broken' : ''}" aria-hidden="true">${solved ? '<b>S</b>' : LOCK_OPEN_SVG}</span>
+      <span class="lc-k">No. ${esc(num(c.id))} · ${solved ? 'Closed' : 'The seal is broken'}</span>
+      <span class="file-title">${esc(dispTitle(c))}</span>
+      <span class="file-sub">${esc(dispTagline(c))}</span>
+      ${status ? `<span class="lc-status">${esc(status)}</span>` : ''}
+    </a>
+    ${solved && R ? `<button type="button" class="lc-replay" data-act="replay" data-id="${esc(c.id)}">${ans === 'later' ? 'Let him ask again' : 'Turn around again'}</button>` : ''}
+  </li>`;
+}
 function fileCard(c) {
+  if (isLocked(c)) return isSealed(c) ? sealedCard(c) : lastCard(c);
   const s = peek(c.id), solved = !!(s && s.solved), T = themeOf(c.theme, c.id), pr = solved ? 0 : progressOf(c, s), sec = !!(s && s.secret);
   return `<li class="file${solved ? ' solved' : ''}${sec ? ' secret' : ''}" style="--cbg:${rgb(T.bg)};--cac:${rgb(T.ac)};--cink:${T.ink}">
     <a class="file-link" href="#${esc(c.id)}" aria-label="Case ${num(c.id)}: ${esc(c.title)}${solved ? ', solved' : pr ? ', in progress' : ''}">
@@ -1380,6 +1577,7 @@ function renderShelf() {
     const s = peek(c.id), solved = !!(s && s.solved);
     if (F.f === 'solved' && !solved) return false;
     if (F.f === 'unsolved' && solved) return false;
+    if (isSealed(c) && (F.d || F.tag)) return false;
     if (F.d && (c.difficulty | 0) !== F.d) return false;
     if (F.tag && arr(c.tags).indexOf(F.tag) < 0) return false;
     if (q && idx(c).indexOf(q) < 0) return false;
@@ -1394,12 +1592,14 @@ function libraryClick(t) {
   const a = t.dataset.act;
   if (a === 'sfx-toggle') { DB.ui.sound = !soundOn(); save(); t.setAttribute('aria-checked', String(soundOn())); sfx('tick'); return; }
   if (a === 'ts') { DB.ui.ts = +t.dataset.v; applyTS(); save(); document.querySelectorAll('[data-act="ts"]').forEach(b => b.setAttribute('aria-pressed', String(b === t))); return; }
+  if (a === 'sealed') { const c = CASES.find(isSealed); if (c) { const [x, y] = othersSolved(c), left = y - x; toast(`Not yet. <b>${left} ${left === 1 ? 'case is' : 'cases are'} still open.</b> He says he's patient. He isn't, but he's trying.`, `Sealed. ${left} cases still open.`); } return; }
+  if (a === 'replay') { const c = BYID[t.dataset.id]; if (c && c.reveal && isSolved(c)) openReveal(c); return; }
   if (a === 'lf') { DB.ui.f = t.dataset.v; }
   else if (a === 'ld') { DB.ui.d = +t.dataset.v; }
   else if (a === 'lt') { DB.ui.tag = t.dataset.v; }
   else if (a === 'clearf') { DB.ui.f = 'all'; DB.ui.d = 0; DB.ui.tag = ''; DB.ui.q = ''; const q = $('libq'); if (q) q.value = ''; }
   else if (a === 'random') {
-    const pool = CASES.filter(c => !(peek(c.id) || {}).solved);
+    const pool = CASES.filter(c => !(peek(c.id) || {}).solved && !isSealed(c));
     if (!pool.length) { announce('Every case is solved. There is nothing left to randomise.'); t.textContent = 'Every case is solved'; t.disabled = true; return; }
     const c = pool[Math.floor(Math.random() * pool.length)]; setHash(c.id); return;
   }
@@ -1425,12 +1625,12 @@ function openCase(id, tab) {
   DB.ui.last = id; save();
   view = { name: 'case', id, tab: null };
   applyTheme(C.theme, C.id);
-  document.title = `${C.title} · The Casebook`;
+  document.title = `${dispTitle(C)} · The Casebook`;
   app.innerHTML = `
   <div class="case">
     <header class="appbar"><div class="bar-in">
       <button type="button" class="back" data-act="shelf" aria-label="Back to the shelf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Shelf</span></button>
-      <div class="bar-title"><span class="cno" id="cno">Case No. ${esc(num(C.id))}</span><span class="ct">${esc(C.title)}</span></div>
+      <div class="bar-title"><span class="cno" id="cno">Case No. ${esc(num(C.id))}</span><span class="ct">${esc(dispTitle(C))}</span></div>
       <span class="pride" id="pride"></span>
     </div></header>
     <main class="panel page" id="panel" role="tabpanel" tabindex="-1"></main>
@@ -1539,8 +1739,8 @@ function briefHTML() {
   <section class="cover">
     <div class="cover-top"><span class="burst noburst" aria-hidden="true"><span class="nb"><small>No.</small>${esc(num(C.id))}</span></span>
       <p class="eyebrow"><b>Case No. ${esc(num(C.id))}</b><span>${DIFF[C.difficulty] || ''} · The brief</span></p></div>
-    <h1 id="ph" tabindex="-1">${esc(C.title)}</h1>
-    <p class="tagline">${esc(C.tagline)}</p>
+    <h1 id="ph" tabindex="-1">${esc(dispTitle(C))}</h1>
+    <p class="tagline">${esc(dispTagline(C))}</p>
     <dl class="facts">
       <div><dt>Where</dt><dd>${esc(C.setting)}</dd></div>
       <div><dt>When</dt><dd>${esc(C.date)}</dd></div>
@@ -1635,6 +1835,10 @@ function solvedLead(p) {
     default: return `Answer: <b>${esc(p.answer)}</b>. `;
   }
 }
+function codeForm(i, p, u) {
+  const digits = [p.answer].concat(arr(p.accept)).every(x => /^\d+$/.test(String(x).replace(/\s+/g, '')));
+  return `<form class="cform codeform" data-form="code" data-p="${i}" novalidate><label class="sr" for="pzin-${i}">Your answer</label><input id="pzin-${i}" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="${digits ? 'numeric' : 'text'}" placeholder="${esc(p.placeholder || 'Your answer')}" value="${esc(u.val)}"><button class="btn" type="submit">Try it</button></form>`;
+}
 function puzzleInner(i) {
   const p = pzList()[i]; if (!p) return '';
   const u = pzU(i), done = pzSolved(i), t = p.type;
@@ -1652,10 +1856,11 @@ function puzzleInner(i) {
     return head + `<div class="cipher-text" aria-label="Cipher text">${esc(p.cipher)}</div>
       <form class="cform" data-form="cipher" data-p="${i}" novalidate><label class="sr" for="pzin-${i}">Your decoded answer</label><input id="pzin-${i}" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Your answer" value="${esc(u.val)}"><button class="btn" type="submit">Try it</button></form>` + msg;
   }
+  const sndHTML = arr(p.sounds).length && t !== 'pitch' ? `<div class="sounds">${arr(p.sounds).map((s, k) => `<button type="button" class="btn ghost play${s.seq ? ' seq' : ''}" data-act="sound" data-p="${i}" data-i="${k}"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>${esc(s.label)}</span></button>`).join('')}</div>` : '';
   if (t === 'code') {
-    if (done) return head + `<div class="code-plate done" aria-hidden="true">${esc(p.answer)}</div>` + solved;
-    const digits = [p.answer].concat(arr(p.accept)).every(x => /^\d+$/.test(String(x).replace(/\s+/g, '')));
-    return head + `<form class="cform codeform" data-form="code" data-p="${i}" novalidate><label class="sr" for="pzin-${i}">Your answer</label><input id="pzin-${i}" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="${digits ? 'numeric' : 'text'}" placeholder="${esc(p.placeholder || 'Your answer')}" value="${esc(u.val)}"><button class="btn" type="submit">Try it</button></form>` + msg;
+    if (done) return head + sndHTML + `<div class="code-plate done" aria-hidden="true">${esc(p.answer)}</div>` + solved;
+    if (sndHTML) return head + sndHTML + `<p class="pz-help">Tap a key to compare, if you need to.</p>${keysHTML(i, null)}` + codeForm(i, p, u) + msg;
+    return head + codeForm(i, p, u) + msg;
   }
   if (t === 'choice') {
     if (done) return head + solved;
@@ -2072,18 +2277,18 @@ function accuseHTML() {
   <section class="phead acc">
     <span class="burst" aria-hidden="true"><b>?</b></span>
     <p class="caps" aria-hidden="true">Accuse</p>
-    <h2 id="ph" tabindex="-1">Make your accusation</h2>
+    <h2 id="ph" tabindex="-1">${esc(a.question || 'Make your accusation')}</h2>
     <p class="lede">You can accuse at any time, but the evidence gets clearer the more you find. Points of pride left: ${left} of 3.</p>
   </section>
   <form class="aform" id="aform" novalidate>
-    <fieldset><legend>Who did it</legend>
+    <fieldset><legend>${esc(a.whoLabel || 'Who did it')}</legend>
       ${mixed(C.suspects, 'accuse').map(su => `<label class="opt${ui.who === su.id ? ' on' : ''}"><input type="radio" name="who" value="${esc(su.id)}"${ui.who === su.id ? ' checked' : ''}><span>${esc(su.name)}<small>${esc(su.role)}</small></span></label>`).join('')}
     </fieldset>
-    <fieldset><legend>Why</legend>
+    <fieldset><legend>${esc(a.whyLabel || 'Why')}</legend>
       ${mixed(a.motives, 'motive').map(m => `<label class="opt${ui.why === m.id ? ' on' : ''}"><input type="radio" name="why" value="${esc(m.id)}"${ui.why === m.id ? ' checked' : ''}><span>${esc(m.label)}</span></label>`).join('')}
     </fieldset>
     <p class="err" id="aerr" aria-live="assertive">${esc(ui.err)}</p>
-    <div class="row"><button class="btn" type="submit">Name them</button></div>
+    <div class="row"><button class="btn" type="submit">${esc(a.button || 'Name them')}</button></div>
   </form>
   ${res}`;
 }
@@ -2105,13 +2310,15 @@ function afterAccuse() {
 }
 function accuse() {
   const a = C.accuse || {};
-  if (!ui.who || !ui.why) { ui.err = !ui.who ? 'Choose who did it first.' : 'Now choose why. Sherlock wants a motive, not just a name.'; const er = $('aerr'); if (er) er.textContent = ui.err; return; }
+  if (!ui.who || !ui.why) { ui.err = !ui.who ? (a.whoLabel ? 'Choose someone first.' : 'Choose who did it first.') : 'Now choose why. Sherlock wants a motive, not just a name.'; const er = $('aerr'); if (er) er.textContent = ui.err; return; }
   S.tries = (S.tries | 0) + 1;
   if (ui.who === a.culprit && ui.why === a.motive) {
     S.solved = true; S.verdict = { kind: 'win' }; S.solvedAt = Date.now(); ui.just = true; save(true);
     renderPanel(); const h = $('ph'); if (h) h.focus({ preventScroll: true }); window.scrollTo(0, 0);
     setTimeout(() => sfx('stamp'), RM() ? 0 : 560);
     announce(`Case closed. Angie ${score()}, Sherlock 0.`);
+    { const ct = document.querySelector('.case .bar-title .ct'); if (ct) ct.textContent = dispTitle(C); document.title = `${dispTitle(C)} · The Casebook`; }
+    if (C.reveal) { const c = C; setTimeout(() => { if (C === c && !REV.el) openReveal(c); }, RM() ? 200 : 1700); }
     return;
   }
   S.verdict = { kind: ui.who === a.culprit ? 'motive' : 'wrong', who: ui.who, why: ui.why }; save();
@@ -2119,7 +2326,7 @@ function accuse() {
 }
 function nextCase() {
   const i = C._i;
-  for (let k = 1; k <= CASES.length; k++) { const c = CASES[(i + k) % CASES.length]; if (c.id !== C.id && !(peek(c.id) || {}).solved) return c; }
+  for (let k = 1; k <= CASES.length; k++) { const c = CASES[(i + k) % CASES.length]; if (c.id !== C.id && !(peek(c.id) || {}).solved && !isSealed(c)) return c; }
   return null;
 }
 function verdictHTML() {
@@ -2138,6 +2345,7 @@ function verdictHTML() {
       <div class="phone-top"><span class="avatar" aria-hidden="true">SH</span><div><b>Sherlock</b><span>just now</span></div></div>
       <div class="thread">${arr(a.solved).map(p => `<p class="msg">${esc(p)}</p>`).join('')}</div>
     </section>
+    ${C.reveal ? revealCTA() : ''}
     <div class="vtally">
       <span>${prideLine} <span class="pride" role="img" aria-label="${left} of 3">${[0, 1, 2].map(i => `<i class="${i < left ? 'on' : ''}"></i>`).join('')}</span></span>
       <span>Timeline pattern: ${S.pattern ? 'found' : 'not found'}.${(S.tries | 0) > 1 ? ` Accusations made: ${S.tries}.` : ' Named at the first attempt.'}</span>
@@ -2145,10 +2353,252 @@ function verdictHTML() {
     </div>
     ${S.secret ? letterHTML() : `<p class="teaser">One thing in this case is still hiding in plain sight. Someone said something worth tapping. Go back and listen.</p>`}
     <div class="vactions">
-      ${nx ? `<button type="button" class="btn" data-act="next" data-id="${esc(nx.id)}">Next case: ${esc(nx.title)}</button>` : ''}
+      ${nx ? `<button type="button" class="btn" data-act="next" data-id="${esc(nx.id)}">Next case: ${esc(dispTitle(nx))}</button>` : ''}
       <button type="button" class="btn ${nx ? 'ghost' : ''}" data-act="shelf">Back to the shelf</button>
     </div>
   </section>`;
+}
+
+/* ================= the last case: reveal ================= */
+const LOCK_SVG = '<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="1.6"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/><circle cx="12" cy="15.2" r="1.3"/><path d="M12 16.4v1.8"/></svg>';
+const LOCK_OPEN_SVG = '<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="1.6"/><path d="M8 10.5V7.8a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="15.2" r="1.3"/><path d="M12 16.4v1.8"/></svg>';
+function revealCTA() {
+  const ans = S.answer;
+  const line = ans === 'yes' ? 'You said yes.' : ans === 'later' ? "You asked him to ask again tomorrow. He will, as often as you like." : 'Read the tag again. Then turn around.';
+  return `<section class="rv-cta" aria-label="What he left for you">
+    <span class="rv-cta-k">What he left for you</span>
+    <p>${esc(line)}</p>
+    <button type="button" class="btn" data-act="reveal">${ans === 'yes' ? 'Turn around again' : ans === 'later' ? 'Let him ask again' : 'Turn around'}</button>
+  </section>`;
+}
+const REV = { el: null, c: null, run: 0, skip: null, raf: 0, fx: [], fxOn: false, spawnUntil: 0, t0: 0, ry: -24, drag: null, stage: '', prevFocus: null };
+const RING_SVG = `<svg viewBox="0 0 100 100" aria-hidden="true">
+  <defs>
+    <linearGradient id="rvg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3CF"/><stop offset=".3" stop-color="#E9C27E"/><stop offset=".62" stop-color="#9E7130"/><stop offset=".85" stop-color="#E7C584"/><stop offset="1" stop-color="#FFF0C6"/></linearGradient>
+    <linearGradient id="rvd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#DDEBFA"/><stop offset="1" stop-color="#8FB0D6"/></linearGradient>
+    <radialGradient id="rvh" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="50" cy="63" r="24" fill="none" stroke="#5C4019" stroke-width="7.4" opacity=".55"/>
+  <circle cx="50" cy="63" r="24" fill="none" stroke="url(#rvg)" stroke-width="5.6"/>
+  <path d="M30 52a24 24 0 0 1 10-11" fill="none" stroke="#FFF7E0" stroke-width="1.4" stroke-linecap="round" opacity=".85"/>
+  <path d="M43 40.5l-2.4-4.6M57 40.5l2.4-4.6M47 39.6l-.4-5M53 39.6l.4-5" stroke="url(#rvg)" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M41.5 41h17l-2 2.6h-13z" fill="url(#rvg)"/>
+  <polygon points="44,27.5 56,27.5 61,32 50,44.5 39,32" fill="url(#rvd)" stroke="#F5FAFF" stroke-width=".5"/>
+  <path d="M39 32h22M44 27.5l-1.6 4.5 7.6 12.5 7.6-12.5-1.6-4.5M50 27.5l-3.2 4.5L50 44.5 53.2 32z" fill="none" stroke="#9DB9DA" stroke-width=".45" opacity=".9"/>
+  <path d="M45.4 28.6l3 3.2-3.8-.2z" fill="#fff" opacity=".9"/>
+  <circle class="rv-gl" cx="55" cy="29.5" r="9" fill="url(#rvh)"/>
+</svg>`;
+function rvBoxHTML() {
+  const f = cls => `<span class="rv-f ${cls}"></span>`;
+  return `<div class="rv-box3d">
+    <div class="rv-base">${f('b-front')}${f('b-back')}${f('b-left')}${f('b-right')}<span class="rv-f b-cush"><i></i></span></div>
+    <div class="rv-ringpos"><div class="rv-ring">${RING_SVG}</div></div>
+    <div class="rv-lid">${f('l-top')}${f('l-in')}${f('l-front')}${f('l-back')}${f('l-left')}${f('l-right')}</div>
+  </div>`;
+}
+function openReveal(c) {
+  if (!c || !c.reveal || REV.el) return;
+  const R = c.reveal, s = st(c.id);
+  REV.c = c; REV.run++; REV.fx = []; REV.fxOn = false; REV.t0 = performance.now(); REV.prevFocus = document.activeElement;
+  const words = String(R.question || '').split(/\s+/).filter(Boolean);
+  const el = document.createElement('div');
+  el.className = 'rv'; el.id = 'rv'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'What he left for you'); el.tabIndex = -1;
+  el.innerHTML = `
+    <canvas class="rv-sky" aria-hidden="true"></canvas>
+    <div class="rv-veil" aria-hidden="true"></div>
+    <div class="rv-top">
+      <button type="button" class="rv-tb" data-rv="skip">Skip to the question</button>
+      <button type="button" class="rv-tb rv-x" data-rv="close" aria-label="Close and go back to the casebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="rv-prelude" aria-live="polite">${arr(R.prelude).map(l => `<p>${esc(l)}</p>`).join('')}</div>
+    <div class="rv-boxwrap" aria-hidden="true"><span class="rv-halo"></span>${rvBoxHTML()}<span class="rv-burst"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+    <div class="rv-letter" tabindex="-1" aria-label="His letter"><article class="rv-paper" lang="en">
+      ${arr(R.letter).map((p, i) => `<p class="rv-p${i === 0 ? ' salute' : ''}">${esc(p).replace(/([㐀-鿿，]+)/g, '<span lang="zh" class="rv-han">$1</span>')}</p>`).join('')}
+      <p class="rv-p rv-sig">${esc(R.from || 'S.')}</p>
+      <div class="rv-p rv-toq"><button type="button" class="rv-ghost" data-rv="ask">Turn around</button></div>
+    </article></div>
+    <div class="rv-ask" aria-live="polite">
+      <p class="rv-q">${words.map((w, i) => `<span style="--d:${(i * .38).toFixed(2)}s">${esc(w)}</span>`).join(' ')}</p>
+      <div class="rv-btns" style="--d:${(words.length * .38 + 1.1).toFixed(2)}s">
+        <button type="button" class="rv-yes" data-rv="yes">${esc(R.yesLabel || 'Yes')}</button>
+        <button type="button" class="rv-later" data-rv="later">${esc(R.laterLabel || 'Ask me again tomorrow')}</button>
+      </div>
+    </div>
+    <div class="rv-after" aria-live="polite"><div class="rv-after-t"></div><div class="rv-btns rv-after-b"></div></div>
+    <canvas class="rv-fx" aria-hidden="true"></canvas>
+    <p class="rv-tap" aria-hidden="true">Tap to go on</p>`;
+  document.body.appendChild(el);
+  REV.el = el;
+  try { app.inert = true; } catch (e) {}
+  document.documentElement.classList.add('rv-lock');
+  el.addEventListener('click', rvClick);
+  el.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); closeReveal(); } });
+  rvBindDrag(el.querySelector('.rv-boxwrap'));
+  window.addEventListener('resize', rvSize);
+  rvSize(); REV.raf = requestAnimationFrame(rvTick);
+  el.focus({ preventScroll: true });
+  announce('Sherlock has left you something. ' + arr(R.prelude).join(' '));
+  if (RM()) { rvShowAll(); goAsk(true); return; }
+  rvRun(REV.run);
+}
+function rvStage(k) { const el = REV.el; if (!el) return; REV.stage = k; el.dataset.stage = k; }
+function rvWait(ms) {
+  return new Promise(res => { let done = false; const fin = () => { if (done) return; done = true; clearTimeout(id); if (REV.skip === fin) REV.skip = null; res(); }; const id = setTimeout(fin, ms); REV.skip = fin; });
+}
+function rvShowAll() { const el = REV.el; if (!el) return; el.classList.add('opened'); el.querySelectorAll('.rv-p, .rv-prelude p').forEach(p => p.classList.add('on')); }
+async function rvRun(tok) {
+  const el = REV.el, live = () => REV.el && tok === REV.run;
+  rvStage('dim'); await rvWait(1500); if (!live()) return;
+  rvStage('prelude');
+  const pl = el.querySelectorAll('.rv-prelude p');
+  for (const p of pl) { p.classList.add('on'); await rvWait(2300); if (!live()) return; }
+  await rvWait(500); if (!live()) return;
+  rvStage('box'); await rvWait(1900); if (!live()) return;
+  el.classList.add('opened'); rvChime(); await rvWait(2300); if (!live()) return;
+  el.classList.add('sparkle'); rvGlints(26); await rvWait(2600); if (!live()) return;
+  rvStage('letter');
+  const box = el.querySelector('.rv-letter');
+  const ps = el.querySelectorAll('.rv-letter .rv-p');
+  await rvWait(1300); if (!live()) return;
+  for (const p of ps) {
+    p.classList.add('on');
+    const top = p.offsetTop - box.clientHeight * .28; if (top > box.scrollTop) box.scrollTo({ top, behavior: 'smooth' });
+    const w = String(p.textContent || '').split(/\s+/).length;
+    await rvWait(p.classList.contains('rv-toq') ? 400 : Math.min(17000, 1500 + w * 205)); if (!live()) return;
+  }
+  await rvWait(2400); if (!live()) return;
+  goAsk();
+}
+function goAsk(instant) {
+  const el = REV.el; if (!el) return;
+  REV.run++; if (REV.skip) REV.skip();
+  rvShowAll();
+  el.classList.add('opened', 'sparkle');
+  el.classList.toggle('instant', !!instant);
+  rvStage('ask');
+  const y = el.querySelector('.rv-yes'); setTimeout(() => { if (y && REV.stage === 'ask') y.focus({ preventScroll: true }); }, instant ? 0 : 4000);
+}
+function rvAnswer(kind) {
+  const el = REV.el, c = REV.c; if (!el || !c) return;
+  const s = st(c.id), R = c.reveal; if (!(s.answer === 'yes' && kind !== 'yes')) { s.answer = kind; s.answeredAt = Date.now(); save(true); }
+  REV.run++;
+  const paras = kind === 'yes' ? arr(R.yes) : arr(R.later);
+  el.querySelector('.rv-after-t').innerHTML = (kind === 'yes' && R.yesTitle ? `<p class="rv-said">${esc(R.yesTitle)}</p>` : '') + paras.map((p, i) => `<p style="--d:${(1.2 + i * 2.2).toFixed(1)}s">${esc(p)}</p>`).join('');
+  el.querySelector('.rv-after-b').style.setProperty('--d', (1.6 + paras.length * 2.2).toFixed(1) + 's');
+  el.querySelector('.rv-after-b').innerHTML = kind === 'yes'
+    ? `<button type="button" class="rv-ghost" data-rv="music">Play his song again</button><button type="button" class="rv-ghost" data-rv="letter">Read his letter again</button><button type="button" class="rv-yes sm" data-rv="close">Back to the casebook</button>`
+    : `<button type="button" class="rv-ghost" data-rv="letter">Read his letter again</button><button type="button" class="rv-yes sm" data-rv="close">Until tomorrow</button>`;
+  el.querySelector('.rv-after').scrollTop = 0;
+  rvStage(kind === 'yes' ? 'yes' : 'later');
+  if (kind === 'yes') { REV.fxOn = true; REV.spawnUntil = performance.now() + 16000; rvBurst(RM() ? 30 : 110); rvMelody(); announce('You said yes.'); }
+  else announce(paras.join(' '));
+}
+function rvClick(e) {
+  const b = e.target.closest('[data-rv]');
+  if (!b) { if (REV.skip && /^(dim|prelude|box|letter)$/.test(REV.stage)) REV.skip(); return; }
+  const k = b.dataset.rv;
+  if (k === 'close') closeReveal();
+  else if (k === 'skip' || k === 'ask') goAsk();
+  else if (k === 'yes') rvAnswer('yes');
+  else if (k === 'later') rvAnswer('later');
+  else if (k === 'music') rvMelody();
+  else if (k === 'letter') { REV.run++; rvShowAll(); rvStage('letter'); const l = REV.el.querySelector('.rv-letter'); l.scrollTop = 0; l.focus({ preventScroll: true }); }
+}
+function closeReveal() {
+  const el = REV.el; if (!el) return;
+  REV.run++; if (REV.skip) REV.skip(); cancelAnimationFrame(REV.raf); window.removeEventListener('resize', rvSize);
+  el.classList.add('closing'); REV.el = null; REV.fxOn = false;
+  try { app.inert = false; } catch (e) {}
+  document.documentElement.classList.remove('rv-lock');
+  setTimeout(() => el.remove(), RM() ? 0 : 700);
+  if (view && view.name === 'case' && C && C === REV.c) renderPanel();
+  else if (view && view.name === 'library' && view.tab === 'cases') renderShelf();
+  const f = REV.prevFocus; if (f && document.contains(f)) try { f.focus({ preventScroll: true }); } catch (e) {}
+}
+/* drag to turn the box */
+function rvBindDrag(w) {
+  if (!w) return;
+  w.addEventListener('pointerdown', e => { REV.drag = { x: e.clientX, ry: REV.ry, t: performance.now() }; try { w.setPointerCapture(e.pointerId); } catch (er) {} });
+  w.addEventListener('pointermove', e => { if (!REV.drag) return; REV.ry = Math.max(-75, Math.min(35, REV.drag.ry + (e.clientX - REV.drag.x) * .45)); });
+  const up = () => { if (REV.drag) REV.drag.release = performance.now(); setTimeout(() => { REV.drag = null; }, 1600); };
+  w.addEventListener('pointerup', up); w.addEventListener('pointercancel', up);
+}
+/* sky + celebration canvases */
+let RVS = null;
+function rvSize() {
+  const el = REV.el; if (!el) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1), W = el.clientWidth, H = el.clientHeight;
+  el.querySelectorAll('canvas').forEach(cv => { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); });
+  const r = rng(51);
+  RVS = { W, H, stars: Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: r() * W, y: r() * H * .6, s: r() * 1.3 + .25, p: r() * 6.28, v: .6 + r() * 1.6 })),
+    lamps: Array.from({ length: 11 }, (_, i) => ({ x: (i + .3 + r() * .4) / 11 * W, h: 5 + r() * 4 })), motes: Array.from({ length: 26 }, () => ({ x: r() * W, y: r() * H, v: 6 + r() * 14, a: r() * .5 + .15, p: r() * 6.28 })) };
+}
+function rvTick(now) {
+  const el = REV.el; if (!el || !RVS) return;
+  const t = (now - REV.t0) / 1000, { W, H } = RVS;
+  /* gentle sway unless she is turning it */
+  if (!REV.drag) REV.ry += ((-24 + Math.sin(t * .35) * 9) - REV.ry) * .04;
+  el.style.setProperty('--ry', REV.ry.toFixed(2) + 'deg');
+  const sky = el.querySelector('.rv-sky').getContext('2d'), hz0 = H * .64, mx = W * .83, my = H * .115;
+  const g = sky.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#04050B'); g.addColorStop(.5, '#0A1022'); g.addColorStop(.64, '#141B33'); g.addColorStop(.66, '#070A14'); g.addColorStop(1, '#03040A');
+  sky.fillStyle = g; sky.fillRect(0, 0, W, H);
+  RVS.stars.forEach(s => { const a = .35 + .65 * Math.abs(Math.sin(t * s.v * .5 + s.p)); sky.globalAlpha = a * .9; sky.fillStyle = '#F4EEE2'; sky.fillRect(s.x, s.y, s.s, s.s); });
+  sky.globalAlpha = 1;
+  const mg = sky.createRadialGradient(mx, my, 6, mx, my, 120); mg.addColorStop(0, 'rgba(244,238,226,.34)'); mg.addColorStop(1, 'rgba(244,238,226,0)'); sky.fillStyle = mg; sky.fillRect(mx - 130, my - 130, 260, 260);
+  sky.fillStyle = '#F2EBDC'; sky.beginPath(); sky.arc(mx, my, 19, 0, 6.283); sky.fill();
+  sky.fillStyle = 'rgba(160,150,135,.18)'; sky.beginPath(); sky.arc(mx - 6, my - 4, 4.5, 0, 6.283); sky.arc(mx + 6, my + 6, 3, 0, 6.283); sky.fill();
+  /* embankment: parapet line and lamps */
+  sky.fillStyle = '#0B0F1C'; sky.fillRect(0, hz0 - 12, W, 12);
+  RVS.lamps.forEach(l => { const lg = sky.createRadialGradient(l.x, hz0 - 22 - l.h, 0, l.x, hz0 - 22 - l.h, 16); lg.addColorStop(0, 'rgba(230,190,122,.85)'); lg.addColorStop(1, 'rgba(230,190,122,0)'); sky.fillStyle = lg; sky.fillRect(l.x - 16, hz0 - 40 - l.h, 32, 34); sky.fillStyle = 'rgba(20,22,32,1)'; sky.fillRect(l.x - .8, hz0 - 22 - l.h, 1.6, 10 + l.h); });
+  /* the river: moonlight broken on the water */
+  for (let y = hz0 + 4; y < H; y += 5) {
+    const k = (y - hz0) / (H - hz0), spread = 14 + k * 90, n = 3 + Math.floor(k * 4);
+    for (let j = 0; j < n; j++) {
+      const ph = Math.sin(t * 1.3 + y * .21 + j * 2.1), x = mx + Math.sin(y * .37 + j * 1.7 + t * .6) * spread, w = 6 + (ph + 1) * (8 + k * 18);
+      sky.globalAlpha = (.12 + (ph + 1) * .16) * (1 - k * .55); sky.fillStyle = '#EDE4CF'; sky.fillRect(x - w / 2, y, w, 1.3);
+    }
+    RVS.lamps.forEach((l, j) => { if ((y + j * 7) % 15 < 5) { sky.globalAlpha = (.05 + .07 * Math.abs(Math.sin(t + y * .1 + j))) * (1 - k); sky.fillStyle = '#E6BE7A'; sky.fillRect(l.x - 3 + Math.sin(t * 1.1 + y * .3) * 3, y, 6, 1.2); } });
+  }
+  sky.globalAlpha = 1;
+  RVS.motes.forEach(m => { m.y -= m.v * .016; if (m.y < -10) { m.y = H + 10; } const x = m.x + Math.sin(t * .4 + m.p) * 14; sky.globalAlpha = m.a * (.5 + .5 * Math.sin(t * 1.4 + m.p)); sky.fillStyle = '#E6BE7A'; sky.beginPath(); sky.arc(x, m.y, 1.1, 0, 6.283); sky.fill(); });
+  sky.globalAlpha = 1;
+  rvFX(now);
+  REV.raf = requestAnimationFrame(rvTick);
+}
+const PETAL = ['#F2C6CC', '#F7DCDD', '#EBB0B8', '#FBEDE6'], GOLD = ['#E6BE7A', '#F5DCA6', '#C99A4B', '#FFF1CC'];
+function rvBurst(n) {
+  if (!RVS) return; const { W, H } = RVS, r = Math.random;
+  for (let i = 0; i < n; i++) { const petal = r() < .45; REV.fx.push({ petal, x: W / 2 + (r() - .5) * 60, y: H * .42 + (r() - .5) * 40, vx: (r() - .5) * 9, vy: -r() * 9 - 3, rot: r() * 6.28, vr: (r() - .5) * .2, s: petal ? 5 + r() * 5 : 3 + r() * 3.5, c: (petal ? PETAL : GOLD)[Math.floor(r() * 4)], life: 0, sw: r() * 6.28 }); }
+}
+function rvFX(now) {
+  const cv = REV.el && REV.el.querySelector('.rv-fx'); if (!cv || !RVS) return;
+  const x = cv.getContext('2d'), { W, H } = RVS; x.clearRect(0, 0, W, H);
+  if (REV.fxOn && now < REV.spawnUntil && Math.random() < .2) { const petal = Math.random() < .6; REV.fx.push({ petal, x: Math.random() * W, y: -12, vx: (Math.random() - .5) * .8, vy: .6 + Math.random() * 1.1, rot: Math.random() * 6.28, vr: (Math.random() - .5) * .08, s: petal ? 5 + Math.random() * 5 : 2.5 + Math.random() * 3, c: (petal ? PETAL : GOLD)[Math.floor(Math.random() * 4)], life: 0, sw: Math.random() * 6.28 }); }
+  REV.fx = REV.fx.filter(p => p.y < H + 20 && p.life < 900);
+  REV.fx.forEach(p => {
+    p.life++; p.vy = Math.min(p.petal ? 1.35 : 2.1, p.vy + (p.petal ? .05 : .11)); p.vx *= .985; p.sw += .035;
+    p.x += p.vx + Math.sin(p.sw) * (p.petal ? .75 : .35); p.y += p.vy; p.rot += p.vr;
+    x.save(); x.translate(p.x, p.y); x.rotate(p.rot);
+    if (p.petal) { x.globalAlpha = .9; x.fillStyle = p.c; x.beginPath(); x.ellipse(0, 0, p.s, p.s * .58, 0, 0, 6.283); x.fill(); x.globalAlpha = .35; x.fillStyle = '#fff'; x.beginPath(); x.ellipse(-p.s * .25, -p.s * .12, p.s * .45, p.s * .18, 0, 0, 6.283); x.fill(); }
+    else { const sh = Math.abs(Math.cos(p.rot * 2)); x.globalAlpha = .55 + sh * .45; x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s * .3 * (.3 + sh), p.s, p.s * .6 * (.3 + sh)); }
+    x.restore();
+  });
+}
+function rvGlints(n) { if (!REV.el) return; const b = REV.el.querySelector('.rv-burst'); if (b) { b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); } }
+function rvChime() {
+  if (!soundOn()) return; const c = audio(); if (!c) return;
+  const t = c.currentTime + 1.6; [[88, 0], [91, .16], [96, .34], [100, .52]].forEach(([m, d]) => TIMBRE.glass(c, t + d, hz(m), BUS));
+}
+/* his violin: an original little air in C that leans on B before it comes home */
+const MEL = [[67, 1], [72, 1], [76, 1.5], [74, .5], [72, 1], [81, 2], [79, 1], [76, 1], [77, .5], [76, .5], [74, 1], [79, 2], [77, 1], [76, .5], [74, .5], [71, 1.5], [74, .5], [72, 3.5]];
+let melBusy = 0;
+function rvMelody() {
+  const c = audio(); if (!c) return; const nowT = c.currentTime; if (nowT < melBusy) return;
+  const B = .62, t0 = nowT + .25; let t = t0;
+  MEL.forEach(([m, b], i) => { TIMBRE.bow(c, t, hz(m), BUS, b * B * (i === MEL.length - 1 ? 1.25 : .97), i === MEL.length - 1 ? .11 : .1); t += b * B; });
+  const pad = (ms, at, len) => ms.forEach(m => partial(c, t0 + at * B, hz(m), 'sine', .045, .5, len * B + 1.6, BUS));
+  pad([48, 55, 64], 0, 5); pad([53, 57, 65], 5, 4); pad([55, 59, 62], 9, 3.5); pad([55, 59, 65], 12.5, 3); pad([48, 55, 64, 72], 15.5, 4.2);
+  melBusy = t + 1.2;
 }
 
 /* ================= events ================= */
@@ -2163,6 +2613,7 @@ app.addEventListener('click', e => {
     case 'shelf': goShelf(); return;
     case 'goto': setTab(t.dataset.v, true); return;
     case 'next': setHash(t.dataset.id); return;
+    case 'reveal': if (S.solved && C.reveal) openReveal(C); return;
     case 'hint': {
       const hs = arr(C.hints); if ((S.hints | 0) >= hs.length) return;
       S.hints = (S.hints | 0) + 1; save(); renderPride(); renderPanel('[data-act="hint"]');
@@ -2195,7 +2646,8 @@ app.addEventListener('click', e => {
       if (!d) { pzU(pi).pmsg = { t: 'Sound is not available in this browser.', c: 'no' }; rerenderPuzzle(pi); return; }
       t.classList.add('playing'); setTimeout(() => t.classList.remove('playing'), d * 1000); return;
     }
-    case 'key': { const pi = +t.dataset.p || 0, u = pzU(pi); u.pick = +t.dataset.k; playKey(u.pick); u.pmsg = { t: `${noteName(u.pick)} selected. Compare it with the sound, then name it.`, c: '' }; rerenderPuzzle(pi, `[data-k="${u.pick}"]`); return; }
+    case 'key': { const pi = +t.dataset.p || 0, u = pzU(pi), pp = pzList()[pi];
+      if (pp && pp.type !== 'pitch') { playKey(+t.dataset.k); t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 260); return; } u.pick = +t.dataset.k; playKey(u.pick); u.pmsg = { t: `${noteName(u.pick)} selected. Compare it with the sound, then name it.`, c: '' }; rerenderPuzzle(pi, `[data-k="${u.pick}"]`); return; }
     case 'name-note': {
       const pi = +t.dataset.p || 0, u = pzU(pi), p = pzList()[pi]; if (!p || u.pick == null) return; const ans = NOTES.indexOf(p.answer);
       if (u.pick === ans) { solvePuzzle(pi); return; }
@@ -2299,7 +2751,7 @@ app.addEventListener('submit', e => {
     const pi = +f.dataset.p || 0, p = pzList()[pi], u = pzU(pi), inp = $('pzin-' + pi), v = inp ? inp.value : ''; u.val = v; if (!p) return;
     const loose = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, '');
     if (!loose(v)) { u.pmsg = { t: 'Type your answer first.', c: 'no' }; rerenderPuzzle(pi, '#pzin-' + pi); return; }
-    const ok = f.dataset.form === 'cipher' ? norm(v) === norm(p.answer)
+    const ok = f.dataset.form === 'cipher' ? [p.answer].concat(arr(p.accept)).some(a => norm(a) === norm(v))
       : [p.answer].concat(arr(p.accept)).some(a => loose(a) === loose(v) || (norm(a) && norm(a) === norm(v)));
     if (ok) { solvePuzzle(pi); return; }
     u.pmsg = { t: `"${v.trim()}" isn't it. ${f.dataset.form === 'cipher' ? 'Check the key and try again.' : 'Look at the evidence again.'}`, c: 'no' }; rerenderPuzzle(pi, '#pzin-' + pi);
@@ -2316,7 +2768,7 @@ app.addEventListener('keydown', e => {
 let sw = null;
 document.addEventListener('touchstart', e => {
   sw = null; if (!view || e.touches.length !== 1) return;
-  const el = e.target; if (el.closest && el.closest('.stage,.zoomctl,.tray,.board,.keys,.chips,input,textarea,.tabbar,.envelope,.seg,.pz-order,.pz-match')) return;
+  const el = e.target; if (REV.el || (el.closest && el.closest('.rv'))) return; if (el.closest && el.closest('.stage,.zoomctl,.tray,.board,.keys,.chips,input,textarea,.tabbar,.envelope,.seg,.pz-order,.pz-match')) return;
   const p = e.touches[0]; sw = { x: p.clientX, y: p.clientY, t: Date.now() };
 }, { passive: true });
 document.addEventListener('touchmove', e => { if (sw && e.touches.length > 1) sw = null; }, { passive: true });
@@ -2334,7 +2786,7 @@ function marginalia() {
   const m = $('marg'); if (!m) return;
   const P = ['K.', 'Q.', 'R.', 'B.', 'Kt.'], V = ['to', 'takes'], W = ['B. third', 'K. fourth', 'Q. second', 'R. sq.', 'Kt. fifth', 'B. P.', 'K. B. third'];
   let h = '';
-  CASES.forEach((c, i) => { h += `<span>${i + 1}. No. ${esc(num(c.id))} ${esc(String(c.title || '').split(' ').slice(0, 2).join(' '))}</span>`; });
+  CASES.forEach((c, i) => { h += `<span>${i + 1}. No. ${esc(num(c.id))} ${esc(String(dispTitle(c) || '').split(' ').slice(0, 2).join(' '))}</span>`; });
   for (let i = 0; i < 18; i++) h += `<span>${CASES.length + i + 1}. ${P[i % 5]} ${V[i % 3 === 2 ? 1 : 0]} ${W[(i * 3) % 7]}</span>`;
   m.innerHTML = h;
 }
