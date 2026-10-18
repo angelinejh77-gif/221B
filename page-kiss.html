@@ -4,10 +4,11 @@
 <style>
 :root{--bg:#1A0F12;--bg2:#2A171B;--lip:#B8323F;--lip2:#8E1F2C;--hi:#E8707A;--fg:#F1E6DE;--muted:#A49A88;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
-body{background:radial-gradient(80% 55% at 50% 45%,#F3E3D8 0%,#E9CFC2 30%,#3A2226 75%,var(--bg) 100%);font-family:Georgia,'Times New Roman',serif}
+body{background:radial-gradient(80% 55% at 50% 45%,#3A2A26 0%,#1E1615 55%,#0E0A0A 100%);font-family:Georgia,'Times New Roman',serif}
 .back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #stage{position:fixed;inset:0;display:grid;place-items:center;cursor:pointer}
-#lips{width:min(100vw,560px);height:auto;overflow:visible;filter:drop-shadow(0 6px 18px rgba(0,0,0,.25))}
+#art{position:relative;width:min(100vw,560px);aspect-ratio:1208/1302;max-height:78vh;overflow:hidden;border-radius:6px;-webkit-mask-image:radial-gradient(ellipse 58% 52% at 50% 50%,#000 50%,transparent 100%);mask-image:radial-gradient(ellipse 58% 52% at 50% 50%,#000 50%,transparent 100%)}
+#ai{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 46%;will-change:transform,filter;-webkit-user-drag:none}
 #count{position:fixed;left:0;right:0;top:calc(22px + env(safe-area-inset-top,0px));text-align:center;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);pointer-events:none}
 #hint{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom,0px));text-align:center;font-style:italic;color:var(--muted);font-size:16px;pointer-events:none;transition:opacity .6s}
 .heart{position:fixed;pointer-events:none;font-size:18px;color:#E07A7A;opacity:0;animation:rise 2.2s ease-out forwards}
@@ -18,37 +19,17 @@ body{background:radial-gradient(80% 55% at 50% 45%,#F3E3D8 0%,#E9CFC2 30%,#3A222
 <a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
 <div id="count">0 kisses</div>
 <div id="stage" role="button" tabindex="0" aria-labelledby="hint">
-<svg id="lips" viewBox="0 0 400 300" aria-hidden="true">
- <defs>
-  <linearGradient id="up" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D14B5A"/><stop offset=".55" stop-color="#B0303F"/><stop offset="1" stop-color="#7A1626"/></linearGradient>
-  <linearGradient id="lo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7E1828"/><stop offset=".3" stop-color="#C23A4A"/><stop offset=".7" stop-color="#D9606B"/><stop offset="1" stop-color="#A52D3C"/></linearGradient>
-  <radialGradient id="gl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4F0" stop-opacity=".85"/><stop offset="1" stop-color="#FFF4F0" stop-opacity="0"/></radialGradient>
-  <radialGradient id="sh" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-  <g id="pair">
-   <ellipse cx="96" cy="150" rx="62" ry="10" fill="url(#sh)"/>
-   <path d="M34 105 C28 102 34 96 42 92 C56 84 70 78 86 77 C94 73 102 69 113 69 C133 70 147 82 145 97 C118 101 72 103 34 105Z" fill="url(#up)"/>
-   <path d="M34 106 C72 107 116 105 141 102 C153 118 143 141 114 145 C82 149 54 134 38 114 C32 110 30 107 34 106Z" fill="url(#lo)"/>
-   <path d="M36 105 C72 104 112 102 143 99" fill="none" stroke="#5E0E1A" stroke-width="3" stroke-linecap="round"/>
-   <path d="M118 101 C130 100 138 99 143 99" fill="none" stroke="#4A0812" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-   <ellipse cx="106" cy="121" rx="24" ry="5.5" fill="url(#gl)" transform="rotate(-6 106 121)"/>
-   <ellipse cx="126" cy="128" rx="6" ry="3" fill="#FFF8F4" opacity=".55" transform="rotate(-20 126 128)"/>
-   <ellipse cx="104" cy="80" rx="18" ry="3.5" fill="url(#gl)" opacity=".7" transform="rotate(-4 104 80)"/>
-   <path d="M36 101 C56 88 80 76 104 74" fill="none" stroke="#E57C86" stroke-width="1.4" opacity=".55"/>
-  </g>
- </defs>
- <g id="him"><use href="#pair"/></g>
- <g id="her"><use href="#pair"/></g>
-</svg>
+<div id="art" aria-hidden="true"><img id="ai" src="kiss-art.jpg" alt=""></div>
 </div>
 <div id="hint">Hold.</div>
 <button type="button" id="kissbtn" aria-label="kissed him" tabindex="-1"></button>
 <script>
 (function(){
-// ---- illustrated lips: apart at rest, meet while held ----
-const HIM=document.getElementById('him'),HER=document.getElementById('her');let pos=0,target=0,pulse=0;
-function frame(){pos+=(target-pos)*.1;pulse*=.85;const away=(1-pos)*34-pulse*3;
- HIM.setAttribute('transform',`translate(${56-away} ${16-away*.25}) rotate(${(1-pos)*-5} 145 100)`);
- HER.setAttribute('transform',`translate(${400-56+2+away} ${30+away*.25}) scale(-1 1) rotate(${(1-pos)*-5} 145 100)`);
+// ---- the painting: soft and distant at rest; held, it draws in to the kiss ----
+const AI=document.getElementById('ai');let pos=0,target=0,pulse=0,t0=performance.now();
+function frame(now){pos+=(target-pos)*.05;pulse*=.88;const br=Math.sin((now-t0)/1400)*.006;
+ const sc=1+pos*.34+pulse*.012+br;AI.style.transform=`scale(${sc.toFixed(4)})`;
+ AI.style.filter=`brightness(${(.62+pos*.4).toFixed(3)}) saturate(${(.75+pos*.35).toFixed(3)}) blur(${((1-pos)*1.6).toFixed(2)}px)`;
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
 
