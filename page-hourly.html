@@ -127,6 +127,7 @@ h2{font-family:var(--sc);font-weight:500;letter-spacing:.24em;font-size:14px;col
 </div>
 <div class="toast" id="toast"></div>
 
+<script src="memories.js"></script>
 <script>
 /* Every Hour: a note from Sherlock for each hour of Angie's day.
    window.HOURLY[localHour 0..23] -> 7 notes; one per weekday, chosen by dayOfYear % 7.
@@ -355,11 +356,13 @@ function dayOfYear(d){
   var diff = (d - start) + (start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000;
   return Math.floor(diff / 86400000);
 }
+function memNote(d,h){try{var M=window.MEMORIES;if(!M)return null;var k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);var m=M[k];if(!m||!m.hourly||h%2)return null;return m.hourly[(h/2)%m.hourly.length]||null}catch(e){return null}}
 window.HOURLY = H;
+window.hourlyMemNote = memNote;
 window.hourlyNote = function(date){
   var d = (date instanceof Date && !isNaN(date)) ? date : new Date();
   var h = d.getHours();
-  return { hour: h, text: H[h][dayOfYear(d) % 7] };
+  return { hour: h, text: memNote(d,h) || H[h][dayOfYear(d) % 7] };
 };
 window.hourlyDayOfYear = dayOfYear;
 })();
@@ -394,7 +397,7 @@ var beads=[];
 function fmt(h,m){var ap=h<12?'am':'pm',hh=h%12||12;return hh+':'+('0'+m).slice(-2)+' '+ap}
 function hourName(h){if(h===0)return'Midnight';if(h===12)return'Noon';return (h%12)+(h<12?' a.m.':' p.m.')}
 function londonParts(d){try{var f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'numeric',minute:'numeric',second:'numeric',hourCycle:'h23'});var o={};f.formatToParts(d).forEach(function(p){o[p.type]=p.value});return{h:+o.hour,m:+o.minute,s:+o.second}}catch(e){var u=new Date(d.getTime()+d.getTimezoneOffset()*60000);return{h:u.getHours(),m:u.getMinutes(),s:u.getSeconds()}}}
-function noteFor(h,d){var doy=window.hourlyDayOfYear(d);return window.HOURLY[h][doy%7]}
+function noteFor(h,d){var m=window.hourlyMemNote&&window.hourlyMemNote(d,h);if(m)return m;var doy=window.hourlyDayOfYear(d);return window.HOURLY[h][doy%7]}
 
 var viewing=null, curHour=-1, lastSec=-1, secTurns=0;
 function setHands(d){

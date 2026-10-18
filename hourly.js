@@ -225,11 +225,13 @@ function dayOfYear(d){
   var diff = (d - start) + (start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000;
   return Math.floor(diff / 86400000);
 }
+function memNote(d,h){try{var M=window.MEMORIES;if(!M)return null;var k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);var m=M[k];if(!m||!m.hourly||h%2)return null;return m.hourly[(h/2)%m.hourly.length]||null}catch(e){return null}}
 window.HOURLY = H;
+window.hourlyMemNote = memNote;
 window.hourlyNote = function(date){
   var d = (date instanceof Date && !isNaN(date)) ? date : new Date();
   var h = d.getHours();
-  return { hour: h, text: H[h][dayOfYear(d) % 7] };
+  return { hour: h, text: memNote(d,h) || H[h][dayOfYear(d) % 7] };
 };
 window.hourlyDayOfYear = dayOfYear;
 })();

@@ -233,6 +233,7 @@ textarea:focus{outline:2px solid var(--gold)}
   <div class="row"><span class="cnt" id="cnt">0 / 140</span><button class="cb2" id="rmB">Peel off</button><button class="cb2" id="cxB">Cancel</button><button class="cb2 gold" id="svB">Stick it</button></div>
 </div>
 
+<script src="memories.js"></script>
 <script>
 (function(){
 "use strict";
@@ -629,6 +630,7 @@ function spec(i){
     o.stamp={o:null,x:L.stamp[0]+r.int(-6,6),y:L.stamp[1]+r.int(-6,6)};
     o.her=L.her;
   }
+  try{var MM=window.MEMORIES&&window.MEMORIES[d.key];if(MM&&MM.journal){o.text=MM.journal.text;if(MM.journal.ps)o.ps=MM.journal.ps;o.memory=true}}catch(e){}
   o.tapeSeed='tape-'+d.key;
   specCache[i]=o;return o;
 }
