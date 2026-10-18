@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kiss</title>
+<style>
+:root{--bg:#160C10;--bg2:#2A1218;--lip:#B8323F;--lip2:#8E1F2C;--hi:#E8707A;--fg:#F3E6E2;--muted:#B39A9C;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
+body{background:radial-gradient(90% 60% at 50% 45%,#3A1820 0%,var(--bg2) 40%,var(--bg) 100%);font-family:Georgia,'Times New Roman',serif}
+.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#stage{position:fixed;inset:0;display:grid;place-items:center;cursor:pointer}
+svg{width:min(86vw,420px);height:auto;overflow:visible}
+#top,#bot{transition:transform .5s cubic-bezier(.3,.7,.2,1)}
+.on #top{transform:translateY(36px)}
+.on #bot{transform:translateY(-36px)}
+.pulse #top{transform:translateY(40px) scale(1.04)}
+.pulse #bot{transform:translateY(-40px) scale(1.04)}
+#count{position:fixed;left:0;right:0;top:calc(22px + env(safe-area-inset-top,0px));text-align:center;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+#hint{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom,0px));text-align:center;font-style:italic;color:var(--muted);font-size:16px;pointer-events:none;transition:opacity .6s}
+.heart{position:fixed;pointer-events:none;font-size:18px;color:#E8707A;opacity:0;animation:rise 2.2s ease-out forwards}
+@keyframes rise{0%{opacity:0;transform:translate(-50%,0) scale(.6)}15%{opacity:.95}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-180px) scale(1.15)}}
+@media (prefers-reduced-motion:reduce){#top,#bot{transition:none}.heart{display:none}}
+#kissbtn{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+</style></head><body>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+<div id="count">0 kisses</div>
+<div id="stage" role="button" tabindex="0" aria-labelledby="hint">
+<svg viewBox="0 0 300 300" aria-hidden="true">
+ <defs>
+  <linearGradient id="gt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C83E4B"/><stop offset="1" stop-color="#8E1F2C"/></linearGradient>
+  <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E1F2C"/><stop offset="1" stop-color="#C83E4B"/></linearGradient>
+  <radialGradient id="sh" cx=".5" cy=".3" r=".6"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ </defs>
+ <!-- his lips, from above: a lower lip turned up (mirrored) -->
+ <g id="top">
+  <path d="M70 92 Q100 70 128 82 Q150 92 172 82 Q200 70 230 92 Q206 120 150 122 Q94 120 70 92Z" fill="url(#gt)"/>
+  <path d="M70 92 Q110 106 150 104 Q190 106 230 92" fill="none" stroke="#6E1620" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="150" cy="110" rx="34" ry="5" fill="url(#sh)"/>
+ </g>
+ <!-- her lips, from below -->
+ <g id="bot">
+  <path d="M70 208 Q94 180 150 178 Q206 180 230 208 Q200 230 172 218 Q150 208 128 218 Q100 230 70 208Z" fill="url(#gb)"/>
+  <path d="M70 208 Q110 194 150 196 Q190 194 230 208" fill="none" stroke="#6E1620" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="150" cy="188" rx="30" ry="4.5" fill="url(#sh)"/>
+ </g>
+</svg>
+</div>
+<div id="hint">Hold.</div>
+<button type="button" id="kissbtn" aria-label="kissed him" tabindex="-1"></button>
+<script>
+(function(){
+const stage=document.getElementById('stage'),cnt=document.getElementById('count'),hint=document.getElementById('hint'),kb=document.getElementById('kissbtn');
+let n=0,best=0,holdStart=0,timer=null,ac=null;
+try{const s=JSON.parse(localStorage.getItem('kiss221')||'{}');n=s.n||0;best=s.best||0}catch(e){}
+function save(){try{localStorage.setItem('kiss221',JSON.stringify({n,best}))}catch(e){}}
+function show(){cnt.textContent=n+(n===1?' kiss':' kisses')+(best?' · longest '+fmt(best):'')}
+function fmt(ms){const s=Math.round(ms/1000);return s<60?s+'s':Math.floor(s/60)+'m '+(s%60)+'s'}
+function audio(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state==='suspended')ac.resume();return ac}
+function smooch(){
+  const a=audio();if(!a)return;const t=a.currentTime,v=.85+Math.random()*.3;
+  // suction: short rising filtered noise
+  const len=Math.floor(a.sampleRate*.12),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++){const x=i/len;d[i]=(Math.random()*2-1)*Math.pow(x,1.6)*(1-Math.pow(x,6))}
+  const ns=a.createBufferSource();ns.buffer=buf;const bp=a.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;bp.frequency.setValueAtTime(900*v,t);bp.frequency.exponentialRampToValueAtTime(2600*v,t+.11);
+  const ng=a.createGain();ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.22,t+.08);ng.gain.exponentialRampToValueAtTime(.0001,t+.13);
+  ns.connect(bp).connect(ng).connect(a.destination);ns.start(t);
+  // the pop: a fast downward sine chirp when the lips part
+  const o=a.createOscillator();o.type='sine';o.frequency.setValueAtTime(1150*v,t+.11);o.frequency.exponentialRampToValueAtTime(190*v,t+.16);
+  const og=a.createGain();og.gain.setValueAtTime(.0001,t+.11);og.gain.exponentialRampToValueAtTime(.55,t+.115);og.gain.exponentialRampToValueAtTime(.0001,t+.19);
+  const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;
+  o.connect(og).connect(lp).connect(a.destination);o.start(t+.1);o.stop(t+.22);
+  // a tiny wet click
+  const c=a.createBufferSource(),cb=a.createBuffer(1,Math.floor(a.sampleRate*.01),a.sampleRate),cd=cb.getChannelData(0);for(let i=0;i<cd.length;i++)cd[i]=(Math.random()*2-1)*(1-i/cd.length);
+  c.buffer=cb;const hp=a.createBiquadFilter();hp.type='highpass';hp.frequency.value=3000;const cg=a.createGain();cg.gain.value=.18;c.connect(hp).connect(cg).connect(a.destination);c.start(t+.115);
+}
+function heart(){const h=document.createElement('div');h.className='heart';h.textContent='♥';h.style.left=(45+Math.random()*10)+'%';h.style.top='50%';h.style.setProperty('--dx',(Math.random()*120-60)+'px');document.body.appendChild(h);setTimeout(()=>h.remove(),2300)}
+function kiss(){n++;smooch();heart();stage.classList.add('pulse');setTimeout(()=>stage.classList.remove('pulse'),160);try{kb.click()}catch(e){}show();save()}
+function start(e){if(e)e.preventDefault();if(timer)return;holdStart=Date.now();stage.classList.add('on');hint.style.opacity=0;setTimeout(kiss,420);timer=setInterval(kiss,1250+Math.random()*350)}
+function end(){if(!timer)return;clearInterval(timer);timer=null;stage.classList.remove('on');const d=Date.now()-holdStart;if(d>best){best=d;save()}show()}
+stage.addEventListener('pointerdown',start);window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end);
+stage.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)start(e)});stage.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')end()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)end()});
+show();
+})();
+</script>
+<script src="tellhim.js"></script>
+</body></html>
