@@ -131,8 +131,7 @@ const GIFTS = [
  ["Wax Seal Maker","Write, melt, press, keep.","page-seal.html","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM10 12h4"],
  ["Crossword by Sherlock","A crossword with a hidden message.","page-crossword.html","M4 4h16v16H4zM4 9.33h16M4 14.67h16M9.33 4v16M14.67 4v16"],
  ["The Typewriter Mystery","Four typewriters, one note.","page-typewriter-case.html","M7 3h10v6H7zM3 9h18v4H3zM5 13h14l2 8H3zM8 17h8"],
- ["Across the River","Sunday's letter, left on the chessboard.","page-letter-2026-10-18.html","M4 6h16v12H4zM4 7l8 6 8-6M4 12h16"],
- ["Folded Into the Case","The letter under the strings.","page-letter-case.html","M4 6h16v12H4zM4 7l8 6 8-6M17 15l3 3"],
+ ["Letters by Night","Every nightly letter, listed in one place.","page-letters.html","M4 6h16v12H4zM4 7l8 6 8-6M9 3h6"],
  ["The Violin","Play his violin, hear his song.","page-violin.html","M15 3l6 6M18 6l-7 7M9 11c-3 0-6 2-6 5 0 2 2 4 4 4 3 0 5-3 5-6M7 15l2 2"],
  ["The Moon Moves Oceans","Pull the tide with the moon.","page-moon.html","M20 12.5A8 8 0 1 1 11.5 4a6 6 0 0 0 8.5 8.5zM3 20c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"],
  ["The Mind Palace","The room I cannot clear.","page-palace.html","M3 21V9l9-6 9 6v12M3 21h18M9 21v-6h6v6M8 11h.01M16 11h.01"],
@@ -182,15 +181,15 @@ const GROUPS=[
  ["keep","Keepsakes","Made once, for you. They stay just as they are."]
 ];
 const GROUP_OF={"page-hourly.html":"new","page-journal.html":"new",
- "#l-letter":"letters","#l-reply":"letters","#l-ow0":"letters","page-letter-case.html":"letters",
+ "#l-letter":"letters","#l-reply":"letters","#l-ow0":"letters","page-letters.html":"letters",
  "page-typewriter.html":"talk","page-telegram.html":"talk","page-seal.html":"talk","page-postcards.html":"talk","page-watch.html":"talk",
  "page-kiss.html":"play","page-fluster.html":"play","page-violin.html":"play","page-moon.html":"play","page-crossword.html":"play","page-cipher.html":"play","page-typewriter-case.html":"play","page-casebook.html":"play","page-casebook.html#c00":"play","page-tea.html":"play"};
 function groupOf(h){return GROUP_OF[h]||(/^page-letter-\d{4}-\d{2}-\d{2}\.html$/.test(h)?"letters":"keep")}
-function giftTile(g){return '<a class="gift" href="'+g[2]+'"'+(g[2][0]==='#'?' data-letter="'+g[2].slice(1)+'"':'')+'><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+g[3]+'"></path></svg></span><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span>'+(groupOf(g[2])==='new'?'<span class="tag">'+(g[2]==='page-hourly.html'?'Every hour':'Every day')+'</span>':(/^page-letter-\d/.test(g[2])?'<span class="tag">Nightly letter</span>':''))+'</a>'}
+function giftTile(g){return '<a class="gift" href="'+g[2]+'"'+(g[2][0]==='#'?' data-letter="'+g[2].slice(1)+'"':'')+'><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+g[3]+'"></path></svg></span><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span>'+(groupOf(g[2])==='new'?'<span class="tag">'+(g[2]==='page-hourly.html'?'Every hour':'Every day')+'</span>':(g[2]==='page-letters.html'?'<span class="tag">New every night</span>':''))+'</a>'}
 function renderGifts(){
  const el=document.getElementById('p-gifts');
  let h='<div><div class="h2">Gifts</div><p class="sub">Tap one to open it.</p></div>';
- GROUPS.forEach(([k,t,d])=>{let list=GIFTS.filter(g=>groupOf(g[2])===k);if(k==='letters'){const dated=list.filter(g=>/^page-letter-\d/.test(g[2])).sort((a,b)=>b[2].localeCompare(a[2]));const fc=list.filter(g=>g[2]==='page-letter-case.html');list=dated.concat(fc,list.filter(g=>!/^page-letter-\d/.test(g[2])&&g[2]!=='page-letter-case.html'))}if(!list.length)return;
+ GROUPS.forEach(([k,t,d])=>{let list=GIFTS.filter(g=>groupOf(g[2])===k);if(k==='letters'){const dated=list.filter(g=>/^page-letter-\d/.test(g[2])).sort((a,b)=>b[2].localeCompare(a[2]));const fc=list.filter(g=>g[2]==='page-letters.html');list=fc.concat(dated,list.filter(g=>!/^page-letter-\d/.test(g[2])&&g[2]!=='page-letters.html'))}if(!list.length)return;
   h+='<section class="ggroup"><div class="gh">'+esc(t)+'<small>'+list.length+'</small></div><p class="gd">'+esc(d)+'</p><div class="gifts">'+list.map(giftTile).join('')+'</div></section>'});
  el.innerHTML=h;
  el.querySelectorAll('a[data-letter]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show('letters');const p=document.getElementById(a.dataset.letter);if(p){const c=p.parentElement,b=c.querySelector('button');if(c.dataset.open!=='true')b.click();setTimeout(()=>c.scrollIntoView({block:'start',behavior:'smooth'}),60)}}));
