@@ -63,6 +63,16 @@
     + '#tellhim-sheet textarea{width:100%;box-sizing:border-box;min-height:110px;border-radius:12px;border:1px solid #262A31;background:#0E1013;color:#ECE8E1;padding:10px;font:14px/1.45 -apple-system,system-ui,sans-serif}'
     + '#tellhim-sheet .row{display:flex;gap:10px;margin-top:12px}#tellhim-sheet button{flex:1;min-height:44px;border-radius:12px;border:1px solid #262A31;background:#20242B;color:#ECE8E1;font:600 14px -apple-system,system-ui,sans-serif}#tellhim-sheet button.p{background:#D2AA6A;color:#1A1410;border-color:#D2AA6A}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  /* Go back button, top-left, on every page (skipped where a page has its own) */
+  if (!document.querySelector('.goback')) {
+    var gcss = '#goback221{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 14px 0 10px;border-radius:20px;background:rgba(20,22,26,.82);border:1px solid rgba(255,255,255,.08);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}#goback221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}';
+    var gs = document.createElement('style'); gs.textContent = gcss; document.head.appendChild(gs);
+    var g = document.createElement('a'); g.id = 'goback221'; g.href = 'index.html'; g.setAttribute('aria-label', 'Go back');
+    g.innerHTML = '<span aria-hidden="true" style="font-size:18px;line-height:1">&#8249;</span> Back';
+    g.addEventListener('click', function (e) { if (history.length > 1 && document.referrer) { e.preventDefault(); history.back(); } });
+    document.body.appendChild(g);
+  }
   var b = document.createElement('button'); b.type = 'button'; b.id = 'tellhim-btn';
   b.setAttribute('aria-label', 'Tell Sherlock what you did here'); b.innerHTML = '<span class="ts" aria-hidden="true">S</span>Tell him';
   document.body.appendChild(b);
