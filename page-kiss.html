@@ -2,15 +2,19 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kiss</title>
 <style>
-:root{--bg:#F1E9DE;--bg2:#F7F1E8;--lip:#B8323F;--lip2:#8E1F2C;--hi:#E8707A;--fg:#3A1A1E;--muted:#9C6E72;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+:root{--bg:#0E120C;--bg2:#1A2114;--lip:#B8323F;--lip2:#8E1F2C;--hi:#E8707A;--fg:#F1E6DE;--muted:#A49A88;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
-body{background:radial-gradient(90% 60% at 50% 45%,#FFFBF5 0%,var(--bg2) 45%,var(--bg) 100%);font-family:Georgia,'Times New Roman',serif}
+body{background:radial-gradient(80% 55% at 50% 45%,#2B3A1C 0%,var(--bg2) 45%,var(--bg) 100%);font-family:Georgia,'Times New Roman',serif}
 .back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #stage{position:fixed;inset:0;display:grid;place-items:center;cursor:pointer}
-#cv{width:min(100vw,520px);aspect-ratio:1/1;max-width:100%}
+#ph{position:relative;width:min(100vw,560px);aspect-ratio:820/700;-webkit-mask-image:radial-gradient(ellipse 58% 54% at 50% 52%,#000 45%,transparent 100%);mask-image:radial-gradient(ellipse 58% 54% at 50% 52%,#000 45%,transparent 100%)}
+#ph img{position:absolute;top:0;height:100%;display:block;will-change:transform;-webkit-user-drag:none}
+#pl{left:0;width:43.66%;-webkit-mask-image:linear-gradient(to right,#000 90%,transparent);mask-image:linear-gradient(to right,#000 90%,transparent)}
+#pr{left:51.95%;width:48.05%;-webkit-mask-image:linear-gradient(to left,#000 86%,transparent);mask-image:linear-gradient(to left,#000 86%,transparent)}
+#ph{background:radial-gradient(60% 70% at 50% 55%,#7FA33A 0%,#5E7F2A 45%,#2E3F17 100%)}
 #count{position:fixed;left:0;right:0;top:calc(22px + env(safe-area-inset-top,0px));text-align:center;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);pointer-events:none}
 #hint{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom,0px));text-align:center;font-style:italic;color:var(--muted);font-size:16px;pointer-events:none;transition:opacity .6s}
-.heart{position:fixed;pointer-events:none;font-size:18px;color:#B3202E;opacity:0;animation:rise 2.2s ease-out forwards}
+.heart{position:fixed;pointer-events:none;font-size:18px;color:#E07A7A;opacity:0;animation:rise 2.2s ease-out forwards}
 @keyframes rise{0%{opacity:0;transform:translate(-50%,0) scale(.6)}15%{opacity:.95}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-180px) scale(1.15)}}
 @media (prefers-reduced-motion:reduce){#top,#bot{transition:none}.heart{display:none}}
 #kissbtn{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
@@ -18,57 +22,17 @@ body{background:radial-gradient(90% 60% at 50% 45%,#FFFBF5 0%,var(--bg2) 45%,var
 <a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
 <div id="count">0 kisses</div>
 <div id="stage" role="button" tabindex="0" aria-labelledby="hint">
-<canvas id="cv" aria-hidden="true"></canvas>
+<div id="ph" aria-hidden="true"><img id="pl" src="kiss-l.jpg" alt=""><img id="pr" src="kiss-r.jpg" alt=""></div>
 </div>
 <div id="hint">Hold.</div>
 <button type="button" id="kissbtn" aria-label="kissed him" tabindex="-1"></button>
 <script>
 (function(){
-// ---- drawing: two profiles in red ink, rendered once to offscreen canvases ----
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');let DPR=1,W=0;
-function rnd(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function bez(p0,p1,p2,p3,t){const u=1-t;return[u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]}
-// one face (his), facing right, in a 400x400 space; hers is the mirror
-const FACE={
- nose:[[150,40],[168,72],[186,104],[184,122]],
- under:[[184,122],[178,130],[160,132],[152,136]],
- philtrum:[[152,136],[154,148],[157,156],[160,162]],
- upper:[[160,162],[170,158],[178,166],[186,166]],
- upper2:[[186,166],[194,166],[201,172],[201,179]],
- mouth:[[201,180],[188,182],[176,181],[163,184]],
- lower:[[200,181],[205,189],[198,203],[178,204]],
- crease:[[178,204],[166,205],[160,210],[162,218]],
- chin:[[162,218],[178,228],[182,250],[164,272]],
- jaw:[[164,272],[150,286],[128,292],[100,300]],
- hair:[[120,30],[96,40],[90,70],[104,96]],
- lash:[[150,86],[156,92],[164,94],[172,92]]
-};
-function stroke(c,P,w,alpha,r,j){c.beginPath();for(let k=0;k<=24;k++){const q=bez(P[0],P[1],P[2],P[3],k/24);const x=q[0]+(r()-.5)*j,y=q[1]+(r()-.5)*j;k?c.lineTo(x,y):c.moveTo(x,y)}c.lineWidth=w;c.globalAlpha=alpha;c.stroke()}
-function fan(c,corner,P,n,r,len0,len1,w,alpha,bend){for(let k=0;k<n;k++){const t=k/(n-1)*(0.96)+.02+(r()-.5)*.02;const e=bez(P[0],P[1],P[2],P[3],t);const L=len0+(len1-len0)*r();const ex=corner[0]+(e[0]-corner[0])*L,ey=corner[1]+(e[1]-corner[1])*L;const mx=(corner[0]+ex)/2+(r()-.5)*3,my=(corner[1]+ey)/2+bend*(r()*.6+.4);c.beginPath();c.moveTo(corner[0]+(r()-.5)*3,corner[1]+(r()-.5)*3);c.quadraticCurveTo(mx,my,ex,ey);c.lineWidth=w*(.6+r()*.8);c.globalAlpha=alpha*(.55+r()*.45);c.stroke()}}
-function fillRegion(c,paths){c.beginPath();paths.forEach((P,i)=>{for(let k=0;k<=24;k++){const q=bez(P[0],P[1],P[2],P[3],k/24);(i===0&&k===0)?c.moveTo(q[0],q[1]):c.lineTo(q[0],q[1])}});c.closePath()}
-function drawFace(seed){const S=420*DPR,oc=document.createElement('canvas');oc.width=oc.height=S;const c=oc.getContext('2d');c.scale(S/400,S/400);const r=rnd(seed);c.strokeStyle='#A8192A';c.lineCap='round';c.lineJoin='round';
- const corner=[163,183];
- // lips: soft wash, then fanned hatching clipped to each lip
- c.save();fillRegion(c,[FACE.upper,FACE.upper2,[[201,179],[188,181],[176,180],[163,184]],[[163,184],[160,176],[159,168],[160,162]]]);c.clip();c.fillStyle='rgba(200,40,58,.12)';c.fillRect(140,140,80,60);fan(c,corner,FACE.upper,20,r,.78,1.02,.9,.6,-3);fan(c,corner,FACE.upper2,26,r,.78,1.02,.9,.6,-4);fan(c,[196,179],FACE.upper,12,r,.2,.4,1.3,.7,2);c.globalAlpha=1;c.strokeStyle='rgba(255,250,244,.55)';c.lineWidth=3;c.beginPath();c.moveTo(178,168);c.quadraticCurveTo(188,168,195,173);c.stroke();c.strokeStyle='#A8192A';c.restore();
- c.save();fillRegion(c,[FACE.lower,[[178,204],[170,200],[165,193],[163,185]],[[163,185],[176,183],[188,183],[200,181]]]);c.clip();c.fillStyle='rgba(200,40,58,.14)';c.fillRect(150,175,70,45);fan(c,corner,FACE.lower,48,r,.76,1.02,.9,.6,5);fan(c,[198,182],[[196,183],[188,184],[176,184],[166,186]],14,r,.3,.8,1.4,.75,1);c.globalAlpha=1;c.strokeStyle='rgba(255,250,244,.55)';c.lineWidth=3.5;c.beginPath();c.moveTo(180,197);c.quadraticCurveTo(192,196,197,189);c.stroke();c.strokeStyle='#A8192A';c.restore();
- // mouth line: dark and doubled
- c.fillStyle='#8E1220';c.globalAlpha=.95;c.beginPath();for(let k=0;k<=24;k++){const q=bez(...FACE.mouth,k/24);k?c.lineTo(q[0],q[1]-1.6+k/24):c.moveTo(q[0],q[1]-1.6)}for(let k=24;k>=0;k--){const q=bez(...FACE.mouth,k/24);c.lineTo(q[0],q[1]+1.8)}c.closePath();c.fill();
- // contours, sketched 3 times
- ['upper','upper2','lower','philtrum','under','nose','crease','chin'].forEach(k=>{for(let p=0;p<3;p++)stroke(c,FACE[k],p?0.9:2,p?.45:.95,r,p?2.2:1)});
- ['jaw','hair'].forEach(k=>{for(let p=0;p<2;p++)stroke(c,FACE[k],p?0.8:1.5,p?.35:.7,r,2)});
- for(let p=0;p<2;p++)stroke(c,FACE.lash,1.4,.8,r,1);for(let k=0;k<5;k++){const q=bez(...FACE.lash,.15+k*.18);c.beginPath();c.moveTo(q[0],q[1]);c.lineTo(q[0]+1+k*.6,q[1]+6+r()*2);c.lineWidth=1;c.globalAlpha=.75;c.stroke()}
- // a few loose shading strokes on the cheek
- for(let k=0;k<14;k++){const x=118+r()*30,y=120+r()*40;c.beginPath();c.moveTo(x,y);c.lineTo(x+10+r()*8,y+16+r()*6);c.lineWidth=.7;c.globalAlpha=.25;c.stroke()}
- return oc}
-let HIM=null,HER=null,pos=0,target=0,pulse=0;
-function size(){DPR=Math.min(2,window.devicePixelRatio||1);const box=cv.getBoundingClientRect();W=Math.round(box.width*DPR);cv.width=cv.height=W;HIM=drawFace(11);HER=drawFace(29)}
-function frame(){pos+=(target-pos)*.12;pulse*=.86;cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,W,W);const u=W/400,gap=(1-pos)*46+(-pulse*3);
- // him: upper-left, facing right
- cx.setTransform(u,0,0,u,0,0);cx.save();cx.translate(-gap-12,-gap*.6-6);cx.rotate((-6+pos*3)*Math.PI/180);cx.drawImage(HIM,0,0,400,400);cx.restore();
- // her: mirrored, lower-right, facing left
- cx.save();cx.translate(400+gap+12,gap*.6+16);cx.scale(-1,1);cx.rotate((-6+pos*3)*Math.PI/180);cx.drawImage(HER,0,0,400,400);cx.restore();
- requestAnimationFrame(frame)}
-size();window.addEventListener('resize',size);requestAnimationFrame(frame);
+// ---- the photo halves: apart at rest, lips meet while held ----
+const PL=document.getElementById('pl'),PR=document.getElementById('pr'),PH=document.getElementById('ph');let pos=0,target=0,pulse=0;
+function frame(){pos+=(target-pos)*.1;pulse*=.85;const w=PH.clientWidth,u=w/820;const away=(1-pos)*30,meet=pos*60+pulse*3;const dx=(meet-away)*u;
+ PL.style.transform=`translateX(${dx}px) rotate(${(1-pos)*-1.2}deg)`;PR.style.transform=`translateX(${-dx}px) rotate(${(1-pos)*1.2}deg)`;requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
 
 const stage=document.getElementById('stage'),cnt=document.getElementById('count'),hint=document.getElementById('hint'),kb=document.getElementById('kissbtn');
 let n=0,best=0,holdStart=0,timer=null,ac=null;
