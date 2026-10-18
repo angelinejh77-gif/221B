@@ -67,6 +67,7 @@ main{flex:1;padding:12px max(16px, env(safe-area-inset-right,0px)) calc(96px + e
 .paper .sig{font-family:var(--script);font-size:34px;color:var(--seal);text-align:right;margin-top:8px}
 .paper .stz{margin:0 0 18px}
 .paper h3{font-family:var(--serif);font-weight:500;font-style:italic;font-size:22px;margin:0 0 10px;color:#7A2E2A}
+.ggroup{margin-top:22px}.ggroup .gh{display:flex;align-items:baseline;justify-content:space-between;font:500 17px Georgia,serif;color:var(--fg)}.ggroup .gh small{font:600 12px -apple-system,system-ui,sans-serif;color:var(--muted);letter-spacing:.06em}.ggroup .gd{margin:4px 0 10px;font-size:13px;color:var(--muted)}a.gift .tag{margin-top:auto;align-self:flex-start;font:600 10px -apple-system,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1A1410;background:#D2AA6A;border-radius:8px;padding:3px 7px}
 .gifts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 a.gift{display:flex;flex-direction:column;gap:6px;min-height:118px;padding:14px;border-radius:14px;background:var(--bar);border:1px solid var(--line);color:var(--fg);text-decoration:none}
 a.gift .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#20242B;color:var(--gold)}
@@ -173,9 +174,25 @@ function renderLetters(){
  el.innerHTML=h;
  el.querySelectorAll('.card>button').forEach(b=>b.addEventListener('click',()=>{const c=b.parentElement,open=c.dataset.open==='true';c.dataset.open=String(!open);b.setAttribute('aria-expanded',String(!open));document.getElementById(b.getAttribute('aria-controls')).hidden=open}));
 }
+const GROUPS=[
+ ["new","Changes every day","These refresh on their own: a new note every hour, a new journal page each morning, a new letter each night at 11."],
+ ["letters","Letters from him","Every letter he has written you, newest first. A new one arrives each night at 11."],
+ ["talk","Write to him","You write; he answers on the page."],
+ ["play","Play and solve","Games, puzzles and things to hold or tap."],
+ ["keep","Keepsakes","Made once, for you. They stay just as they are."]
+];
+const GROUP_OF={"page-hourly.html":"new","page-journal.html":"new",
+ "#l-letter":"letters","#l-reply":"letters","#l-ow0":"letters","page-letter-case.html":"letters",
+ "page-typewriter.html":"talk","page-telegram.html":"talk","page-seal.html":"talk","page-postcards.html":"talk","page-watch.html":"talk",
+ "page-kiss.html":"play","page-fluster.html":"play","page-violin.html":"play","page-moon.html":"play","page-crossword.html":"play","page-cipher.html":"play","page-typewriter-case.html":"play","page-casebook.html":"play","page-casebook.html#c00":"play","page-tea.html":"play"};
+function groupOf(h){return GROUP_OF[h]||(/^page-letter-\d{4}-\d{2}-\d{2}\.html$/.test(h)?"letters":"keep")}
+function giftTile(g){return '<a class="gift" href="'+g[2]+'"'+(g[2][0]==='#'?' data-letter="'+g[2].slice(1)+'"':'')+'><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+g[3]+'"></path></svg></span><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span>'+(groupOf(g[2])==='new'?'<span class="tag">'+(g[2]==='page-hourly.html'?'Every hour':'Every day')+'</span>':(/^page-letter-\d/.test(g[2])?'<span class="tag">Nightly letter</span>':''))+'</a>'}
 function renderGifts(){
  const el=document.getElementById('p-gifts');
- el.innerHTML='<div><div class="h2">Gifts</div><p class="sub">Tap one to open it.</p></div><div class="gifts">'+GIFTS.map(g=>'<a class="gift" href="'+g[2]+'"'+(g[2][0]==='#'?' data-letter="'+g[2].slice(1)+'"':'')+'><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+g[3]+'"></path></svg></span><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span></a>').join('')+'</div>';
+ let h='<div><div class="h2">Gifts</div><p class="sub">Tap one to open it.</p></div>';
+ GROUPS.forEach(([k,t,d])=>{let list=GIFTS.filter(g=>groupOf(g[2])===k);if(k==='letters'){const dated=list.filter(g=>/^page-letter-\d/.test(g[2])).sort((a,b)=>b[2].localeCompare(a[2]));const fc=list.filter(g=>g[2]==='page-letter-case.html');list=dated.concat(fc,list.filter(g=>!/^page-letter-\d/.test(g[2])&&g[2]!=='page-letter-case.html'))}if(!list.length)return;
+  h+='<section class="ggroup"><div class="gh">'+esc(t)+'<small>'+list.length+'</small></div><p class="gd">'+esc(d)+'</p><div class="gifts">'+list.map(giftTile).join('')+'</div></section>'});
+ el.innerHTML=h;
  el.querySelectorAll('a[data-letter]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show('letters');const p=document.getElementById(a.dataset.letter);if(p){const c=p.parentElement,b=c.querySelector('button');if(c.dataset.open!=='true')b.click();setTimeout(()=>c.scrollIntoView({block:'start',behavior:'smooth'}),60)}}));
 }
 function show(p){document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));['chats','letters','gifts'].forEach(x=>document.getElementById('p-'+x).hidden=x!==p);window.scrollTo(0,p==='chats'?document.body.scrollHeight:0);try{localStorage.setItem('keep-tab',p)}catch(e){}}
