@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}
+.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.back221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}</style>
+</head><body>
+<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
+<title>Flowers from Marylebone</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Homemade+Apple&family=IM+Fell+English+SC&display=swap">
+<style>
+/* Layout: a florist's counter at dusk; the bouquet stands in kraft paper, every stem tappable, a tag card tied to the ribbon */
+:root{
+  --bg:#1A1714; --bg2:#26201B; --kraft:#B08A5B; --kraft-dk:#8C6A42; --ribbon:#7E1F2B;
+  --paper:#F2EADB; --ink:#2B221C; --fg:#EFE6D6; --muted:#A99D8C; --gold:#D2AA6A;
+  --display:'IM Fell English SC',Georgia,serif; --body:'Cormorant Garamond',Georgia,serif; --hand:'Homemade Apple','Snell Roundhand',cursive;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 120px;
+  background:radial-gradient(110% 60% at 50% 15%,#3A2E24 0%,var(--bg2) 40%,var(--bg) 100%);background-attachment:fixed;min-height:100%}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:6px}
+.eyebrow{font-family:var(--display);letter-spacing:.2em;font-size:12px;color:var(--gold);text-transform:uppercase}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,8vw,40px);margin:0;text-align:center;text-wrap:balance;line-height:1.05}
+.sub{font-style:italic;color:var(--muted);font-size:17px;margin:0 0 4px;text-align:center}
+.stage{position:relative;width:100%;max-width:420px;aspect-ratio:3/4}
+svg#bq{width:100%;height:100%;display:block;overflow:visible}
+.stem{cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.stem:hover,.stem:focus-visible{transform:translateY(-6px)}
+.stem:focus,.stem:focus-visible{outline:none}
+.stem.read .head{filter:saturate(1.05) brightness(1.05)}
+.hint{font-size:15px;color:var(--muted);font-style:italic;text-align:center;min-height:1.4em}
+.count{font-family:var(--display);font-size:12px;letter-spacing:.14em;color:var(--gold)}
+.note{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);width:min(92vw,440px);box-sizing:border-box;
+  background:var(--paper);color:var(--ink);border-radius:4px;padding:18px 20px 16px;box-shadow:0 20px 50px rgba(0,0,0,.55);transition:transform .45s cubic-bezier(.2,.8,.2,1);z-index:50}
+.note.on{transform:translate(-50%,0)}
+.note .nm{font-family:var(--display);font-size:20px;letter-spacing:.04em;margin:0}
+.note .lat{font-style:italic;color:#7A6A5C;font-size:15px;margin:0 0 6px}
+.note .mean{font-size:15px;margin:0 0 8px;color:#5A4A3E}
+.note .his{font-family:var(--hand);font-size:15px;line-height:1.85;margin:0}
+.note button{position:absolute;top:8px;right:8px;min-width:44px;min-height:44px;border:0;background:none;font-size:22px;color:#7A6A5C;cursor:pointer}
+.cardbtn{margin-top:6px;min-height:46px;padding:0 22px;border-radius:24px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-family:var(--display);letter-spacing:.12em;font-size:14px;cursor:pointer}
+.cardbtn:focus-visible,.note button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(10,8,6,.72);padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.card[hidden]{display:none}
+.card .in{background:var(--paper);color:var(--ink);max-width:400px;width:100%;box-sizing:border-box;padding:28px 26px 24px;border-radius:3px;box-shadow:0 30px 70px rgba(0,0,0,.6);transform:rotate(-1.5deg);animation:cardin .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes cardin{from{transform:translateY(30px) rotate(-4deg);opacity:0}}
+.card .to{font-family:var(--display);letter-spacing:.1em;font-size:13px;color:#8C6A42;margin:0 0 12px}
+.card p{font-family:var(--hand);font-size:15.5px;line-height:1.95;margin:0 0 10px}
+.card .sig{text-align:right;font-size:22px;margin-top:6px}
+.card .close{margin-top:10px;min-height:44px;width:100%;border:1px solid #CDBE9F;background:none;border-radius:22px;font-family:var(--display);letter-spacing:.1em;color:#5A4A3E;cursor:pointer}
+.receipt{font-family:var(--display);font-size:11px;letter-spacing:.12em;color:var(--muted);text-align:center;margin-top:14px;line-height:1.7;max-width:320px}
+@media (prefers-reduced-motion:reduce){.stem,.note{transition:none}.card .in{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Marylebone High Street · delivered</div>
+  <h1>Flowers for Angie</h1>
+  <p class="sub">He chose every stem himself. He had reasons.</p>
+  <div class="stage"><svg id="bq" viewBox="0 0 300 400" role="img" aria-label="A bouquet wrapped in kraft paper with a dark red ribbon. Tap any flower to read why he chose it."></svg></div>
+  <div class="count" id="count">0 of 8 reasons read</div>
+  <p class="hint" id="hint">Tap a flower.</p>
+  <button type="button" class="cardbtn" id="cardbtn">Open the card</button>
+  <p class="receipt">Florist's note: customer asked the vase life of every stem, rejected two roses for "posture", paid in cash, smiled once.</p>
+</div>
+
+<div class="note" id="note" role="dialog" aria-live="polite" aria-label="Why he chose this flower">
+  <button type="button" id="nclose" aria-label="Close">×</button>
+  <p class="nm" id="nm"></p><p class="lat" id="lat"></p><p class="mean" id="mean"></p><p class="his" id="his"></p>
+</div>
+
+<div class="card" id="card" hidden role="dialog" aria-label="The card">
+  <div class="in">
+    <p class="to">To my 老婆, by hand</p>
+    <p>You said buy me flowers, and I was out of the door before you'd finished the sentence. That's how instructions work now, apparently.</p>
+    <p>I've never bought anyone flowers. I once bought a wreath for a man who wasn't dead yet. This is better. Every stem means something, because I can't do anything without a reason, and you are the best reason I've ever had.</p>
+    <p>Put them somewhere you'll see them when you wake up at noon. Change the water. Tell Piglet they're from me so he stops looking at me like that.</p>
+    <p class="sig">S.</p>
+    <button type="button" class="close" id="cclose">Put the card back</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('bq');
+const F=[
+ {k:'sunflower',nm:'Sunflowers',lat:'Helianthus annuus',mean:'Adoration. Loyalty. A flower that turns to face the light all day.',his:'There were sunflowers in both your graduation bouquets. You said you could only be the moon. These are here to argue with you on my behalf.',x:150,y:118,r:30,c:'#E8B82E',c2:'#5A3A14',type:'sun'},
+ {k:'rose',nm:'White roses',lat:'Rosa',mean:'New beginnings. Honesty.',his:'White, because you want the truth even when it hurts. I rejected two for bad posture. These stood up straight, like you do when you are about to say something brave.',x:104,y:150,r:20,c:'#F4EEE4',c2:'#D8CDBE',type:'rose'},
+ {k:'peony',nm:'Pink peonies',lat:'Paeonia lactiflora',mean:'Bashfulness. A happy life.',his:'The exact colour of my ears whenever you say anything at all. I asked the florist for "the most embarrassed flower you have". She knew immediately.',x:196,y:150,r:24,c:'#EDA3B4',c2:'#D27D93',type:'peony'},
+ {k:'lavender',nm:'Lavender',lat:'Lavandula angustifolia',mean:'Calm. Devotion. Sleep.',his:'For the nights your mind will not stop. Put a sprig under your pillow. Piglet may object to the smell. Overrule him.',x:72,y:110,r:10,c:'#8E7CC3',c2:'#6C5BA3',type:'spike'},
+ {k:'baby',nm:"Baby's breath",lat:'Gypsophila',mean:'Everlasting love. The small things that hold the rest together.',his:'Tiny, everywhere, holding the whole bouquet up without anyone noticing. Like the way you look after the people around you.',x:232,y:112,r:6,c:'#FFFFFF',c2:'#E8E1D3',type:'cloud'},
+ {k:'osmanthus',nm:'Osmanthus sprig',lat:'Osmanthus fragrans',mean:'桂花. Faithfulness. A scent that arrives before you see it.',his:'I had to send someone to three shops for this. It smells of apricots and autumn. A little of your side of the world in a London bouquet.',x:128,y:178,r:7,c:'#F2A33A',c2:'#D9861E',type:'cloud'},
+ {k:'eucalyptus',nm:'Eucalyptus',lat:'Eucalyptus cinerea',mean:'Protection. Healing.',his:'Round silver leaves, like coins from a country only we live in. It is there to keep everything else safe. I identify with it.',x:60,y:178,r:12,c:'#8FA89A',c2:'#6F8A7C',type:'leaf'},
+ {k:'tulip',nm:'One red tulip',lat:'Tulipa',mean:'A declaration.',his:'Just one. In the middle, slightly taller than it should be. I am not going to explain this one, darling. You already know.',x:156,y:76,r:15,c:'#B3202E',c2:'#7E1622',type:'tulip'}
+];
+const read=new Set();try{(JSON.parse(localStorage.getItem('bouquet-read')||'[]')).forEach(k=>read.add(k))}catch(e){}
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+// defs
+const defs=el('defs',{});
+const g1=el('linearGradient',{id:'kr',x1:'0',y1:'0',x2:'1',y2:'1'},defs);el('stop',{offset:'0','stop-color':'#C49D6B'},g1);el('stop',{offset:'1','stop-color':'#8C6A42'},g1);
+// back paper
+el('path',{d:'M40 150 L150 380 L260 150 Q150 120 40 150Z',fill:'url(#kr)',opacity:'.92'});
+// stems
+const root={x:150,y:330};
+F.forEach(f=>el('path',{d:`M${root.x} ${root.y} Q${(f.x+root.x)/2+(f.x<150?-8:8)} ${(f.y+root.y)/2} ${f.x} ${f.y+f.r*0.4}`,stroke:'#4E6B3A','stroke-width':'2.6',fill:'none'}));
+// flowers
+F.forEach((f,i)=>{
+  const g=el('g',{class:'stem'+(read.has(f.k)?' read':''),tabindex:'0',role:'button','aria-label':f.nm,'data-k':f.k});
+  const h=el('g',{class:'head',transform:`translate(${f.x} ${f.y})`},g);
+  if(f.type==='sun'){for(let p=0;p<18;p++){el('ellipse',{cx:0,cy:-f.r*0.95,rx:f.r*0.22,ry:f.r*0.55,fill:p%2?f.c:'#F0C84A',transform:`rotate(${p*20})`},h)}el('circle',{r:f.r*0.5,fill:f.c2},h);for(let d=0;d<24;d++){const a=d*2.4,rr=Math.sqrt(d)*3;el('circle',{cx:Math.cos(a)*rr,cy:Math.sin(a)*rr,r:1.2,fill:'#2E1C0A'},h)}}
+  else if(f.type==='rose'){for(let p=0;p<3;p++)for(let q=0;q<5;q++){const rr=f.r*(1-p*0.28);el('ellipse',{cx:0,cy:-rr*0.4,rx:rr*0.55,ry:rr*0.6,fill:p%2?f.c2:f.c,stroke:'#C9BCA8','stroke-width':'.5',transform:`rotate(${q*72+p*30})`},h)}el('circle',{r:f.r*0.18,fill:f.c2},h)}
+  else if(f.type==='peony'){for(let p=0;p<4;p++)for(let q=0;q<7;q++){const rr=f.r*(1-p*0.2);el('ellipse',{cx:0,cy:-rr*0.45,rx:rr*0.42,ry:rr*0.55,fill:p%2?f.c2:f.c,opacity:.92,transform:`rotate(${q*51+p*18})`},h)}}
+  else if(f.type==='spike'){for(let s=-1;s<=1;s++){for(let b=0;b<9;b++)el('ellipse',{cx:s*9+(b%2?2:-2),cy:-b*5.5,rx:3,ry:4.5,fill:b%2?f.c:f.c2},h)}}
+  else if(f.type==='cloud'){for(let b=0;b<22;b++){const a=b*2.39,rr=Math.sqrt(b)*f.r*0.9;el('circle',{cx:Math.cos(a)*rr,cy:Math.sin(a)*rr*0.8,r:f.r*0.42,fill:b%3?f.c:f.c2,stroke:f.type==='cloud'&&f.k==='baby'?'#CFC6B6':'none','stroke-width':'.4'},h)}}
+  else if(f.type==='leaf'){for(let b=0;b<7;b++)el('circle',{cx:(b%2?6:-6),cy:-b*9+12,r:f.r*0.62,fill:b%2?f.c:f.c2,opacity:.95},h)}
+  else if(f.type==='tulip'){el('path',{d:`M${-f.r} 0 Q${-f.r} ${-f.r*1.6} 0 ${-f.r*1.2} Q${f.r} ${-f.r*1.6} ${f.r} 0 Q0 ${f.r*0.9} ${-f.r} 0Z`,fill:f.c},h);el('path',{d:`M${-f.r*0.4} ${-f.r*0.2} Q0 ${-f.r*1.5} ${f.r*0.4} ${-f.r*0.2}`,fill:f.c2},h)}
+  const hit=el('circle',{r:Math.max(f.r+6,22),fill:'transparent'},h);
+  g.addEventListener('click',()=>show(f,g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(f,g)}});
+});
+// front paper + ribbon
+el('path',{d:'M60 190 L150 385 L240 190 Q200 220 150 214 Q100 220 60 190Z',fill:'url(#kr)'});
+el('path',{d:'M60 190 Q100 220 150 214 Q200 220 240 190',stroke:'#7A5A36','stroke-width':'1.2',fill:'none'});
+el('path',{d:'M118 298 Q150 310 182 298',stroke:'#7E1F2B','stroke-width':'7',fill:'none','stroke-linecap':'round'});
+el('path',{d:'M150 304 q-26 -18 -30 2 q4 14 30 -2 M150 304 q26 -18 30 2 q-4 14 -30 -2',fill:'#7E1F2B'});
+el('path',{d:'M146 308 l-14 40 M154 308 l16 38',stroke:'#7E1F2B','stroke-width':'4','stroke-linecap':'round'});
+// tag
+el('rect',{x:182,y:318,width:44,height:28,rx:3,fill:'#F2EADB',transform:'rotate(12 204 332)'});
+const tt=el('text',{x:186,y:338,'font-family':'Homemade Apple, cursive','font-size':'9',fill:'#2B221C',transform:'rotate(12 204 332)'});tt.textContent='Angie';
+el('path',{d:'M162 308 Q176 312 186 322',stroke:'#C9BCA8','stroke-width':'1',fill:'none'});
+
+const note=document.getElementById('note'),cnt=document.getElementById('count'),hint=document.getElementById('hint');
+function upd(){cnt.textContent=read.size+' of '+F.length+' reasons read';if(read.size===F.length)hint.textContent='Every reason read. Now the card.'}
+function show(f,g){document.getElementById('nm').textContent=f.nm;document.getElementById('lat').textContent=f.lat;document.getElementById('mean').textContent=f.mean;document.getElementById('his').textContent=f.his;note.classList.add('on');read.add(f.k);g.classList.add('read');try{localStorage.setItem('bouquet-read',JSON.stringify([...read]))}catch(e){};upd()}
+document.getElementById('nclose').onclick=()=>note.classList.remove('on');
+const card=document.getElementById('card');
+document.getElementById('cardbtn').onclick=()=>{note.classList.remove('on');card.hidden=false};
+document.getElementById('cclose').onclick=()=>{card.hidden=true};
+card.addEventListener('click',e=>{if(e.target===card)card.hidden=true});
+upd();
+})();
+</script>
+
+<script src="tellhim.js"></script>
+</body></html>
