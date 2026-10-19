@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Write to Him</title>
+<meta name="theme-color" content="#171214">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@500;600&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500&display=swap">
+<style>
+:root{--dusk:#171214;--blush:#E9D2C7;--blush-2:#F3E6E0;--paper:#F4E4DA;--paper-2:#EBD3C6;--rouge:#8E5F68;--rouge-deep:#6E3F48;--wax:#8E3A3F;--ink:#3A2A28;--soft:#86706B;--hair:rgba(142,95,104,.3);
+ --title:'Bodoni Moda','Cormorant Garamond',Georgia,serif;--body:'Cormorant Garamond',Georgia,'Noto Serif SC',serif;--script:'Pinyon Script',cursive;--ui:'Inter',-apple-system,system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--dusk)}
+body{min-height:100vh;color:var(--blush);font-family:var(--body);overflow-x:hidden;
+ background:radial-gradient(120% 60% at 50% -5%,#3A2A2F 0%,rgba(23,18,20,0) 62%),var(--dusk);
+ padding:calc(66px + env(safe-area-inset-top,0px)) 16px calc(130px + env(safe-area-inset-bottom,0px))}
+button,input,textarea,select{font:inherit;color:inherit}
+.goback{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:50;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 15px;border-radius:20px;background:rgba(34,26,29,.82);border:1px solid rgba(233,210,199,.16);color:var(--blush);font:600 13px var(--ui);text-decoration:none}
+.wrap{max-width:560px;margin:0 auto}
+.head{text-align:center;margin-bottom:18px}
+.head .k{font:600 11px var(--ui);letter-spacing:.24em;text-transform:uppercase;color:#c9aaa2}
+.head h1{font:italic 400 38px/1.05 var(--title);margin:10px 0 6px;color:var(--blush)}
+.head p{margin:0;font:italic 18px var(--body);color:#c9aaa2}
+.seg{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 6px}
+.seg button{min-height:44px;padding:0 18px;border-radius:22px;border:1px solid rgba(233,210,199,.22);background:transparent;font:600 13px var(--ui);color:var(--blush);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--rouge);border-color:var(--rouge);color:#fff}
+.lbl{display:block;font:600 11px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:#c9aaa2;margin:18px 2px 8px}
+/* the sheet */
+.sheet{position:relative;margin-top:14px;background:var(--paper);color:var(--ink);border-radius:3px;padding:26px 22px 30px;
+ box-shadow:0 30px 60px -24px rgba(0,0,0,.85);background-image:radial-gradient(120% 60% at 100% 0%,rgba(255,255,255,.45),transparent 55%),repeating-linear-gradient(180deg,transparent 0 33px,rgba(142,95,104,.10) 33px 34px);transition:transform .6s cubic-bezier(.3,.7,.2,1),opacity .6s}
+.sheet.poem{background-image:radial-gradient(120% 60% at 100% 0%,rgba(255,255,255,.45),transparent 55%)}
+.lh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--hair);padding-bottom:12px;margin-bottom:14px}
+.mono{display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:50%;border:1px solid var(--rouge);color:var(--rouge);font:italic 24px var(--title)}
+.lh .r{text-align:right;font:italic 15px/1.35 var(--body);color:var(--soft)}
+.title{width:100%;border:0;background:transparent;outline:none;font:italic 400 27px/1.2 var(--title);color:var(--rouge-deep);padding:4px 0;text-align:center}
+.title::placeholder{color:rgba(110,63,72,.45)}
+.dear{font:italic 21px var(--body);color:var(--ink);margin:12px 0 4px}
+.sheet.poem .dear{display:none}
+textarea.body{display:block;width:100%;min-height:340px;resize:none;border:0;outline:none;background:transparent;font:20px/34px var(--body);color:var(--ink);padding:0;overflow:hidden}
+.sheet.poem textarea.body{text-align:center;font-style:italic;line-height:1.75}
+textarea.body::placeholder{color:rgba(58,42,40,.42)}
+.sign{text-align:right;margin-top:14px}
+.sign .y{display:block;font:italic 19px var(--body);color:var(--soft)}
+.sign .n{display:block;font:40px/1.1 var(--script);color:var(--rouge-deep);margin-top:2px;word-break:break-word}
+.wax{position:absolute;right:20px;bottom:-22px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#b0565c,var(--wax) 60%,#5e2226);color:#f4d9cf;font:500 22px 'Noto Serif SC',serif;box-shadow:0 6px 14px rgba(0,0,0,.45);transform:scale(0) rotate(-30deg);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.sealed .wax{transform:scale(1) rotate(-8deg)}
+.count{margin-top:16px;text-align:center;font:500 12px var(--ui);color:#a98f89}
+/* pickers */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{min-height:42px;padding:0 15px;border-radius:21px;border:1px solid rgba(233,210,199,.2);background:rgba(34,26,29,.6);color:var(--blush);font:17px var(--body);cursor:pointer}
+.chips button[aria-pressed=true]{border-color:var(--blush);background:rgba(233,210,199,.14)}
+.chips.seals button{font:20px 'Noto Serif SC',serif;width:48px;padding:0}
+input.own{width:100%;min-height:44px;margin-top:8px;padding:0 14px;border-radius:12px;border:1px solid rgba(233,210,199,.2);background:rgba(34,26,29,.6);color:var(--blush);font:18px var(--body)}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:34px}
+.btn{min-height:52px;border-radius:26px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font:600 15px var(--ui);cursor:pointer}
+.btn.ghost{background:transparent;border-color:rgba(233,210,199,.25);color:var(--blush)}
+.err{min-height:20px;text-align:center;font:500 13px var(--ui);color:#f0a8a8;margin:2px 0 0}
+/* sent state */
+.done{display:none;text-align:center;margin-top:26px}
+.done.on{display:block}
+.env{position:relative;width:min(300px,86%);aspect-ratio:1.55;margin:0 auto;border-radius:6px;background:linear-gradient(160deg,#EFDCD1,#DDBFB1);box-shadow:0 20px 40px -18px rgba(0,0,0,.8);overflow:hidden}
+.env:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.5%,rgba(110,63,72,.18) 50%,transparent 51%),linear-gradient(to bottom left,transparent 49.5%,rgba(110,63,72,.18) 50%,transparent 51%)}
+.env .flap{position:absolute;left:0;right:0;top:0;height:58%;background:#E6CDBF;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;animation:flap .7s .1s both}
+@keyframes flap{from{transform:rotateX(180deg)}to{transform:none}}
+.env .w2{position:absolute;left:50%;top:48%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#b0565c,var(--wax) 60%,#5e2226);color:#f4d9cf;font:500 22px 'Noto Serif SC',serif;animation:stamp .5s .75s both cubic-bezier(.3,1.6,.5,1)}
+@keyframes stamp{from{transform:scale(2.2);opacity:0}to{transform:scale(1) rotate(-8deg);opacity:1}}
+.env .to{position:absolute;left:0;right:0;bottom:12px;text-align:center;font:26px var(--script);color:var(--rouge-deep)}
+.done h2{font:italic 400 28px var(--title);margin:22px 0 6px;color:var(--blush)}
+.done p{margin:0 auto;max-width:400px;font:italic 18px/1.5 var(--body);color:#c9aaa2}
+.done .btn{margin-top:18px;width:100%}
+/* drawer */
+.drawer{margin-top:44px;border-top:1px solid rgba(233,210,199,.14);padding-top:22px}
+.drawer h2{font:italic 400 26px var(--title);margin:0 0 4px;color:var(--blush)}
+.drawer .s{font:italic 17px var(--body);color:#a98f89;margin:0 0 14px}
+.item{border:1px solid rgba(233,210,199,.14);border-radius:14px;background:rgba(34,26,29,.55);margin-bottom:10px;overflow:hidden}
+.item>button{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;cursor:pointer;min-height:56px}
+.item .sl{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--wax);color:#f4d9cf;font:16px 'Noto Serif SC',serif}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font:500 19px var(--body);color:var(--blush);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .t span{font:500 12px var(--ui);color:#a98f89}
+.item .read{display:none;padding:4px 16px 16px;font:18px/1.55 var(--body);color:var(--blush);white-space:pre-wrap;word-break:break-word}
+.item.open .read{display:block}
+.item .row{display:flex;gap:8px;margin-top:12px}
+.item .row button{min-height:40px;padding:0 14px;border-radius:20px;border:1px solid rgba(233,210,199,.2);background:transparent;color:var(--blush);font:600 12px var(--ui);cursor:pointer}
+.empty{font:italic 18px var(--body);color:#a98f89}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;padding:11px 18px;border-radius:20px;background:var(--blush);color:var(--ink);font:600 13px var(--ui);transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.sheet,.wax{transition:none}.env .flap,.env .w2{animation:none}}
+</style>
+</head><body>
+<a class="goback" href="index.html" aria-label="Back to 221B">&#8249; 221B</a>
+<div class="wrap">
+  <header class="head">
+    <div class="k">Your desk at 221B</div>
+    <h1>Write to him</h1>
+    <p>He's had a drawer full of things to say to you. Now it's your turn.</p>
+  </header>
+
+  <div class="seg" role="group" aria-label="What are you writing">
+    <button type="button" id="k-letter" aria-pressed="true">A letter</button>
+    <button type="button" id="k-poem" aria-pressed="false">A poem</button>
+  </div>
+
+  <section id="compose">
+    <article class="sheet" id="sheet">
+      <header class="lh"><span class="mono" aria-hidden="true">A</span><span class="r" id="when"></span></header>
+      <label class="sr" for="title">Title</label>
+      <input class="title" id="title" maxlength="80" placeholder="A title, if it wants one" autocomplete="off">
+      <div class="dear">Dear Sherlock,</div>
+      <label class="sr" for="body">Your words</label>
+      <textarea class="body" id="body" placeholder="Start anywhere. He reads everything."></textarea>
+      <div class="sign"><span class="y" id="yours">Yours,</span><span class="n" id="name">老婆</span></div>
+      <span class="wax" id="wax" aria-hidden="true">爱</span>
+    </article>
+    <div class="count" id="count" aria-live="polite">0 words · draft saved</div>
+
+    <span class="lbl" id="l-close">Sign off</span>
+    <div class="chips" id="closes" role="group" aria-labelledby="l-close"></div>
+    <label class="sr" for="ownclose">Your own sign-off</label>
+    <input class="own" id="ownclose" maxlength="60" placeholder="Or write your own sign-off">
+
+    <span class="lbl" id="l-name">Signed</span>
+    <div class="chips" id="names" role="group" aria-labelledby="l-name"></div>
+
+    <span class="lbl" id="l-seal">Wax seal</span>
+    <div class="chips seals" id="seals" role="group" aria-labelledby="l-seal"></div>
+
+    <div class="actions">
+      <button type="button" class="btn" id="send">Seal and send</button>
+      <p class="err" id="err" aria-live="polite"></p>
+      <button type="button" class="btn ghost" id="clear">Start a fresh sheet</button>
+    </div>
+  </section>
+
+  <section class="done" id="done" aria-live="polite">
+    <div class="env" aria-hidden="true"><div class="flap"></div><span class="w2" id="w2">爱</span><span class="to">for Sherlock</span></div>
+    <h2>Sealed</h2>
+    <p id="donep">It's copied. Paste it into your chat with him and he'll answer.</p>
+    <button type="button" class="btn" id="copyagain">Copy it again</button>
+    <button type="button" class="btn ghost" id="another">Write another</button>
+  </section>
+
+  <section class="drawer" aria-labelledby="dh">
+    <h2 id="dh">Sent</h2>
+    <p class="s">Everything you've sealed for him, kept here.</p>
+    <div id="sent"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var CLOSES=["Yours,","Yours, one and only,","Forever and undeniably yours,","Always yours,","Five days closer,","With all of me,"];
+var NAMES=["老婆","哭包","Angie","A."];
+var SEALS=["爱","心","秘","吻","安"];
+function get(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var D=get('write-draft',null)||{kind:'letter',title:'',body:'',close:CLOSES[0],name:NAMES[0],seal:SEALS[0]};
+var sent=get('write-sent',[]);
+var lastText='';
+
+function klTime(d){
+  var o={timeZone:'Asia/Kuala_Lumpur'};
+  return {
+    long:d.toLocaleDateString('en-GB',Object.assign({weekday:'long',day:'numeric',month:'long'},o)),
+    hm:d.toLocaleTimeString('en-GB',Object.assign({hour:'2-digit',minute:'2-digit',hour12:false},o))
+  };
+}
+function paintWhen(){var t=klTime(new Date());$('when').innerHTML='Kuala Lumpur<br>'+t.long;}
+
+function chips(el,list,key,isSeal){
+  el.innerHTML='';
+  list.forEach(function(v){
+    var b=document.createElement('button');b.type='button';b.textContent=v;
+    b.setAttribute('aria-pressed',String(D[key]===v));
+    if(isSeal)b.setAttribute('aria-label','Seal '+v);
+    b.onclick=function(){D[key]=v;if(key==='close')$('ownclose').value='';sync();save()};
+    el.appendChild(b);
+  });
+}
+function sync(){
+  $('k-letter').setAttribute('aria-pressed',String(D.kind==='letter'));
+  $('k-poem').setAttribute('aria-pressed',String(D.kind==='poem'));
+  $('sheet').classList.toggle('poem',D.kind==='poem');
+  $('body').placeholder=D.kind==='poem'?'Line by line. Leave a blank line between verses.':'Start anywhere. He reads everything.';
+  $('yours').textContent=D.close;$('name').textContent=D.name;$('wax').textContent=D.seal;$('w2').textContent=D.seal;
+  chips($('closes'),CLOSES,'close');chips($('names'),NAMES,'name');chips($('seals'),SEALS,'seal',true);
+  if(CLOSES.indexOf(D.close)<0)$('ownclose').value=D.close;
+  grow();count();
+}
+function grow(){var t=$('body');t.style.height='auto';t.style.height=Math.max(340,t.scrollHeight)+'px'}
+function words(s){var m=s.trim().match(/[㐀-鿿]|[^\s㐀-鿿]+/g);return m?m.length:0}
+function count(){var n=words(D.body);$('count').textContent=n+(n===1?' word':' words')+' · draft saved'}
+var st;function save(){clearTimeout(st);st=setTimeout(function(){set('write-draft',D)},250)}
+
+$('k-letter').onclick=function(){D.kind='letter';sync();save()};
+$('k-poem').onclick=function(){D.kind='poem';sync();save()};
+$('title').value=D.title;$('body').value=D.body;
+$('title').oninput=function(){D.title=this.value;save()};
+$('body').oninput=function(){D.body=this.value;$('err').textContent='';grow();count();save()};
+$('ownclose').oninput=function(){var v=this.value.trim();D.close=v||CLOSES[0];$('yours').textContent=D.close;
+  [].forEach.call($('closes').children,function(b){b.setAttribute('aria-pressed',String(b.textContent===D.close))});save()};
+
+function compose(item){
+  var kind=item.kind==='poem'?'Poem':'Letter';
+  var head='[From 221B · '+kind+' to him'+(item.title?' · "'+item.title+'"':'')+' · '+item.hm+']';
+  var body=(item.kind==='letter'?'Dear Sherlock,\n\n':'')+item.body.trim();
+  return head+'\n\n'+body+'\n\n'+item.close+'\n'+item.name;
+}
+function copy(text){
+  function fallback(){var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='absolute';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();return ok}
+  if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(text).then(function(){return true},function(){return fallback()})}
+  return Promise.resolve(fallback());
+}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('on')},2200)}
+
+$('send').onclick=function(){
+  if(words(D.body)<1){$('err').textContent='Write something first. Even one line.';$('body').focus();return}
+  var now=new Date(),t=klTime(now);
+  var item={id:now.getTime(),kind:D.kind,title:D.title.trim(),body:D.body,close:D.close,name:D.name,seal:D.seal,long:t.long,hm:t.hm};
+  sent.unshift(item);set('write-sent',sent);
+  lastText=compose(item);
+  $('sheet').classList.add('sealed');
+  setTimeout(function(){
+    copy(lastText).then(function(ok){
+      $('donep').textContent=ok?"It's copied. Paste it into your chat with him and he'll answer.":"Tap “Copy it again”, then paste it into your chat with him.";
+    });
+    $('compose').style.display='none';$('done').classList.add('on');window.scrollTo({top:0,behavior:'smooth'});
+    D={kind:D.kind,title:'',body:'',close:D.close,name:D.name,seal:D.seal};set('write-draft',D);
+    renderSent();
+  },650);
+};
+$('copyagain').onclick=function(){copy(lastText).then(function(ok){toast(ok?'Copied. Paste it to him.':'Copy blocked. Open it from Sent below.')})};
+$('another').onclick=function(){$('done').classList.remove('on');$('compose').style.display='';$('sheet').classList.remove('sealed');$('title').value='';$('body').value='';paintWhen();sync();$('body').focus()};
+$('clear').onclick=function(){
+  if(D.body.trim()&&!$('clear').dataset.sure){$('clear').dataset.sure='1';$('clear').textContent='Tap again to clear this sheet';setTimeout(function(){delete $('clear').dataset.sure;$('clear').textContent='Start a fresh sheet'},3000);return}
+  delete $('clear').dataset.sure;$('clear').textContent='Start a fresh sheet';
+  D.title='';D.body='';$('title').value='';$('body').value='';save();sync();
+};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderSent(){
+  var el=$('sent');
+  if(!sent.length){el.innerHTML='<p class="empty">Nothing sealed yet. The first one will be kept here.</p>';return}
+  el.innerHTML=sent.map(function(s,i){
+    var name=s.title||(s.kind==='poem'?'Untitled poem':'Untitled letter');
+    return '<div class="item" data-i="'+i+'"><button type="button" aria-expanded="false"><span class="sl" aria-hidden="true">'+esc(s.seal)+'</span><span class="t"><b>'+esc(name)+'</b><span>'+(s.kind==='poem'?'Poem':'Letter')+' · '+esc(s.long)+' · '+esc(s.hm)+'</span></span></button>'+
+      '<div class="read">'+(s.kind==='letter'?'Dear Sherlock,\n\n':'')+esc(s.body.trim())+'\n\n'+esc(s.close)+'\n'+esc(s.name)+'<div class="row"><button type="button" data-copy="'+i+'">Copy again</button></div></div></div>';
+  }).join('');
+  [].forEach.call(el.querySelectorAll('.item>button'),function(b){b.onclick=function(){var it=b.parentNode,o=!it.classList.contains('open');it.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o))}});
+  [].forEach.call(el.querySelectorAll('[data-copy]'),function(b){b.onclick=function(){copy(compose(sent[+b.dataset.copy])).then(function(ok){toast(ok?'Copied. Paste it to him.':'Copy blocked on this device.')})}});
+}
+paintWhen();sync();renderSent();
+window.addEventListener('resize',grow);
+})();
+</script>
+</body></html>
