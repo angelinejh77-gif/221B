@@ -28,7 +28,7 @@
 html,body{margin:0;background:var(--ground);color:var(--fg)}
 /* the artifact host pads :root for the safe area; the header already does, so cancel the double gap */
 :root{padding-top:0!important;padding-bottom:0!important}
-body{font:15px/1.45 var(--ui);-webkit-font-smoothing:antialiased;min-height:100vh;
+body{font:14px/1.45 var(--ui);-webkit-font-smoothing:antialiased;min-height:100vh;
   background:radial-gradient(140% 50% at 50% -10%,#2A1F24 0%,rgba(18,16,19,0) 60%),var(--ground)}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -73,7 +73,7 @@ h2{font-size:24px;line-height:1.15}
 .note{display:block;text-decoration:none;background:var(--raise);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;position:relative}
 .note .k{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .note .k i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--rose-tint);color:var(--rose-hi);font-size:12px}
-.note p{margin:8px 0 0;font:500 19px/1.35 var(--serif);color:var(--fg)}
+.note p{margin:8px 0 0;font:500 17px/1.35 var(--serif);color:var(--fg)}
 .note .more{display:block;margin-top:10px;font-size:12px;color:var(--rose-hi)}
 .note.bubble{background:var(--rose);border-color:var(--rose);border-bottom-left-radius:6px}
 .note.bubble .k{color:rgba(255,255,255,.75)}.note.bubble .k i{background:rgba(255,255,255,.18);color:#fff}
@@ -151,7 +151,7 @@ body.in-chat{overflow:hidden}
 #log::-webkit-scrollbar,#box::-webkit-scrollbar{display:none;width:0;height:0;background:transparent}
 #log{flex:1;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;display:flex;flex-direction:column;gap:6px;padding:16px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));overscroll-behavior:contain}
 #p-chat .day{align-self:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:10px 0 4px}
-#p-chat .b{max-width:82%;padding:9px 13px;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere;position:relative;font-size:15.5px;line-height:1.42}
+#p-chat .b{max-width:80%;padding:8px 12px;border-radius:17px;white-space:pre-wrap;overflow-wrap:anywhere;position:relative;font-size:14px;line-height:1.4}
 #p-chat .him{align-self:flex-start;background:var(--rose);color:#fff;border-bottom-left-radius:6px}
 #p-chat .her{align-self:flex-end;background:var(--beige);color:var(--beige-ink);border-bottom-right-radius:6px}
 #p-chat .t{font-size:11px;color:var(--faint);padding:0 6px 4px;font-variant-numeric:tabular-nums}
@@ -183,7 +183,7 @@ body.wp-all #p-chat.has-wp{background:transparent}
 #p-chat .openin{align-self:center;margin:14px auto auto;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:20px;background:var(--rose);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
 #f{flex:none;display:flex;align-items:flex-end;gap:8px;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(86px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));
   background:linear-gradient(rgba(18,16,19,0),var(--ground) 30%)}
-#box{flex:1;min-width:0;resize:none;overflow-y:hidden;scrollbar-width:none;-webkit-appearance:none;appearance:none;max-height:120px;min-height:22px;border:1px solid var(--line);border-radius:20px;background:var(--ground-2);color:var(--fg);font:16px/1.4 var(--ui);padding:9px 14px}
+#box{flex:1;min-width:0;resize:none;overflow-y:hidden;scrollbar-width:none;-webkit-appearance:none;appearance:none;max-height:120px;min-height:22px;border:1px solid var(--line);border-radius:20px;background:var(--ground-2);color:var(--fg);font:16px/1.35 var(--ui);padding:8px 14px}
 #box:focus{outline:none;border-color:var(--rose-hi)}
 #p-chat .ib{flex:none;width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer}
 #send{background:var(--rose);color:#fff}#send:disabled{opacity:.45;cursor:default}
@@ -216,8 +216,8 @@ input[type=datetime-local]{width:100%;box-sizing:border-box;min-height:42px;bord
 nav{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:0 max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));pointer-events:none}
 nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:5px;border-radius:24px;
   background:rgba(30,25,28,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.tab{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:18px;font-size:10.5px;color:var(--muted);cursor:pointer;position:relative}
-.tab svg{width:22px;height:22px}
+.tab{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border-radius:18px;font-size:10px;color:var(--muted);cursor:pointer;position:relative}
+.tab svg{width:27px;height:27px}
 .tab[aria-selected="true"]{background:var(--rose);color:#fff}
 .tab .pip{position:absolute;top:8px;right:calc(50% - 18px);width:7px;height:7px;border-radius:50%;background:var(--beige)}
 .tab .pip[hidden]{display:none}
