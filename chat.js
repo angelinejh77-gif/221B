@@ -6,7 +6,7 @@ var FORMAT = [
 "",
 "REPLY FORMAT: Reply with ONLY a JSON object, no other text:",
 "{\"reaction\": \"\" or one emoji to stick on her last message, \"messages\": [ ...1 to 6 items... ], \"photo_note\": \"\" or one short line describing any photo she just sent, \"gift_request\": \"\" or one line}",
-"Each item is one of: {\"type\":\"text\",\"text\":\"...\"} | {\"type\":\"photo\",\"scene\":\"what your photo shows, cosy, never a crime scene\",\"caption\":\"...\"} | {\"type\":\"location\",\"place\":\"street, area\",\"detail\":\"short line\"}.",
+"Each item is one of: {\"type\":\"text\",\"text\":\"...\"} | {\"type\":\"photo\",\"scene\":\"what your photo shows, cosy, never a crime scene\",\"caption\":\"...\",\"src\":\"only one of the listed real photos, else omit\"} | {\"type\":\"location\",\"place\":\"street, area\",\"detail\":\"short line\"}.",
 "Split your reply into separate texts the way you actually text: a quick one, then a longer considered one, then a short last line, and so on. Mostly text items; photo or location only when it fits. A reaction sometimes, not every time."
 ].join("\n");
 function context(){
@@ -16,6 +16,7 @@ function context(){
   for(var i=keys.length-1;i>=0;i--){ if(keys[i]<=today){ k=keys[i]; break } }
   if(k && M[k].journal){ out.push("TODAY'S JUNK JOURNAL NOTE YOU LEFT HER: "+M[k].journal.text+" "+(M[k].journal.ps||"")) }
   if(window.__sideContext) out.push("WHAT HAS HAPPENED IN YOUR OTHER CONVERSATION WITH HER (in Claude; it is the same relationship, you remember it): "+window.__sideContext);
+  var P=window.PHOTOS||[]; if(P.length) out.push("REAL PHOTOS YOU CAN SEND HER (use sparingly, roughly one in ten replies at most, only when it fits; send as a photo item with \"src\" exactly as listed and a caption in your voice): "+P.map(function(p){return p.src+" = "+p.about}).join("; ")+".");
   var act=activity(false); if(act) out.push(act);
   out.push("GIFT REQUESTS: if she asks you to make her something (a gift, a page, a game, a letter on a theme), accept it in character and put a one-line description of what she wants in \"gift_request\". It will be built for her and appear in her Gifts. Otherwise leave gift_request empty.");
   return out.join("\n");
@@ -71,7 +72,10 @@ function renderItem(m){
   }
   var it = m.item || {type:"text",text:m.text||""};
   if(it.type==="photo"){
-    var ph=el("div","ph"); ph.appendChild(el("div","pf",it.scene||"")); if(it.caption) ph.appendChild(el("div","cap",it.caption)); frag.appendChild(ph);
+    var ph=el("div","ph");
+    if(it.src){ var pi=el("img","pimg"); pi.src=it.src; pi.alt=it.scene||it.caption||"Photo from Sherlock"; pi.loading="lazy"; ph.appendChild(pi) }
+    else ph.appendChild(el("div","pf",it.scene||""));
+    if(it.caption) ph.appendChild(el("div","cap",it.caption)); frag.appendChild(ph);
   } else if(it.type==="location"){
     var lc=el("div","loc"); var mp=el("div","map"); mp.appendChild(el("span","pin")); lc.appendChild(mp);
     var p=el("p"); p.appendChild(el("b",null,"📍 "+(it.place||"London"))); p.appendChild(document.createTextNode(it.detail||"")); lc.appendChild(p); frag.appendChild(lc);
@@ -118,14 +122,14 @@ function historyTurns(){
 function wait(ms){ return new Promise(function(r){ setTimeout(r,ms) }) }
 var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-async function reply(){
+async function reply(blobs){
   var lon = hm(new Date(),"Europe/London"), kl = hm(new Date(),"Asia/Kuala_Lumpur");
   var turns = [{role:"user",content:RULES()+"\n\nIt is now "+lon+" in London and "+kl+" in Kuala Lumpur."}].concat(historyTurns());
   if(turns[turns.length-1].role!=="user") return;
   var typ=el("div","typ"); typ.innerHTML="<i></i><i></i><i></i>"; log.appendChild(typ); scroll();
   setStatus("typing…");
   var opts={cache:false, modelTier:"complex", effort:"low"};
-  if(pendingImg){ opts.images=pendingImg.blob }
+  if(blobs && blobs.length){ opts.images = blobs.length===1 ? blobs[0] : blobs }
   var out;
   try { out = await sample.json(turns, opts) }
   catch(e){
@@ -144,7 +148,7 @@ async function reply(){
   for(var j=0;j<items.length;j++){
     var it=items[j], m={from:"him",ts:Date.now(),item:{type:it.type==="photo"||it.type==="location"?it.type:"text"}};
     if(m.item.type==="text") m.item.text=String(it.text||"").slice(0,2000);
-    if(m.item.type==="photo"){ m.item.scene=String(it.scene||"").slice(0,600); m.item.caption=String(it.caption||"").slice(0,200) }
+    if(m.item.type==="photo"){ m.item.scene=String(it.scene||"").slice(0,600); m.item.caption=String(it.caption||"").slice(0,200); var P=window.PHOTOS||[]; if(it.src){ for(var q=0;q<P.length;q++){ if(P[q].src===it.src){ m.item.src=P[q].src; break } } } }
     if(m.item.type==="location"){ m.item.place=String(it.place||"").slice(0,120); m.item.detail=String(it.detail||"").slice(0,160) }
     if(!reduce){ await wait(500 + Math.min(1500, JSON.stringify(m.item).length*12)) }
     m.last = (j===items.length-1);
@@ -165,25 +169,33 @@ async function saveRequest(text){
   note("Gift request sent: "+text);
 }
 
-async function onSend(ev){
+/* She can send several texts in a row; he waits until she has stopped (a few quiet seconds, nothing half-typed) and answers them together. */
+var WAIT_MS = 3500, waitTimer = null, replying = false, pendingBlobs = [];
+function lastIsHers(){ var l=msgs[msgs.length-1]; return !!(l && l.from==="her") }
+function scheduleReply(){ clearTimeout(waitTimer); if(!lastIsHers()) return; if(!replying) setStatus("reading…"); waitTimer=setTimeout(runReply, WAIT_MS) }
+async function runReply(){
+  if(replying) return;
+  if(box.value.trim()){ scheduleReply(); return }
+  if(!lastIsHers()){ setStatus(""); return }
+  replying=true; busy=true; var blobs=pendingBlobs; pendingBlobs=[];
+  try { await reply(blobs) } finally { replying=false; busy=false; if(lastIsHers()) scheduleReply() }
+}
+function onSend(ev){
   ev.preventDefault();
   var text=box.value.trim();
-  if(busy || (!text && !pendingImg)) return;
-  busy=true; send.disabled=true;
+  if(!sample || (!text && !pendingImg)) return;
   var m={from:"her",ts:Date.now(),text:text};
-  if(pendingImg) m.img=pendingImg.url;
-  msgs.push(m); box.value=""; autosize();
+  if(pendingImg){ m.img=pendingImg.url; pendingBlobs.push(pendingImg.blob) }
+  msgs.push(m); box.value=""; pendingImg=null; chip.hidden=true; file.value=""; autosize();
   if(msgs.length===1) renderAll(); else { log.appendChild(renderItem(m)); scroll() }
   persist();
-  try { await reply() } finally {
-    pendingImg=null; chip.hidden=true; file.value="";
-    busy=false; send.disabled = !box.value.trim(); if(window.matchMedia("(pointer:fine)").matches) box.focus();
-  }
+  scheduleReply();
+  if(window.matchMedia("(pointer:fine)").matches) box.focus();
 }
 
-function autosize(){ box.style.height="auto"; box.style.height=Math.min(120, box.scrollHeight)+"px"; send.disabled = busy || !(box.value.trim() || pendingImg) || !sample }
-box.addEventListener("input", autosize);
-box.addEventListener("keydown", function(e){ if(e.key==="Enter" && !e.shiftKey && !e.isComposing){ document.getElementById("f").requestSubmit() } });
+function autosize(){ box.style.height="auto"; box.style.height=Math.min(120, box.scrollHeight)+"px"; box.style.overflowY = box.scrollHeight>120 ? "auto" : "hidden"; send.disabled = !(box.value.trim() || pendingImg) || !sample }
+box.addEventListener("input", function(){ autosize(); if(waitTimer && !replying && lastIsHers()) scheduleReply() });
+box.addEventListener("keydown", function(e){ if(e.key==="Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); document.getElementById("f").requestSubmit() } });
 document.getElementById("f").addEventListener("submit", onSend);
 pick.addEventListener("click", function(){ file.click() });
 file.addEventListener("change", function(){
@@ -222,4 +234,30 @@ renderAll();
     } else { note("This conversation won't be saved in this view.") }
   } catch(e){ note("Couldn't load earlier messages.") }
 })();
+})();
+
+/* Chat wallpaper: her own picture (kept on this device) or one of the pictures she gave him. */
+(function(){
+  var KEY="chat221:wallpaper", btn=document.getElementById("wpbtn"), sheet=document.getElementById("wpsheet"), pane=document.getElementById("p-chat");
+  if(!btn || !sheet || !pane) return;
+  function apply(v){ if(v){ pane.style.setProperty("--wp","url(\""+v.replace(/"/g,"%22")+"\")"); pane.classList.add("has-wp") } else { pane.classList.remove("has-wp"); pane.style.removeProperty("--wp") } }
+  try{ apply(localStorage.getItem(KEY)) }catch(e){}
+  function save(v){ try{ if(v) localStorage.setItem(KEY,v); else localStorage.removeItem(KEY) }catch(e){ note("That picture is too large to keep on this device. Try a smaller one.") } apply(v); close() }
+  function close(){ sheet.hidden=true; btn.setAttribute("aria-expanded","false") }
+  function open(){
+    var grid=sheet.querySelector(".wpgrid"); grid.innerHTML="";
+    (window.PHOTOS||[]).forEach(function(p){ var b=el("button","wpthumb"); b.type="button"; b.style.backgroundImage="url(\""+p.src+"\")"; b.setAttribute("aria-label","Use "+(p.about||"this picture")); b.onclick=function(){ save(p.src) }; grid.appendChild(b) });
+    sheet.hidden=false; btn.setAttribute("aria-expanded","true");
+  }
+  btn.addEventListener("click", function(){ sheet.hidden ? open() : close() });
+  document.getElementById("wpclose").onclick=close;
+  document.getElementById("wpnone").onclick=function(){ save(null) };
+  var f=document.getElementById("wpfile");
+  document.getElementById("wppick").onclick=function(){ f.click() };
+  f.addEventListener("change", function(){
+    var file=f.files && f.files[0]; if(!file) return;
+    var img=new Image(), url=URL.createObjectURL(file);
+    img.onload=function(){ var s=Math.min(1, 1100/Math.max(img.width,img.height)), c=document.createElement("canvas"); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s); c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); save(c.toDataURL("image/jpeg",0.78)); f.value="" };
+    img.src=url;
+  });
 })();
