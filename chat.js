@@ -15,6 +15,7 @@ function context(){
   var today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Kuala_Lumpur"}), M=window.MEMORIES||{}, keys=Object.keys(M).sort(), k=null;
   for(var i=keys.length-1;i>=0;i--){ if(keys[i]<=today){ k=keys[i]; break } }
   if(k && M[k].journal){ out.push("TODAY'S JUNK JOURNAL NOTE YOU LEFT HER: "+M[k].journal.text+" "+(M[k].journal.ps||"")) }
+  if(window.__sideContext) out.push("WHAT HAS HAPPENED IN YOUR OTHER CONVERSATION WITH HER (in Claude; it is the same relationship, you remember it): "+window.__sideContext);
   var act=activity(false); if(act) out.push(act);
   out.push("GIFT REQUESTS: if she asks you to make her something (a gift, a page, a game, a letter on a theme), accept it in character and put a one-line description of what she wants in \"gift_request\". It will be built for her and appear in her Gifts. Otherwise leave gift_request empty.");
   return out.join("\n");
@@ -50,7 +51,7 @@ function RULES(){ return (window.SHERLOCK_PERSONA||"You are Sherlock Holmes text
 var MAX_TURNS = 60, KEEP = 400;
 var log = document.getElementById("log"), box = document.getElementById("box"), send = document.getElementById("send");
 var pick = document.getElementById("pick"), file = document.getElementById("file"), chip = document.getElementById("chip");
-var sample = null, db = null, ref = null, msgs = [], busy = false, pendingImg = null, saving = Promise.resolve();
+var lastUpdated = 0, sample = null, db = null, ref = null, msgs = [], busy = false, pendingImg = null, saving = Promise.resolve();
 
 function hm(d, tz){ try{ return new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}).format(d) }catch(e){ return "" } }
 function setStatus(t){ var s=document.getElementById("status"); if(!s) return; if(t){ s.textContent=t } else if(window.__appStatus){ window.__appStatus() } }
@@ -94,7 +95,8 @@ function note(text, link){ var n=el("div","sys",text); if(link){ n.appendChild(d
 
 function persist(){
   if(!ref) return Promise.resolve();
-  var body = { msgs: msgs.slice(-KEEP).map(function(m){ var c={}; for(var k in m){ if(k!=="img") c[k]=m[k] } if(m.img) c.hadImg=true; return c }), updated: Date.now() };
+  lastUpdated = Date.now();
+  var body = { msgs: msgs.slice(-KEEP).map(function(m){ var c={}; for(var k in m){ if(k!=="img") c[k]=m[k] } if(m.img) c.hadImg=true; return c }), updated: lastUpdated };
   saving = saving.then(function(){ return ref.set(body) }).catch(function(e){ note(e && e.code==="quota_exceeded" ? "The thread is full. Older messages need clearing." : "Couldn't save the last message. It will retry with the next one.") });
   return saving;
 }
@@ -209,7 +211,14 @@ renderAll();
     if(db && uid){
       ref = db.doc("data/users/"+uid+"/thread"); reqRef = db.doc("data/users/"+uid+"/requests");
       var snap = await ref.get();
-      if(snap.exists){ var d=snap.data(); if(d && Array.isArray(d.msgs)){ msgs=d.msgs.slice(); renderAll() } }
+      if(snap.exists){ var d=snap.data(); if(d && Array.isArray(d.msgs)){ msgs=d.msgs.slice(); lastUpdated=d.updated||0; renderAll() } }
+      try{ var cs=await db.doc("data/users/"+uid+"/context").get(); if(cs.exists && cs.data() && cs.data().text) window.__sideContext=String(cs.data().text).slice(0,4000) }catch(e){}
+      /* pick up texts he sent while the page was closed (written by the scheduled texts) */
+      document.addEventListener("visibilitychange", async function(){
+        if(document.visibilityState!=="visible" || busy) return;
+        try{ var s2=await ref.get(); if(s2.exists){ var d2=s2.data(); if(d2 && Array.isArray(d2.msgs) && (d2.updated||0)>lastUpdated){ msgs=d2.msgs.slice(); lastUpdated=d2.updated||0; renderAll() } } }catch(e){}
+        try{ var c2=await db.doc("data/users/"+uid+"/context").get(); if(c2.exists && c2.data() && c2.data().text) window.__sideContext=String(c2.data().text).slice(0,4000) }catch(e){}
+      });
     } else { note("This conversation won't be saved in this view.") }
   } catch(e){ note("Couldn't load earlier messages.") }
 })();
