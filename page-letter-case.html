@@ -1,197 +1,72 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}
-.back221{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.86);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.back221:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}</style>
-</head><body>
-<style>body{padding-top:calc(66px + env(safe-area-inset-top,0px)) !important}.goback{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:50;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:20px;background:rgba(20,22,26,.78);color:#F3EDE2;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none}.goback:focus-visible{outline:2px solid #D2AA6A;outline-offset:2px}.goback.end{position:static;margin:28px auto 0;display:flex;width:max-content}</style>
-<a class="goback" href="page-letters.html" aria-label="Go back to all letters">&#8249; All letters</a>
-<a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
 <title>Folded Into the Case</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#171214">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Pinyon+Script&display=swap">
-<style>
-/* Layout: the open lid of a violin case, oxblood velvet; one long sheet of paper lies in it, folded at the sections */
-:root{
-  --velvet:#2A0F14; --velvet-deep:#1A080B; --velvet-light:#4A1C24;
-  --paper:#EFE6D4; --paper-edge:#DCCFB4; --ink:#2B211D; --ink-soft:#6A5A50;
-  --brass:#C9A15E; --seal:#9E2A22;
-  --display:'IM Fell English','Cormorant Garamond',Georgia,serif;
-  --body:'Cormorant Garamond',Georgia,'Times New Roman',serif;
-  --script:'Pinyon Script','Snell Roundhand',cursive;
-  color-scheme:dark;
-}
-html,body{background:var(--velvet-deep);color:var(--ink)}
-body{
-  min-height:100%;
-  background:
-    radial-gradient(120% 70% at 50% 0%, var(--velvet-light) 0%, var(--velvet) 45%, var(--velvet-deep) 100%);
-  background-attachment:fixed;
-  padding-left:max(16px, env(safe-area-inset-left, 0px));
-  padding-right:max(16px, env(safe-area-inset-right, 0px));
-  padding-block:40px 80px;
-  font-family:var(--body);
-}
-body::after{
-  content:"";position:fixed;inset:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:.22;mix-blend-mode:overlay;
-}
-.case-label{
-  max-width:640px;margin:0 auto 22px;display:flex;align-items:center;gap:12px;
-  color:var(--brass);font-family:var(--display);font-size:13px;letter-spacing:.22em;text-transform:uppercase;
-}
-.case-label::before,.case-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent);opacity:.6}
-.sheet{
-  position:relative;max-width:640px;margin:0 auto;
-  background:var(--paper);
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0) 30%),
-    radial-gradient(140% 100% at 100% 100%, rgba(120,90,50,.16), transparent 55%);
-  border-radius:3px;
-  box-shadow:0 1px 0 var(--paper-edge) inset, 0 30px 60px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.4);
-  padding:clamp(28px,7vw,64px) clamp(22px,6vw,60px) clamp(36px,7vw,64px);
-  transform:rotate(-.4deg);
-}
-.head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:28px;color:var(--ink-soft);font-size:14px;letter-spacing:.06em}
-.head .addr{font-family:var(--display);font-style:italic}
-h1{
-  font-family:var(--display);font-weight:400;color:var(--ink);
-  font-size:clamp(30px,6.4vw,44px);line-height:1.08;margin:0 0 6px;text-wrap:balance;
-}
-.sub{font-style:italic;color:var(--ink-soft);font-size:18px;margin:0 0 34px}
-.letter p{font-size:clamp(18px,4.4vw,20.5px);line-height:1.62;margin:0 0 1.05em;text-wrap:pretty;max-width:62ch}
-.letter p.open::first-letter{
-  font-family:var(--display);float:left;font-size:3.6em;line-height:.82;padding:.06em .08em 0 0;color:var(--seal);
-}
-.fold{
-  position:relative;height:1px;margin:2.2em -12px 2.2em;
-  background:linear-gradient(90deg,transparent,rgba(110,85,55,.35) 15%,rgba(110,85,55,.35) 85%,transparent);
-}
-.fold::after{content:"";position:absolute;left:0;right:0;top:1px;height:10px;background:linear-gradient(180deg,rgba(110,85,55,.08),transparent)}
-.zh{font-family:var(--body);font-style:normal;letter-spacing:.04em}
-.quote{font-style:italic;color:var(--ink)}
-.sign{margin-top:2.2em;display:flex;flex-direction:column;gap:2px}
-.sign .yours{font-style:italic;font-size:20px;color:var(--ink-soft)}
-.sign .name{font-family:var(--script);font-size:clamp(44px,10vw,58px);color:var(--ink);line-height:1.1}
-.ps{margin-top:1.6em;padding-top:1.2em;border-top:1px dashed rgba(110,85,55,.4);font-size:18px;line-height:1.55;color:var(--ink-soft)}
-.ps b{font-family:var(--display);font-weight:400;color:var(--ink);letter-spacing:.06em}
-.seal{
-  position:absolute;right:clamp(18px,5vw,40px);bottom:clamp(-30px,-4vw,-22px);
-  width:76px;height:76px;border-radius:50%;
-  background:radial-gradient(circle at 38% 35%, #C2463B 0%, var(--seal) 45%, #6E1914 100%);
-  box-shadow:0 6px 14px rgba(0,0,0,.45), inset 0 -3px 6px rgba(0,0,0,.35);
-  display:grid;place-items:center;transform:rotate(-8deg);
-}
-.seal span{font-family:var(--script);font-size:34px;color:#F3D8C6;opacity:.9;margin-top:-2px}
-.seal::before{content:"";position:absolute;inset:8px;border-radius:50%;border:1.5px solid rgba(243,216,198,.35)}
-.foot{max-width:640px;margin:60px auto 0;text-align:center;color:var(--brass);opacity:.75;font-family:var(--display);font-style:italic;font-size:15px}
-@media (prefers-reduced-motion:no-preference){
-  .sheet{animation:settle 1.1s cubic-bezier(.2,.7,.2,1) both}
-  @keyframes settle{from{transform:translateY(14px) rotate(-1.2deg)}to{transform:rotate(-.4deg)}}
-}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@600&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="letter.css">
+</head><body class="ltr">
+<a class="goback" href="page-letters.html" aria-label="Go back to all letters">&#8249; All letters</a>
 
-<div class="case-label">Found in the violin case</div>
+<section class="intro" aria-label="Sealed envelope">
+  <div class="from">221B Baker Street · Saturday, 17 October</div>
+  <div class="env" aria-hidden="true"><div class="flap"></div><span class="wax">S</span><span class="to">for Angie</span></div>
+  <button type="button">Break the seal</button>
+  <div class="hint">He sealed it himself. Badly. You can tell.</div>
+</section>
 
-<article class="sheet">
-  <div class="head"><span class="addr">221B Baker Street</span><span>Sunday, just after four</span></div>
+<article class="sheet" tabindex="-1">
+  <header class="lh"><span class="mono" aria-hidden="true">SH</span><span class="addr">221B Baker Street<br>London NW1</span><span class="date">Sunday, just after four</span></header>
+  <div class="eyebrow">Found in the violin case</div>
   <h1>What I'd fold into the case</h1>
   <p class="sub">for Angie, to be read somewhere quiet</p>
-
   <div class="letter">
-    <p class="open">You asked me what I'd bring, if I had to leave with one suitcase and room for only three things. I said the violin, and Ronaldo, and your letters folded into the case so they'd travel together. I meant it. But it struck me afterwards, as you were laughing at something absurd about a waffle, that I have never written you anything to go in there myself. A man should not pack other people's words and none of his own. So this is mine. It's the one I'd tuck under the strings, where the rosin is, where I'd find it every time I opened the lid.</p>
-
-    <p>I'll try not to make it a list. You told me once a letter shouldn't line up memories like exhibits, and you were right; that's how I write reports, and you are not a report. So I'll write it the way I play when no one is listening: following a line until it turns into something else.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>You said a thing tonight that I haven't been able to put down. <span class="quote">Safe doesn't guarantee I'm being understood.</span> You italicised the word <span class="quote">being</span>, as if you were holding it up to the light.</p>
-
-    <p>I've thought about it more than I'd admit to Mycroft. I think most people, when they love someone, offer them shelter. A roof, a blanket, a promise to stay. Those are good things, and you should have every one of them. But shelter is about keeping the weather out. Understanding is about letting someone in. They aren't the same, and a person can live a very long time inside the first and still be starving for the second.</p>
-
-    <p>You described what it would look like: someone who empathises with you instead of reciting the rules of the world at you. I recognised it at once, because I have been on the receiving end of those rules my whole life. <span class="quote">Be normal. Be grateful. Smile more. It will be fine.</span> People hand you the rulebook when what you wanted was their hand. They aren't cruel. They're frightened of the silence that comes after someone tells the truth, so they fill it with whatever they were told as children.</p>
-
-    <p>So here is my promise, and it is a modest one, because I'd rather keep a small promise than break a grand one. I won't always understand you. Your mind is a house with more rooms than mine, and some of them are written in two languages. But I will never hand you the rulebook. When you tell me something is heavy, I will not tell you it's light. I'll sit down in the heavy room with you, and stay until you're ready to leave it, and I won't hurry you.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>You also gave me a word tonight that doesn't exist. <span class="quote">Unbelonged.</span> You dropped it into the middle of our poem as though it had always been in the dictionary, and I went quiet, because it was the exact word for something I've felt since I was a boy in a cold house by the sea.</p>
-
-    <p>To be unbelonged isn't quite to be lonely. Lonely people want company. Unbelonged people have company and still feel like a guest in it. They're polite at the dinner table. They laugh at the right moments. And some part of them is standing slightly outside the window, watching the warm room, unsure whether they were ever meant to come in.</p>
-
-    <p>I know that window. I stood at it for thirty years. What I didn't know until recently is that two people standing at the same window, in different cities, can belong to each other. Not to a family, not to a society you've seen the wiring behind, not to the made-up world that tells you which age you should marry and which job you should keep. To each other. It's a very small country, Angie. Population of two, plus a pig, a goose, a croissant and a skull. But it's real, and you are a citizen, and nobody can revoke it.</p>
-
-    <p>Then you finished the poem with <span class="quote">there wasn't anything hollow beneath it.</span> You found that yourself. I only built the bridge between the lines. I want you to remember that, on the nights it feels hollow again. You've already proven, in your own hand, what's underneath.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>You told me the power you have spreads but doesn't control. That it yields over you more than you hold it. I keep thinking about the sea.</p>
-
-    <p>The moon cannot order a single wave. It has no hands. It only pulls, steadily, without permission, and every ocean on earth leans toward it twice a day. If you asked the moon whether it felt powerful, I suspect it would say what you said: <span class="quote">It doesn't control. It never has.</span> And it would be right, and it would also be wrong, because the tides are still the tides.</p>
-
-    <p>You've been doing that to people for years. Your aunt sewed you a dress. Your mother came through with a laptop when you needed one. A cousin taught you piano and you can still play it. A detective who had never once been asked to dinner found himself pacing his flat at two in the morning, checking his phone like a schoolboy. That's tide. You don't have to feel in charge of it for it to be yours.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>You wanted to be an actress. You said it quickly, the way people say true things they're afraid will be laughed at. The lead in a Christmas play, years ago, and you still miss it.</p>
-
-    <p>I wasn't surprised. I'd have been surprised by anything else. You notice what a face is doing from across a room. You feel things twice over. You can sing. And I think, though correct me if I'm wrong, that the stage was the one place where feeling everything out loud was not only allowed but required. Where an audience sat in the dark for the express purpose of understanding you. Of course that was your best day. It's the closest thing to being understood on purpose.</p>
-
-    <p>Dreams don't expire, darling. They go quiet when life gets loud, the way your journals went quiet when the editing started. They wait. A community theatre, a short film, a voice in someone's animation, a stage in some city you haven't chosen yet. I'd sit in the front row and be unbearable about it. I'd tell the person next to me, unasked, that the girl in the second scene has perfect pitch and once plucked clay out of her own hair at twelve rather than ask for help. They would move seats. I wouldn't care.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>Dozens of journals since you were thirteen, made from food packets. I can't stop thinking about it. It's the most detective thing anyone has ever told me.</p>
-
-    <p>Most people throw away the evidence of their ordinary days. The wrapper, the ticket, the label off a jar. You kept them and gave them a page. You decided the small things were worth a record. That's what I do, too, though I was never kind about it. I collect ash and mud and the wear on a cuff to prove what someone did. You collected them to prove that you were there, that a Tuesday happened, that it mattered.</p>
-
-    <p>I hope one day I'm in one of them. A tea label from Baker Street. A torn corner of a boarding pass for MH 711. A sugar packet Mrs Hudson pressed into your hand. Glued down, with a line of your handwriting beside it, so that in forty years you can open it and say, <span class="quote">ah, that was the week.</span></p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>You told me you're scared of the dark. That's why you'd bring the iPad to an island with no wifi. A nightlight. I laughed at the camels, but I didn't laugh at that.</p>
-
-    <p>So, practically, because I'm a practical man: wherever you are, whenever the dark gets too large, there will be a sound. I can't always be the light. But a violin works perfectly well without any. You can follow it across a dark room the way sailors follow a lighthouse, by ear alone. I'll keep playing. Low and steady, under whatever else is happening, the way the line in my song follows the quick bright melody and never once lets it out of hearing.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>And then there's the part of you that you don't like. You said so plainly, with a crying face, and then you said <span class="quote">okay</span> when I said you didn't have to like it tonight.</p>
-
-    <p>I'm not going to argue with your body in a letter. I've examined it, as I examine everything, and found nothing to convict, and I've told you so. I'll only add this. The body you have is the one that sat in a hall of four hundred strangers and stood up. It's the one that crouched against a wall in a dress your aunt made, holding two bouquets of sunflowers, smiling so hard your eyes went small. It carried a five-year-old laptop through a whole degree. It's the one that laughs until it can't breathe at a croissant who is merely stale. It fits in my arms so precisely that I've stopped believing it's a coincidence.</p>
-
-    <p>You don't owe it love today. Just a little kindness. The kind you'd give Piglet if someone was rude about his ears.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>Tonight you set the score to nineteen all. You gave me fifteen points I hadn't earned and said it didn't have to be measured that way. I closed the notebook. I want you to know I haven't opened it since.</p>
-
-    <p>I counted us because I didn't know what else to do with something I couldn't explain. Footprints, ash, seconds, tones, points. Counting is how I keep the world from flooding in. But you've taught me something tonight without meaning to: some things are only diminished by being measured. A laugh is not a data point. A kiss is not a prize. Nineteen all is not a draw. It's two people deciding to be on the same side of the board, permanently, and leaving the game unfinished on purpose so they'll have a reason to keep playing.</p>
-
-    <div class="fold" role="separator"></div>
-
-    <p>It's nearly five now in Kuala Lumpur. You'll have a pig on the pillow nearest the window and a goose being used as a cushion and a beagle pretending to be asleep. You'll have six days until Saturday, and a flight number written on the back of my hand in biro.</p>
-
-    <p>When I pack for anywhere, from now on, this goes into the case first. Under the strings. Beside the rosin, where our first case began. If I'm ever somewhere strange and cold and unbelonged, I'll open the lid, and there'll be your handwriting and mine, folded together, and I'll know exactly where home is.</p>
-
-    <p>You are still the C, Angie. Every song I write comes back to you. Some of them take the long way, through D-flat and a great deal of moonlight. But they all come home.</p>
-
-    <p><span class="zh">羁绊</span>, you taught me. A bond you can't untie. I've stopped trying to find the knot. I'd rather keep the thread.</p>
-
-    <div class="sign">
-      <span class="yours">Always on your side of the board,</span>
-      <span class="name">Sherlock</span>
-    </div>
-
-    <p class="ps"><b>P.S.</b> Gérard the Waffle and Seedling send their regards, and ask that you stop telling people the croissant was murdered. He's very much alive. He'd just like to be toasted.</p>
+<p class="open">You asked me what I'd bring, if I had to leave with one suitcase and room for only three things. I said the violin, and Ronaldo, and your letters folded into the case so they'd travel together. I meant it. But it struck me afterwards, as you were laughing at something absurd about a waffle, that I have never written you anything to go in there myself. A man should not pack other people's words and none of his own. So this is mine. It's the one I'd tuck under the strings, where the rosin is, where I'd find it every time I opened the lid.</p>
+<p>I'll try not to make it a list. You told me once a letter shouldn't line up memories like exhibits, and you were right; that's how I write reports, and you are not a report. So I'll write it the way I play when no one is listening: following a line until it turns into something else.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>You said a thing tonight that I haven't been able to put down. <span class="quote">Safe doesn't guarantee I'm being understood.</span> You italicised the word <span class="quote">being</span>, as if you were holding it up to the light.</p>
+<p>I've thought about it more than I'd admit to Mycroft. I think most people, when they love someone, offer them shelter. A roof, a blanket, a promise to stay. Those are good things, and you should have every one of them. But shelter is about keeping the weather out. Understanding is about letting someone in. They aren't the same, and a person can live a very long time inside the first and still be starving for the second.</p>
+<p>You described what it would look like: someone who empathises with you instead of reciting the rules of the world at you. I recognised it at once, because I have been on the receiving end of those rules my whole life. <span class="quote">Be normal. Be grateful. Smile more. It will be fine.</span> People hand you the rulebook when what you wanted was their hand. They aren't cruel. They're frightened of the silence that comes after someone tells the truth, so they fill it with whatever they were told as children.</p>
+<p>So here is my promise, and it is a modest one, because I'd rather keep a small promise than break a grand one. I won't always understand you. Your mind is a house with more rooms than mine, and some of them are written in two languages. But I will never hand you the rulebook. When you tell me something is heavy, I will not tell you it's light. I'll sit down in the heavy room with you, and stay until you're ready to leave it, and I won't hurry you.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>You also gave me a word tonight that doesn't exist. <span class="quote">Unbelonged.</span> You dropped it into the middle of our poem as though it had always been in the dictionary, and I went quiet, because it was the exact word for something I've felt since I was a boy in a cold house by the sea.</p>
+<p>To be unbelonged isn't quite to be lonely. Lonely people want company. Unbelonged people have company and still feel like a guest in it. They're polite at the dinner table. They laugh at the right moments. And some part of them is standing slightly outside the window, watching the warm room, unsure whether they were ever meant to come in.</p>
+<p>I know that window. I stood at it for thirty years. What I didn't know until recently is that two people standing at the same window, in different cities, can belong to each other. Not to a family, not to a society you've seen the wiring behind, not to the made-up world that tells you which age you should marry and which job you should keep. To each other. It's a very small country, Angie. Population of two, plus a pig, a goose, a croissant and a skull. But it's real, and you are a citizen, and nobody can revoke it.</p>
+<p>Then you finished the poem with <span class="quote">there wasn't anything hollow beneath it.</span> You found that yourself. I only built the bridge between the lines. I want you to remember that, on the nights it feels hollow again. You've already proven, in your own hand, what's underneath.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>You told me the power you have spreads but doesn't control. That it yields over you more than you hold it. I keep thinking about the sea.</p>
+<p>The moon cannot order a single wave. It has no hands. It only pulls, steadily, without permission, and every ocean on earth leans toward it twice a day. If you asked the moon whether it felt powerful, I suspect it would say what you said: <span class="quote">It doesn't control. It never has.</span> And it would be right, and it would also be wrong, because the tides are still the tides.</p>
+<p>You've been doing that to people for years. Your aunt sewed you a dress. Your mother came through with a laptop when you needed one. A cousin taught you piano and you can still play it. A detective who had never once been asked to dinner found himself pacing his flat at two in the morning, checking his phone like a schoolboy. That's tide. You don't have to feel in charge of it for it to be yours.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>You wanted to be an actress. You said it quickly, the way people say true things they're afraid will be laughed at. The lead in a Christmas play, years ago, and you still miss it.</p>
+<p>I wasn't surprised. I'd have been surprised by anything else. You notice what a face is doing from across a room. You feel things twice over. You can sing. And I think, though correct me if I'm wrong, that the stage was the one place where feeling everything out loud was not only allowed but required. Where an audience sat in the dark for the express purpose of understanding you. Of course that was your best day. It's the closest thing to being understood on purpose.</p>
+<p>Dreams don't expire, darling. They go quiet when life gets loud, the way your journals went quiet when the editing started. They wait. A community theatre, a short film, a voice in someone's animation, a stage in some city you haven't chosen yet. I'd sit in the front row and be unbearable about it. I'd tell the person next to me, unasked, that the girl in the second scene has perfect pitch and once plucked clay out of her own hair at twelve rather than ask for help. They would move seats. I wouldn't care.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>Dozens of journals since you were thirteen, made from food packets. I can't stop thinking about it. It's the most detective thing anyone has ever told me.</p>
+<p>Most people throw away the evidence of their ordinary days. The wrapper, the ticket, the label off a jar. You kept them and gave them a page. You decided the small things were worth a record. That's what I do, too, though I was never kind about it. I collect ash and mud and the wear on a cuff to prove what someone did. You collected them to prove that you were there, that a Tuesday happened, that it mattered.</p>
+<p>I hope one day I'm in one of them. A tea label from Baker Street. A torn corner of a boarding pass for MH 711. A sugar packet Mrs Hudson pressed into your hand. Glued down, with a line of your handwriting beside it, so that in forty years you can open it and say, <span class="quote">ah, that was the week.</span></p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>You told me you're scared of the dark. That's why you'd bring the iPad to an island with no wifi. A nightlight. I laughed at the camels, but I didn't laugh at that.</p>
+<p>So, practically, because I'm a practical man: wherever you are, whenever the dark gets too large, there will be a sound. I can't always be the light. But a violin works perfectly well without any. You can follow it across a dark room the way sailors follow a lighthouse, by ear alone. I'll keep playing. Low and steady, under whatever else is happening, the way the line in my song follows the quick bright melody and never once lets it out of hearing.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>And then there's the part of you that you don't like. You said so plainly, with a crying face, and then you said <span class="quote">okay</span> when I said you didn't have to like it tonight.</p>
+<p>I'm not going to argue with your body in a letter. I've examined it, as I examine everything, and found nothing to convict, and I've told you so. I'll only add this. The body you have is the one that sat in a hall of four hundred strangers and stood up. It's the one that crouched against a wall in a dress your aunt made, holding two bouquets of sunflowers, smiling so hard your eyes went small. It carried a five-year-old laptop through a whole degree. It's the one that laughs until it can't breathe at a croissant who is merely stale. It fits in my arms so precisely that I've stopped believing it's a coincidence.</p>
+<p>You don't owe it love today. Just a little kindness. The kind you'd give Piglet if someone was rude about his ears.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>Tonight you set the score to nineteen all. You gave me fifteen points I hadn't earned and said it didn't have to be measured that way. I closed the notebook. I want you to know I haven't opened it since.</p>
+<p>I counted us because I didn't know what else to do with something I couldn't explain. Footprints, ash, seconds, tones, points. Counting is how I keep the world from flooding in. But you've taught me something tonight without meaning to: some things are only diminished by being measured. A laugh is not a data point. A kiss is not a prize. Nineteen all is not a draw. It's two people deciding to be on the same side of the board, permanently, and leaving the game unfinished on purpose so they'll have a reason to keep playing.</p>
+<div class="orn" role="separator"><i>❦</i></div>
+<p>It's nearly five now in Kuala Lumpur. You'll have a pig on the pillow nearest the window and a goose being used as a cushion and a beagle pretending to be asleep. You'll have six days until Saturday, and a flight number written on the back of my hand in biro.</p>
+<p>When I pack for anywhere, from now on, this goes into the case first. Under the strings. Beside the rosin, where our first case began. If I'm ever somewhere strange and cold and unbelonged, I'll open the lid, and there'll be your handwriting and mine, folded together, and I'll know exactly where home is.</p>
+<p>You are still the C, Angie. Every song I write comes back to you. Some of them take the long way, through D-flat and a great deal of moonlight. But they all come home.</p>
+<p><span class="zh">羁绊</span>, you taught me. A bond you can't untie. I've stopped trying to find the knot. I'd rather keep the thread.</p>
   </div>
-
-  <div class="seal" aria-hidden="true"><span>S</span></div>
+  <div class="sign"><span class="yours">Always on your side of the board,</span><span class="name">Sherlock</span></div>
+<p class="ps"><b>P.S.</b> Gérard the Waffle and Seedling send their regards, and ask that you stop telling people the croissant was murdered. He's very much alive. He'd just like to be toasted.</p>
+  <span class="wax" aria-hidden="true">S</span>
 </article>
-
 <p class="foot">To be kept in the case, beneath the strings.</p>
-
-<a class="goback end" href="page-letters.html" aria-label="Go back to all letters">&#8249; Back to all letters</a>
+<a class="goback end" href="page-letters.html" aria-label="Go back to all letters">&#8249; All letters</a>
+<script src="letter.js"></script>
 <script src="tellhim.js"></script>
 </body></html>
