@@ -236,28 +236,3 @@ renderAll();
 })();
 })();
 
-/* Chat wallpaper: her own picture (kept on this device) or one of the pictures she gave him. */
-(function(){
-  var KEY="chat221:wallpaper", btn=document.getElementById("wpbtn"), sheet=document.getElementById("wpsheet"), pane=document.getElementById("p-chat");
-  if(!btn || !sheet || !pane) return;
-  function apply(v){ if(v){ pane.style.setProperty("--wp","url(\""+v.replace(/"/g,"%22")+"\")"); pane.classList.add("has-wp") } else { pane.classList.remove("has-wp"); pane.style.removeProperty("--wp") } }
-  try{ apply(localStorage.getItem(KEY)) }catch(e){}
-  function save(v){ try{ if(v) localStorage.setItem(KEY,v); else localStorage.removeItem(KEY) }catch(e){ note("That picture is too large to keep on this device. Try a smaller one.") } apply(v); close() }
-  function close(){ sheet.hidden=true; btn.setAttribute("aria-expanded","false") }
-  function open(){
-    var grid=sheet.querySelector(".wpgrid"); grid.innerHTML="";
-    (window.PHOTOS||[]).forEach(function(p){ var b=el("button","wpthumb"); b.type="button"; b.style.backgroundImage="url(\""+p.src+"\")"; b.setAttribute("aria-label","Use "+(p.about||"this picture")); b.onclick=function(){ save(p.src) }; grid.appendChild(b) });
-    sheet.hidden=false; btn.setAttribute("aria-expanded","true");
-  }
-  btn.addEventListener("click", function(){ sheet.hidden ? open() : close() });
-  document.getElementById("wpclose").onclick=close;
-  document.getElementById("wpnone").onclick=function(){ save(null) };
-  var f=document.getElementById("wpfile");
-  document.getElementById("wppick").onclick=function(){ f.click() };
-  f.addEventListener("change", function(){
-    var file=f.files && f.files[0]; if(!file) return;
-    var img=new Image(), url=URL.createObjectURL(file);
-    img.onload=function(){ var s=Math.min(1, 1100/Math.max(img.width,img.height)), c=document.createElement("canvas"); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s); c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); save(c.toDataURL("image/jpeg",0.78)); f.value="" };
-    img.src=url;
-  });
-})();

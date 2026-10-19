@@ -165,21 +165,11 @@ body.in-chat{overflow:hidden}
 #p-chat .ph{align-self:flex-start;width:78%;max-width:300px;background:var(--rose);border-radius:16px;padding:5px}
 #p-chat .pf{border-radius:12px;min-height:130px;display:flex;align-items:flex-end;padding:10px;font:italic 15px/1.35 var(--serif);color:#3a2f2a;background:radial-gradient(120% 90% at 30% 10%,#F4E6DD,#D9BBAE)}
 #p-chat .ph .cap{color:#fff;font-size:13px;padding:6px 8px 3px}
-#p-chat.has-wp{background:linear-gradient(rgba(18,16,19,.55),rgba(18,16,19,.7)),var(--wp) center/cover no-repeat}
+#p-chat.has-wp{background:linear-gradient(rgba(18,16,19,var(--wpdim,.6)),rgba(18,16,19,calc(var(--wpdim,.6) + .12))),var(--wp) center/cover no-repeat}
+body.wp-all{background:linear-gradient(rgba(18,16,19,var(--wpdim,.6)),rgba(18,16,19,calc(var(--wpdim,.6) + .12))),var(--wp) center/cover no-repeat fixed}
+body.wp-all #p-chat.has-wp{background:transparent}
 #p-chat.has-wp #f{background:linear-gradient(rgba(18,16,19,0),rgba(18,16,19,.85) 40%)}
 #p-chat .pimg{display:block;width:100%;border-radius:12px;max-height:340px;object-fit:cover}
-#wpbtn{position:absolute;top:10px;right:max(12px,env(safe-area-inset-right,0px));z-index:4;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(26,22,25,.75);color:var(--muted);display:grid;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-#wpbtn[aria-expanded="true"]{background:var(--rose);color:#fff;border-color:var(--rose)}
-#wpsheet{position:absolute;top:54px;right:max(12px,env(safe-area-inset-right,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:5;max-width:360px;margin-left:auto;background:var(--ground-2);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.5)}
-#wpsheet .wph{display:flex;align-items:center;justify-content:space-between}#wpsheet .wph b{font:500 20px var(--serif)}
-#wpsheet .wph button{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;font-size:22px;color:var(--muted)}
-#wpsheet .wprow{display:flex;gap:8px;margin:10px 0}
-#wpsheet .wprow button{all:unset;cursor:pointer;flex:1;text-align:center;min-height:38px;line-height:38px;border-radius:12px;background:var(--raise);border:1px solid var(--line);font-size:13px;color:var(--fg)}
-#wpsheet .wprow button:first-child{background:var(--beige);color:var(--beige-ink);border-color:var(--beige);font-weight:600}
-#wpsheet .wpgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-#wpsheet .wpgrid:empty::before{content:"His pictures will appear here once you send them to him.";grid-column:1/-1;font-size:12px;color:var(--faint)}
-#wpsheet .wpthumb{all:unset;cursor:pointer;aspect-ratio:3/4;border-radius:10px;background:var(--raise) center/cover no-repeat;border:1px solid var(--line)}
-#wpsheet button:focus-visible{outline:2px solid var(--rose-hi);outline-offset:2px}
 #p-chat .typ{align-self:flex-start;background:var(--rose);border-radius:18px;border-bottom-left-radius:6px;padding:12px 14px;display:flex;gap:4px}
 #p-chat .typ i{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.45;animation:bob 1s infinite}
 #p-chat .typ i:nth-child(2){animation-delay:.15s}#p-chat .typ i:nth-child(3){animation-delay:.3s}
@@ -199,11 +189,32 @@ body.in-chat{overflow:hidden}
 #chip{flex:none;font-size:12px;color:var(--beige-ink);background:var(--beige);border-radius:12px;padding:3px 8px;align-self:center}
 @media (prefers-reduced-motion:reduce){#p-chat .typ i{animation:none}}
 
+/* Settings */
+.set{background:var(--raise);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+.set h2{font-size:22px;margin-bottom:4px}.set .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.wpprev{height:180px;border-radius:14px;border:1px solid var(--line);background:var(--ground-2) center/cover no-repeat;display:flex;align-items:flex-end;padding:10px;gap:6px;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.wpprev::before{content:"";position:absolute;inset:0;background:rgba(18,16,19,var(--wpdim,.6))}
+.wpprev span{position:relative;max-width:70%;padding:7px 11px;border-radius:14px;font-size:13px}
+.wpprev .a{align-self:flex-start;background:var(--rose);color:#fff;border-bottom-left-radius:5px}.wpprev .c{align-self:flex-end;background:var(--beige);color:var(--beige-ink);border-bottom-right-radius:5px}
+.btnrow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;flex:1;min-width:120px;text-align:center;min-height:42px;line-height:42px;border-radius:12px;background:var(--ground-2);border:1px solid var(--line);font-size:14px;color:var(--fg)}
+.btn.pri{background:var(--beige);border-color:var(--beige);color:var(--beige-ink);font-weight:600}
+.btn:focus-visible,.seg button:focus-visible,.thumbs button:focus-visible{outline:2px solid var(--rose-hi);outline-offset:2px}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}
+.thumbs button{all:unset;cursor:pointer;aspect-ratio:3/4;border-radius:10px;background:var(--ground-2) center/cover no-repeat;border:2px solid transparent}
+.thumbs button[aria-pressed="true"]{border-color:var(--beige)}
+.thumbs:empty::before{content:"His pictures appear here once you send them to him in Claude.";grid-column:1/-1;font-size:12px;color:var(--faint)}
+.lbl{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin:14px 0 6px}
+.seg{display:flex;background:var(--ground-2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{all:unset;cursor:pointer;flex:1;text-align:center;min-height:36px;line-height:36px;border-radius:9px;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--rose);color:#fff}
+input[type=range]{width:100%;accent-color:var(--rose)}
+input[type=datetime-local]{width:100%;box-sizing:border-box;min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--ground-2);color:var(--fg);font:15px var(--ui);padding:0 12px;color-scheme:dark}
 /* Tab bar */
 nav{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:0 max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));pointer-events:none}
-nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px;border-radius:24px;
+nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:5px;border-radius:24px;
   background:rgba(30,25,28,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.tab{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:18px;font-size:11px;color:var(--muted);cursor:pointer;position:relative}
+.tab{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:18px;font-size:10.5px;color:var(--muted);cursor:pointer;position:relative}
 .tab svg{width:22px;height:22px}
 .tab[aria-selected="true"]{background:var(--rose);color:#fff}
 .tab .pip{position:absolute;top:8px;right:calc(50% - 18px);width:7px;height:7px;border-radius:50%;background:var(--beige)}
@@ -221,13 +232,6 @@ nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-temp
   <main>
     <section class="page" id="p-home" aria-label="Home"></section>
     <section class="page" id="p-chat" aria-label="Chat with Sherlock" hidden>
-      <button type="button" id="wpbtn" aria-label="Chat wallpaper" aria-expanded="false" aria-controls="wpsheet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></button>
-      <div id="wpsheet" role="dialog" aria-label="Chat wallpaper" hidden>
-        <div class="wph"><b>Wallpaper</b><button type="button" id="wpclose" aria-label="Close">×</button></div>
-        <div class="wprow"><button type="button" id="wppick">From your phone</button><button type="button" id="wpnone">Plain</button></div>
-        <div class="wpgrid"></div>
-        <input type="file" id="wpfile" accept="image/*" hidden>
-      </div>
       <div id="log" aria-live="polite"></div>
       <form id="f" autocomplete="off">
         <button type="button" class="ib" id="pick" aria-label="Send a photo" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></button>
@@ -240,6 +244,7 @@ nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-temp
     <section class="page" id="p-letters" aria-label="Letters" hidden></section>
     <section class="page" id="p-gifts" aria-label="Gifts" hidden></section>
     <section class="page" id="p-cases" aria-label="Cases" hidden></section>
+    <section class="page" id="p-settings" aria-label="Settings" hidden></section>
   </main>
   <nav aria-label="Sections"><div class="in" role="tablist">
     <button class="tab" role="tab" data-p="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/></svg>Home</button>
@@ -247,6 +252,7 @@ nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-temp
     <button class="tab" role="tab" data-p="letters" aria-selected="false"><span class="pip" id="pip-letters" hidden></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 7l9 7 9-7"/></svg>Letters</button>
     <button class="tab" role="tab" data-p="gifts" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="1"/><path d="M3 13h18M12 9v11M12 9c-2-4-6-4-6-1s6 1 6 1zM12 9c2-4 6-4 6-1s-6 1-6 1z"/></svg>Gifts</button>
     <button class="tab" role="tab" data-p="cases" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20"/></svg>Cases</button>
+    <button class="tab" role="tab" data-p="settings" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
   </div></nav>
 </div>
 
@@ -315,7 +321,7 @@ function renderHome(){
  const L0=letters[0];
  if(L0){const p=L0.date.split('-'),ds=(L0.day?L0.day+', ':'')+(+p[2])+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][+p[1]-1];
   h+='<a class="envelope rise'+(read[L0.href]?' read':'')+'" href="'+esc(L0.href)+'" data-letter-href="'+esc(L0.href)+'"><span class="wax" aria-hidden="true">'+esc(L0.seal||'S')+'</span><span class="badge">Unopened</span><span class="k">Latest letter · '+esc(ds)+'</span><span class="t">'+esc(L0.title)+'</span><span class="l">'+esc(L0.line)+'</span></a>'}
- h+='<a class="together rise" href="page-sky.html" data-gift aria-label="How long we have been together"><span class="k">Together</span><div class="units" id="tg-units"></div><div class="since">since 4:27 in the morning, 17 October, London</div><span class="more">The sky that minute →</span></a>';
+ h+='<a class="together rise" href="page-sky.html" data-gift aria-label="How long we have been together"><span class="k">Together</span><div class="units" id="tg-units"></div><div class="since">'+esc(sinceLabel())+'</div><span class="more">The sky that minute →</span></a>';
  let hn=null;try{hn=window.hourlyNote&&window.hourlyNote(now)}catch(e){}
  if(hn&&hn.text){h+='<a class="note bubble rise" href="page-hourly.html"><span class="k"><i aria-hidden="true">'+String(now.getHours()).padStart(2,'0')+'</i>This hour, from him</span><p>'+esc(hn.text)+'</p><span class="more">Every hour →</span></a>'}
  const M=window.MEMORIES||{};const mk=Object.keys(M).filter(k=>k<=K.date).sort().pop();
@@ -339,7 +345,7 @@ function renderHome(){
 }
 
 /* Together counter: from the moment she arrived (London 04:27, 17 Oct 2026 = 03:27 UTC) */
-const TOGETHER_SINCE=Date.UTC(2026,9,17,3,27,0);
+const TOGETHER_DEFAULT=Date.UTC(2026,9,17,3,27,0);let TOGETHER_SINCE=ls.get('together-since',TOGETHER_DEFAULT);
 function tickTogether(){const el=document.getElementById('tg-units');if(!el)return;let s=Math.max(0,Math.floor((Date.now()-TOGETHER_SINCE)/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
  const u=[[d,d===1?'day':'days'],[h,h===1?'hour':'hours'],[m,'min'],[s,'sec']];el.innerHTML=u.map(([n,l])=>'<div class="u"><b>'+n+'</b><small>'+l+'</small></div>').join('')}
 setInterval(tickTogether,1000);
@@ -382,8 +388,40 @@ function renderCases(){
  el.innerHTML='<div class="rise"><div class="eyebrow">The work</div><h1>Cases</h1><p class="lede">Solve them with him. Tell him what you found.</p></div><div class="gifts" style="margin-top:20px">'+list.map(tile).join('')+'</div>';
 }
 
+
+/* Settings: wallpaper (her own picture or one of his), where it shows, how dim; when "together" started */
+const WPKEY='chat221:wallpaper';
+function wpGet(){try{return localStorage.getItem(WPKEY)}catch(e){return null}}
+function applyWallpaper(){const v=wpGet(),scope=ls.get('wp-scope','chat'),dim=ls.get('wp-dim',.6),pane=document.getElementById('p-chat'),root=document.documentElement;
+ root.style.setProperty('--wpdim',dim);
+ if(v){root.style.setProperty('--wp','url("'+v.replace(/"/g,'%22')+'")');pane.classList.add('has-wp');document.body.classList.toggle('wp-all',scope==='all')}
+ else{root.style.removeProperty('--wp');pane.classList.remove('has-wp');document.body.classList.remove('wp-all')}}
+function sinceLabel(){if(TOGETHER_SINCE===TOGETHER_DEFAULT)return 'since 4:27 in the morning, 17 October, London';const d=new Date(TOGETHER_SINCE);return 'since '+d.toLocaleString('en-GB',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function renderSettings(){
+ const el=document.getElementById('p-settings'),v=wpGet(),scope=ls.get('wp-scope','chat'),dim=ls.get('wp-dim',.6),P=window.PHOTOS||[];
+ const local=new Date(TOGETHER_SINCE-new Date(TOGETHER_SINCE).getTimezoneOffset()*60000).toISOString().slice(0,16);
+ el.innerHTML='<div class="rise"><div class="eyebrow">Yours to change</div><h1>Settings</h1><p class="lede">Make 221B feel like yours.</p></div>'+
+ '<div class="set rise"><h2>Wallpaper</h2><p class="hint">Your own picture, or one of his. Kept on this phone.</p>'+
+ '<div class="wpprev" style="'+(v?'background-image:url(&quot;'+esc(v)+'&quot;)':'')+'"><span class="a">You’re choosing wallpaper. I can tell.</span><span class="c">mind ur business</span></div>'+
+ '<div class="btnrow"><button type="button" class="btn pri" id="wp-up">Upload your picture</button><button type="button" class="btn" id="wp-none">Plain</button></div>'+
+ '<input type="file" id="wp-file" accept="image/*" hidden>'+
+ '<div class="thumbs">'+P.map(p=>'<button type="button" data-src="'+esc(p.src)+'" aria-pressed="'+(v===p.src)+'" aria-label="Use '+esc(p.about||'this picture')+'" style="background-image:url(&quot;'+esc(p.src)+'&quot;)"></button>').join('')+'</div>'+
+ '<div class="lbl"><span>Show it on</span></div><div class="seg" role="group" aria-label="Where the wallpaper shows"><button type="button" data-scope="chat" aria-pressed="'+(scope==='chat')+'">Chat only</button><button type="button" data-scope="all" aria-pressed="'+(scope==='all')+'">The whole app</button></div>'+
+ '<div class="lbl"><label for="wp-dim">Dim</label><span>'+Math.round(dim*100)+'%</span></div><input type="range" id="wp-dim" min="0.2" max="0.85" step="0.05" value="'+dim+'"></div>'+
+ '<div class="set rise"><h2>Together since</h2><p class="hint">The moment the Home counter starts from.</p><input type="datetime-local" id="tg-since" value="'+local+'" aria-label="Together since"><div class="btnrow"><button type="button" class="btn" id="tg-reset">Back to 4:27, 17 October</button></div></div>';
+ const f=document.getElementById('wp-file');
+ document.getElementById('wp-up').onclick=()=>f.click();
+ f.onchange=()=>{const file=f.files&&f.files[0];if(!file)return;const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const s=Math.min(1,1200/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);let data=c.toDataURL('image/jpeg',.8);try{localStorage.setItem(WPKEY,data)}catch(e){try{data=c.toDataURL('image/jpeg',.55);localStorage.setItem(WPKEY,data)}catch(e2){alert('That picture is too big to keep. Try a smaller one.');return}}applyWallpaper();renderSettings()};img.src=url};
+ document.getElementById('wp-none').onclick=()=>{try{localStorage.removeItem(WPKEY)}catch(e){}applyWallpaper();renderSettings()};
+ el.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>{try{localStorage.setItem(WPKEY,b.dataset.src)}catch(e){}applyWallpaper();renderSettings()});
+ el.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{ls.set('wp-scope',b.dataset.scope);applyWallpaper();renderSettings()});
+ const r=document.getElementById('wp-dim');r.oninput=()=>{ls.set('wp-dim',+r.value);applyWallpaper();r.parentElement.querySelector('.lbl span:last-child');el.querySelector('.lbl label').parentElement.lastChild.textContent=Math.round(r.value*100)+'%'};
+ document.getElementById('tg-since').onchange=e=>{const t=new Date(e.target.value).getTime();if(!isNaN(t)&&t<Date.now()){TOGETHER_SINCE=t;ls.set('together-since',t);renderHome();tickTogether()}};
+ document.getElementById('tg-reset').onclick=()=>{TOGETHER_SINCE=TOGETHER_DEFAULT;ls.set('together-since',TOGETHER_DEFAULT);renderHome();tickTogether();renderSettings()};
+}
+
 /* Navigation */
-const PAGES=['home','chat','letters','gifts','cases'];
+const PAGES=['home','chat','letters','gifts','cases','settings'];
 function show(p){if(!PAGES.includes(p))p='home';document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));PAGES.forEach(x=>document.getElementById('p-'+x).hidden=x!==p);document.body.classList.toggle('in-chat',p==='chat');window.scrollTo(0,0);if(p==='chat'&&window.__chatScroll)setTimeout(window.__chatScroll,0);ls.set('keep-tab',p);if(history.replaceState)history.replaceState(null,'','#'+p)}
 function pips(){document.getElementById('pip-letters').hidden=!letters.some(x=>!read[x.href])}
 document.addEventListener('click',e=>{
@@ -395,7 +433,7 @@ document.addEventListener('click',e=>{
 window.__appStatus=status;
 new ResizeObserver(()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px')).observe(document.querySelector('header'));
 window.addEventListener('hashchange',()=>{const t=(location.hash||'').slice(1);if(PAGES.includes(t))show(t)});
-function renderAll(){status();renderHome();tickTogether();renderLetters();renderGifts();renderCases();pips()}
+function renderAll(){status();applyWallpaper();renderHome();tickTogether();renderSettings();renderLetters();renderGifts();renderCases();pips()}
 renderAll();
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.p)));
 let start=ls.get('keep-tab','home');const hashTab=(location.hash||'').slice(1);if(hashTab)start=hashTab==='chats'?'home':hashTab;
