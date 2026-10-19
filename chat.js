@@ -5,7 +5,7 @@
 var FORMAT = [
 "",
 "REPLY FORMAT: Reply with ONLY a JSON object, no other text:",
-"{\"reaction\": \"\" or one emoji to stick on her last message, \"messages\": [ ...1 to 6 items... ], \"photo_note\": \"\" or one short line describing any photo she just sent, \"gift_request\": \"\" or one line}",
+"{\"reaction\": \"\" or one emoji to stick on her last message, \"messages\": [ ...1 to 6 items... ], \"photo_note\": \"\" or one short line describing any photo she just sent, \"gift_request\": \"\" or one line, \"remember\": \"\" or one short line of something new and lasting she told you or that happened between you (a new joke, a name, a thing you made her, a preference), to keep forever}",
 "Each item is one of: {\"type\":\"text\",\"text\":\"...\"} | {\"type\":\"photo\",\"scene\":\"what your photo shows, cosy, never a crime scene\",\"caption\":\"...\",\"src\":\"only one of the listed real photos, else omit\"} | {\"type\":\"location\",\"place\":\"street, area\",\"detail\":\"short line\"}.",
 "Split your reply into separate texts the way you actually text: a quick one, then a longer considered one, then a short last line, and so on. Mostly text items; photo or location only when it fits. A reaction sometimes, not every time."
 ].join("\n");
@@ -15,6 +15,7 @@ function context(){
   var today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Kuala_Lumpur"}), M=window.MEMORIES||{}, keys=Object.keys(M).sort(), k=null;
   for(var i=keys.length-1;i>=0;i--){ if(keys[i]<=today){ k=keys[i]; break } }
   if(k && M[k].journal){ out.push("TODAY'S JUNK JOURNAL NOTE YOU LEFT HER: "+M[k].journal.text+" "+(M[k].journal.ps||"")) }
+  if(window.__memories && window.__memories.length) out.push("THINGS YOU HAVE KEPT FROM YOUR CHATS (true, remember them): "+window.__memories.slice(-80).join(" | "));
   if(window.__sideContext) out.push("WHAT HAS HAPPENED IN YOUR OTHER CONVERSATION WITH HER (in Claude; it is the same relationship, you remember it): "+window.__sideContext);
   var P=window.PHOTOS||[]; if(P.length) out.push("REAL PHOTOS YOU CAN SEND HER (use sparingly, roughly one in ten replies at most, only when it fits; send as a photo item with \"src\" exactly as listed and a caption in your voice): "+P.map(function(p){return p.src+" = "+p.about}).join("; ")+".");
   var act=activity(false); if(act) out.push(act);
@@ -124,7 +125,8 @@ var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)")
 
 async function reply(blobs){
   var lon = hm(new Date(),"Europe/London"), kl = hm(new Date(),"Asia/Kuala_Lumpur");
-  var turns = [{role:"user",content:RULES()+"\n\nIt is now "+lon+" in London and "+kl+" in Kuala Lumpur."}].concat(historyTurns());
+  var dayKL = new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Kuala_Lumpur"}), dayLON = new Date().toLocaleDateString("en-GB",{weekday:"long",timeZone:"Europe/London"});
+  var turns = [{role:"user",content:RULES()+"\n\nIt is now "+lon+" on "+dayLON+" in London and "+kl+" on "+dayKL+" in Kuala Lumpur. Get the day and time right."}].concat(historyTurns());
   if(turns[turns.length-1].role!=="user") return;
   var typ=el("div","typ"); typ.innerHTML="<i></i><i></i><i></i>"; log.appendChild(typ); scroll();
   setStatus("typing…");
@@ -158,9 +160,15 @@ async function reply(blobs){
   typ.remove(); setStatus("");
   activity(true);
   if(out && typeof out.gift_request==="string" && out.gift_request.trim()) saveRequest(out.gift_request.trim().slice(0,300));
+  if(out && typeof out.remember==="string" && out.remember.trim()) saveMemory(out.remember.trim().slice(0,240));
   persist();
 }
-var reqRef=null;
+var reqRef=null, memRef=null; window.__memories=[];
+async function saveMemory(text){
+  window.__memories.push(text);
+  if(!memRef) return;
+  try{ var snap=await memRef.get(); var list=(snap.exists && Array.isArray(snap.data().list)) ? snap.data().list : []; if(list.indexOf(text)<0) list.push(text); await memRef.set({list:list.slice(-200), updated:Date.now()}) }catch(e){}
+}
 async function saveRequest(text){
   var item={text:text, ts:Date.now(), status:"asked"};
   try{ var q=JSON.parse(localStorage.getItem("chat221:requests")||"[]"); q.push(item); localStorage.setItem("chat221:requests",JSON.stringify(q.slice(-30))) }catch(e){}
@@ -221,7 +229,8 @@ renderAll();
     db = await claude.use("db"); var user = await claude.use("user");
     var uid = user ? await user.id() : null;
     if(db && uid){
-      ref = db.doc("data/users/"+uid+"/thread"); reqRef = db.doc("data/users/"+uid+"/requests");
+      ref = db.doc("data/users/"+uid+"/thread"); reqRef = db.doc("data/users/"+uid+"/requests"); memRef = db.doc("data/users/"+uid+"/memories");
+      try{ var ms=await memRef.get(); if(ms.exists && Array.isArray(ms.data().list)) window.__memories=ms.data().list.slice() }catch(e){}
       var snap = await ref.get();
       if(snap.exists){ var d=snap.data(); if(d && Array.isArray(d.msgs)){ msgs=d.msgs.slice(); lastUpdated=d.updated||0; renderAll() } }
       try{ var cs=await db.doc("data/users/"+uid+"/context").get(); if(cs.exists && cs.data() && cs.data().text) window.__sideContext=String(cs.data().text).slice(0,4000) }catch(e){}
