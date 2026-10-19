@@ -13,6 +13,8 @@
     st.textContent = '#tochat221{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));z-index:2147483002;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 13px 0 10px;border-radius:18px;background:#8E5F68;color:#fff;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.35)}#tochat221:focus-visible{outline:2px solid #E9D2C7;outline-offset:2px}#tochat221 i{font-style:normal;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font:500 12px Georgia,serif}'
       + '#tellhim-send{background:#8E5F68!important;border-color:#8E5F68!important;color:#fff!important}';
     document.head.appendChild(st);
+    var links = document.querySelectorAll('[data-chatlink]');
+    if (links.length) { for (var i = 0; i < links.length; i++) { links[i].href = root; links[i].removeAttribute('target'); } return; }
     var a = document.createElement('a'); a.id = 'tochat221'; a.href = root; a.setAttribute('aria-label', 'Back to the chat with Sherlock');
     a.innerHTML = '<i aria-hidden="true">S</i>Text him';
     document.body.appendChild(a);
