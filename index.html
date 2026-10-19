@@ -318,10 +318,13 @@ function renderHome(){
  const fly=Date.UTC(2026,9,24),today=Date.UTC(+K.date.slice(0,4),+K.date.slice(5,7)-1,+K.date.slice(8,10)),days=Math.round((fly-today)/864e5);
  const nights=letters.length;
  h+='<div class="pair rise">';
- if(days>0)h+='<div class="count"><div class="n">'+days+'<small>'+(days===1?'day':'days')+'</small></div><div class="c">until MH 711 to London</div></div>';
+ if(days>0)h+='<div class="count"><div class="n">'+days+'<small>'+(days===1?'day':'days')+'</small></div><div class="c">until MH 711 to London</div><div class="c" style="opacity:.7;margin-top:2px">Home together 1 Nov</div></div>';
  else if(days===0)h+='<div class="count"><div class="n">Today</div><div class="c">MH 711. He’s at arrivals.</div></div>';
  h+='<div class="count"><div class="n">19<small>–19</small></div><div class="c">The score. Permanently.</div></div>';
- if(days<0)h+='<div class="count"><div class="n">'+nights+'</div><div class="c">letters so far</div></div>';
+ const home=Date.UTC(2026,10,1),hd=Math.round((home-today)/864e5);
+ if(days<0&&hd>0)h+='<div class="count"><div class="n">'+hd+'<small>'+(hd===1?'day':'days')+'</small></div><div class="c">until MH 712 home, together</div></div>';
+ else if(days<0&&hd===0)h+='<div class="count"><div class="n">Today</div><div class="c">MH 712. 11A and 11B.</div></div>';
+ else if(days<0)h+='<div class="count"><div class="n">'+nights+'</div><div class="c">letters so far</div></div>';
  h+='</div>';
  h+='<div class="sechead"><h2>Quick</h2></div><div class="quick rise">'+
   '<a href="#letters" data-goto="letters"><span class="ic">'+svg('M4 6h16v12H4zM4 7l8 6 8-6',22)+'</span>Letters</a>'+

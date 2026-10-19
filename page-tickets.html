@@ -276,7 +276,7 @@ button{font:inherit;color:inherit}
     <svg class="emb" viewBox="0 0 60 60" fill="none" stroke="#c99c5a" stroke-width="1.2"><circle cx="30" cy="30" r="27"/><circle cx="30" cy="30" r="23" stroke-dasharray="1.5 3"/><text x="30" y="36" text-anchor="middle" font-family="Cormorant SC,serif" font-size="17" fill="#c99c5a" stroke="none">A·S</text></svg>
   </div>
   <div class="intro">
-    <p>Most people keep stubs after the fact. I'd rather print them first and make the evidence come true. Thirteen, starting with your flight. Tear one off when we've been.</p>
+    <p>Most people keep stubs after the fact. I'd rather print them first and make the evidence come true. Fourteen now, starting with your flight and ending with ours. Tear one off when we've been.</p>
     <p class="sig">S.</p>
   </div>
   <div class="how"><span><b>Tap</b> to turn over</span><span><b>Drag the stub</b> to tear</span></div>
@@ -356,7 +356,7 @@ function barcode(){ var x=0,s='<svg class="bar" viewBox="0 0 100 44" preserveAsp
   while(x<100){ var w=r()<.5?1:(r()<.6?2:3); s+='<rect x="'+x+'" y="0" width="'+w*.7+'" height="44"/>'; x+=w*.7+(r()<.5?1:1.8); }
   return s+'</svg>'; }
 
-/* ---------- the thirteen ---------- */
+/* ---------- the tickets ---------- */
 var T=[
  {id:'mh711',d:'board',cap:'Flight to you',pk:'#F7F4EC',ink:'#1b2235',short:'MH 711',
   body:'<div class="band"><span>BOARDING PASS</span><span>MH 711</span></div><div class="route"><div><big>KUL</big><small>DEPARTS</small></div>'+SV.plane+'<div style="text-align:right"><big>LHR</big><small>LONDON HEATHROW</small></div></div><div class="grid"><div><span class="lbl">Date</span>24 OCT</div><div><span class="lbl">Seat</span>11A</div><div><span class="lbl">Gate</span>C21</div><div><span class="lbl">Group</span>1</div></div><div class="pax">ANGIE / MS &nbsp;·&nbsp; PIGLET (CABIN)</div>',
@@ -422,7 +422,12 @@ var T=[
   body:'<div class="t1"><span>ST BART\'S HOSPITAL</span><span>FORM 221</span></div><div class="t2">Canteen voucher</div><div class="t3">One (1) dinner. Upstairs. Nowhere near the morgue.<br>Issued in apology for three weeks of silence.</div><div class="owed">OWED</div><div class="row">Signed: S. Holmes</div>',
   stub:'<div class="v">VOUCHER<b>Nº 1</b>DINNER</div>',
   note:'The one I owe you. Terrible coffee, worse chips, and me explaining that it was never a rejection. You thought so for three weeks. I\'ll spend a great deal longer making up for it.',
-  cond:'Redeemable any evening. Interest accrues.'}
+  cond:'Redeemable any evening. Interest accrues.'},
+ {id:'mh712',d:'board',cap:'Flight home, together',pk:'#F7F4EC',ink:'#1b2235',short:'MH 712',
+  body:'<div class="band"><span>BOARDING PASS</span><span>MH 712</span></div><div class="route"><div><big>LHR</big><small>LONDON HEATHROW</small></div>'+SV.plane+'<div style="text-align:right"><big>KUL</big><small>KUALA LUMPUR</small></div></div><div class="grid"><div><span class="lbl">Date</span>01 NOV</div><div><span class="lbl">Seats</span>11A·B</div><div><span class="lbl">Gate</span>B32</div><div><span class="lbl">Group</span>1</div></div><div class="pax">ANGIE / MS &nbsp;·&nbsp; HOLMES / MR</div>',
+  stub:'<div class="band"><span>MH 712</span></div><div class="mini">LHR→KUL<br><b>11A·B</b><br>01 NOV</div>'+barcode(),
+  note:'You have the window. I have the aisle and your hand. You order for me when we land, bubur cha cha first, and you may laugh at me in the heat as often as you like. Laughing with me counts double.',
+  cond:'One detective in tow. Hand luggage: one violin, no skull.'}
 ];
 
 var album=document.getElementById('album'), piecesEl=document.getElementById('pieces');
@@ -441,7 +446,7 @@ T.forEach(function(t,i){
   slot.innerHTML='<span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>'+
    '<div class="tk d-'+t.d+'"><div class="flip">'+
      '<div class="face front"><div class="body tex" role="button" tabindex="0" aria-label="Turn over: '+t.cap+'">'+t.body+'</div><div class="perf"><i></i><b></b><span class="crack"></span></div><div class="stub tex hint" aria-label="Drag to tear the stub">'+t.stub+'</div></div>'+
-     '<div class="face back"><div class="bstub"><b>CONDITIONS</b>'+t.cond+'<br><br>Nº '+String(i+1).padStart(2,'0')+'/13</div><div class="bnote" role="button" tabindex="0" aria-label="Turn back"><p>'+t.note+'</p><span class="kept"></span><span class="s">S.</span></div></div>'+
+     '<div class="face back"><div class="bstub"><b>CONDITIONS</b>'+t.cond+'<br><br>Nº '+String(i+1).padStart(2,'0')+'/'+T.length+'</div><div class="bnote" role="button" tabindex="0" aria-label="Turn back"><p>'+t.note+'</p><span class="kept"></span><span class="s">S.</span></div></div>'+
    '</div></div><div class="cap"><span>Nº '+String(i+1).padStart(2,'0')+' · '+t.cap+'</span><em class="st">not yet</em></div>';
   album.appendChild(slot);
   t.slot=slot; t.tk=slot.querySelector('.tk');
@@ -489,7 +494,7 @@ function markTorn(t,anim){
   t.slot.querySelector('.st').textContent='kept · '+fmt(state[t.id]);
   t.slot.querySelector('.kept').textContent='KEPT '+fmt(state[t.id]).toUpperCase();
   renderPocket(anim?t.id:null);
-  if(anim) toast(Object.keys(state).length===T.length?'All thirteen. Right. I\'ll print more.':'Evidence. Into the pocket it goes.');
+  if(anim) toast(Object.keys(state).length===T.length?'All of them. Right. I\'ll print more.':'Evidence. Into the pocket it goes.');
 }
 function renderPocket(fresh){
   piecesEl.innerHTML='';
@@ -501,7 +506,7 @@ function renderPocket(fresh){
     if(t.id!==fresh) p.style.animation='none';
     p.textContent=t.short; piecesEl.appendChild(p); });
   document.getElementById('empty').hidden=n>0;
-  document.getElementById('count').textContent=n+' of 13 kept';
+  document.getElementById('count').textContent=n+' of '+T.length+' kept';
   document.getElementById('reset').hidden=n===0;
 }
 renderPocket(null);
