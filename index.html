@@ -26,6 +26,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--ground);color:var(--fg)}
+/* the artifact host pads :root for the safe area; the header already does, so cancel the double gap */
+:root{padding-top:0!important;padding-bottom:0!important}
 body{font:15px/1.45 var(--ui);-webkit-font-smoothing:antialiased;min-height:100vh;
   background:radial-gradient(140% 50% at 50% -10%,#2A1F24 0%,rgba(18,16,19,0) 60%),var(--ground)}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.05;
@@ -422,7 +424,7 @@ function renderSettings(){
 
 /* Navigation */
 const PAGES=['home','chat','letters','gifts','cases','settings'];
-function show(p){if(!PAGES.includes(p))p='home';document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));PAGES.forEach(x=>document.getElementById('p-'+x).hidden=x!==p);document.body.classList.toggle('in-chat',p==='chat');window.scrollTo(0,0);if(p==='chat'&&window.__chatScroll)setTimeout(window.__chatScroll,0);ls.set('keep-tab',p);if(history.replaceState)history.replaceState(null,'','#'+p)}
+function show(p){if(!PAGES.includes(p))p='home';document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));PAGES.forEach(x=>document.getElementById('p-'+x).hidden=x!==p);document.body.classList.toggle('in-chat',p==='chat');window.scrollTo(0,0);if(p==='chat'){setHH&&setHH();if(window.__chatScroll)setTimeout(window.__chatScroll,0)}ls.set('keep-tab',p);if(history.replaceState)history.replaceState(null,'','#'+p)}
 function pips(){document.getElementById('pip-letters').hidden=!letters.some(x=>!read[x.href])}
 document.addEventListener('click',e=>{
  const g=e.target.closest&&e.target.closest('[data-goto]');if(g){e.preventDefault();show(g.dataset.goto);const pf=g.getAttribute('data-prefill'),bx=document.getElementById('box');if(pf&&bx&&!bx.disabled){bx.value=pf;bx.dispatchEvent(new Event('input'));bx.focus();bx.setSelectionRange(pf.length,pf.length)}return}
@@ -431,7 +433,7 @@ document.addEventListener('click',e=>{
  if(a.hasAttribute('data-gift')){const h=a.getAttribute('href');seen[h]=1;ls.set('gifts-seen',seen);ls.set('last-gift',h)}
 },true);
 window.__appStatus=status;
-new ResizeObserver(()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px')).observe(document.querySelector('header'));
+const setHH=()=>document.documentElement.style.setProperty('--hh',Math.round(document.querySelector('header').getBoundingClientRect().bottom)+'px');new ResizeObserver(setHH).observe(document.querySelector('header'));window.addEventListener('resize',setHH);
 window.addEventListener('hashchange',()=>{const t=(location.hash||'').slice(1);if(PAGES.includes(t))show(t)});
 function renderAll(){status();applyWallpaper();renderHome();tickTogether();renderSettings();renderLetters();renderGifts();renderCases();pips()}
 renderAll();
