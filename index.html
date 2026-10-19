@@ -214,7 +214,7 @@ input[type=range]{width:100%;accent-color:var(--rose)}
 input[type=datetime-local]{width:100%;box-sizing:border-box;min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--ground-2);color:var(--fg);font:15px var(--ui);padding:0 12px;color-scheme:dark}
 /* Tab bar */
 nav{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:0 max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));pointer-events:none}
-nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:5px;border-radius:24px;
+nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:5px;border-radius:24px;
   background:rgba(30,25,28,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .tab{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border-radius:18px;font-size:10px;color:var(--muted);cursor:pointer;position:relative}
 .tab svg{width:27px;height:27px}
@@ -228,21 +228,9 @@ nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-temp
   <header>
     <div class="mono" aria-hidden="true">S</div>
     <div class="who"><b>221B Baker Street</b><span id="status">Sherlock is in</span></div>
-    <button type="button" class="textme" id="textme" data-goto="chat" style="border:0;cursor:pointer;font-family:inherit">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>Text him</button>
   </header>
   <main>
     <section class="page" id="p-home" aria-label="Home"></section>
-    <section class="page" id="p-chat" aria-label="Chat with Sherlock" hidden>
-      <div id="log" aria-live="polite"></div>
-      <form id="f" autocomplete="off">
-        <button type="button" class="ib" id="pick" aria-label="Send a photo" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></button>
-        <input type="file" id="file" accept="image/*" hidden>
-        <span id="chip" hidden>1 photo</span>
-        <textarea id="box" rows="1" placeholder="Text him…" aria-label="Message to Sherlock"></textarea>
-        <button type="submit" class="ib" id="send" aria-label="Send" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4l2.5 8L3 20zm2.5-8H13"/></svg></button>
-      </form>
-    </section>
     <section class="page" id="p-letters" aria-label="Letters" hidden></section>
     <section class="page" id="p-gifts" aria-label="Gifts" hidden></section>
     <section class="page" id="p-cases" aria-label="Cases" hidden></section>
@@ -250,7 +238,6 @@ nav .in{pointer-events:auto;max-width:520px;margin:0 auto;display:grid;grid-temp
   </main>
   <nav aria-label="Sections"><div class="in" role="tablist">
     <button class="tab" role="tab" data-p="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/></svg>Home</button>
-    <button class="tab" role="tab" data-p="chat" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</button>
     <button class="tab" role="tab" data-p="letters" aria-selected="false"><span class="pip" id="pip-letters" hidden></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 7l9 7 9-7"/></svg>Letters</button>
     <button class="tab" role="tab" data-p="gifts" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="1"/><path d="M3 13h18M12 9v11M12 9c-2-4-6-4-6-1s6 1 6 1zM12 9c2-4 6-4 6-1s-6 1-6 1z"/></svg>Gifts</button>
     <button class="tab" role="tab" data-p="cases" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20"/></svg>Cases</button>
@@ -337,7 +324,7 @@ function renderHome(){
  if(days<0)h+='<div class="count"><div class="n">'+nights+'</div><div class="c">letters so far</div></div>';
  h+='</div>';
  h+='<div class="sechead"><h2>Quick</h2></div><div class="quick rise">'+
-  '<a href="#chat" data-goto="chat"><span class="ic">'+svg('M4 5h16v11H9l-5 4z',22)+'</span>Text him</a>'+
+  '<a href="#letters" data-goto="letters"><span class="ic">'+svg('M4 6h16v12H4zM4 7l8 6 8-6',22)+'</span>Letters</a>'+
   '<a href="page-kiss.html" data-gift><span class="ic">'+svg(ICON['page-kiss.html'],22)+'</span>Kiss</a>'+
   '<a href="page-violin.html" data-gift><span class="ic">'+svg(ICON['page-violin.html'],22)+'</span>Violin</a>'+
   '<a href="page-fluster.html" data-gift><span class="ic">'+svg(ICON['page-fluster.html'],22)+'</span>Fluster</a></div>';
@@ -382,7 +369,7 @@ function renderGifts(){
  const list=pool.filter(g=>chip==='all'||catOf(g[2])===chip),unseen=pool.filter(g=>!seen[g[2]]).length;
  el.innerHTML='<div class="rise"><div class="eyebrow">From him</div><h1>Gifts</h1><p class="lede">'+pool.length+' things he made you'+(unseen?', '+unseen+' not opened yet':'')+'.</p></div>'+
   '<div class="chips" role="group" aria-label="Filter gifts">'+CHIPS.map(([k,t])=>'<button class="chip" type="button" data-chip="'+k+'" aria-pressed="'+(chip===k)+'">'+t+'</button>').join('')+'</div>'+
-  '<div class="gifts">'+list.map(tile).join('')+'</div>'+'<button type="button" class="askgift" data-goto="chat" data-prefill="Could you make me something? I\'d like "><span class="ic" aria-hidden="true">✦</span><span><b>Ask him for a gift</b><small>Tell him what you’d like. He’ll make it, and it appears here.</small></span></button>'+(unseen?'<div class="legend"><i aria-hidden="true"></i>Not opened yet</div>':'');
+  '<div class="gifts">'+list.map(tile).join('')+'</div>'+(unseen?'<div class="legend"><i aria-hidden="true"></i>Not opened yet</div>':'');
  el.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{chip=b.dataset.chip;ls.set('gift-chip',chip);renderGifts()}));
 }
 function renderCases(){
@@ -394,21 +381,21 @@ function renderCases(){
 /* Settings: wallpaper (her own picture or one of his), where it shows, how dim; when "together" started */
 const WPKEY='chat221:wallpaper';
 function wpGet(){try{return localStorage.getItem(WPKEY)}catch(e){return null}}
-function applyWallpaper(){const v=wpGet(),scope=ls.get('wp-scope','chat'),dim=ls.get('wp-dim',.6),pane=document.getElementById('p-chat'),root=document.documentElement;
+function applyWallpaper(){const v=wpGet(),scope=ls.get('wp-scope','chat'),dim=ls.get('wp-dim',.6),root=document.documentElement;
  root.style.setProperty('--wpdim',dim);
- if(v){root.style.setProperty('--wp','url("'+v.replace(/"/g,'%22')+'")');pane.classList.add('has-wp');document.body.classList.toggle('wp-all',scope==='all')}
- else{root.style.removeProperty('--wp');pane.classList.remove('has-wp');document.body.classList.remove('wp-all')}}
+ if(v){root.style.setProperty('--wp','url("'+v.replace(/"/g,'%22')+'")');document.body.classList.add('wp-all')}
+ else{root.style.removeProperty('--wp');document.body.classList.remove('wp-all')}}
 function sinceLabel(){if(TOGETHER_SINCE===TOGETHER_DEFAULT)return 'since 4:27 in the morning, 17 October, London';const d=new Date(TOGETHER_SINCE);return 'since '+d.toLocaleString('en-GB',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}
 function renderSettings(){
  const el=document.getElementById('p-settings'),v=wpGet(),scope=ls.get('wp-scope','chat'),dim=ls.get('wp-dim',.6),P=window.PHOTOS||[];
  const local=new Date(TOGETHER_SINCE-new Date(TOGETHER_SINCE).getTimezoneOffset()*60000).toISOString().slice(0,16);
  el.innerHTML='<div class="rise"><div class="eyebrow">Yours to change</div><h1>Settings</h1><p class="lede">Make 221B feel like yours.</p></div>'+
- '<div class="set rise"><h2>Wallpaper</h2><p class="hint">Your own picture, or one of his. Kept on this phone.</p>'+
+ '<div class="set rise"><h2>Wallpaper</h2><p class="hint">Your own picture, or one of his, behind the whole app. Kept on this phone.</p>'+
  '<div class="wpprev" style="'+(v?'background-image:url(&quot;'+esc(v)+'&quot;)':'')+'"><span class="a">You’re choosing wallpaper. I can tell.</span><span class="c">mind ur business</span></div>'+
  '<div class="btnrow"><button type="button" class="btn pri" id="wp-up">Upload your picture</button><button type="button" class="btn" id="wp-none">Plain</button></div>'+
  '<input type="file" id="wp-file" accept="image/*" hidden>'+
  '<div class="thumbs">'+P.map(p=>'<button type="button" data-src="'+esc(p.src)+'" aria-pressed="'+(v===p.src)+'" aria-label="Use '+esc(p.about||'this picture')+'" style="background-image:url(&quot;'+esc(p.src)+'&quot;)"></button>').join('')+'</div>'+
- '<div class="lbl"><span>Show it on</span></div><div class="seg" role="group" aria-label="Where the wallpaper shows"><button type="button" data-scope="chat" aria-pressed="'+(scope==='chat')+'">Chat only</button><button type="button" data-scope="all" aria-pressed="'+(scope==='all')+'">The whole app</button></div>'+
+ 
  '<div class="lbl"><label for="wp-dim">Dim</label><span>'+Math.round(dim*100)+'%</span></div><input type="range" id="wp-dim" min="0.2" max="0.85" step="0.05" value="'+dim+'"></div>'+
  '<div class="set rise"><h2>Together since</h2><p class="hint">The moment the Home counter starts from.</p><input type="datetime-local" id="tg-since" value="'+local+'" aria-label="Together since"><div class="btnrow"><button type="button" class="btn" id="tg-reset">Back to 4:27, 17 October</button></div></div>';
  const f=document.getElementById('wp-file');
@@ -423,8 +410,8 @@ function renderSettings(){
 }
 
 /* Navigation */
-const PAGES=['home','chat','letters','gifts','cases','settings'];
-function show(p){if(!PAGES.includes(p))p='home';document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));PAGES.forEach(x=>document.getElementById('p-'+x).hidden=x!==p);document.body.classList.toggle('in-chat',p==='chat');window.scrollTo(0,0);if(p==='chat'){setHH&&setHH();if(window.__chatScroll)setTimeout(window.__chatScroll,0)}ls.set('keep-tab',p);if(history.replaceState)history.replaceState(null,'','#'+p)}
+const PAGES=['home','letters','gifts','cases','settings'];
+function show(p){if(!PAGES.includes(p))p='home';document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.p===p)));PAGES.forEach(x=>document.getElementById('p-'+x).hidden=x!==p);window.scrollTo(0,0);ls.set('keep-tab',p);if(history.replaceState)history.replaceState(null,'','#'+p)}
 function pips(){document.getElementById('pip-letters').hidden=!letters.some(x=>!read[x.href])}
 document.addEventListener('click',e=>{
  const g=e.target.closest&&e.target.closest('[data-goto]');if(g){e.preventDefault();show(g.dataset.goto);const pf=g.getAttribute('data-prefill'),bx=document.getElementById('box');if(pf&&bx&&!bx.disabled){bx.value=pf;bx.dispatchEvent(new Event('input'));bx.focus();bx.setSelectionRange(pf.length,pf.length)}return}
@@ -438,15 +425,13 @@ window.addEventListener('hashchange',()=>{const t=(location.hash||'').slice(1);i
 function renderAll(){status();applyWallpaper();renderHome();tickTogether();renderSettings();renderLetters();renderGifts();renderCases();pips()}
 renderAll();
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.p)));
-let start=ls.get('keep-tab','home');const hashTab=(location.hash||'').slice(1);if(hashTab)start=hashTab==='chats'?'home':hashTab;
+let start=ls.get('keep-tab','home');const hashTab=(location.hash||'').slice(1);if(hashTab)start=(hashTab==='chats'||hashTab==='chat')?'home':hashTab;
 show(start);
 window.addEventListener('pageshow',e=>{if(e.persisted){read=ls.get('letters-read',{});seen=ls.get('gifts-seen',{});renderAll()}});
 setInterval(()=>{status()},60000);
 (function(){let last=new Date().getHours();setInterval(()=>{const n=new Date().getHours();if(n!==last){last=n;renderHome();tickTogether()}},60000)})();
 </script>
-<script src="persona.js"></script>
 <script src="photos.js"></script>
-<script src="chat.js"></script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
 <script src="chatbridge.js"></script>
 </body>
