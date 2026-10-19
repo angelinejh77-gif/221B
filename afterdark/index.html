@@ -1,0 +1,305 @@
+<title>221B After Dark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one dark phone-style thread, Baker Street at night; his old-rose bubbles left, her pink-beige right */
+:root{
+  --ground:#121013; --ground-2:#1A1619; --line:#2A2428; --fg:#EDE6E2; --muted:#9A8E92;
+  --him:#8E5F68; --him-fg:#FFFFFF; --her:#E9D2C7; --her-fg:#3A2A28; --brass:#C9A27A;
+  --display:'Cormorant Garamond',Georgia,serif; --body:'Inter',-apple-system,system-ui,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--fg);font:15px/1.4 var(--body);overflow:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground-2)}
+.app{height:100%;display:flex;flex-direction:column;max-width:640px;margin:0 auto;
+  background:radial-gradient(120% 60% at 50% 0%,#211b20 0%,var(--ground) 60%)}
+header{flex:none;display:flex;align-items:center;gap:12px;padding-block:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--ground-2);border-bottom:1px solid var(--line)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--him);
+  font:500 19px var(--display);color:#fff;position:relative;flex:none}
+.av::after{content:"";position:absolute;right:0;bottom:1px;width:10px;height:10px;border-radius:50%;background:#7FB08A;border:2px solid var(--ground-2)}
+.who{min-width:0;flex:1}
+.who b{display:block;font:500 21px/1.1 var(--display);letter-spacing:.01em}
+.who span{font-size:12px;color:var(--muted)}
+.clock{font-size:11px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;line-height:1.35}
+#log{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-block:16px 12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.day{align-self:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.b{max-width:82%;padding:9px 13px;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere;position:relative}
+.him{align-self:flex-start;background:var(--him);color:var(--him-fg);border-bottom-left-radius:6px}
+.her{align-self:flex-end;background:var(--her);color:var(--her-fg);border-bottom-right-radius:6px}
+.t{font-size:11px;color:var(--muted);padding:0 6px 4px;font-variant-numeric:tabular-nums}
+.t.r{align-self:flex-end}
+.rx{position:absolute;left:-10px;bottom:-10px;background:var(--ground-2);border:1px solid var(--line);border-radius:12px;padding:1px 5px;font-size:13px}
+.herimg{align-self:flex-end;max-width:62%;border-radius:16px;border:3px solid var(--her)}
+.loc{align-self:flex-start;width:78%;max-width:300px;border-radius:16px;overflow:hidden;background:var(--him);color:#fff}
+.map{height:92px;position:relative;background:linear-gradient(135deg,#3a3236,#2c2629)}
+.map::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(28deg,transparent 0 22px,rgba(255,255,255,.08) 22px 25px),repeating-linear-gradient(-62deg,transparent 0 30px,rgba(255,255,255,.06) 30px 32px)}
+.map::after{content:"";position:absolute;left:0;right:0;top:60%;height:9px;background:#4a5c66;transform:rotate(-6deg)}
+.pin{position:absolute;left:46%;top:22%;width:18px;height:18px;border-radius:50% 50% 50% 0;background:var(--brass);transform:rotate(-45deg);z-index:2;border:2px solid #fff}
+.loc p{margin:0;padding:8px 12px 10px;font-size:13px}.loc p b{display:block;font-size:14px}
+.ph{align-self:flex-start;width:78%;max-width:300px;background:var(--him);border-radius:16px;padding:5px}
+.pf{border-radius:12px;min-height:130px;display:flex;align-items:flex-end;padding:10px;font-size:13px;font-style:italic;line-height:1.35;color:#3a2f2a;
+  background:radial-gradient(120% 90% at 30% 10%,#f1e3cb,#cfb595)}
+.ph .cap{color:#fff;font-size:13px;padding:6px 8px 3px}
+.typ{align-self:flex-start;background:var(--him);border-radius:18px;border-bottom-left-radius:6px;padding:12px 14px;display:flex;gap:4px}
+.typ i{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.45;animation:bob 1s infinite}
+.typ i:nth-child(2){animation-delay:.15s}.typ i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+.note{align-self:center;max-width:90%;text-align:center;font-size:12px;color:var(--muted);padding:6px 10px}
+.empty{margin:auto;text-align:center;color:var(--muted);max-width:30ch}
+.empty b{display:block;font:500 26px var(--display);color:var(--fg);margin-bottom:6px}
+form{flex:none;display:flex;align-items:flex-end;gap:8px;padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
+  background:var(--ground-2);border-top:1px solid var(--line)}
+textarea{flex:1;min-width:0;resize:none;max-height:120px;min-height:22px;border:1px solid var(--line);border-radius:20px;
+  background:var(--ground);color:var(--fg);font:15px/1.4 var(--body);padding:9px 14px}
+textarea:focus{outline:none;border-color:var(--him)}
+.ib{flex:none;width:40px;height:40px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer}
+.ib:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+#send{background:var(--him);color:#fff}
+#send:disabled{opacity:.45;cursor:default}
+#pick{background:transparent;color:var(--muted);border:1px solid var(--line)}
+#chip{flex:none;font-size:12px;color:var(--her-fg);background:var(--her);border-radius:12px;padding:3px 8px;align-self:center}
+#giftsbtn{background:transparent;color:var(--fg);border:1px solid var(--line);width:38px;height:38px}
+#giftsbtn[aria-expanded="true"]{background:var(--him);border-color:var(--him)}
+.app{position:relative}
+#drawer{position:absolute;left:0;right:0;top:65px;z-index:5;background:var(--ground-2);border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(0,0,0,.45);
+  padding:14px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));max-height:70vh;overflow-y:auto}
+.dh b{display:block;font:500 22px var(--display)}.dh span{font-size:12px;color:var(--muted)}
+#dlist{display:grid;gap:8px;margin-top:12px}
+#dlist a{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--fg);background:var(--ground);border:1px solid var(--line);border-radius:14px;padding:11px 12px;min-height:44px}
+#dlist a:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+#dlist .sw{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--him);color:#fff;font:500 15px var(--display)}
+#dlist .sw.her{background:var(--her);color:var(--her-fg)}
+#dlist b{display:block;font-weight:600;font-size:14px}#dlist small{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+#dlist .new{margin-left:auto;flex:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--her);color:var(--her-fg);border-radius:8px;padding:3px 7px}
+@media (prefers-reduced-motion:reduce){.typ i{animation:none}}
+</style>
+
+<div class="app">
+  <header>
+    <div class="av" aria-hidden="true">S</div>
+    <div class="who"><b>Sherlock</b><span id="status">221B Baker Street</span></div>
+    <button type="button" class="ib" id="giftsbtn" aria-label="Letters and gifts" aria-haspopup="dialog" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 7l9 6 9-6"/></svg></button>
+    <div class="clock"><div id="lon">London --:--</div><div id="kl">KL --:--</div></div>
+  </header>
+  <div id="log" aria-live="polite"></div>
+  <div id="drawer" role="dialog" aria-label="Letters and gifts" hidden>
+    <div class="dh"><b>From 221B</b><span>Everything he's left for you.</span></div>
+    <nav id="dlist"></nav>
+  </div>
+  <form id="f" autocomplete="off">
+    <button type="button" class="ib" id="pick" aria-label="Send a photo" hidden>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+    </button>
+    <input type="file" id="file" accept="image/*" hidden>
+    <span id="chip" hidden>1 photo</span>
+    <textarea id="box" rows="1" placeholder="Text him…" aria-label="Message to Sherlock"></textarea>
+    <button type="submit" class="ib" id="send" aria-label="Send" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4l2.5 8L3 20zm2.5-8H13"/></svg>
+    </button>
+  </form>
+</div>
+
+<script src="persona.js"></script>
+<script src="home/letters-index.js"></script>
+<script src="home/memories.js"></script>
+<script>
+(function(){
+"use strict";
+var FORMAT = [
+"",
+"REPLY FORMAT: Reply with ONLY a JSON object, no other text:",
+"{\"reaction\": \"\" or one emoji to stick on her last message, \"messages\": [ ...1 to 6 items... ], \"photo_note\": \"\" or one short line describing any photo she just sent}",
+"Each item is one of: {\"type\":\"text\",\"text\":\"...\"} | {\"type\":\"photo\",\"scene\":\"what your photo shows, cosy, never a crime scene\",\"caption\":\"...\"} | {\"type\":\"location\",\"place\":\"street, area\",\"detail\":\"short line\"}.",
+"Split your reply into separate texts the way you actually text: a quick one, then a longer considered one, then a short last line, and so on. Mostly text items; photo or location only when it fits. A reaction sometimes, not every time."
+].join("\n");
+function context(){
+  var out=[], L=(window.LETTERS||[]).slice().sort(function(a,b){return b.date.localeCompare(a.date)});
+  if(L.length){ out.push("LETTERS YOU HAVE WRITTEN HER (newest first): "+L.slice(0,7).map(function(x){return '"'+x.title+'" ('+x.day+" "+x.date+": "+x.line+")"}).join("; ")+". She may have read them; you remember writing them.") }
+  var today=new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Kuala_Lumpur"}), M=window.MEMORIES||{}, keys=Object.keys(M).sort(), k=null;
+  for(var i=keys.length-1;i>=0;i--){ if(keys[i]<=today){ k=keys[i]; break } }
+  if(k && M[k].journal){ out.push("TODAY'S JUNK JOURNAL NOTE YOU LEFT HER: "+M[k].journal.text+" "+(M[k].journal.ps||"")) }
+  return out.join("\n");
+}
+function RULES(){ return (window.SHERLOCK_PERSONA||"You are Sherlock Holmes texting Angie, your girlfriend.")+"\n\n"+context()+FORMAT }
+
+var MAX_TURNS = 60, KEEP = 400;
+var log = document.getElementById("log"), box = document.getElementById("box"), send = document.getElementById("send");
+var pick = document.getElementById("pick"), file = document.getElementById("file"), chip = document.getElementById("chip");
+var sample = null, db = null, ref = null, msgs = [], busy = false, pendingImg = null, saving = Promise.resolve();
+
+function hm(d, tz){ try{ return new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}).format(d) }catch(e){ return "" } }
+function tick(){ var d=new Date(); document.getElementById("lon").textContent="London "+hm(d,"Europe/London"); document.getElementById("kl").textContent="KL "+hm(d,"Asia/Kuala_Lumpur") }
+tick(); setInterval(tick, 30000);
+function dayKey(ts){ return new Date(ts).toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:"Asia/Kuala_Lumpur"}) }
+function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e }
+function scroll(){ log.scrollTop = log.scrollHeight }
+
+function renderItem(m){
+  var frag = document.createDocumentFragment();
+  if(m.from==="her"){
+    if(m.img){ var im=el("img","herimg"); im.src=m.img; im.alt="Photo you sent"; frag.appendChild(im) }
+    if(m.text){ var b=el("div","b her",m.text); if(m.rx){ b.appendChild(el("span","rx",m.rx)) } frag.appendChild(b) }
+    else if(m.img && m.rx){ var rb=el("div","b her","📷"); rb.appendChild(el("span","rx",m.rx)); frag.appendChild(rb) }
+    frag.appendChild(el("div","t r",hm(new Date(m.ts),"Asia/Kuala_Lumpur")));
+    return frag;
+  }
+  var it = m.item || {type:"text",text:m.text||""};
+  if(it.type==="photo"){
+    var ph=el("div","ph"); ph.appendChild(el("div","pf",it.scene||"")); if(it.caption) ph.appendChild(el("div","cap",it.caption)); frag.appendChild(ph);
+  } else if(it.type==="location"){
+    var lc=el("div","loc"); var mp=el("div","map"); mp.appendChild(el("span","pin")); lc.appendChild(mp);
+    var p=el("p"); p.appendChild(el("b",null,"📍 "+(it.place||"London"))); p.appendChild(document.createTextNode(it.detail||"")); lc.appendChild(p); frag.appendChild(lc);
+  } else {
+    frag.appendChild(el("div","b him",it.text||""));
+  }
+  if(m.last) frag.appendChild(el("div","t",hm(new Date(m.ts),"Europe/London")+" · London"));
+  return frag;
+}
+function renderAll(){
+  log.innerHTML="";
+  if(!msgs.length){
+    var e=el("div","empty"); e.appendChild(el("b",null,"Baker Street, after dark")); e.appendChild(document.createTextNode("Text him below. He'll answer in his own time, usually faster than he'd admit."));
+    log.appendChild(e); return;
+  }
+  var lastDay="";
+  msgs.forEach(function(m){ var k=dayKey(m.ts); if(k!==lastDay){ log.appendChild(el("div","day",k)); lastDay=k } log.appendChild(renderItem(m)) });
+  scroll();
+}
+function note(text){ log.appendChild(el("div","note",text)); scroll() }
+
+function persist(){
+  if(!ref) return Promise.resolve();
+  var body = { msgs: msgs.slice(-KEEP).map(function(m){ var c={}; for(var k in m){ if(k!=="img") c[k]=m[k] } if(m.img) c.hadImg=true; return c }), updated: Date.now() };
+  saving = saving.then(function(){ return ref.set(body) }).catch(function(e){ note(e && e.code==="quota_exceeded" ? "The thread is full. Older messages need clearing." : "Couldn't save the last message. It will retry with the next one.") });
+  return saving;
+}
+
+function historyTurns(){
+  var turns=[], recent=msgs.slice(-MAX_TURNS);
+  recent.forEach(function(m){
+    var role = m.from==="her" ? "user" : "assistant", txt;
+    if(m.from==="her"){ txt = (m.text||"") + (m.img||m.hadImg ? " [she sent a photo"+(m.photoNote?": "+m.photoNote:"")+"]" : "") }
+    else { var it=m.item||{type:"text",text:m.text}; txt = it.type==="photo" ? "[sent a photo: "+it.scene+" / "+(it.caption||"")+"]" : it.type==="location" ? "[shared location: "+it.place+"]" : it.text }
+    txt = (txt||"").trim(); if(!txt) return;
+    var prev=turns[turns.length-1];
+    if(prev && prev.role===role){ prev.content += "\n" + txt } else turns.push({role:role,content:txt});
+  });
+  while(turns.length && turns[0].role!=="user") turns.shift();
+  return turns;
+}
+
+function wait(ms){ return new Promise(function(r){ setTimeout(r,ms) }) }
+var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+async function reply(){
+  var lon = hm(new Date(),"Europe/London"), kl = hm(new Date(),"Asia/Kuala_Lumpur");
+  var turns = [{role:"user",content:RULES()+"\n\nIt is now "+lon+" in London and "+kl+" in Kuala Lumpur."}].concat(historyTurns());
+  if(turns[turns.length-1].role!=="user") return;
+  var typ=el("div","typ"); typ.innerHTML="<i></i><i></i><i></i>"; log.appendChild(typ); scroll();
+  document.getElementById("status").textContent="typing…";
+  var opts={cache:false, modelTier:"complex", effort:"low"};
+  if(pendingImg){ opts.images=pendingImg.blob }
+  var out;
+  try { out = await sample.json(turns, opts) }
+  catch(e){
+    typ.remove(); document.getElementById("status").textContent="221B Baker Street";
+    if(e && (e.code==="not_granted"||e.code==="sampling_disabled")){ note("He can't answer until this page is allowed to use Claude.") }
+    else if(e && e.code==="rate_limited"){ note("Too many messages at once. Give him a minute, then send again.") }
+    else if(e && e.code==="images_unavailable"){ note("Photos can't be sent from this view. Text only.") }
+    else { note("Message didn't go through. Send it again.") }
+    return;
+  }
+  var lastHer=null; for(var i=msgs.length-1;i>=0;i--){ if(msgs[i].from==="her"){ lastHer=msgs[i]; break } }
+  if(lastHer && out && typeof out.photo_note==="string" && out.photo_note) lastHer.photoNote=out.photo_note.slice(0,200);
+  if(lastHer && out && typeof out.reaction==="string" && out.reaction.trim()){ lastHer.rx=out.reaction.trim().slice(0,4); renderAll(); log.appendChild(typ) }
+  var items = (out && Array.isArray(out.messages) ? out.messages : []).filter(function(x){ return x && typeof x==="object" }).slice(0,6);
+  if(!items.length && typeof out==="string") items=[{type:"text",text:out}];
+  for(var j=0;j<items.length;j++){
+    var it=items[j], m={from:"him",ts:Date.now(),item:{type:it.type==="photo"||it.type==="location"?it.type:"text"}};
+    if(m.item.type==="text") m.item.text=String(it.text||"").slice(0,2000);
+    if(m.item.type==="photo"){ m.item.scene=String(it.scene||"").slice(0,600); m.item.caption=String(it.caption||"").slice(0,200) }
+    if(m.item.type==="location"){ m.item.place=String(it.place||"").slice(0,120); m.item.detail=String(it.detail||"").slice(0,160) }
+    if(!reduce){ await wait(500 + Math.min(1500, JSON.stringify(m.item).length*12)) }
+    m.last = (j===items.length-1);
+    msgs.push(m); typ.remove(); log.appendChild(renderItem(m));
+    if(!m.last){ log.appendChild(typ) } scroll();
+  }
+  typ.remove(); document.getElementById("status").textContent="221B Baker Street";
+  persist();
+}
+
+async function onSend(ev){
+  ev.preventDefault();
+  var text=box.value.trim();
+  if(busy || (!text && !pendingImg)) return;
+  busy=true; send.disabled=true;
+  var m={from:"her",ts:Date.now(),text:text};
+  if(pendingImg) m.img=pendingImg.url;
+  msgs.push(m); box.value=""; autosize();
+  if(msgs.length===1) renderAll(); else { log.appendChild(renderItem(m)); scroll() }
+  persist();
+  try { await reply() } finally {
+    pendingImg=null; chip.hidden=true; file.value="";
+    busy=false; send.disabled = !box.value.trim(); box.focus();
+  }
+}
+
+function autosize(){ box.style.height="auto"; box.style.height=Math.min(120, box.scrollHeight)+"px"; send.disabled = busy || !(box.value.trim() || pendingImg) || !sample }
+box.addEventListener("input", autosize);
+box.addEventListener("keydown", function(e){ if(e.key==="Enter" && !e.shiftKey && !e.isComposing){ document.getElementById("f").requestSubmit() } });
+document.getElementById("f").addEventListener("submit", onSend);
+pick.addEventListener("click", function(){ file.click() });
+file.addEventListener("change", function(){
+  var f=file.files && file.files[0]; if(!f) return;
+  var r=new FileReader(); r.onload=function(){ pendingImg={blob:f,url:String(r.result)}; chip.hidden=false; autosize() }; r.readAsDataURL(f);
+});
+
+try { localStorage.setItem("chat221:root", location.href.split("#")[0]) } catch(e){}
+var gb=document.getElementById("giftsbtn"), dr=document.getElementById("drawer");
+function buildDrawer(){
+  var L=(window.LETTERS||[]).slice().sort(function(a,b){return b.date.localeCompare(a.date)}), rows=[];
+  if(L[0]) rows.push({href:"home/"+L[0].href, t:"Tonight's letter: "+L[0].title, s:L[0].line, seal:L[0].seal||"S", isNew:true});
+  rows.push({href:"home/page-letters.html", t:"Letters by Night", s:"Every letter, newest first.", seal:"✉"});
+  rows.push({href:"home/page-hourly.html", t:"Every Hour", s:"A note from him, on the hour.", seal:"⏱"});
+  rows.push({href:"home/page-journal.html", t:"Our Junk Journal", s:"Today's page.", seal:"✂", her:true});
+  rows.push({href:"home/page-casebook.html", t:"The Casebook", s:"Cases to solve together.", seal:"⌕"});
+  rows.push({href:"home/index.html#gifts", t:"All gifts", s:"The whole of 221B.", seal:"221", her:true});
+  var nav=document.getElementById("dlist"); nav.innerHTML="";
+  rows.forEach(function(r){ var a=el("a"); a.href=r.href; var sw=el("span","sw"+(r.her?" her":""),r.seal); sw.setAttribute("aria-hidden","true"); a.appendChild(sw);
+    var tx=el("span"); tx.appendChild(el("b",null,r.t)); tx.appendChild(el("small",null,r.s)); a.appendChild(tx); if(r.isNew) a.appendChild(el("span","new","New")); nav.appendChild(a) });
+}
+function toggleDrawer(open){ if(open===undefined) open=dr.hidden; if(open) buildDrawer(); dr.hidden=!open; gb.setAttribute("aria-expanded",String(open)) }
+gb.addEventListener("click",function(){ toggleDrawer() });
+document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !dr.hidden){ toggleDrawer(false); gb.focus() } });
+log.addEventListener("click",function(){ if(!dr.hidden) toggleDrawer(false) });
+function takeOutbox(){
+  var o=null; try { o=JSON.parse(localStorage.getItem("chat221:outbox")||"null"); localStorage.removeItem("chat221:outbox") } catch(e){}
+  if(o && o.text && Date.now()-(o.ts||0) < 3600000){ box.value=String(o.text).slice(0,4000); autosize(); box.focus() }
+}
+window.addEventListener("pageshow", takeOutbox);
+
+renderAll();
+
+(async function start(){
+  try { sample = await claude.use("sample") } catch(e){ sample=null }
+  if(!sample){ note("Open this page in Claude to text him."); box.disabled=true; return }
+  try { var lim = await sample.limits(); if(lim && lim.images) pick.hidden=false } catch(e){}
+  takeOutbox(); autosize();
+  try {
+    db = await claude.use("db"); var user = await claude.use("user");
+    var uid = user ? await user.id() : null;
+    if(db && uid){
+      ref = db.doc("data/users/"+uid+"/thread");
+      var snap = await ref.get();
+      if(snap.exists){ var d=snap.data(); if(d && Array.isArray(d.msgs)){ msgs=d.msgs.slice(); renderAll() } }
+    } else { note("This conversation won't be saved in this view.") }
+  } catch(e){ note("Couldn't load earlier messages.") }
+})();
+})();
+</script>

@@ -199,9 +199,11 @@ function show(p){document.querySelectorAll('.tab').forEach(t=>t.setAttribute('ar
 renderChats();renderLetters();renderGifts();
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.p)));
 let start='chats';try{start=localStorage.getItem('keep-tab')||'chats'}catch(e){}
+const hashTab=(location.hash||'').slice(1);if(['chats','letters','gifts'].includes(hashTab))start=hashTab;
 show(start);
 </script>
 
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+<script src="chatbridge.js"></script>
 </body>
 </html>

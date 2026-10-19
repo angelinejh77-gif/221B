@@ -1,6 +1,7 @@
 /* Tell him: records what Angie does on a gift page and copies a short report she can paste to Sherlock. */
 (function () {
   if (window.__tellHim) return; window.__tellHim = 1;
+  try { var cb = document.createElement('script'); cb.src = 'chatbridge.js'; (document.head || document.documentElement).appendChild(cb); } catch (e) {}
   var page = (document.title || location.pathname.split('/').pop() || 'a gift').trim();
   var KEY = 'tellhim:' + location.pathname.split('/').pop();
   var log = { since: Date.now(), taps: {}, typed: '', ms: 0 };
