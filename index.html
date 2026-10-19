@@ -90,6 +90,15 @@ h2{font-size:24px;line-height:1.15}
 .resume b{display:block;font:500 18px var(--serif)}.resume small{color:var(--muted);font-size:12px}
 .resume .go{margin-left:auto;color:var(--faint)}
 
+.together{display:block;text-decoration:none;position:relative;overflow:hidden;border-radius:18px;padding:18px 18px 16px;border:1px solid rgba(233,210,199,.18);
+  background:radial-gradient(120% 120% at 100% 0%,rgba(142,95,104,.45),transparent 60%),linear-gradient(160deg,#2A2024,#1C1619)}
+.together .k{font:600 11px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--rose-hi)}
+.together .units{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0 10px}
+.together .u{text-align:center}
+.together .u b{display:block;font:500 clamp(30px,9vw,40px)/1 var(--serif);color:var(--beige);font-variant-numeric:tabular-nums}
+.together .u small{display:block;margin-top:4px;font-size:11px;color:var(--muted);letter-spacing:.06em}
+.together .since{font:italic 16px var(--serif);color:var(--fg);opacity:.85}
+.together .more{display:block;margin-top:6px;font-size:12px;color:var(--rose-hi)}
 /* Letters */
 .env{position:relative;display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--beige-ink);border-radius:12px;padding:16px;min-height:88px;
   background:linear-gradient(160deg,#F4E6DD,var(--beige) 60%,#E0C5B8);box-shadow:0 10px 22px rgba(0,0,0,.4)}
@@ -283,6 +292,7 @@ function renderHome(){
  const L0=letters[0];
  if(L0){const p=L0.date.split('-'),ds=(L0.day?L0.day+', ':'')+(+p[2])+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][+p[1]-1];
   h+='<a class="envelope rise'+(read[L0.href]?' read':'')+'" href="'+esc(L0.href)+'" data-letter-href="'+esc(L0.href)+'"><span class="wax" aria-hidden="true">'+esc(L0.seal||'S')+'</span><span class="badge">Unopened</span><span class="k">Latest letter · '+esc(ds)+'</span><span class="t">'+esc(L0.title)+'</span><span class="l">'+esc(L0.line)+'</span></a>'}
+ h+='<a class="together rise" href="page-sky.html" data-gift aria-label="How long we have been together"><span class="k">Together</span><div class="units" id="tg-units"></div><div class="since">since 4:27 in the morning, 17 October, London</div><span class="more">The sky that minute →</span></a>';
  let hn=null;try{hn=window.hourlyNote&&window.hourlyNote(now)}catch(e){}
  if(hn&&hn.text){h+='<a class="note bubble rise" href="page-hourly.html"><span class="k"><i aria-hidden="true">'+String(now.getHours()).padStart(2,'0')+'</i>This hour, from him</span><p>'+esc(hn.text)+'</p><span class="more">Every hour →</span></a>'}
  const M=window.MEMORIES||{};const mk=Object.keys(M).filter(k=>k<=K.date).sort().pop();
@@ -305,6 +315,11 @@ function renderHome(){
  h+='</div>';el.innerHTML=h;
 }
 
+/* Together counter: from the moment she arrived (London 04:27, 17 Oct 2026 = 03:27 UTC) */
+const TOGETHER_SINCE=Date.UTC(2026,9,17,3,27,0);
+function tickTogether(){const el=document.getElementById('tg-units');if(!el)return;let s=Math.max(0,Math.floor((Date.now()-TOGETHER_SINCE)/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
+ const u=[[d,d===1?'day':'days'],[h,h===1?'hour':'hours'],[m,'min'],[s,'sec']];el.innerHTML=u.map(([n,l])=>'<div class="u"><b>'+n+'</b><small>'+l+'</small></div>').join('')}
+setInterval(tickTogether,1000);
 /* Letters */
 function card(id,seal,title,sub,inner){return '<div class="card" data-open="false"><button type="button" aria-expanded="false" aria-controls="'+id+'"><span class="seal" aria-hidden="true">'+seal+'</span><span class="ttl">'+esc(title)+'<small>'+esc(sub)+'</small></span><span class="chev" aria-hidden="true">›</span></button><div class="paper" id="'+id+'" hidden>'+inner+'</div></div>'}
 function renderLetters(){
@@ -357,14 +372,14 @@ document.addEventListener('click',e=>{
 window.__appStatus=status;
 new ResizeObserver(()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px')).observe(document.querySelector('header'));
 window.addEventListener('hashchange',()=>{const t=(location.hash||'').slice(1);if(PAGES.includes(t))show(t)});
-function renderAll(){status();renderHome();renderLetters();renderGifts();renderCases();pips()}
+function renderAll(){status();renderHome();tickTogether();renderLetters();renderGifts();renderCases();pips()}
 renderAll();
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.p)));
 let start=ls.get('keep-tab','home');const hashTab=(location.hash||'').slice(1);if(hashTab)start=hashTab==='chats'?'home':hashTab;
 show(start);
 window.addEventListener('pageshow',e=>{if(e.persisted){read=ls.get('letters-read',{});seen=ls.get('gifts-seen',{});renderAll()}});
 setInterval(()=>{status()},60000);
-(function(){let last=new Date().getHours();setInterval(()=>{const n=new Date().getHours();if(n!==last){last=n;renderHome()}},60000)})();
+(function(){let last=new Date().getHours();setInterval(()=>{const n=new Date().getHours();if(n!==last){last=n;renderHome();tickTogether()}},60000)})();
 </script>
 <script src="persona.js"></script>
 <script src="chat.js"></script>
