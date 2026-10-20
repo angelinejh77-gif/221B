@@ -36,6 +36,7 @@ a.env:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .read .new{display:none}
 .foot{margin-top:30px;text-align:center;color:var(--muted);font-style:italic;font-size:16px}
 @media (prefers-reduced-motion:no-preference){a.env{animation:in .6s cubic-bezier(.2,.7,.2,1) both}@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}}
+.backrow{display:flex;align-items:center;gap:14px;margin:26px 0 0;padding:16px 18px;border-radius:10px;text-decoration:none;color:#F3EBDD;background:linear-gradient(160deg,#4a2329,#2a1518);border:1px solid rgba(217,182,122,.3);box-shadow:0 14px 28px rgba(0,0,0,.45)}.backrow .ic{font-size:26px}.backrow b{display:block;font:italic 400 22px/1.1 "Cormorant Garamond",serif}.backrow small{color:#C99AA2;font-style:italic;font-size:15px}
 </style></head><body>
 <a class="back221" href="#" onclick="history.back();return false;" aria-label="Back to Messages from 221B">&#8592; 221B</a>
 <a class="goback" href="index.html" aria-label="Go back to 221B">&#8249; 221B</a>
@@ -44,6 +45,7 @@ a.env:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   <h1>Letters by night</h1>
   <p class="sub">A new one arrives every night at eleven. Newest on top.</p>
   <ul class="list" id="list"></ul>
+  <a class="backrow" href="page-backrow.html" aria-label="The Back Row: films we watched together"><span class="ic" aria-hidden="true">🎟️</span><span><b>The Back Row</b><small>films we watched together · two seats, seven hours apart</small></span></a>
   <p class="foot" id="foot"></p>
 </div>
 <script src="letters-index.js"></script>
