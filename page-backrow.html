@@ -69,6 +69,16 @@ h1{font:italic 400 clamp(36px,10vw,50px)/1.05 'Bodoni Moda',serif;margin:10px 0 
 .notes{margin:10px 0 0;padding-left:16px;font-size:15px;color:#4a3836}
 .notes li{margin:2px 0}
 .back .main{padding-bottom:18px}
+.stub:before,.stub:after{content:"";position:absolute;top:8px;bottom:8px;width:7px;background:repeating-linear-gradient(180deg,currentColor 0 7px,transparent 7px 15px);opacity:.5;border-radius:2px}
+.stub:before{left:7px}.stub:after{right:7px}
+.ph{position:absolute;top:0;bottom:0;left:0;right:84px;background:#111 center/cover;filter:grayscale(1)}
+.ph:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,10,11,.9),rgba(14,10,11,.55))}
+.back.has-ph{background:#141012;color:var(--ivory)}
+.back.has-ph .main{position:relative;z-index:1}
+.back.has-ph .line{color:var(--ivory)}.back.has-ph .line .who{color:var(--gold)}
+.back.has-ph .notes{color:rgba(243,235,221,.86)}
+.back.has-ph:before{z-index:1}
+
 .foot{text-align:center;color:var(--muted);font-style:italic;margin:34px 0 0}
 .empty{display:none}
 @media (prefers-reduced-motion:reduce){.inner{transition:none}.bulbs i{animation:none;opacity:.8}}
@@ -105,9 +115,9 @@ h1{font:italic 400 clamp(36px,10vw,50px)/1.05 'Bodoni Moda',serif;margin:10px 0 
           '<div class="cell"><small>Seat A1 · KL</small><b>'+esc(f.kl)+'</b></div>'+
           '<div class="cell"><small>Seat A2 · London</small><b>'+esc(f.london)+'</b></div></div>'+
           '<div class="kept"><span class="k">The line we kept</span><br><q>'+esc(f.kept)+'</q></div>'+
-          '<div class="hint">turn over ›</div>'+
+          '<div class="hint">frame '+esc(String(L.length-i).padStart(3,'0'))+'A · turn over ›</div>'+
         '</div><div class="stub"><span class="admit">THE BACK ROW</span><span class="no">'+esc(f.admit||('No. '+String(L.length-i).padStart(3,'0')))+'</span></div></div>'+
-        '<div class="face back"><i class="nt"></i><i class="nb"></i><div class="main">'+
+        '<div class="face back'+(f.poster?' has-ph':'')+'">'+(f.poster?'<div class="ph" style="background-image:url('+esc(f.poster)+')" role="img" aria-label="'+esc(f.title)+' still"></div>':'')+'<i class="nt"></i><i class="nb"></i><div class="main">'+
           '<p class="line"><span class="who">Seat A1 · her</span><q>'+esc(f.her)+'</q></p>'+
           '<p class="line"><span class="who">Seat A2 · him</span><q>'+esc(f.his)+'</q></p>'+
           (notes?'<ul class="notes">'+notes+'</ul>':'')+
