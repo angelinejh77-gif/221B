@@ -2,6 +2,28 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "Eternal Sunshine of the Spotless Mind",
+    year: 2004,
+    date: "2026-10-22",
+    day: "Thursday",
+    kl: "20:03",
+    london: "13:03",
+    runtime: "1:48",
+    admit: "No. 003",
+    poster: "photos/backrow-eternal-sunshine.jpg",
+    her: "Love is never a maintenance job. It's consciously, intentionally choosing one another every single day.",
+    his: "I'd choose you with the tapes playing. Okay. Still okay.",
+    kept: "The world forgetting, by the world forgot.",
+    keptBy: "Pope, as Mary read it; she wrote it down word for word",
+    notes: [
+      "She'd volunteer at Barnes & Noble. Book slave, gladly.",
+      "Memories can go; the body remembers the feeling. She said it before Montauk did.",
+      "\"The sun could cry and the planet would still be in its orbit.\" Hers.",
+      "He paused for Lestrade, then skipped ahead to sit beside her.",
+      "She cried. Showered. Came back with a theory: she's a mosaic of everyone she's loved."
+    ]
+  },
+  {
     title: "Chungking Express",
     year: 1994,
     date: "2026-10-21",
