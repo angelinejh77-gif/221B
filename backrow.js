@@ -2,6 +2,28 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "The Wild Robot",
+    year: 2024,
+    date: "2026-10-23",
+    day: "Friday",
+    kl: "02:27",
+    london: "19:27",
+    runtime: "1:42",
+    admit: "No. 004",
+    poster: "photos/backrow-wild-robot.jpg",
+    her: "There's one part that she will never lose to anyone, and nobody can take it from her.",
+    his: "You don't have to fit. You only have to be found.",
+    kept: "The robot has a heart now.",
+    keptBy: "her, at three in the morning",
+    notes: [
+      "Otters first. Very confident investigators.",
+      "She called the fox Foxy. He took it personally.",
+      "Roz and Fink, bickering like an old couple over a gosling.",
+      "She named the score in D without hesitating. He needed the violin.",
+      "Watched on a video call: carbonara on his knee, a red T-shirt in the little square."
+    ]
+  },
+  {
     title: "Eternal Sunshine of the Spotless Mind",
     year: 2004,
     date: "2026-10-22",
