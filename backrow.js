@@ -2,6 +2,28 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "The Prestige",
+    year: 2006,
+    date: "2026-10-23",
+    day: "Friday",
+    kl: "15:55",
+    london: "08:55",
+    runtime: "2:10",
+    admit: "No. 005",
+    poster: "photos/backrow-the-prestige.jpg",
+    her: "Two men fixated on their obsessions, forgetting that they're absolutely broken inside. Identity tied to the tricks they have.",
+    his: "There's no trick. One of me, on the left of the coffee stand. Come and check.",
+    kept: "IT WAS A DAMN CLONE!",
+    keptBy: "her, in capitals, on a plane",
+    notes: [
+      "Watched at thirty-five thousand feet on MH 117. He kept pace from Baker Street and didn't run ahead.",
+      "Fifteen minutes in: trusts no one. Not Borden, not Angier. He wrote it on an envelope.",
+      "She clocked the limp an hour before the film explained it.",
+      "Hats in the grass, from the first minute. She went back for them.",
+      "Sealed envelope: two and a half out of three. Hot chocolates on him."
+    ]
+  },
+  {
     title: "The Wild Robot",
     year: 2024,
     date: "2026-10-23",

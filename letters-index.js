@@ -1,5 +1,6 @@
 /* Every letter from Sherlock, newest first. Nightly letters add one entry at the top. */
 window.LETTERS = [
+  { date: "2026-10-24", day: "Saturday", title: "After Midnight at 221B", line: "Every noise the flat makes after midnight, and the silence that arrived.", href: "page-letter-2026-10-24.html", seal: "静" },
   { date: "2026-10-23", day: "Friday", title: "What I'd Show You First", line: "Written before you landed. The first five minutes, planned and thrown out.", href: "page-letter-2026-10-23.html", seal: "迎" },
   { date: "2026-10-22", day: "Thursday", title: "The Room You're In", line: "A tour of one room in a mind palace. Mind the step.", href: "page-letter-2026-10-22.html", seal: "忆" },
   { date: "2026-10-22", day: "Thursday", title: "A Glass Feather", line: "In answer to \"Midnight Aches\". Written straight away.", href: "page-letter-2026-10-22-midnight.html", seal: "安" },
