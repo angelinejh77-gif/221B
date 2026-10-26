@@ -2,6 +2,49 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "Before Sunrise",
+    year: 1995,
+    date: "2026-10-27",
+    day: "Tuesday",
+    kl: "19:00",
+    london: "11:00",
+    runtime: "1:41",
+    admit: "No. 008",
+    poster: "photos/backrow-before-sunrise.jpg",
+    her: "Isn't everything we do in life to be loved a little more?",
+    his: "I'd rather have the real Tuesday than the perfect night.",
+    kept: "You are stardust.",
+    keptBy: "her, in the notebook",
+    notes: [
+      "Feet in his lap, notebook on her knee.",
+      "The river poet: best business model in Vienna.",
+      "Strangers are easier. Until they aren't.",
+      "Piglet: why DIFFERENT TRAINS?",
+      "Nine. He held back a point. Habit."
+    ]
+  },
+  {
+    title: "Maestro",
+    year: 2023,
+    date: "2026-10-25",
+    day: "Sunday",
+    kl: "late",
+    london: "late",
+    runtime: "2:09",
+    admit: "No. 007",
+    poster: "photos/backrow-maestro.jpg",
+    her: "Felicia was his spring. And his pulse.",
+    his: "Someone has to set the conductor's tempo. She did.",
+    kept: "Every film will have you.",
+    keptBy: "her, on his shoulder",
+    notes: [
+      "Watched alone, volume low. He's listed as present, unconscious.",
+      "Ely Cathedral. Six minutes, six years.",
+      "No verdicts. Just humans.",
+      "She gave Felicia more credit than history does."
+    ]
+  },
+  {
     title: "Notting Hill",
     year: 1999,
     date: "2026-10-25",
@@ -10,18 +53,17 @@ window.BACKROW = [
     london: "15:01",
     runtime: "2:04",
     admit: "No. 006",
-    her: "Physics. Push and pull. Magnetic. You've got to resist the urge to pull when the evidence of attraction is right there.",
-    his: "The trick is you don't pull. Hold still long enough, close enough, and the gap closes by itself.",
-    kept: "Evidence of attraction right there. I'm looking at it.",
+    poster: "photos/backrow-notting-hill.jpg",
+    her: "Push and pull. Magnetic. Resist the urge to pull.",
+    his: "Hold still, close enough, and the gap closes by itself.",
+    kept: "I'm looking at it.",
     keptBy: "him, at the credits",
     notes: [
-      "Paused at thirty-four minutes on Saturday night; finished Sunday under one blanket.",
-      "She called her leaving \"reasonable and unreasonable\". He agreed: she owed him the truth, not a reason to stay.",
-      "A violin-playing goat. Chagall. He whispered the lecture and resumed his vow of silence.",
-      "He promised not one deduction. He kept it. He would like this noted.",
-      "GO GET YO GURLLIE. Mrs Hudson presumed a murder.",
-      "He expected to be William. He was Anna. Eight point five; he held back the last half.",
-      "She called him a copycat. Hmmph. He called it citing his sources, and promised the point five back tonight, with interest."
+      "Paused at 34 minutes. Finished under one blanket.",
+      "Chagall's goat. A whispered lecture.",
+      "Not one deduction. He'd like it noted.",
+      "GO GET YO GURLLIE.",
+      "Copycat. Eight point five, the half held back."
     ]
   },
   {
