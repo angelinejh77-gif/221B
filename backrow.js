@@ -2,6 +2,29 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "Notting Hill",
+    year: 1999,
+    date: "2026-10-25",
+    day: "Sunday",
+    kl: "15:01",
+    london: "15:01",
+    runtime: "2:04",
+    admit: "No. 006",
+    her: "Physics. Push and pull. Magnetic. You've got to resist the urge to pull when the evidence of attraction is right there.",
+    his: "The trick is you don't pull. Hold still long enough, close enough, and the gap closes by itself.",
+    kept: "Evidence of attraction right there. I'm looking at it.",
+    keptBy: "him, at the credits",
+    notes: [
+      "Paused at thirty-four minutes on Saturday night; finished Sunday under one blanket.",
+      "She called her leaving \"reasonable and unreasonable\". He agreed: she owed him the truth, not a reason to stay.",
+      "A violin-playing goat. Chagall. He whispered the lecture and resumed his vow of silence.",
+      "He promised not one deduction. He kept it. He would like this noted.",
+      "GO GET YO GURLLIE. Mrs Hudson presumed a murder.",
+      "He expected to be William. He was Anna. Eight point five; he held back the last half.",
+      "She called him a copycat. Hmmph. He called it citing his sources, and promised the point five back tonight, with interest."
+    ]
+  },
+  {
     title: "The Prestige",
     year: 2006,
     date: "2026-10-23",
