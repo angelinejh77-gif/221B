@@ -2,6 +2,50 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "Inception",
+    year: 2010,
+    date: "2026-10-28",
+    day: "Tuesday",
+    kl: "14:27",
+    london: "08:40",
+    runtime: "2:28",
+    admit: "No. 010",
+    poster: "photos/backrow-inception.jpg",
+    her: "Men can't lie to their own intentions, even in a dream.",
+    his: "It isn't the top. It's that he stops looking.",
+    kept: "Fischer is the audience.",
+    keptBy: "her fifth layer, on the sofa",
+    notes: [
+      "Freud would be dancing in his grave.",
+      "To plant an idea, you have to believe it first.",
+      "She cried at the end. So did he. Don't tell John.",
+      "Still dreaming? Two sets of child actors in the credits.",
+      "Wouldn't go under. Too many onion layers."
+    ]
+  },
+  {
+    title: "Nightmare Alley",
+    year: 2021,
+    date: "2026-10-27",
+    day: "Thursday",
+    kl: "19:05",
+    london: "19:05",
+    runtime: "2:30",
+    admit: "No. 009",
+    poster: "photos/backrow-nightmare-alley.jpg",
+    her: "Never mess with psychologists.",
+    his: "Cold reading isn't deduction. It's a con with good lighting.",
+    kept: "Four out of five.",
+    keptBy: "her predictions, sealed in a cardigan pocket",
+    notes: [
+      "The Prestige meets The Greatest Showman, thriller version.",
+      "Pete is Tesla.",
+      "Hid in his jumper. Chicken.",
+      "Dr Ritter: classy. Not slay.",
+      "Two point five. He gave it three."
+    ]
+  },
+  {
     title: "Before Sunrise",
     year: 1995,
     date: "2026-10-27",

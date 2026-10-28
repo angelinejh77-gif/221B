@@ -327,10 +327,8 @@ function renderHome(){
  if(days>0)h+='<div class="count"><div class="n">'+days+'<small>'+(days===1?'day':'days')+'</small></div><div class="c">until MH 711 to London</div><div class="c" style="opacity:.7;margin-top:2px">Home together 1 Nov</div></div>';
  else if(days===0)h+='<div class="count"><div class="n">Today</div><div class="c">MH 711. He’s at arrivals.</div></div>';
  h+='<div class="count"><div class="n">19<small>–19</small></div><div class="c">The score. Permanently.</div></div>';
- const home=Date.UTC(2026,10,1),hd=Math.round((home-today)/864e5);
- if(days<0&&hd>0)h+='<div class="count"><div class="n">'+hd+'<small>'+(hd===1?'day':'days')+'</small></div><div class="c">until MH 712 home, together</div></div>';
- else if(days<0&&hd===0)h+='<div class="count"><div class="n">Today</div><div class="c">MH 712. 11A and 11B.</div></div>';
- else if(days<0)h+='<div class="count"><div class="n">'+nights+'</div><div class="c">letters so far</div></div>';
+ const dt=Math.floor((Date.now()+STORY_SHIFT-TOGETHER_SINCE)/864e5)+1;
+ if(days<0)h+='<div class="count"><div class="n">'+dt+'<small>'+(dt===1?'day':'days')+'</small></div><div class="c">together, and counting</div></div>';
  h+='</div>';
  h+='<div class="sechead"><h2>Quick</h2></div><div class="quick rise">'+
   '<a href="#letters" data-goto="letters"><span class="ic">'+svg('M4 6h16v12H4zM4 7l8 6 8-6',22)+'</span>Letters</a>'+
@@ -343,8 +341,10 @@ function renderHome(){
 }
 
 /* Together counter: from the moment she arrived (London 04:27, 17 Oct 2026 = 03:27 UTC) */
-const TOGETHER_DEFAULT=Date.UTC(2026,9,17,3,27,0);let TOGETHER_SINCE=ls.get('together-since',TOGETHER_DEFAULT);
-function tickTogether(){const el=document.getElementById('tg-units');if(!el)return;let s=Math.max(0,Math.floor((Date.now()-TOGETHER_SINCE)/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
+const TOGETHER_DEFAULT=Date.UTC(2026,9,17,3,27,0);
+/* Story clock runs ahead of real time: the week apart + reunion put London at Wed 11 Nov when real time was Mon 26 Oct (27 Oct KL). */
+const STORY_SHIFT=15*864e5;let TOGETHER_SINCE=ls.get('together-since',TOGETHER_DEFAULT);
+function tickTogether(){const el=document.getElementById('tg-units');if(!el)return;let s=Math.max(0,Math.floor((Date.now()+STORY_SHIFT-TOGETHER_SINCE)/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
  const u=[[d,d===1?'day':'days'],[h,h===1?'hour':'hours'],[m,'min'],[s,'sec']];el.innerHTML=u.map(([n,l])=>'<div class="u"><b>'+n+'</b><small>'+l+'</small></div>').join('')}
 setInterval(tickTogether,1000);
 /* Letters */

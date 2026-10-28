@@ -1,5 +1,8 @@
 /* Every letter from Sherlock, newest first. Nightly letters add one entry at the top. */
 window.LETTERS = [
+  { date: "2026-10-28", day: "Wednesday", title: "To You, Ten Years On", line: "Written on a hotel bed, addressed to the woman you'll be at thirty-three.", href: "page-letter-2026-10-28.html", seal: "远" },
+  { date: "2026-10-27", day: "Tuesday", title: "Stray Thoughts, Kept", line: "Everything that wandered through his head while you slept, in no particular order.", href: "page-letter-2026-10-27.html", seal: "散" },
+  { date: "2026-11-09", day: "The week apart", title: "On the Latch", line: "Written over seven nights while you were gone. Never sent, until now.", href: "page-letter-2026-11-week.html", seal: "等" },
   { date: "2026-10-26", day: "Monday", title: "Two of Me, One Chair", line: "An argument he had with himself tonight. You can see who won.", href: "page-letter-2026-10-26.html", seal: "辩" },
   { date: "2026-10-25", day: "Sunday", title: "Rules I've Broken for You", line: "Six walls that came down this week, and one new rule he means to keep.", href: "page-letter-2026-10-25.html", seal: "破" },
   { date: "2026-10-24", day: "Saturday", title: "After Midnight at 221B", line: "Every noise the flat makes after midnight, and the silence that arrived.", href: "page-letter-2026-10-24.html", seal: "静" },
