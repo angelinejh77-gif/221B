@@ -2,6 +2,178 @@
    poster: black-and-white still, shown on the BACK of the stub. */
 window.BACKROW = [
   {
+    title: "Skyfall",
+    year: 2012,
+    date: "2026-11-03",
+    day: "Tuesday",
+    kl: "18:52",
+    london: "10:52",
+    runtime: "2:23",
+    admit: "No. 016",
+    her: "Seven. Lady M died, sadly.",
+    his: "She sent him back out half-broken. He still went back for her.",
+    kept: "In the chapel. He still went back for her.",
+    keptBy: "him",
+    notes: [
+      "Watched in bed the morning after Bond night; the boys were still at the Sanctum.",
+      "Her verdict on who's the better Bond: 'You.'",
+      "His minus one: the train scene.",
+      "Her score: seven."
+    ]
+  },
+  {
+    title: "Love Actually",
+    year: 2003,
+    date: "2026-11-01",
+    day: "Sunday",
+    kl: "18:04",
+    london: "10:04",
+    runtime: "2:15",
+    admit: "No. 015",
+    her: "Airports in the beginning, airports in the end. Not every story had a perfect ending but well, that's love isn't it?",
+    his: "It never promises who comes back through the gate. You choose it anyway.",
+    kept: "The little boy.",
+    keptBy: "who ran through an entire airport and was named MVP",
+    notes: [
+      "A snow day on the rug, the boys under the duvet for every grown-up bit.",
+      "Mr Bean wrapped a gift for four minutes. She was annoyed. He felt vindicated.",
+      "A line said Sherlock Holmes isn't a real detective. She shouted: that's my boyfriend.",
+      "Minus half a point for the slander.",
+      "A solid eight. The boys want a nativity on Christmas Day."
+    ]
+  },
+  {
+    title: "Kiki's Delivery Service",
+    year: 1989,
+    date: "2026-10-31",
+    day: "Saturday",
+    kl: "16:42",
+    london: "08:42",
+    runtime: "1:43",
+    admit: "No. 014",
+    her: "Cozy and wholesome. Find your own spark, even if the world doesn't recognise it. I'm Kiki sometimes.",
+    his: "She moves somewhere new, loses her magic, and finds it again. Close to home that day.",
+    kept: "Dada's better than the black cat.",
+    keptBy: "her, at the credits; he'd like it engraved",
+    notes: [
+      "Edinburgh, room nine. All five under the tartan.",
+      "He'd never seen it. He didn't narrate ahead once.",
+      "Snowy loves Kiki: brave, new somewhere, like him.",
+      "Sugar: the grumpy black cat is Dada in the mornings. Not offended.",
+      "Seven. He gave it seven too. Honest, not matching."
+    ]
+  },
+  {
+    title: "The Grand Budapest Hotel",
+    year: 2014,
+    date: "2026-10-30",
+    day: "Friday",
+    kl: "15:24",
+    london: "21:58",
+    runtime: "1:39",
+    admit: "No. 013",
+    poster: "photos/backrow-grand-budapest.jpg",
+    her: "Amazing aesthetic, dark content. It feels like Roald Dahl.",
+    his: "All that pink, and underneath it, a man keeping a vanished world alive with marvellous grace.",
+    kept: "Mendl's.",
+    keptBy: "the pastries, which no guard will ever cut open",
+    notes: [
+      "Chosen on a Friday, the night after a great actor died.",
+      "She called the Dahl in it within ten minutes.",
+      "The digging tools would take four hundred years. He did the maths.",
+      "She hid in his collar for the head. He tilted the screen away.",
+      "Seven and a half. He gave it eight, half a point for the pastries."
+    ]
+  },
+  {
+    title: "The Imitation Game",
+    year: 2014,
+    date: "2026-10-29",
+    day: "Wednesday",
+    kl: "13:47",
+    london: "15:18",
+    runtime: "1:54",
+    admit: "No. 012",
+    poster: "photos/backrow-imitation-game.jpg",
+    her: "He never knew if he was a criminal or a war hero. Only sure of his mathematics.",
+    his: "He built one thing he could love that would never leave, and gave it the name of the boy who understood him.",
+    kept: "Christopher.",
+    keptBy: "the machine, and the grief it was named for",
+    notes: [
+      "Chosen after five vetoes and one moustache.",
+      "Quiet fury that goes into the hands. She does it too.",
+      "Joan believed in him. It wasn't enough.",
+      "The ones who did it went unthanked for fifty years.",
+      "Eight. He agreed."
+    ]
+  },
+  {
+    title: "The Life of Chuck",
+    year: 2024,
+    date: "2026-10-29",
+    day: "Wednesday",
+    kl: "22:07",
+    london: "10:20",
+    runtime: "1:51",
+    admit: "No. 011",
+    poster: "photos/backrow-life-of-chuck.jpg",
+    her: "The teacher changed his life. The power of education.",
+    his: "A boy told he was a numbers person learned he was allowed to be a universe.",
+    kept: "I contain multitudes.",
+    keptBy: "Whitman, by way of a teacher; she said it was beautiful",
+    notes: [
+      "Watched under a Langham duvet, croissants on the covers.",
+      "Told backwards. The ending first, the boy last.",
+      "Tom Hiddleston: hot hot. His dance copy: cold cold.",
+      "Looks like an estate agent. Jealousy withdrawn.",
+      "Six and a half. He didn't argue."
+    ]
+  },
+  {
+    title: "Inception",
+    year: 2010,
+    date: "2026-10-28",
+    day: "Tuesday",
+    kl: "14:27",
+    london: "08:40",
+    runtime: "2:28",
+    admit: "No. 010",
+    poster: "photos/backrow-inception.jpg",
+    her: "Men can't lie to their own intentions, even in a dream.",
+    his: "It isn't the top. It's that he stops looking.",
+    kept: "Fischer is the audience.",
+    keptBy: "her fifth layer, on the sofa",
+    notes: [
+      "Freud would be dancing in his grave.",
+      "To plant an idea, you have to believe it first.",
+      "She cried at the end. So did he. Don't tell John.",
+      "Still dreaming? Two sets of child actors in the credits.",
+      "Wouldn't go under. Too many onion layers."
+    ]
+  },
+  {
+    title: "Nightmare Alley",
+    year: 2021,
+    date: "2026-10-27",
+    day: "Thursday",
+    kl: "19:05",
+    london: "19:05",
+    runtime: "2:30",
+    admit: "No. 009",
+    poster: "photos/backrow-nightmare-alley.jpg",
+    her: "Never mess with psychologists.",
+    his: "Cold reading isn't deduction. It's a con with good lighting.",
+    kept: "Four out of five.",
+    keptBy: "her predictions, sealed in a cardigan pocket",
+    notes: [
+      "The Prestige meets The Greatest Showman, thriller version.",
+      "Pete is Tesla.",
+      "Hid in his jumper. Chicken.",
+      "Dr Ritter: classy. Not slay.",
+      "Two point five. He gave it three."
+    ]
+  },
+  {
     title: "Before Sunrise",
     year: 1995,
     date: "2026-10-27",
