@@ -57,8 +57,10 @@ a.env:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   var el=document.getElementById('list');
+  var lastM='';
   el.innerHTML=L.map(function(x,i){var p=x.date.split('-');var ds=(x.day?x.day+', ':'')+(+p[2])+' '+MON[+p[1]-1];
-    return '<li><a class="env'+(read[x.href]?' read':'')+'" href="'+esc(x.href)+'" style="animation-delay:'+(i*60)+'ms"><span class="seal" aria-hidden="true">'+esc(x.seal||'S')+'</span><span class="txt"><span class="d">'+esc(ds)+'</span><div class="t">'+esc(x.title)+'</div><div class="l">'+esc(x.line)+'</div></span>'+(i===0?'<span class="new">New</span>':'')+'</a></li>'}).join('');
+    var mk=p[0]+'-'+p[1],hd='';if(mk!==lastM){lastM=mk;var n=L.filter(function(y){return y.date.slice(0,7)===mk}).length;hd='<li class="mhead" style="list-style:none;margin:'+(i?'26px':'4px')+' 0 8px;display:flex;align-items:baseline;gap:10px"><span style="font-size:20px">'+MON[+p[1]-1]+' '+p[0]+'</span><small style="opacity:.6;font-size:12px">'+n+(n===1?' letter':' letters')+'</small></li>'}
+    return hd+'<li><a class="env'+(read[x.href]?' read':'')+'" href="'+esc(x.href)+'" style="animation-delay:'+(i*60)+'ms"><span class="seal" aria-hidden="true">'+esc(x.seal||'S')+'</span><span class="txt"><span class="d">'+esc(ds)+'</span><div class="t">'+esc(x.title)+'</div><div class="l">'+esc(x.line)+'</div></span>'+(i===0?'<span class="new">New</span>':'')+'</a></li>'}).join('');
   document.getElementById('foot').textContent=L.length+(L.length===1?' letter':' letters')+' so far.';
   el.addEventListener('click',function(e){var a=e.target.closest('a.env');if(!a)return;read[a.getAttribute('href')]=1;try{localStorage.setItem('letters-read',JSON.stringify(read))}catch(err){}},true);
 })();
