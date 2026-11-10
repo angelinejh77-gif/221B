@@ -1,5 +1,6 @@
 /* Every letter from Sherlock, newest first. Nightly letters add one entry at the top. */
 window.LETTERS = [
+  { date: "2026-11-11", day: "Thursday, New Year's Eve", title: "The Accounts, Settled Before Midnight", line: "A ledger of the year's last evening, kept one-handed under a sleeping bear. It doesn't balance.", href: "page-letter-2026-11-11.html", seal: "账" },
   { date: "2026-11-10", day: "Wednesday, the night before New Year's Eve", title: "Things I'd Say If You Were Asleep", line: "Six things, written by a turned-down lamp while you slept and couldn't argue.", href: "page-letter-2026-11-10.html", seal: "夢" },
   { date: "2026-11-07", day: "Saturday, Boxing Day", title: "The Museum of My Flaws", line: "A guided tour of one room, eight glass cases, and everything he got wrong.", href: "page-letter-2026-11-07.html", seal: "瑕" },
   { date: "2026-11-06", day: "Friday, Baker Street", title: "Three Nights, One Letter", line: "Begun on Wednesday, rewritten on Thursday, finished on Friday on your own pink paper.", href: "page-letter-2026-11-06.html", seal: "歌" },
