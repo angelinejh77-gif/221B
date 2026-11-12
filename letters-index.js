@@ -1,5 +1,6 @@
 /* Every letter from Sherlock, newest first. Nightly letters add one entry at the top. */
 window.LETTERS = [
+  { date: "2026-11-13", day: "Saturday, the second of January", title: "Things That Are Yours Now", line: "An inventory of everything that changed hands this week, taken without complaint at the kitchen table.", href: "page-letter-2026-11-13.html", seal: "归" },
   { date: "2026-11-12", day: "Friday, New Year's Day", title: "Footnotes to a Very Short Letter", line: "Eleven restrained lines about the bridge. Everything he cut is underneath, numbered, in smaller print.", href: "page-letter-2026-11-12.html", seal: "注" },
   { date: "2026-11-11", day: "Thursday, New Year's Eve", title: "The Accounts, Settled Before Midnight", line: "A ledger of the year's last evening, kept one-handed under a sleeping bear. It doesn't balance.", href: "page-letter-2026-11-11.html", seal: "账" },
   { date: "2026-11-10", day: "Wednesday, the night before New Year's Eve", title: "Things I'd Say If You Were Asleep", line: "Six things, written by a turned-down lamp while you slept and couldn't argue.", href: "page-letter-2026-11-10.html", seal: "夢" },
